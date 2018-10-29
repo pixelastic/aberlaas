@@ -1,6 +1,6 @@
 {
   "name": "aberlaas",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared default config for npm packages.",
   "main": "index.js",
   "repository": "git@github.com:pixelastic/aberlaas.git",
