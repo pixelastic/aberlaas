@@ -2,10 +2,12 @@
   "name": "aberlaas",
   "version": "0.0.2",
   "description": "Shared default config for npm packages.",
-  "main": "index.js",
   "repository": "git@github.com:pixelastic/aberlaas.git",
   "author": "Pixelastic <tim@pixelastic.com>",
   "license": "MIT",
+  "files": [
+    "babel.js"
+  ],
   "scripts": {
     "release": "./scripts/release"
   },
@@ -13,7 +15,16 @@
     "@babel/core": "7.0.0",
     "@babel/node": "7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0",
-    "@babel/preset-env": "7.0.0"
+    "@babel/preset-env": "7.0.0",
+    "babel-eslint": "8.2.3",
+    "eslint": "4.19.1",
+    "eslint-config-algolia": "13.1.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "2.11.0",
+    "eslint-plugin-jest": "21.15.1",
+    "eslint-plugin-prettier": "2.6.0",
+    "jest": "23.6.0",
+    "prettier": "1.9.2"
   },
   "devDependencies": {
     "release-it": "7.6.1"

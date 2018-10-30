@@ -1,34 +1,23 @@
 # Aberlaas
 
-Shared default config for npm packages.
+Start a new npm package with all the right tooling in place.
 
-This include dependencies and sane configuration for the following tools:
+This includes sane config for Babel, ESLint, Jest, Prettier and Husky as well as
+command line tool to execute the most common tasks: test, lint, build, release.
 
-- Babel
-  - Presets and plugins
-  - `.babelrc.js` configuration file
-  - `babel-node` executable to run scripts
-- ESLint
-- Prettier
-- Jest
-- Husky
+## Babel
 
-## Scripts
+A default Babel config is available. You can use it by creating a `.babelrc.js`
+file with the following content to extend the default configuration:
 
-Aberlaas come with a command-line tool to execute the most used commands.
-
-### `aberlaas release`
-
-This will release the package to npm
-
-### `aberlaas test` and `aberlaas test --watch`
-
-### `aberlaas lint`
-
-### `aberlaas build` and `aberlaas build --watch`
+```javascript
+module.exports = {
+  "presets": ["aberlaas/babel"]
+}
+```
 
 ## Name
 
 Aberlaas is the base camp from which all great expedition start in the _La Horde
-du Contrevent_ book. I felt it was a great name for a bootstrapping kit for
+du Contrevent_ book. I felt it's a great name for a bootstrapping kit for
 modules.
