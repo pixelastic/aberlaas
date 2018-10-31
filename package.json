@@ -9,11 +9,12 @@
     "aberlaas": "bin/aberlaas"
   },
   "files": [
-    "bin",
+    "bin/aberlaas",
     "babel.js",
     "eslint.js"
   ],
   "scripts": {
+    "lint": "./bin/aberlaas lint ./bin/* ./configs/*.js ./lib/*.js ./*.js",
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
     "release": "./scripts/release"

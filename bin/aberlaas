@@ -2,5 +2,5 @@
 /* eslint-disable import/no-commonjs */
 const aberlaas = require('../build/aberlaas.js').default;
 (async function() {
-  await aberlaas.run();
+  await aberlaas.run(process.argv.slice(2));
 })();
