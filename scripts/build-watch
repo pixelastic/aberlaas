@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+set -e
+
+mkdir -p ./build
+
+babel \
+  ./src \
+  --ignore "src/__tests__" \
+  --out-dir ./build \
+  --watch \
+  --verbose \
+  --source-maps inline

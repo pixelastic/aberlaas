@@ -5,10 +5,15 @@
   "repository": "git@github.com:pixelastic/aberlaas.git",
   "author": "Pixelastic <tim@pixelastic.com>",
   "license": "MIT",
+  "bin": {
+    "aberlaas": "bin/aberlaas"
+  },
   "files": [
     "babel.js"
   ],
   "scripts": {
+    "build": "./scripts/build",
+    "build:watch": "./scripts/build-watch",
     "release": "./scripts/release"
   },
   "dependencies": {
@@ -17,16 +22,25 @@
     "@babel/plugin-proposal-object-rest-spread": "7.0.0",
     "@babel/preset-env": "7.0.0",
     "babel-eslint": "8.2.3",
+    "chalk": "2.4.1",
+    "cross-spawn": "6.0.5",
     "eslint": "4.19.1",
     "eslint-config-algolia": "13.1.0",
     "eslint-config-prettier": "2.9.0",
     "eslint-plugin-import": "2.11.0",
     "eslint-plugin-jest": "21.15.1",
     "eslint-plugin-prettier": "2.6.0",
+    "firost": "0.0.9",
     "jest": "23.6.0",
+    "lodash": "4.17.11",
+    "minimist": "1.2.0",
+    "p-all": "1.0.0",
+    "p-map": "2.0.0",
+    "pify": "4.0.1",
     "prettier": "1.9.2"
   },
   "devDependencies": {
+    "@babel/cli": "7.1.2",
     "release-it": "7.6.1"
   }
 }

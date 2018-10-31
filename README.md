@@ -2,13 +2,42 @@
 
 Start a new npm package with all the right tooling in place.
 
-This includes sane config for Babel, ESLint, Jest, Prettier and Husky as well as
-command line tool to execute the most common tasks: test, lint, build, release.
+This package exposes the `aberlaas` script that can be used to perform the most
+common tasks on a package: `build`, `lint`, `test` and `release`. It also
+exposes the inner configuration of the tools it uses.
 
-## Babel
+## Usage
 
-A default Babel config is available. You can use it by creating a `.babelrc.js`
-file with the following content to extend the default configuration:
+Use this by calling the `aberlaas` script to perform tasks on your code. We
+suggest you add `scripts` aliases in your `package.json` to run them.
+
+```json
+"scripts": {
+  "build": "aberlaas build",
+  "build:watch": "aberlaas build --watch",
+  "lint": "aberlaas lint",
+  "lint:fix": "aberlaas lint --fix",
+  "test": "aberlaas test",
+  "test": "aberlaas test --watch",
+  "release": "aberlaas release",
+}
+```
+
+## Linting
+
+Run `aberlaas lint` to lint files through ESLint. It will link all `.js` files
+in `./lib` and at the root of the project. You can pass you own list of files to
+lint by calling `aberlaas lint ./your/own/files.js`.
+
+We suggest you add a `.eslintrc.js` file in your project with the following
+content. It will mirror the Aberlaas configuration locally, allowing you to
+extend it if needed, but also signaling to your IDE and other tools that ESLint
+is available.
+
+## Building
+
+You can extend the internal Babel config used by creating a `.babelrc.js` file
+with the following content:
 
 ```javascript
 module.exports = {
