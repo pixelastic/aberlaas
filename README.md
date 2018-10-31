@@ -34,6 +34,12 @@ content. It will mirror the Aberlaas configuration locally, allowing you to
 extend it if needed, but also signaling to your IDE and other tools that ESLint
 is available.
 
+```js
+module.exports = {
+  extends: ['./node_modules/aberlaas/eslint.js'],
+};
+```
+
 ## Building
 
 You can extend the internal Babel config used by creating a `.babelrc.js` file
