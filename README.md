@@ -42,6 +42,11 @@ module.exports = {
 
 ## Building
 
+Run `aberlaas build` to build all files `./lib` into `./build` using Babel. You
+can pass your own list of files by calling `aberlaas build ./path/to/files`, and
+change the build directory with `--out-dir ./my-build`. You can exclude files
+using the `--ignore ignore-me.js` flag.
+
 You can extend the internal Babel config used by creating a `.babelrc.js` file
 with the following content:
 

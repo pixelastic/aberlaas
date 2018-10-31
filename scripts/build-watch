@@ -4,8 +4,9 @@ set -e
 mkdir -p ./build
 
 babel \
-  ./src \
-  --ignore "src/__tests__" \
+  ./lib \
+  --ignore "lib/__tests__" \
+  --ignore "lib/test-helper.js" \
   --out-dir ./build \
   --watch \
   --verbose \
