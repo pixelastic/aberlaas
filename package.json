@@ -20,11 +20,14 @@
     "release": "./scripts/release"
   },
   "dependencies": {
+    "@babel/cli": "7.1.2",
     "@babel/core": "7.0.0",
     "@babel/node": "7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0",
     "@babel/preset-env": "7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
+    "babel-jest": "23.6.0",
     "chalk": "2.4.1",
     "cross-spawn": "6.0.5",
     "eslint": "4.19.1",
@@ -40,10 +43,7 @@
     "p-all": "1.0.0",
     "p-map": "2.0.0",
     "pify": "4.0.1",
-    "prettier": "1.9.2"
-  },
-  "devDependencies": {
-    "@babel/cli": "7.1.2",
+    "prettier": "1.9.2",
     "release-it": "7.6.1"
   }
 }

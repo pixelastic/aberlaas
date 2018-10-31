@@ -5,6 +5,7 @@ mkdir -p ./build
 
 babel \
   ./lib/*.js \
+  --verbose \
   --ignore "lib/__tests__" \
   --ignore "lib/test-helper.js" \
   --out-dir ./build
