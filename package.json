@@ -14,7 +14,7 @@
     "eslint.js"
   ],
   "scripts": {
-    "lint": "./bin/aberlaas lint ./bin/* ./configs/*.js ./lib/*.js ./*.js",
+    "lint": "./bin/aberlaas lint ./bin/* ./lib/*.js ./*.js",
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
     "release": "./scripts/release"
