@@ -27,7 +27,8 @@ suggest you add `scripts` aliases in your `package.json` to run them.
 
 Run `aberlaas lint` to lint files through ESLint. It will link all `.js` files
 in `./lib` and at the root of the project. You can pass you own list of files to
-lint by calling `aberlaas lint ./your/own/files.js`.
+lint by calling `aberlaas lint ./your/own/files.js`. You can attempt to auto fix
+issues on your files by adding the `--fix` flag.
 
 We suggest you add a `.eslintrc.js` file in your project with the following
 content. It will mirror the Aberlaas configuration locally, allowing you to
