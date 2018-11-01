@@ -23,24 +23,6 @@ suggest you add `scripts` aliases in your `package.json` to run them.
 }
 ```
 
-## Linting
-
-Run `aberlaas lint` to lint files through ESLint. It will link all `.js` files
-in `./lib` and at the root of the project. You can pass you own list of files to
-lint by calling `aberlaas lint ./your/own/files.js`. You can attempt to auto fix
-issues on your files by adding the `--fix` flag.
-
-We suggest you add a `.eslintrc.js` file in your project with the following
-content. It will mirror the Aberlaas configuration locally, allowing you to
-extend it if needed, but also signaling to your IDE and other tools that ESLint
-is available.
-
-```js
-module.exports = {
-  extends: ['./node_modules/aberlaas/eslint.js'],
-};
-```
-
 ## Building
 
 Run `aberlaas build` to build all files `./lib` into `./build` using Babel. You
@@ -56,6 +38,32 @@ module.exports = {
   "presets": ["aberlaas/babel"]
 }
 ```
+
+## Linting
+
+Run `aberlaas lint` to lint files through ESLint. It will link all `.js` files
+in `./lib` and at the root of the project. You can pass you own list of files to
+lint by calling `aberlaas lint ./your/own/files.js`. You can attempt to auto fix
+issues on your files by adding the `--fix` flag.
+
+We suggest you add a `.eslintrc.js` file in your project with the following
+content. It will mirror the aberlaas configuration locally, allowing you to
+extend it if needed, but also signaling to your IDE and other tools that ESLint
+is available.
+
+```js
+module.exports = {
+  extends: ['./node_modules/aberlaas/eslint.js'],
+};
+```
+
+## Testing
+
+Run `aberlaas test` to run all the Jest tests in `./lib`. You can pass your own
+list of files to the command to override the default. Use the `--config
+jest.config.js` argument to specify your own config file and `--watch` to start
+live reloading of test.
+
 
 ## Name
 
