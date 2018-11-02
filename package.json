@@ -18,8 +18,8 @@
     "lint": "./bin/aberlaas lint",
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
-    "release": "./scripts/release",
-    "postinstall": "./scripts/build"
+    "release": "./bin/aberlaas release",
+    "postinstall": "yarn run build"
   },
   "dependencies": {
     "@babel/cli": "7.1.2",
