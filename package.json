@@ -9,6 +9,7 @@
     "aberlaas": "bin/aberlaas"
   },
   "files": [
+    "build",
     "bin/aberlaas",
     "babel.js",
     "eslint.js",
