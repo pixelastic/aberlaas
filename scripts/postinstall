@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+// # When in aberlaas locally, should build the app
+// # When installed as part of a dependency, should create husky files
+console.info("postinstall");

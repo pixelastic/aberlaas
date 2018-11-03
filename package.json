@@ -19,7 +19,7 @@
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
     "release": "./bin/aberlaas release",
-    "postinstall": "yarn run build"
+    "postinstall": "./bin/aberlaas postinstall"
   },
   "dependencies": {
     "@babel/cli": "7.1.2",
