@@ -8,8 +8,8 @@ exposes the inner configuration of the tools it uses.
 
 ## Usage
 
-Use this by calling the `aberlaas` script to perform tasks on your code. We
-suggest you add `scripts` aliases in your `package.json` to run them.
+Use this by calling the `aberlaas` script to perform tasks on your code. The
+following `scripts` are automatically added to your `package.json`.
 
 ```json
 "scripts": {
@@ -18,52 +18,41 @@ suggest you add `scripts` aliases in your `package.json` to run them.
   "lint": "aberlaas lint",
   "lint:fix": "aberlaas lint --fix",
   "test": "aberlaas test",
-  "test": "aberlaas test --watch",
+  "test:watch": "aberlaas test --watch",
   "release": "aberlaas release",
 }
 ```
 
-## Building
+### Building
 
 Run `aberlaas build` to build all files `./lib` into `./build` using Babel. You
 can pass your own list of files by calling `aberlaas build ./path/to/files`, and
 change the build directory with `--out-dir ./my-build`. You can exclude files
 using the `--ignore ignore-me.js` flag.
 
-You can extend the internal Babel config used by creating a `.babelrc.js` file
-with the following content:
+You can extend the internal Babel by editing the `.babelrc.js` created at the
+root of your project.
 
-```javascript
-module.exports = {
-  "presets": ["aberlaas/babel"]
-}
-```
+### Linting
 
-## Linting
+Run `aberlaas lint` to lint your files. You can call `aberlass lint
+./your/own/files` to lint specific files. `aberlaas lint:fix` will attempt
+to fix most errors.
 
-Run `aberlaas lint` to lint files through ESLint. It will link all `.js` files
-in `./lib` and at the root of the project. You can pass you own list of files to
-lint by calling `aberlaas lint ./your/own/files.js`. You can attempt to auto fix
-issues on your files by adding the `--fix` flag.
+All `.js` files will go through ESLint. You can tweak the default configuration
+by editing the `.eslintrc.js` file created at the root of your project.
 
-We suggest you add a `.eslintrc.js` file in your project with the following
-content. It will mirror the aberlaas configuration locally, allowing you to
-extend it if needed, but also signaling to your IDE and other tools that ESLint
-is available.
-
-```js
-module.exports = {
-  extends: ['./node_modules/aberlaas/eslint.js'],
-};
-```
-
-## Testing
+### Testing
 
 Run `aberlaas test` to run all the Jest tests in `./lib`. You can pass your own
 list of files to the command to override the default. Use the `--config
 jest.config.js` argument to specify your own config file and `--watch` to start
 live reloading of test.
 
+### Release
+
+Run `aberlaas release` to build the package and release it to npm. It will ask
+your for the new version and will create the needed git tag.
 
 ## Name
 
