@@ -54,6 +54,19 @@ live reloading of test.
 Run `aberlaas release` to build the package and release it to npm. It will ask
 your for the new version and will create the needed git tag.
 
+## File structure
+
+`./lib/configs` contain the default configuration for all the tools. They are
+exported by the package and thus can be `import`ed in userland.
+
+`./templates` contains default configurations files copied to userland. Each
+extends the configuration exported in the previous files. Copying files to
+userland allows user to modify the files if they want to change the behavior.
+
+`.babelrc.js`, `.eslintrc.js`, `jest.config.js` and `.huskyrc.js` are local
+configuration files for `aberlaas` itself. They eat their own dog food by
+referencing the same configs as above.
+
 ## Name
 
 Aberlaas is the base camp from which all great expedition start in the _La Horde

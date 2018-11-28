@@ -1,10 +1,11 @@
 #!/usr/bin/env sh
+# We cannot use `aberlaas build` to build itself
 set -e
 
 mkdir -p ./build
 
 babel \
-  ./lib/*.js \
+  ./lib/ \
   --verbose \
   --ignore "lib/__tests__" \
   --ignore "lib/test-helper.js" \

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-commonjs */
 module.exports = {
-  "presets": ["./babel.js"]
-}
+  presets: ['./lib/configs/babel.js'],
+};

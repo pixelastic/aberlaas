@@ -6,22 +6,22 @@
   "author": "Pixelastic <tim@pixelastic.com>",
   "license": "MIT",
   "bin": {
-    "aberlaas": "bin/aberlaas"
+    "aberlaas": "bin/aberlaas",
+    "aberlass": "bin/aberlaas"
   },
   "files": [
     "build/",
     "templates/",
-    "bin/aberlaas",
-    "babel.js",
-    "eslint.js",
-    "jest.js"
+    "bin/aberlaas"
   ],
   "scripts": {
-    "lint": "./bin/aberlaas lint",
-    "lint:fix": "./bin/aberlaas lint --fix",
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
-    "release": "./bin/aberlaas release",
+    "lint": "yarn run build && ./bin/aberlaas lint ./lib ./templates ./*.js",
+    "lint:fix": "yarn run build && ./bin/aberlaas lint --fix ./lib ./templates ./*.js",
+    "test": "yarn run build && ./bin/aberlaas test",
+    "test:watch": "yarn run build && ./bin/aberlaas test --watch",
+    "release": "yarn run build && ./bin/aberlaas release",
     "postinstall": "./bin/aberlaas postinstall"
   },
   "dependencies": {

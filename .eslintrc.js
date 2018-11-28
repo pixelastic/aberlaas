@@ -1,3 +1,4 @@
+/* eslint-disable import/no-commonjs */
 module.exports = {
-  extends: ['./eslint.js'] // Let's eat our own dogfood
+  extends: ['./lib/configs/eslint.js'],
 };

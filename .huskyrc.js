@@ -1,3 +1,2 @@
 /* eslint-disable import/no-commonjs */
-const huskyConfig = require('./templates/huskyrc.js');
-module.exports = huskyConfig;
+module.exports = require('./lib/configs/husky.js');
