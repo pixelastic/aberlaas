@@ -17,8 +17,8 @@
   "scripts": {
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
-    "lint": "yarn run build && ./bin/aberlaas lint ./lib ./templates ./*.js",
-    "lint:fix": "yarn run build && ./bin/aberlaas lint --fix ./lib ./templates ./*.js",
+    "lint": "yarn run build && ./bin/aberlaas lint ./lib ./templates ./*.js ./.*.js",
+    "lint:fix": "yarn run build && ./bin/aberlaas lint ./lib ./templates ./*.js  ./.*.js --fix",
     "test": "yarn run build && ./bin/aberlaas test",
     "test:watch": "yarn run build && ./bin/aberlaas test --watch",
     "release": "yarn run build && ./bin/aberlaas release",
