@@ -19,7 +19,7 @@ following `scripts` are automatically added to your `package.json`.
   "lint:fix": "aberlaas lint --fix",
   "test": "aberlaas test",
   "test:watch": "aberlaas test --watch",
-  "release": "aberlaas release",
+  "release": "aberlaas release"
 }
 ```
 
