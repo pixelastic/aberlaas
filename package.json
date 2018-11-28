@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "lint": "./bin/aberlaas lint",
+    "lint:fix": "./bin/aberlaas lint --fix",
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
     "release": "./bin/aberlaas release",
