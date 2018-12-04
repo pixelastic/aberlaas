@@ -35,9 +35,9 @@ root of your project.
 
 ### Linting
 
-Run `aberlaas lint` to lint your files. You can call `aberlass lint
-./your/own/files` to lint specific files. `aberlaas lint:fix` will attempt
-to fix most errors.
+Run `aberlaas lint` to lint your files. You can call
+`aberlass lint ./your/own/files` to lint specific files. `aberlaas lint:fix`
+will attempt to fix most errors.
 
 All `.js` files will go through ESLint. You can tweak the default configuration
 by editing the `.eslintrc.js` file created at the root of your project.
@@ -45,14 +45,16 @@ by editing the `.eslintrc.js` file created at the root of your project.
 ### Testing
 
 Run `aberlaas test` to run all the Jest tests in `./lib`. You can pass your own
-list of files to the command to override the default. Use the `--config
-jest.config.js` argument to specify your own config file and `--watch` to start
-live reloading of test.
+list of files to the command to override the default. Use the
+`--config jest.config.js` argument to specify your own config file and `--watch`
+to start live reloading of test.
 
 ### Release
 
 Run `aberlaas release` to build the package and release it to npm. It will ask
-your for the new version and will create the needed git tag.
+your for the new version and will create the needed git tag. You can also run
+`aberlaas release patch`, `aberlaas release minor` or `aberlaas release major`
+to automatically bump the version number according to SemVer.
 
 ## File structure
 
