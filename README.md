@@ -25,10 +25,13 @@ following `scripts` are automatically added to your `package.json`.
 
 ### Building
 
-Run `aberlaas build` to build all files `./lib` into `./build` using Babel. You
-can pass your own list of files by calling `aberlaas build ./path/to/files`, and
-change the build directory with `--out-dir ./my-build`. You can exclude files
-using the `--ignore ignore-me.js` flag.
+`aberlaas build` will build all files located in `./lib` into `./build` by
+default. You can alter the behavior with the following options:
+
+- `aberlaas build ./path/to/files` to change the default source directory
+- `--out-dir ./dist` to change the destination directory
+- `--ignore ignore-me.js` to exclude some files
+- `--watch` to listen for changes on files and rebuild
 
 You can extend the internal Babel by editing the `.babelrc.js` created at the
 root of your project.
