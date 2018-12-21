@@ -57,7 +57,8 @@ to start live reloading of test.
 Run `aberlaas release` to build the package and release it to npm. It will ask
 your for the new version and will create the needed git tag. You can also run
 `aberlaas release patch`, `aberlaas release minor` or `aberlaas release major`
-to automatically bump the version number according to SemVer.
+to automatically bump the version number according to SemVer. Add `-n` for
+a dry-run.
 
 ## File structure
 
