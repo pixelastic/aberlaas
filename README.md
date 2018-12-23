@@ -52,13 +52,20 @@ list of files to the command to override the default. Use the
 `--config jest.config.js` argument to specify your own config file and `--watch`
 to start live reloading of test.
 
-### Release
+### Releasing
 
-Run `aberlaas release` to build the package and release it to npm. It will ask
-your for the new version and will create the needed git tag. You can also run
-`aberlaas release patch`, `aberlaas release minor` or `aberlaas release major`
-to automatically bump the version number according to SemVer. Add `-n` for
-a dry-run.
+`yarn run release` aliased to `aberlaas release`.
+
+This will build the package and release it to npm. It will update the version in
+`package.json` as well as creating the related git tag.
+
+When called without arguments, it will prompt you for the next version to
+package. If called with an argument, this will be used as the next version
+number (for example, `yarn run release 1.1.3`). You can also use SemVer
+increments (for example, `yarn run release minor`).
+
+Use `-n` to start a dry-run. It will simulate a release but won't actually push
+anything to GitHub or npm.
 
 ## File structure
 
