@@ -33,8 +33,8 @@ default. You can alter the behavior with the following options:
 - `--ignore ignore-me.js` to exclude some files
 - `--watch` to listen for changes on files and rebuild
 
-You can extend the internal Babel by editing the `.babelrc.js` created at the
-root of your project.
+You can extend the internal Babel by editing the `babel.config.js` created at
+the root of your project.
 
 ### Linting
 
