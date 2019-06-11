@@ -22,8 +22,7 @@
     "lint:fix": "yarn run build && ./bin/aberlaas lint ./lib ./templates ./*.js  ./.*.js --fix",
     "test": "yarn run build && ./bin/aberlaas test",
     "test:watch": "yarn run build && ./bin/aberlaas test --watch",
-    "release": "yarn run build && ./bin/aberlaas release",
-    "postinstall": "./bin/aberlaas postinstall"
+    "release": "yarn run build && ./bin/aberlaas release"
   },
   "dependencies": {
     "@babel/cli": "7.1.2",

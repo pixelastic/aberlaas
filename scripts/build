@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-# We cannot use `aberlaas build` to build itself
+# We cannot use `aberlaas build` to build itself, so we revert to good old
+# scripts
 set -e
 
 mkdir -p ./build

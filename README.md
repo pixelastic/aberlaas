@@ -40,12 +40,17 @@ the root of your project.
 
 ### Linting
 
-Run `aberlaas lint` to lint your files. You can call
-`aberlass lint ./your/own/files` to lint specific files. `aberlaas lint:fix`
-will attempt to fix most errors.
+`aberlaas lint` will lint all JavaScript files (through ESLint) in `./lib` and
+config files at the root of your project by default. You can alter the behavior
+with the followin options:
 
-All `.js` files will go through ESLint. You can tweak the default configuration
-by editing the `.eslintrc.js` file created at the root of your project.
+| CLI Argument | Default value          | Description                                         |
+| ------------ | ---------------------- | --------------------------------------------------- |
+| `[...]`      | `./lib ./*.js ./.*.js` | Files and directories to lint                       |
+| `--fix`      | `false`                | If enabled, will attempt to fix the errors directly |
+
+You can tweak the default configuration by editing the `.eslintrc.js` file
+created at the root of your project.
 
 ### Testing
 
