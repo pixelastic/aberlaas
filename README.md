@@ -49,7 +49,7 @@ with the followin options:
 | `[...]`      | `./lib ./*.js ./.*.js` | Files and directories to lint                       |
 | `--fix`      | `false`                | If enabled, will attempt to fix the errors directly |
 
-You can tweak the default configuration by editing the `.eslintrc.js` file
+You can tweak the ESLint configuration by editing the `.eslintrc.js` file
 created at the root of your project.
 
 ### Testing
