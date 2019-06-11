@@ -28,10 +28,12 @@ following `scripts` are automatically added to your `package.json`.
 `aberlaas build` will build all files located in `./lib` into `./build` by
 default. You can alter the behavior with the following options:
 
-- `aberlaas build ./path/to/files` to change the default source directory
-- `--out-dir ./dist` to change the destination directory
-- `--ignore ignore-me.js` to exclude some files
-- `--watch` to listen for changes on files and rebuild
+| CLI Argument         | Default value | Description                                                                         |
+| -------------------- | ------------- | ----------------------------------------------------------------------------------- |
+| `[...]`              | `./lib`       | Files or directory to build                                                         |
+| `--out-dir`          | `./build`     | Build directory                                                                     |
+| `--ignore {pattern}` | empty         | Define patterns of files to ignore. Accepts globs, and can be passed more than once |
+| `--watch`            | `false`       | If enabled, will listen for changes on files and rebuild                            |
 
 You can extend the internal Babel by editing the `babel.config.js` created at
 the root of your project.
