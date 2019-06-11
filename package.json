@@ -41,10 +41,11 @@
     "eslint-plugin-jest": "21.15.1",
     "eslint-plugin-prettier": "2.6.0",
     "execa": "1.0.0",
-    "golgoth": "0.0.17",
+    "firost": "~0.1.0",
+    "golgoth": "~0.1.0",
     "husky": "1.1.3",
     "inquirer": "6.2.0",
-    "jest": "23.6.0",
+    "jest": "24.6.0",
     "minimist": "1.2.0",
     "prettier": "1.9.2",
     "release-it": "9.1.0"
