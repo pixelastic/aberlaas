@@ -23,26 +23,27 @@ following `scripts` are automatically added to your `package.json`.
 }
 ```
 
-### Building
+### Building (with Babel)
 
 `aberlaas build` will build all files located in `./lib` into `./build` by
 default. You can alter the behavior with the following options:
 
-| CLI Argument         | Default value | Description                                                                         |
-| -------------------- | ------------- | ----------------------------------------------------------------------------------- |
-| `[...]`              | `./lib`       | Files or directory to build                                                         |
-| `--out-dir`          | `./build`     | Build directory                                                                     |
-| `--ignore {pattern}` | empty         | Define patterns of files to ignore. Accepts globs, and can be passed more than once |
-| `--watch`            | `false`       | If enabled, will listen for changes on files and rebuild                            |
+| CLI Argument         | Default value       | Description                                                                         |
+| -------------------- | ------------------- | ----------------------------------------------------------------------------------- |
+| `[...]`              | `./lib`             | Files or directory to build                                                         |
+| `--config`           | `./babel.config.js` | Babel config file to use                                                            |
+| `--out-dir`          | `./build`           | Build directory                                                                     |
+| `--ignore {pattern}` | empty               | Define patterns of files to ignore. Accepts globs, and can be passed more than once |
+| `--watch`            | `false`             | If enabled, will listen for changes on files and rebuild                            |
 
 You can extend the internal Babel by editing the `babel.config.js` created at
 the root of your project.
 
-### Linting
+### Linting (with ESLint)
 
 `aberlaas lint` will lint all JavaScript files (through ESLint) in `./lib` and
 config files at the root of your project by default. You can alter the behavior
-with the followin options:
+with the following options:
 
 | CLI Argument | Default value          | Description                                         |
 | ------------ | ---------------------- | --------------------------------------------------- |
@@ -52,12 +53,16 @@ with the followin options:
 You can tweak the ESLint configuration by editing the `.eslintrc.js` file
 created at the root of your project.
 
-### Testing
+### Testing (with Jest)
 
-Run `aberlaas test` to run all the Jest tests in `./lib`. You can pass your own
-list of files to the command to override the default. Use the
-`--config jest.config.js` argument to specify your own config file and `--watch`
-to start live reloading of test.
+`aberlaas test` to run all the Jest tests in `./lib`. You can alter the behavior
+with the following options:
+
+| CLI Argument | Default value    | Description                                                  |
+| ------------ | ---------------- | ------------------------------------------------------------ |
+| `[...]`      | `./lib`          | Files and directories to test                                |
+| `--config`   | `jest.config.js` | Jest config file to use                                      |
+| `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
 
 ### Releasing
 
@@ -81,9 +86,9 @@ exported by the package and thus can be `import`ed in userland.
 
 `./templates` contains default configurations files copied to userland. Each
 extends the configuration exported in the previous files. Copying files to
-userland allows user to modify the files if they want to change the behavior.
+userland allows user to change the files if they want to change the behavior.
 
-`.babelrc.js`, `.eslintrc.js`, `jest.config.js` and `.huskyrc.js` are local
+`babel.config.js`, `.eslintrc.js`, `jest.config.js` and `.huskyrc.js` are local
 configuration files for `aberlaas` itself. They eat their own dog food by
 referencing the same configs as above.
 
