@@ -6,24 +6,32 @@ This package exposes the `aberlaas` script that can be used to perform the most
 common tasks on a package: `build`, `lint`, `test` and `release`. It also
 exposes the inner configuration of the tools it uses.
 
-## Usage
+## Installing aberlaas
 
-Use this by calling the `aberlaas` script to perform tasks on your code. The
-following `scripts` are automatically added to your `package.json`.
+Run `aberlaas install` to bootstrap your project with Aberlaas scripts and
+configuration.
 
-```json
-"scripts": {
-  "build": "aberlaas build",
-  "build:watch": "aberlaas build --watch",
-  "lint": "aberlaas lint",
-  "lint:fix": "aberlaas lint --fix",
-  "test": "aberlaas test",
-  "test:watch": "aberlaas test --watch",
-  "release": "aberlaas release"
-}
-```
+This will update your `package.json` to add custom scripts (located in
+`./scripts`), and also add default configuration files for all the tool used at
+the root of your project.
 
-### Building (with Babel)
+The following table lists all the scripts added:
+
+| Script                   | Description                                               |
+| ------------------------ | --------------------------------------------------------- |
+| `yarn run build`         | Build JavaScript files through Babel                      |
+| `yarn run build:watch`   | Build JavaScript files through Babel in watch mode        |
+| `yarn run test`          | Run tests using Jest                                      |
+| `yarn run test:watch`    | Run tests using Jest in watch mode                        |
+| `yarn run lint`          | Lint all supported file types                             |
+| `yarn run lint:fix`      | Attempt to fix linting issues on all supported file types |
+| `yarn run lint:js`       | Lint JavaScript files                                     |
+| `yarn run lint:js:fix`   | Attempt to fix linting issues on JavaScript files         |
+| `yarn run lint:json`     | Lint JavaScript files                                     |
+| `yarn run lint:json:fix` | Attempt to fix linting issues on JavaScript files         |
+| `yarn run release`       | Release the module on npm                                 |
+
+## Building (with Babel)
 
 `aberlaas build` will build all files located in `./lib` into `./build` by
 default. You can alter the behavior with the following options:
@@ -39,21 +47,25 @@ default. You can alter the behavior with the following options:
 You can extend the internal Babel by editing the `babel.config.js` created at
 the root of your project.
 
-### Linting (with ESLint)
+## Linting
 
-`aberlaas lint` will lint all JavaScript files (through ESLint) in `./lib` and
-config files at the root of your project by default. You can alter the behavior
-with the following options:
+`aberlaas lint` will lint all supported files. Each file type can be linted
+independently with the corresponding command (`aberlaas lint:json` will lint
+JSON files for example).
 
-| CLI Argument | Default value          | Description                                         |
-| ------------ | ---------------------- | --------------------------------------------------- |
-| `[...]`      | `./lib ./*.js ./.*.js` | Files and directories to lint                       |
-| `--fix`      | `false`                | If enabled, will attempt to fix the errors directly |
+You can have Aberlaas trying to autofix linting issues by adding the `--fix`
+argument to your command.
 
-You can tweak the ESLint configuration by editing the `.eslintrc.js` file
-created at the root of your project.
+The following table show the file types supported and the corresponding command
+and linter used.
 
-### Testing (with Jest)
+| Command              | File type     | Linter used | Fixer used                | Config files   |
+| -------------------- | ------------- | ----------- | ------------------------- | -------------- |
+| `aberlaas lint`      | All supported | N/A         | N/A                       | N/A            |
+| `aberlaas lint:js`   | JavaScript    | ESLint      | Prettier (through ESLint) | `.eslintrc.js` |
+| `aberlaas lint:json` | JSON          | jsonlint    | Prettier                  |                |
+
+## Testing (with Jest)
 
 `aberlaas test` to run all the Jest tests in `./lib`. You can alter the behavior
 with the following options:
@@ -64,7 +76,7 @@ with the following options:
 | `--config`   | `jest.config.js` | Jest config file to use                                      |
 | `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
 
-### Releasing
+## Releasing
 
 `yarn run release` aliased to `aberlaas release`.
 
