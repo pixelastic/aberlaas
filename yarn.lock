@@ -2473,9 +2473,9 @@ find-up@^2.0.0, find-up@^2.1.0:
     locate-path "^2.0.0"
 
 firost@~0.1.0:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/firost/-/firost-0.1.5.tgz#afb6f0b4a572c812859222b42a09bb03a05e5a47"
-  integrity sha512-+utH6SEIMB4tosL4ucTaoHElplnGV29WNjeMTQzAUVyaNDqi54XJ6go2LJGSL/a4MCYkPPIsM3l37phu5JZ/Sg==
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-0.1.6.tgz#021d1c61e5c83049d039cc7d2ef9627468a3345b"
+  integrity sha512-4itMxVXVyIbzjQfpTBtz/drnzs4lY1MYvf6scs3P5HHIE1GIIliwTBKSaej6HBoik+1iRJLwlXGVFESRJeL7SA==
   dependencies:
     chokidar "2.1.5"
     fs-extra "7.0.0"
@@ -4392,9 +4392,9 @@ npm-bundled@^1.0.1:
   integrity sha512-8/JCaftHwbd//k6y2rEWp6k1wxVfpFzB6t1p825+cUb7Ym2XQfhwIC5KwhrvzZRJu+LtDE585zVaS32+CGtf0g==
 
 npm-packlist@^1.1.6:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-1.4.2.tgz#a9d63153d4fb0547e6d4342e4102ba6c3bd2b2c7"
-  integrity sha512-pyJclkNoBBckB6K/XPcMp8fP60MaqSZBPQVsNY7Yyc9VP1TUnPMYwck5YaBejf0L7xYr8f4l16+IENeZ0by+yw==
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-1.4.4.tgz#866224233850ac534b63d1a6e76050092b5d2f44"
+  integrity sha512-zTLo8UcVYtDU3gdeaFu2Xu0n0EvelfHDGuqtNIn5RO7yQj4H1TqNdBc/yZjxnWA0PVB8D3Woyp0i5B43JwQ6Vw==
   dependencies:
     ignore-walk "^3.0.1"
     npm-bundled "^1.0.1"
