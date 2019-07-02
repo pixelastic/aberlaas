@@ -50,6 +50,7 @@
     "jsonlint": "1.6.3",
     "minimist": "1.2.0",
     "prettier": "~1.18.0",
-    "release-it": "~12.3.0"
+    "release-it": "~12.3.0",
+    "stylelint": "10.1.0"
   }
 }
