@@ -1661,9 +1661,9 @@ chokidar@^2.0.4:
     fsevents "^1.2.7"
 
 chownr@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.1.tgz#54726b8b8fff4df053c42187e801fb4412df1494"
-  integrity sha512-j38EvO5+LHX84jlo6h4UzmOwi0UgW61WRyPtJz4qaadK5eY3BTS5TY/S1Stc3Uk2lIM6TPevAlULiEJwie860g==
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.2.tgz#a18f1e0b269c8a6a5d3c86eb298beb14c3dd7bf6"
+  integrity sha512-GkfeAQh+QNy3wquu9oIZr6SS5x7wGdSgNQvD10X3r+AZr1Oys22HW8kAmDMvNg2+Dm0TeGaEuO8gFwdBXxwO8A==
 
 ci-info@^1.5.0:
   version "1.6.0"
@@ -2675,10 +2675,10 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-firost@~0.1.0:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/firost/-/firost-0.1.6.tgz#021d1c61e5c83049d039cc7d2ef9627468a3345b"
-  integrity sha512-4itMxVXVyIbzjQfpTBtz/drnzs4lY1MYvf6scs3P5HHIE1GIIliwTBKSaej6HBoik+1iRJLwlXGVFESRJeL7SA==
+firost@^0.x:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-0.2.0.tgz#3fe4f463e6707e2b116624de4666e95db91716f5"
+  integrity sha512-HTSA6p602hiS8TVP0i5GNhvumD+q/7Mg09RrTfL+gp0KYnpSeJsCDHba8yquFw9Yu5Y1xGD+bV4AjvICydH+Mg==
   dependencies:
     chokidar "2.1.5"
     fs-extra "7.0.0"
@@ -2944,7 +2944,7 @@ globjoin@^0.1.4:
   resolved "https://registry.yarnpkg.com/globjoin/-/globjoin-0.1.4.tgz#2f4494ac8919e3767c5cbb691e9f463324285d43"
   integrity sha1-L0SUrIkZ43Z8XLtpHp9GMyQoXUM=
 
-golgoth@~0.1.0:
+golgoth@^0.x, golgoth@~0.1.0:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-0.1.4.tgz#c38c13f8cc004c7e22f23474412daa5f8b40b16e"
   integrity sha512-EADI93hDrmo5xxmGPCRT41K6Em9UAATJmN8eJecwFudB8CMKspDIA+JqJNwIiwalnN0+xZ4uxe8FQUmsvSQskA==
