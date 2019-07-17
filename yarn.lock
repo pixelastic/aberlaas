@@ -2944,7 +2944,7 @@ globjoin@^0.1.4:
   resolved "https://registry.yarnpkg.com/globjoin/-/globjoin-0.1.4.tgz#2f4494ac8919e3767c5cbb691e9f463324285d43"
   integrity sha1-L0SUrIkZ43Z8XLtpHp9GMyQoXUM=
 
-"golgoth@latest <1.0", golgoth@~0.1.0:
+golgoth@0.1.4, golgoth@~0.1.0:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-0.1.4.tgz#c38c13f8cc004c7e22f23474412daa5f8b40b16e"
   integrity sha512-EADI93hDrmo5xxmGPCRT41K6Em9UAATJmN8eJecwFudB8CMKspDIA+JqJNwIiwalnN0+xZ4uxe8FQUmsvSQskA==
