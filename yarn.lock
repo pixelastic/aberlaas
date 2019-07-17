@@ -2675,10 +2675,10 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-"firost@latest <1.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/firost/-/firost-0.3.0.tgz#9e379941d1214d0c7072c526ea344018dd1155d8"
-  integrity sha512-ipSPDSQ01kydcD22lAHnif3LCHHK4OmdsFKZponhpVZAvXAbYyXLsKKoO1HbiPIGWISKbVvQpyO0YfyoP9dNkg==
+firost@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-0.5.0.tgz#5b7081ea637db47d17203c9caa05feaf52bec469"
+  integrity sha512-l2F3clMwT34lyU7krHgu722/irXlhb0XtRBBkHBnvwNMqGI5x0CPh4NJDFw0PLLQLXj363xQAY+fH6hCKrRXgA==
   dependencies:
     chokidar "2.1.5"
     fs-extra "7.0.0"
