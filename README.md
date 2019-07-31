@@ -25,6 +25,8 @@ The following table lists all the scripts added:
 | `yarn run test:watch`    | Run tests using Jest in watch mode                        |
 | `yarn run lint`          | Lint all supported file types                             |
 | `yarn run lint:fix`      | Attempt to fix linting issues on all supported file types |
+| `yarn run lint:css`      | Lint CSS files                                            |
+| `yarn run lint:css:fix`  | Attempt to fix linting issues on CSS files                |
 | `yarn run lint:js`       | Lint JavaScript files                                     |
 | `yarn run lint:js:fix`   | Attempt to fix linting issues on JavaScript files         |
 | `yarn run lint:json`     | Lint JavaScript files                                     |
@@ -59,11 +61,15 @@ argument to your command.
 The following table show the file types supported and the corresponding command
 and linter used.
 
-| Command              | File type     | Linter used | Fixer used                | Config files   |
-| -------------------- | ------------- | ----------- | ------------------------- | -------------- |
-| `aberlaas lint`      | All supported | N/A         | N/A                       | N/A            |
-| `aberlaas lint:js`   | JavaScript    | ESLint      | Prettier (through ESLint) | `.eslintrc.js` |
-| `aberlaas lint:json` | JSON          | jsonlint    | Prettier                  |                |
+| Command              | File type     | Linter used | Fixer used                | Config files                                                                                         |
+| -------------------- | ------------- | ----------- | ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `aberlaas lint`      | All supported | N/A         | N/A                       | Same as the underlying scripts (see below). Can be overwritten with `--config.js` and `--config.css` |
+| `aberlaas lint:js`   | JavaScript    | ESLint      | Prettier (through ESLint) | `.eslintrc.js` (or defined with `--config`)                                                          |
+| `aberlaas lint:css`  | CSS           | Stylelint   | Prettier                  | `.stylelintrc.js` (or defined with `--config`)                                                       |
+| `aberlaas lint:json` | JSON          | jsonlint    | Prettier                  |                                                                                                      |
+
+You can change the config file used for each lint function by passing the
+`--config` option to the
 
 ## Testing (with Jest)
 
@@ -100,12 +106,14 @@ exported by the package and thus can be `import`ed in userland.
 extends the configuration exported in the previous files. Copying files to
 userland allows user to change the files if they want to change the behavior.
 
-`babel.config.js`, `.eslintrc.js`, `jest.config.js` and `.huskyrc.js` are local
-configuration files for `aberlaas` itself. They eat their own dog food by
-referencing the same configs as above.
+`babel.config.js`, `.eslintrc.js`, `.stylelintrc.js`, `jest.config.js` and
+`.huskyrc.js` are local configuration files for `aberlaas` itself. They eat
+their own dog food by referencing the same configs as above.
 
-## Name
+## Where does the name Aberlaas come from?
 
 Aberlaas is the base camp from which all great expedition start in the _La Horde
 du Contrevent_ book. I felt it's a great name for a bootstrapping kit for
 modules.
+
+For your convenience, `aberlass` and `aberlas` are added as aliases by default.

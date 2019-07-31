@@ -3,4 +3,4 @@ set -e
 
 yarn run build
 
-./bin/aberlaas test --watch "$@"
+./bin/aberlaas test "$@" --watch
