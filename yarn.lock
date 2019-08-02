@@ -2689,15 +2689,15 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-firost@0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/firost/-/firost-0.7.1.tgz#3f32dbc1e0919e2e5645e6f3503c06ab6c9711a1"
-  integrity sha512-y24Tk78I3Dl5P4K9fPgaTNqx1/MfAI1X7vQUh9JGY3hw6wdtHHxlK/s59PipxQBtapbl08Gd8jvStjgdMdQsbA==
+firost@0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-0.8.2.tgz#34c67513388ab9db7b34f40f4073e9cb01e7b1d0"
+  integrity sha512-MPK8rjp2AMF6CXYbpdKywMELg+S/yvE32DxfFO1Bhjs4G7h8l/TrR34p58drXnePOLlvlN4lTImtOninbwlBmw==
   dependencies:
     chokidar "3.0.2"
     fs-extra "7.0.0"
     globby "8.0.2"
-    golgoth "~0.1.0"
+    golgoth "0.3.0"
     inquirer "6.5.0"
     is-glob "4.0.0"
     json-stable-stringify "1.0.1"
@@ -2989,13 +2989,14 @@ golgoth@0.3.0:
     query-string "6.2.0"
     time-span "3.1.0"
 
-golgoth@~0.1.0:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-0.1.4.tgz#c38c13f8cc004c7e22f23474412daa5f8b40b16e"
-  integrity sha512-EADI93hDrmo5xxmGPCRT41K6Em9UAATJmN8eJecwFudB8CMKspDIA+JqJNwIiwalnN0+xZ4uxe8FQUmsvSQskA==
+golgoth@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-0.3.1.tgz#97c30868909f40c6c1d93c74643dc63dafd4fc19"
+  integrity sha512-RwFFuZqcxkXWoNg7s6R5ImtKEuKoOiUTpMpYOezedWGt6bjXnNVHN2fDiGwrCsegNtpiNcsbII7C3jA5Qsg/Pg==
   dependencies:
     chalk "2.4.1"
     dayjs "1.7.7"
+    flat "4.1.0"
     got "9.3.2"
     lodash "4.17.11"
     ora "3.0.0"
@@ -3004,6 +3005,7 @@ golgoth@~0.1.0:
     p-map-series "1.0.0"
     pify "4.0.1"
     query-string "6.2.0"
+    time-span "3.1.0"
 
 gonzales-pe@^4.2.3:
   version "4.2.4"
