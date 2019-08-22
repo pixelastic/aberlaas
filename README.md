@@ -82,6 +82,9 @@ with the following options:
 | `--config`   | `jest.config.js` | Jest config file to use                                      |
 | `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
 
+Jest is loaded with [jest-extended][1] allowing you to use new matchers like
+`.toBeString()`, `.toStartWith()`, etc.
+
 ## Releasing
 
 `yarn run release` aliased to `aberlaas release`.
@@ -117,3 +120,5 @@ du Contrevent_ book. I felt it's a great name for a bootstrapping kit for
 modules.
 
 For your convenience, `aberlass` and `aberlas` are added as aliases by default.
+
+[1]: https://github.com/jest-community/jest-extended
