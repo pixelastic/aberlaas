@@ -52,7 +52,7 @@ the root of your project.
 ## Linting
 
 `aberlaas lint` will lint all supported files. Each file type can be linted
-independently with the corresponding command (`aberlaas lint:json` will lint
+independently with the corresponding argument (`aberlaas lint --json` will lint
 JSON files for example).
 
 You can have Aberlaas trying to autofix linting issues by adding the `--fix`
@@ -61,15 +61,13 @@ argument to your command.
 The following table show the file types supported and the corresponding command
 and linter used.
 
-| Command              | File type     | Linter used | Fixer used                | Config files                                                                                         |
-| -------------------- | ------------- | ----------- | ------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `aberlaas lint`      | All supported | N/A         | N/A                       | Same as the underlying scripts (see below). Can be overwritten with `--config.js` and `--config.css` |
-| `aberlaas lint:js`   | JavaScript    | ESLint      | Prettier (through ESLint) | `.eslintrc.js` (or defined with `--config`)                                                          |
-| `aberlaas lint:css`  | CSS           | Stylelint   | Prettier                  | `.stylelintrc.js` (or defined with `--config`)                                                       |
-| `aberlaas lint:json` | JSON          | jsonlint    | Prettier                  |                                                                                                      |
-
-You can change the config file used for each lint function by passing the
-`--config` option to the
+| Command                | File type     | Linter used | Fixer used                | Config files                        |
+| ---------------------- | ------------- | ----------- | ------------------------- | ----------------------------------- |
+| `aberlaas lint`        | All supported | N/A         | N/A                       | See individual file type            |
+| `aberlaas lint --js`   | JavaScript    | ESLint      | Prettier (through ESLint) | `.eslintrc.js` or `--config.js`     |
+| `aberlaas lint --css`  | CSS           | Stylelint   | Prettier                  | `.stylelintrc.js` or `--config.css` |
+| `aberlaas lint --json` | JSON          | jsonlint    | Prettier                  |                                     |
+| `aberlaas lint --yml`  | YAML          | yaml-lint   | Prettier                  |                                     |
 
 ## Testing (with Jest)
 
