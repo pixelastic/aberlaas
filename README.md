@@ -35,7 +35,7 @@ default. You can alter the behavior with the following options:
 
 | CLI Argument         | Default value       | Description                                                                         |
 | -------------------- | ------------------- | ----------------------------------------------------------------------------------- |
-| `[...]`              | `./lib`             | Files or directory to build                       |
+| `[...]`              | `./lib`             | Files or directory to build                                                         |
 | `--config`           | `./babel.config.js` | Babel config file to use                                                            |
 | `--out-dir`          | `./build`           | Build directory                                                                     |
 | `--ignore {pattern}` | empty               | Define patterns of files to ignore. Accepts globs, and can be passed more than once |
@@ -69,12 +69,12 @@ and linter used.
 `aberlaas test` to run all the Jest tests in `./lib`. You can alter the behavior
 with the following options:
 
-| CLI Argument | Default value    | Description                                                      |
-| ------------ | ---------------- | ---------------------------------------------------------------- |
-| `[...]`      | `./lib`          | Files and directories to test.  |
-| `--config`   | `jest.config.js` | Jest config file to use                                          |
-| `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests     |
-| `--failFast` | `false`          | If enabled, will stop as soon as one test fails                  |
+| CLI Argument | Default value    | Description                                                  |
+| ------------ | ---------------- | ------------------------------------------------------------ |
+| `[...]`      | `./lib`          | Files and directories to test.                               |
+| `--config`   | `jest.config.js` | Jest config file to use                                      |
+| `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
+| `--failFast` | `false`          | If enabled, will stop as soon as one test fails              |
 
 Note that you can also pass any other command-line flag and they will be passed
 directly to Jest under the hood.
