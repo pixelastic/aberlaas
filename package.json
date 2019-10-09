@@ -19,8 +19,6 @@
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
     "lint": "./scripts/lint",
-    "lint:js": "./scripts/lint-js",
-    "lint:json": "./scripts/lint-json",
     "lint:fix": "./scripts/lint-fix",
     "test": "./scripts/test",
     "test:watch": "./scripts/test-watch",
