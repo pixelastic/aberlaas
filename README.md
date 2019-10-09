@@ -8,8 +8,8 @@ exposes the inner configuration of the tools it uses.
 
 ## Installing aberlaas
 
-Run `aberlaas install` to bootstrap your project with Aberlaas scripts and
-configuration.
+Run `yarn add --dev aberlaas && yarn run aberlaas init` to bootstrap your
+project with Aberlaas scripts and configuration.
 
 This will update your `package.json` to add custom scripts (located in
 `./scripts`), and also add default configuration files for all the tool used at
@@ -17,21 +17,16 @@ the root of your project.
 
 The following table lists all the scripts added:
 
-| Script                   | Description                                               |
-| ------------------------ | --------------------------------------------------------- |
-| `yarn run build`         | Build JavaScript files through Babel                      |
-| `yarn run build:watch`   | Build JavaScript files through Babel in watch mode        |
-| `yarn run test`          | Run tests using Jest                                      |
-| `yarn run test:watch`    | Run tests using Jest in watch mode                        |
-| `yarn run lint`          | Lint all supported file types                             |
-| `yarn run lint:fix`      | Attempt to fix linting issues on all supported file types |
-| `yarn run lint:css`      | Lint CSS files                                            |
-| `yarn run lint:css:fix`  | Attempt to fix linting issues on CSS files                |
-| `yarn run lint:js`       | Lint JavaScript files                                     |
-| `yarn run lint:js:fix`   | Attempt to fix linting issues on JavaScript files         |
-| `yarn run lint:json`     | Lint JavaScript files                                     |
-| `yarn run lint:json:fix` | Attempt to fix linting issues on JavaScript files         |
-| `yarn run release`       | Release the module on npm                                 |
+| Script                 | Description                                               |
+| ---------------------- | --------------------------------------------------------- |
+| `yarn run precommit`   | Run before any commit (through Husky)                     |
+| `yarn run build`       | Build JavaScript files through Babel                      |
+| `yarn run build:watch` | Build JavaScript files through Babel in watch mode        |
+| `yarn run test`        | Run tests using Jest                                      |
+| `yarn run test:watch`  | Run tests using Jest in watch mode                        |
+| `yarn run lint`        | Lint all supported file types                             |
+| `yarn run lint:fix`    | Attempt to fix linting issues on all supported file types |
+| `yarn run release`     | Release the module on npm                                 |
 
 ## Building (with Babel)
 
@@ -79,16 +74,18 @@ with the following options:
 | `[...]`      | `./lib`          | Files and directories to test                                |
 | `--config`   | `jest.config.js` | Jest config file to use                                      |
 | `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
+| `--failFast` | `false`          | If enabled, will stop as soon as one test fails              |
+
+Note that you can also pass any other command-line flag and they will be passed
+directly to Jest under the hood.
 
 Jest is loaded with [jest-extended][1] allowing you to use new matchers like
 `.toBeString()`, `.toStartWith()`, etc.
 
 ## Releasing
 
-`yarn run release` aliased to `aberlaas release`.
-
-This will build the package and release it to npm. It will update the version in
-`package.json` as well as creating the related git tag.
+`aberlaas release` will build the package and release it to npm. It will update
+the version in `package.json` as well as creating the related git tag.
 
 When called without arguments, it will prompt you for the next version to
 package. If called with an argument, this will be used as the next version
