@@ -2,5 +2,4 @@
 set -e
 
 yarn run test
-
 ./bin/aberlaas release "$@" --no-build --no-test
