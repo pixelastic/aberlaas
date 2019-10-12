@@ -1,3 +1,10 @@
+## [0.6.6](https://github.com/pixelastic/aberlaas/compare/0.6.5...0.6.6) (2019-10-12)
+
+
+### Bug Fixes
+
+* **husky:** Correctly name the template file ([97240a8](https://github.com/pixelastic/aberlaas/commit/97240a882b91ecd52ad216c56d5e738d45f57d9a))
+
 ## [0.6.5](https://github.com/pixelastic/aberlaas/compare/0.6.4...0.6.5) (2019-10-12)
 
 
