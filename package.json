@@ -18,11 +18,12 @@
   "scripts": {
     "build": "./scripts/build",
     "build:watch": "./scripts/build-watch",
+    "husky:precommit": "./scripts/husky-precommit",
     "lint": "./scripts/lint",
     "lint:fix": "./scripts/lint-fix",
+    "release": "./scripts/release",
     "test": "./scripts/test",
-    "test:watch": "./scripts/test-watch",
-    "release": "./scripts/release"
+    "test:watch": "./scripts/test-watch"
   },
   "dependencies": {
     "@babel/cli": "^7.6.0",
