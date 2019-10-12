@@ -17,16 +17,16 @@ the root of your project.
 
 The following table lists all the scripts added:
 
-| Script                 | Description                                               |
-| ---------------------- | --------------------------------------------------------- |
-| `yarn run precommit`   | Run before any commit (through Husky)                     |
-| `yarn run build`       | Build JavaScript files through Babel                      |
-| `yarn run build:watch` | Build JavaScript files through Babel in watch mode        |
-| `yarn run test`        | Run tests using Jest                                      |
-| `yarn run test:watch`  | Run tests using Jest in watch mode                        |
-| `yarn run lint`        | Lint all supported file types                             |
-| `yarn run lint:fix`    | Attempt to fix linting issues on all supported file types |
-| `yarn run release`     | Release the module on npm                                 |
+| Script                     | Description                                               |
+| -------------------------- | --------------------------------------------------------- |
+| `yarn run husky:precommit` | Run before any commit (through Husky)                     |
+| `yarn run build`           | Build JavaScript files through Babel                      |
+| `yarn run build:watch`     | Build JavaScript files through Babel in watch mode        |
+| `yarn run test`            | Run tests using Jest                                      |
+| `yarn run test:watch`      | Run tests using Jest in watch mode                        |
+| `yarn run lint`            | Lint all supported file types                             |
+| `yarn run lint:fix`        | Attempt to fix linting issues on all supported file types |
+| `yarn run release`         | Release the module on npm                                 |
 
 ## Building (with Babel)
 
