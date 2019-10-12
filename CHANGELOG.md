@@ -1,3 +1,10 @@
+## [0.6.5](https://github.com/pixelastic/aberlaas/compare/0.6.4...0.6.5) (2019-10-12)
+
+
+### Bug Fixes
+
+* **husky:** Rename "precommit" to "husky:precommit" script ([326db9c](https://github.com/pixelastic/aberlaas/commit/326db9c34804915405281bbab8dd3107904d202f))
+
 ## [0.6.4](https://github.com/pixelastic/aberlaas/compare/0.6.3...0.6.4) (2019-10-10)
 
 
