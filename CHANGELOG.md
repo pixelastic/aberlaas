@@ -1,3 +1,10 @@
+## [0.6.7](https://github.com/pixelastic/aberlaas/compare/0.6.6...0.6.7) (2019-10-17)
+
+
+### Features
+
+* **renovate:** Default to silent merging on renovate ([68d51a4](https://github.com/pixelastic/aberlaas/commit/68d51a4a93b29066ec4ac7de49d12e3f71a795d8))
+
 ## [0.6.6](https://github.com/pixelastic/aberlaas/compare/0.6.5...0.6.6) (2019-10-12)
 
 
