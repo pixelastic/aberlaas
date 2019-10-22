@@ -1,3 +1,10 @@
+## [0.6.9](https://github.com/pixelastic/aberlaas/compare/0.6.8...0.6.9) (2019-10-22)
+
+
+### Bug Fixes
+
+* **lint:** Revert husky logic. Test all files at once ([a77279f](https://github.com/pixelastic/aberlaas/commit/a77279f523a0dacc841e463ab075751e0d2b5831))
+
 ## [0.6.8](https://github.com/pixelastic/aberlaas/compare/0.6.7...0.6.8) (2019-10-22)
 
 
