@@ -1,3 +1,15 @@
+## [0.6.8](https://github.com/pixelastic/aberlaas/compare/0.6.7...0.6.8) (2019-10-22)
+
+
+### Bug Fixes
+
+* **lint:** Fixing of files displays the file that errored ([e9367b4](https://github.com/pixelastic/aberlaas/commit/e9367b4646c8ef2b77d0da82bfdafe5cfa640d9c))
+
+
+### Features
+
+* **lint:** Use single quotes in CSS ([f0f6dd4](https://github.com/pixelastic/aberlaas/commit/f0f6dd413afb46642a1a8a23f3dc5c1066133c53))
+
 ## [0.6.7](https://github.com/pixelastic/aberlaas/compare/0.6.6...0.6.7) (2019-10-17)
 
 
