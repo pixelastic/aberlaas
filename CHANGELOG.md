@@ -1,3 +1,10 @@
+## [0.6.10](https://github.com/pixelastic/aberlaas/compare/0.6.9...0.6.10) (2019-10-30)
+
+
+### Bug Fixes
+
+* **lint:** Prevent shadowing variables in JS ([76fc92b](https://github.com/pixelastic/aberlaas/commit/76fc92be87316395c0aac3557352eda577aef2bc))
+
 ## [0.6.9](https://github.com/pixelastic/aberlaas/compare/0.6.8...0.6.9) (2019-10-22)
 
 
