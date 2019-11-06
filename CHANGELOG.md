@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/pixelastic/aberlaas/compare/0.6.10...0.7.0) (2019-11-06)
+
+
+### Bug Fixes
+
+* **lint:** Correctly exit when lint fixing still has errors ([e312973](https://github.com/pixelastic/aberlaas/commit/e312973669ab22220a49b7d828e4eb998f2185b7))
+
 ## [0.6.10](https://github.com/pixelastic/aberlaas/compare/0.6.9...0.6.10) (2019-10-30)
 
 
