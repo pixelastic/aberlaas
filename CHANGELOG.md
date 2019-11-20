@@ -1,3 +1,10 @@
+## [0.7.2](https://github.com/pixelastic/aberlaas/compare/0.7.1...0.7.2) (2019-11-20)
+
+
+### Features
+
+* **release:** Attempt to build before releasing ([f66f054](https://github.com/pixelastic/aberlaas/commit/f66f05495aec1474f17ff3e6b9bb7e6efc90f1a6))
+
 ## [0.7.1](https://github.com/pixelastic/aberlaas/compare/0.7.0...0.7.1) (2019-11-20)
 
 
