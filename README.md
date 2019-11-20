@@ -80,7 +80,8 @@ Note that you can also pass any other command-line flag and they will be passed
 directly to Jest under the hood.
 
 Jest is loaded with [jest-extended][1] allowing you to use new matchers like
-`.toBeString()`, `.toStartWith()`, etc.
+`.toBeString()`, `.toStartWith()`, etc. A new global, `testName` is also exposed
+and contains the name of the current test being run.
 
 ## Releasing
 
