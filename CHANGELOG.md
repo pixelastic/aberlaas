@@ -1,3 +1,12 @@
+## [0.7.1](https://github.com/pixelastic/aberlaas/compare/0.7.0...0.7.1) (2019-11-20)
+
+
+### Features
+
+* **renovate:** Try to update deps as soon as possible ([4cacb96](https://github.com/pixelastic/aberlaas/commit/4cacb9618cebde02e531eb016de1580a0b01ad83))
+* **test:** Expose `testName` in each Jest test ([0284b61](https://github.com/pixelastic/aberlaas/commit/0284b61b41623757fd2f5df997227a5280c2b17c))
+* **test:** Use lodash instead of lodash-es in tests ([18faa4c](https://github.com/pixelastic/aberlaas/commit/18faa4cf5e96abeea9d22feff795a3e133304c83))
+
 # [0.7.0](https://github.com/pixelastic/aberlaas/compare/0.6.10...0.7.0) (2019-11-06)
 
 
