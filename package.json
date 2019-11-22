@@ -42,7 +42,7 @@
     "eslint-plugin-jsdoc": "^15.9.1",
     "eslint-plugin-prettier": "^3.1.0",
     "execa": "2.0.5",
-    "firost": "^0.13.1",
+    "firost": "^0.16.0",
     "golgoth": "0.5.1",
     "husky": "3.0.8",
     "jasmine-fail-fast": "2.0.0",
