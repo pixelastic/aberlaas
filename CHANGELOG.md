@@ -1,3 +1,11 @@
+## [0.7.3](https://github.com/pixelastic/aberlaas/compare/0.7.2...0.7.3) (2019-11-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency golgoth to v0.5.1 ([7f59d6d](https://github.com/pixelastic/aberlaas/commit/7f59d6d9627ddafa306bd2c81b74701b6da08647))
+* **deps:** update dependency lint-staged to v9.4.3 ([#30](https://github.com/pixelastic/aberlaas/issues/30)) ([8879c11](https://github.com/pixelastic/aberlaas/commit/8879c119eda5cd9e471ada4640e1e9adda42ca2d))
+
 ## [0.7.2](https://github.com/pixelastic/aberlaas/compare/0.7.1...0.7.2) (2019-11-20)
 
 
