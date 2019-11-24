@@ -1,3 +1,16 @@
+# [0.8.0](https://github.com/pixelastic/aberlaas/compare/0.7.3...0.8.0) (2019-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency execa to v2.1.0 ([538f594](https://github.com/pixelastic/aberlaas/commit/538f5942909812f40f9bc618767a96157950c763))
+* **deps:** update dependency husky to v3.1.0 ([fc295fe](https://github.com/pixelastic/aberlaas/commit/fc295fe430a7ba138203ebff275ccbd9d48e7dca))
+
+
+### Features
+
+* **lint:** Add linting of circleci config ([1357222](https://github.com/pixelastic/aberlaas/commit/13572220acc6e2c54692f599d97b37eca15ef7df))
+
 ## [0.7.3](https://github.com/pixelastic/aberlaas/compare/0.7.2...0.7.3) (2019-11-22)
 
 
