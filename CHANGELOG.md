@@ -1,3 +1,10 @@
+## [0.8.1](https://github.com/pixelastic/aberlaas/compare/0.8.0...0.8.1) (2019-11-24)
+
+
+### Features
+
+* **lint:** Always validate circleci on itself ([3a3617f](https://github.com/pixelastic/aberlaas/commit/3a3617f3758baca83515178ac0a07169bcaea010))
+
 # [0.8.0](https://github.com/pixelastic/aberlaas/compare/0.7.3...0.8.0) (2019-11-24)
 
 
