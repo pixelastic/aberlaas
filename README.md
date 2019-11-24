@@ -56,13 +56,14 @@ argument to your command.
 The following table show the file types supported and the corresponding command
 and linter used.
 
-| Command                | File type     | Linter used | Fixer used                | Config files                        |
-| ---------------------- | ------------- | ----------- | ------------------------- | ----------------------------------- |
-| `aberlaas lint`        | All supported | N/A         | N/A                       | See individual file type            |
-| `aberlaas lint --js`   | JavaScript    | ESLint      | Prettier (through ESLint) | `.eslintrc.js` or `--config.js`     |
-| `aberlaas lint --css`  | CSS           | Stylelint   | Prettier                  | `.stylelintrc.js` or `--config.css` |
-| `aberlaas lint --json` | JSON          | jsonlint    | Prettier                  |                                     |
-| `aberlaas lint --yml`  | YAML          | yaml-lint   | Prettier                  |                                     |
+| Command                    | File type              | Linter used                                     | Fixer used                | Config files                        |
+| -------------------------- | ---------------------- | ----------------------------------------------- | ------------------------- | ----------------------------------- |
+| `aberlaas lint`            | All supported          | N/A                                             | N/A                       | See individual file type            |
+| `aberlaas lint --js`       | JavaScript             | ESLint                                          | Prettier (through ESLint) | `.eslintrc.js` or `--config.js`     |
+| `aberlaas lint --css`      | CSS                    | Stylelint                                       | Prettier                  | `.stylelintrc.js` or `--config.css` |
+| `aberlaas lint --json`     | JSON                   | jsonlint                                        | Prettier                  |                                     |
+| `aberlaas lint --yml`      | YAML                   | yaml-lint                                       | Prettier                  |                                     |
+| `aberlaas lint --circleci` | `.circleci/config.yml` | yaml-lint, `circleci` (if available in `$PATH`) | Prettier                  |                                     |
 
 ## Testing (with Jest)
 
@@ -82,6 +83,25 @@ directly to Jest under the hood.
 Jest is loaded with [jest-extended][1] allowing you to use new matchers like
 `.toBeString()`, `.toStartWith()`, etc. A new global, `testName` is also exposed
 and contains the name of the current test being run.
+
+## Precommit hooks
+
+`aberlaas` uses `husky` and `lint-staged` to make sure all commited code follows
+your coding standard.
+
+All `css`, `js`, `json` and `yml` files will be checked for parsing errors
+(using `aberlaas lint` internally), and if errors are found it will attempt to
+automatically fix them. If errors persist, it will prevent the commit and let
+you know which file contains errors so you can fix them before commiting again.
+
+Whenever you commit a `.js` file that has a test attached (or a test file
+directly), `aberlaas test` will be run on those files. If the tests don't pass,
+your commit will be rejected.
+
+Those two measures ensure that you'll never "break the build", by committing
+invalid files or code that does not pass the test. If you want to ignore this
+behavior, you can always add the `-n` option to your `git commit` command to
+skip the hooks.
 
 ## Releasing
 
