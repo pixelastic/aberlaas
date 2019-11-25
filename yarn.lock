@@ -3676,10 +3676,10 @@ globjoin@^0.1.4:
   resolved "https://registry.yarnpkg.com/globjoin/-/globjoin-0.1.4.tgz#2f4494ac8919e3767c5cbb691e9f463324285d43"
   integrity sha1-L0SUrIkZ43Z8XLtpHp9GMyQoXUM=
 
-golgoth@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-0.5.1.tgz#5eba3efe36e194b8846d51f6a4a0cfaf366ad708"
-  integrity sha512-Y8GhgQE+FleE21Nz+xjgEoO14ZCwcMfUHu7wASJz6QTvA2JzjE9euOYfVWrGKsby39y0u6N8BaurKTUT9ddREA==
+golgoth@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-0.6.0.tgz#e0bf779719e8c0055f016abe0cd7a3526d1906ba"
+  integrity sha512-9vFuY+SsJhCwPfEGXzcJmh+0OyWhtNT22kgNGLLCqEJ34WYtpCe1ZFBo4kDDwmIBfl831oOGevQQguj4X0RHZA==
   dependencies:
     chalk "3.0.0"
     dayjs "1.8.17"
