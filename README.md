@@ -81,18 +81,33 @@ Note that you can also pass any other command-line flag and they will be passed
 directly to Jest under the hood.
 
 Jest is loaded with [jest-extended][1] allowing you to use new matchers like
-`.toBeString()`, `.toStartWith()`, etc. A new global, `testName` is also exposed
-and contains the name of the current test being run.
+`.toBeString()`, `.toStartWith()`, etc.
+
+## New global variables
+
+`testName` is available in all tests and contains the name of the current
+`it`/`test` block.
+
+`captureOutput` allows to swallow any `stdout`/`stderr` output for later
+inspection. Output is stripped of any trailing newlines and ANSI characters.
+
+```javascript
+const actual = await captureOutput(async () => {
+  console.log('foo');
+});
+// actual.stdout = ['foo']
+```
+
 
 ## Precommit hooks
 
-`aberlaas` uses `husky` and `lint-staged` to make sure all commited code follows
+`aberlaas` uses `husky` and `lint-staged` to make sure all committed code follows
 your coding standard.
 
 All `css`, `js`, `json` and `yml` files will be checked for parsing errors
 (using `aberlaas lint` internally), and if errors are found it will attempt to
 automatically fix them. If errors persist, it will prevent the commit and let
-you know which file contains errors so you can fix them before commiting again.
+you know which file contains errors so you can fix them before committing again.
 
 Whenever you commit a `.js` file that has a test attached (or a test file
 directly), `aberlaas test` will be run on those files. If the tests don't pass,
