@@ -83,7 +83,7 @@ directly to Jest under the hood.
 Jest is loaded with [jest-extended][1] allowing you to use new matchers like
 `.toBeString()`, `.toStartWith()`, etc.
 
-## New global variables
+### New global variables
 
 `testName` is available in all tests and contains the name of the current
 `it`/`test` block.
@@ -97,7 +97,6 @@ const actual = await captureOutput(async () => {
 });
 // actual.stdout = ['foo']
 ```
-
 
 ## Precommit hooks
 
@@ -134,6 +133,15 @@ anything to GitHub or npm.
 Note that by default it will also build and test everything before pushing and
 stopping if any of those steps fails. You can disable those checks with the
 `--no-build` and `--no-test` flags.
+
+## Continuous Integration
+
+`aberlaas ci` is triggered by CI Servers (currently only CircleCI is supported),
+and won't do anything when run locally.
+
+When on a CI server it will first display the current node and yarn version, and
+then run `build`, `test` and `lint` scripts in that order. It will fail whenever
+one of them fails, or succeed if they all succeed.
 
 ## File structure
 
