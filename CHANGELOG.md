@@ -1,3 +1,10 @@
+## [0.9.1](https://github.com/pixelastic/aberlaas/compare/0.9.0...0.9.1) (2019-11-26)
+
+
+### Features
+
+* **ci:** Add CircleCI config to init script ([5ba7fd7](https://github.com/pixelastic/aberlaas/commit/5ba7fd7a045a6cfc5e7d67bd392750df58456ad5))
+
 # [0.9.0](https://github.com/pixelastic/aberlaas/compare/0.8.1...0.9.0) (2019-11-26)
 
 
