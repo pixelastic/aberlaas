@@ -3,6 +3,12 @@
 # scripts
 set -e
 
+# When SKIP_BUILD is set to true, we skip the whole script
+# This is used in ./scripts/ci to avoid running the build script over and over
+# again for each script invoked by the CI
+[ -n "$SKIP_BUILD" ] && exit 0
+
+
 mkdir -p ./build
 
 babel \
@@ -11,4 +17,3 @@ babel \
   --ignore "lib/**/__tests__" \
   --ignore "lib/**/test-helper.js" \
   --out-dir ./build
-
