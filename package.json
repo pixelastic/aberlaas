@@ -43,7 +43,7 @@
     "eslint-plugin-jest": "22.21.0",
     "eslint-plugin-jsdoc": "15.12.2",
     "eslint-plugin-prettier": "3.1.1",
-    "execa": "2.1.0",
+    "execa": "3.4.0",
     "firost": "0.17.0",
     "golgoth": "0.6.0",
     "husky": "3.1.0",
