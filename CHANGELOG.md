@@ -1,3 +1,16 @@
+# [0.10.0](https://github.com/pixelastic/aberlaas/compare/0.9.3...0.10.0) (2019-11-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency firost to v0.19.0 ([057c3e5](https://github.com/pixelastic/aberlaas/commit/057c3e50cec76cf06daefbfdcea9a6ddbcf78170))
+
+
+### Features
+
+* **release:** Git pull before release ([25f5605](https://github.com/pixelastic/aberlaas/commit/25f56053f239de33c786fb66b7b3bd747b428d40))
+* **release:** Update meta release sript ([40e94f0](https://github.com/pixelastic/aberlaas/commit/40e94f0c3d6ce67796588fc82ef551ca1c212913))
+
 ## [0.9.3](https://github.com/pixelastic/aberlaas/compare/0.9.2...0.9.3) (2019-11-27)
 
 
