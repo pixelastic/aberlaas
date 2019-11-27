@@ -1,3 +1,18 @@
+## [0.9.2](https://github.com/pixelastic/aberlaas/compare/0.9.1...0.9.2) (2019-11-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency eslint-plugin-jest to v23.0.5 ([e900e2d](https://github.com/pixelastic/aberlaas/commit/e900e2debd3f45827f05c7a2300ea6dc2eaf1178))
+* **deps:** update dependency lint-staged to v9.5.0 ([2b34d39](https://github.com/pixelastic/aberlaas/commit/2b34d39a0f39d88a3191adb7daef00e33930351a))
+* **init:** Do not pin engine in package.json ([e8afa8c](https://github.com/pixelastic/aberlaas/commit/e8afa8c7155ec69ed76a67291801a98881e316b0))
+
+
+### Features
+
+* **init:** Add progress spinner ([70650b5](https://github.com/pixelastic/aberlaas/commit/70650b56ebde5bbad287753d20eafa9c4420ea72))
+* **release:** Pull remote before releasing ([61fa9d3](https://github.com/pixelastic/aberlaas/commit/61fa9d3c76fcfe0e9e70c369630f9aadbf941b52))
+
 ## [0.9.1](https://github.com/pixelastic/aberlaas/compare/0.9.0...0.9.1) (2019-11-26)
 
 
