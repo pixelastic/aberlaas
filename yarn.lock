@@ -3198,17 +3198,24 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
+<<<<<<< HEAD
 firost@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/firost/-/firost-0.17.1.tgz#e6bdffaa762f827f6d05f7dc9ff02a634fe3cc3a"
   integrity sha512-gIldDeMceKOGRvMCG9QSPqTDkBSWAxFpVO9cJ0DKnXdEMYKvuZg/4J6OOSlkIAmmrauosDa1EfxvXcEbj4Y+wQ==
+=======
+firost@0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-0.18.0.tgz#a61b2252f19c4142bd07a82a1f639c48c48ba1fd"
+  integrity sha512-5tbEGrY0qqgDdgA/cqVWKAQnnRZXy8fCvfLhxBRWI7wacY8ajiKVMGcvfMn40+azje6npXB5OeTLftUxEn9xGg==
+>>>>>>> refactor(firost): Use firost in place of helper
   dependencies:
     chokidar "3.3.0"
     esm "3.2.25"
     eventemitter2 "5.0.1"
     fs-extra "8.1.0"
     globby "10.0.1"
-    golgoth "0.6.0"
+    golgoth "0.6.1"
     inquirer "7.0.0"
     is-glob "4.0.1"
     json-stable-stringify "1.0.1"
