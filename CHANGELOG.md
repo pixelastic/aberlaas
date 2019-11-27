@@ -1,3 +1,12 @@
+## [0.9.3](https://github.com/pixelastic/aberlaas/compare/0.9.2...0.9.3) (2019-11-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency firost to v0.17.1 ([502eb4d](https://github.com/pixelastic/aberlaas/commit/502eb4d34414446c7899dbb7a4586c711e6a85e8))
+* **deps:** update dependency golgoth to v0.6.1 ([334dec4](https://github.com/pixelastic/aberlaas/commit/334dec48ab5fe0bf3c528d9db09951331c25a05b))
+* **test:** captureOutput correctly flushes after errors ([cf72c89](https://github.com/pixelastic/aberlaas/commit/cf72c891ff73da526fcc7b87687d98f483710b72))
+
 ## [0.9.2](https://github.com/pixelastic/aberlaas/compare/0.9.1...0.9.2) (2019-11-27)
 
 
