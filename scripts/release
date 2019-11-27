@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 set -e
 
-git pull
-yarn run test
-./bin/aberlaas release "$@" --no-build --no-test
+yarn run build
+./bin/aberlaas release "$@" --no-build
