@@ -130,9 +130,9 @@ increments (for example, `yarn run release minor`).
 Use `-n` to start a dry-run. It will simulate a release but won't actually push
 anything to GitHub or npm.
 
-Note that by default it will also build and test everything before pushing and
-stopping if any of those steps fails. You can disable those checks with the
-`--no-build` and `--no-test` flags.
+Note that by default it will also pull the code from your remote, build and test
+everything before pushing and stopping if any of those steps fails. You can
+disable those checks with the `--no-pull`, `--no-build` and `--no-test` flags.
 
 ## Continuous Integration
 
