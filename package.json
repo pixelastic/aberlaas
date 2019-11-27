@@ -45,7 +45,7 @@
     "eslint-plugin-prettier": "3.1.1",
     "execa": "3.4.0",
     "firost": "0.17.1",
-    "golgoth": "0.6.0",
+    "golgoth": "0.6.1",
     "husky": "3.1.0",
     "jasmine-fail-fast": "2.0.0",
     "jest": "24.9.0",
