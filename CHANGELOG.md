@@ -1,3 +1,10 @@
+## [0.10.1](https://github.com/pixelastic/aberlaas/compare/0.10.0...0.10.1) (2019-11-29)
+
+
+### Features
+
+* **node:** Downgrade to node 12 instead of node 13 ([09a0325](https://github.com/pixelastic/aberlaas/commit/09a03252e152d17bd008047e29a9e8f7c811a6b2))
+
 # [0.10.0](https://github.com/pixelastic/aberlaas/compare/0.9.3...0.10.0) (2019-11-27)
 
 
