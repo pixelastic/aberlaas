@@ -1,3 +1,15 @@
+## [0.10.2](https://github.com/pixelastic/aberlaas/compare/0.10.1...0.10.2) (2019-12-02)
+
+
+### Bug Fixes
+
+* **init:** Fix spinner never ending ([e278efc](https://github.com/pixelastic/aberlaas/commit/e278efceecee841d17e3fb698de05c6d6d49cbc2))
+
+
+### Features
+
+* **lint:** Allow importing aberlaas/ from templates ([399f733](https://github.com/pixelastic/aberlaas/commit/399f733ef48ca28d5000d22a405320dc03f20196))
+
 ## [0.10.1](https://github.com/pixelastic/aberlaas/compare/0.10.0...0.10.1) (2019-11-29)
 
 
