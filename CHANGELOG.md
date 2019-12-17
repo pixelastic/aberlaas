@@ -1,3 +1,10 @@
+## [0.10.3](https://github.com/pixelastic/aberlaas/compare/0.10.2...0.10.3) (2019-12-17)
+
+
+### Bug Fixes
+
+* **lint:** Do not fail css linting if file not found ([070c873](https://github.com/pixelastic/aberlaas/commit/070c87312d3d29aa8d98112a950ca10bbbc117a1))
+
 ## [0.10.2](https://github.com/pixelastic/aberlaas/compare/0.10.1...0.10.2) (2019-12-02)
 
 
