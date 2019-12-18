@@ -143,6 +143,13 @@ When on a CI server it will first display the current node and yarn version, and
 then run `build`, `test` and `lint` scripts in that order. It will fail whenever
 one of them fails, or succeed if they all succeed.
 
+The node and yarn version used both locally and on the CI server will be the
+same. A `.nvmrc` file is created when running `yarn run aberlaas init` that will
+force local users to use the specified version. The same version is also
+specified in the Docker image pulled by CircleCI. As for Yarn, a local copy of
+the whole yarn program is added to the repo when first initializing it, so both
+locals and CI servers will use it.
+
 ## File structure
 
 `./lib/configs` contain the default configuration for all the tools. They are
