@@ -1,3 +1,10 @@
+## [0.10.4](https://github.com/pixelastic/aberlaas/compare/0.10.3...0.10.4) (2019-12-18)
+
+
+### Bug Fixes
+
+* **ci:** Correctly scope the call to yarnRun ([b810073](https://github.com/pixelastic/aberlaas/commit/b8100739c8d09af15ec353da7aa629695c46ed7e))
+
 ## [0.10.3](https://github.com/pixelastic/aberlaas/compare/0.10.2...0.10.3) (2019-12-17)
 
 
