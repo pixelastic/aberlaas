@@ -1,3 +1,10 @@
+## [0.10.5](https://github.com/pixelastic/aberlaas/compare/0.10.4...0.10.5) (2019-12-18)
+
+
+### Features
+
+* **ci:** Fix node to v12.12.0 ([4dee77d](https://github.com/pixelastic/aberlaas/commit/4dee77d2529fce2d4ddcccc9540d4ada020bec98))
+
 ## [0.10.4](https://github.com/pixelastic/aberlaas/compare/0.10.3...0.10.4) (2019-12-18)
 
 
