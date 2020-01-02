@@ -1,3 +1,10 @@
+## [0.10.6](https://github.com/pixelastic/aberlaas/compare/0.10.5...0.10.6) (2020-01-02)
+
+
+### Features
+
+* **lint:** Enforce dot notation in JavaScript ([613aaac](https://github.com/pixelastic/aberlaas/commit/613aaac7e9d255c4c9dc96ee13f2744e36573f7b))
+
 ## [0.10.5](https://github.com/pixelastic/aberlaas/compare/0.10.4...0.10.5) (2019-12-18)
 
 
