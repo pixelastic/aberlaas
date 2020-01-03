@@ -1,3 +1,5 @@
+## [0.10.9](https://github.com/pixelastic/aberlaas/compare/0.10.8...0.10.9) (2020-01-03)
+
 ## [0.10.8](https://github.com/pixelastic/aberlaas/compare/0.10.7...0.10.8) (2020-01-03)
 
 
