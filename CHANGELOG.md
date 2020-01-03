@@ -1,3 +1,10 @@
+## [0.10.8](https://github.com/pixelastic/aberlaas/compare/0.10.7...0.10.8) (2020-01-03)
+
+
+### Features
+
+* **circleci:** Use v2.1 ([e1078cb](https://github.com/pixelastic/aberlaas/commit/e1078cbf8d748b300930de55d6aa75a2486d7987))
+
 ## [0.10.7](https://github.com/pixelastic/aberlaas/compare/0.10.6...0.10.7) (2020-01-03)
 
 
