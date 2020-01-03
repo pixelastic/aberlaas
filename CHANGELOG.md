@@ -1,3 +1,10 @@
+## [0.10.7](https://github.com/pixelastic/aberlaas/compare/0.10.6...0.10.7) (2020-01-03)
+
+
+### Features
+
+* **circleci:** Use extended yaml syntax by default ([662d086](https://github.com/pixelastic/aberlaas/commit/662d086a1b395afa5f286803dad0fb10de15e4bd))
+
 ## [0.10.6](https://github.com/pixelastic/aberlaas/compare/0.10.5...0.10.6) (2020-01-02)
 
 
