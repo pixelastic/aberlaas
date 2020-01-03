@@ -1,3 +1,14 @@
+# [0.11.0](https://github.com/pixelastic/aberlaas/compare/0.10.9...0.11.0) (2020-01-03)
+
+
+### Bug Fixes
+
+* **ci:** Set absolute path in spy ([e423d9e](https://github.com/pixelastic/aberlaas/commit/e423d9e1442f33b3aae426763eef261d1626db40))
+* **deps:** update babel monorepo to v7.7.7 ([ea2125a](https://github.com/pixelastic/aberlaas/commit/ea2125a4e5f15cbb3e98426ba073b23ad0c0708e))
+* **deps:** update dependency eslint-config-prettier to v6.9.0 ([b33d003](https://github.com/pixelastic/aberlaas/commit/b33d003a438fe0f1d113cbfea1783c7a0ea0223c))
+* **deps:** update dependency eslint-plugin-jest to v23.2.0 ([3fa68fd](https://github.com/pixelastic/aberlaas/commit/3fa68fd2f50977c5b097edcbb7cb184bca5e51ee))
+* **tests:** Create ./tmp/release folder before moving to it ([a4a3d20](https://github.com/pixelastic/aberlaas/commit/a4a3d20e7bcce00f918fc03cd742a2b289ce9ae2))
+
 ## [0.10.9](https://github.com/pixelastic/aberlaas/compare/0.10.8...0.10.9) (2020-01-03)
 
 ## [0.10.8](https://github.com/pixelastic/aberlaas/compare/0.10.7...0.10.8) (2020-01-03)
