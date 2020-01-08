@@ -1,3 +1,19 @@
+## [0.11.1](https://github.com/pixelastic/aberlaas/compare/0.11.0...0.11.1) (2020-01-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency eslint-plugin-jest to v23.3.0 ([f37b4ac](https://github.com/pixelastic/aberlaas/commit/f37b4ac561b436a4ffaa6868c38116287ec0715c))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.0.1 ([64db994](https://github.com/pixelastic/aberlaas/commit/64db994676bf3c5e2d32577a024301a3b369f86f))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.0.2 ([e6f0bb1](https://github.com/pixelastic/aberlaas/commit/e6f0bb136f1d5b2da927d90bf7888dd71194adb8))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.0.3 ([9462429](https://github.com/pixelastic/aberlaas/commit/94624296aec39ff5ad86eafbc26b23d13e19ae74))
+* **deps:** update dependency firost to v0.21.0 ([3e0b6a5](https://github.com/pixelastic/aberlaas/commit/3e0b6a56867a12c856319ba12b513174f594e744))
+
+
+### Features
+
+* **init:** Set a default v0.0.1 ([702b9d4](https://github.com/pixelastic/aberlaas/commit/702b9d4f4f6a6f93107d91c2629277efa47f3bc8))
+
 # [0.11.0](https://github.com/pixelastic/aberlaas/compare/0.10.9...0.11.0) (2020-01-03)
 
 
