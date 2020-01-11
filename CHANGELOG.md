@@ -1,3 +1,19 @@
+## [0.11.2](https://github.com/pixelastic/aberlaas/compare/0.11.1...0.11.2) (2020-01-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency eslint-plugin-import to v2.20.0 ([cc19762](https://github.com/pixelastic/aberlaas/commit/cc1976207610934cb6ebbd37f3aac9b62517d02e))
+* **deps:** update dependency eslint-plugin-jest to v23.4.0 ([1080b33](https://github.com/pixelastic/aberlaas/commit/1080b3305d4df8d291a274f03884452e51f08e45))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.0.4 ([dae2f4b](https://github.com/pixelastic/aberlaas/commit/dae2f4b23d416901d7d5c5a2e17c1557a99593ab))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.0.5 ([502ef99](https://github.com/pixelastic/aberlaas/commit/502ef99c7b058f1eb1ad78b42fa51e8587220321))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.1.0 ([ac8b3f6](https://github.com/pixelastic/aberlaas/commit/ac8b3f6e3537f248e84accdd0043bf18fd6c5428))
+
+
+### Features
+
+* **init:** Set a default package name on aberlaas init ([ae082ee](https://github.com/pixelastic/aberlaas/commit/ae082eebe397d5c70bc7e2dd81242e338710c7a2))
+
 ## [0.11.1](https://github.com/pixelastic/aberlaas/compare/0.11.0...0.11.1) (2020-01-08)
 
 
