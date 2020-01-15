@@ -1,3 +1,22 @@
+## [0.11.3](https://github.com/pixelastic/aberlaas/compare/0.11.2...0.11.3) (2020-01-15)
+
+
+### Bug Fixes
+
+* **deps:** update babel monorepo to v7.8.0 ([f6f2a9f](https://github.com/pixelastic/aberlaas/commit/f6f2a9f702b69cef234ac65d5be400d3a265df59))
+* **deps:** update babel monorepo to v7.8.3 ([6cadf1e](https://github.com/pixelastic/aberlaas/commit/6cadf1e8541956e000cd34994f18a7178fb7a229))
+* **deps:** update dependency @babel/preset-env to v7.8.2 ([e1daba3](https://github.com/pixelastic/aberlaas/commit/e1daba31be1058d2062d9c0229172e6316fb2158))
+* **deps:** update dependency eslint-plugin-jest to v23.5.0 ([bb01d26](https://github.com/pixelastic/aberlaas/commit/bb01d261896e77a8ad5323bb502d8435534d24a9))
+* **deps:** update dependency eslint-plugin-jest to v23.6.0 ([fca63b5](https://github.com/pixelastic/aberlaas/commit/fca63b5dc0089ed1857ff460fad0aa0a05198831))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.2.0 ([e96689d](https://github.com/pixelastic/aberlaas/commit/e96689ddeb2296f968eca6ab3a07fbb3f3d7047e))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.3.0 ([6d88d3f](https://github.com/pixelastic/aberlaas/commit/6d88d3f89d91bb3e9776c7fb61b6b9f18f21627c))
+* **deps:** update dependency eslint-plugin-jsdoc to v20.3.1 ([48ffe13](https://github.com/pixelastic/aberlaas/commit/48ffe13effaed4b3a6eaae9ac1c6154977e6607a))
+
+
+### Features
+
+* **eslint:** Don't warn for unused _vars ([563d277](https://github.com/pixelastic/aberlaas/commit/563d27794017d3b081c39a6f88120697fdafcc07))
+
 ## [0.11.2](https://github.com/pixelastic/aberlaas/compare/0.11.1...0.11.2) (2020-01-11)
 
 
