@@ -1,3 +1,11 @@
+## [0.11.4](https://github.com/pixelastic/aberlaas/compare/0.11.3...0.11.4) (2020-01-17)
+
+
+### Bug Fixes
+
+* **init:** Actually call setDefaultName ([8c9797f](https://github.com/pixelastic/aberlaas/commit/8c9797f795df864362e194ed12ab72fd2f15bf59))
+* **lint:** Stop ignoring unused _ variable ([54c1b8d](https://github.com/pixelastic/aberlaas/commit/54c1b8db8824818940ff7f4e5f86078e5d64519c))
+
 ## [0.11.3](https://github.com/pixelastic/aberlaas/compare/0.11.2...0.11.3) (2020-01-15)
 
 
