@@ -41,7 +41,7 @@
     "eslint-config-prettier": "6.10.0",
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-jest": "23.6.0",
-    "eslint-plugin-jsdoc": "20.4.0",
+    "eslint-plugin-jsdoc": "21.0.0",
     "eslint-plugin-prettier": "3.1.2",
     "firost": "0.21.0",
     "golgoth": "0.6.4",
