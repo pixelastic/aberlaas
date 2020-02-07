@@ -1,9 +1,4 @@
 #!/usr/bin/env sh
 set -e
 
-yarn run build
-
-# Flag any subsequent build call to not do anything as we've already built the
-# code
-export SKIP_BUILD=1
 ./bin/aberlaas ci "$@"

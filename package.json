@@ -11,13 +11,12 @@
     "aberlas": "bin/aberlaas"
   },
   "files": [
-    "build/",
-    "templates/",
-    "bin/aberlaas"
+    "bin/",
+    "lib/",
+    "templates/"
   ],
+  "main": "lib/main.js",
   "scripts": {
-    "build": "./scripts/build",
-    "build:watch": "./scripts/build-watch",
     "ci": "./scripts/ci",
     "husky:precommit": "./scripts/husky-precommit",
     "lint": "./scripts/lint",
@@ -43,6 +42,7 @@
     "eslint-plugin-jest": "23.7.0",
     "eslint-plugin-jsdoc": "20.4.0",
     "eslint-plugin-prettier": "3.1.2",
+    "esm": "3.2.25",
     "firost": "0.21.0",
     "golgoth": "0.6.4",
     "husky": "3.1.0",
@@ -51,6 +51,7 @@
     "jest-extended": "0.11.5",
     "lint-staged": "9.5.0",
     "minimist": "1.2.0",
+    "np": "5.2.1",
     "prettier": "1.19.1",
     "release-it": "12.5.0",
     "std-mocks": "1.0.1",

@@ -3,7 +3,7 @@
 Start a new npm package with all the right tooling in place.
 
 This package exposes the `aberlaas` script that can be used to perform the most
-common tasks on a package: `build`, `lint`, `test` and `release`. It also
+common tasks on a package: `lint`, `test` and `release`. It also
 exposes the inner configuration of the tools it uses.
 
 ## Installing aberlaas
@@ -20,29 +20,13 @@ The following table lists all the scripts added:
 | Script                     | Description                                               |
 | -------------------------- | --------------------------------------------------------- |
 | `yarn run husky:precommit` | Run before any commit (through Husky)                     |
-| `yarn run build`           | Build JavaScript files through Babel                      |
-| `yarn run build:watch`     | Build JavaScript files through Babel in watch mode        |
 | `yarn run test`            | Run tests using Jest                                      |
 | `yarn run test:watch`      | Run tests using Jest in watch mode                        |
 | `yarn run lint`            | Lint all supported file types                             |
 | `yarn run lint:fix`        | Attempt to fix linting issues on all supported file types |
 | `yarn run release`         | Release the module on npm                                 |
-
-## Building (with Babel)
-
-`aberlaas build` will build all files located in `./lib` into `./build` by
-default. You can alter the behavior with the following options:
-
-| CLI Argument         | Default value       | Description                                                                         |
-| -------------------- | ------------------- | ----------------------------------------------------------------------------------- |
-| `[...]`              | `./lib`             | Files or directory to build                                                         |
-| `--config`           | `./babel.config.js` | Babel config file to use                                                            |
-| `--out-dir`          | `./build`           | Build directory                                                                     |
-| `--ignore {pattern}` | empty               | Define patterns of files to ignore. Accepts globs, and can be passed more than once |
-| `--watch`            | `false`             | If enabled, will listen for changes on files and rebuild                            |
-
-You can extend the internal Babel by editing the `babel.config.js` created at
-the root of your project.
+| `yarn run build`           | Build JavaScript files through Babel                      |
+| `yarn run build:watch`     | Build JavaScript files through Babel in watch mode        |
 
 ## Linting
 
@@ -100,8 +84,8 @@ const actual = await captureOutput(async () => {
 
 ## Precommit hooks
 
-`aberlaas` uses `husky` and `lint-staged` to make sure all committed code follows
-your coding standard.
+`aberlaas` uses `husky` and `lint-staged` to make sure all committed code
+follows your coding standard.
 
 All `css`, `js`, `json` and `yml` files will be checked for parsing errors
 (using `aberlaas lint` internally), and if errors are found it will attempt to
@@ -119,7 +103,7 @@ skip the hooks.
 
 ## Releasing
 
-`aberlaas release` will build the package and release it to npm. It will update
+`aberlaas release` will release the package to npm. It will update
 the version in `package.json` as well as creating the related git tag.
 
 When called without arguments, it will prompt you for the next version to
@@ -130,9 +114,8 @@ increments (for example, `yarn run release minor`).
 Use `-n` to start a dry-run. It will simulate a release but won't actually push
 anything to GitHub or npm.
 
-Note that by default it will also pull the code from your remote, build and test
-everything before pushing and stopping if any of those steps fails. You can
-disable those checks with the `--no-pull`, `--no-build` and `--no-test` flags.
+Note that by default it will also pull the code from your remote, test
+everything (unless `--no-test` is set ) before pushing.
 
 ## Continuous Integration
 
@@ -140,8 +123,8 @@ disable those checks with the `--no-pull`, `--no-build` and `--no-test` flags.
 and won't do anything when run locally.
 
 When on a CI server it will first display the current node and yarn version, and
-then run `build`, `test` and `lint` scripts in that order. It will fail whenever
-one of them fails, or succeed if they all succeed.
+then `test` and `lint` scripts in that order. It will fail whenever one of them
+fails, or succeed if they all succeed.
 
 The node and yarn version used both locally and on the CI server will be the
 same. A `.nvmrc` file is created when running `yarn run aberlaas init` that will
@@ -149,6 +132,23 @@ force local users to use the specified version. The same version is also
 specified in the Docker image pulled by CircleCI. As for Yarn, a local copy of
 the whole yarn program is added to the repo when first initializing it, so both
 locals and CI servers will use it.
+
+## Building (with Babel)
+
+`aberlaas build` can build all files located in `./lib` into `./build` using
+Babel. This is optional as all files should already be using `esm`.
+
+| CLI Argument         | Default value       | Description                                                                         |
+| -------------------- | ------------------- | ----------------------------------------------------------------------------------- |
+| `[...]`              | `./lib`             | Files or directory to build                                                         |
+| `--config`           | `./babel.config.js` | Babel config file to use                                                            |
+| `--out-dir`          | `./build`           | Build directory                                                                     |
+| `--ignore {pattern}` | empty               | Define patterns of files to ignore. Accepts globs, and can be passed more than once |
+| `--watch`            | `false`             | If enabled, will listen for changes on files and rebuild                            |
+
+You can extend the internal Babel by editing the `babel.config.js` created at
+the root of your project.
+
 
 ## File structure
 
