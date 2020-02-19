@@ -1290,6 +1290,11 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-1.2.0.tgz#63ce3638cb85231f3704164c90a18ef816da3fb7"
   integrity sha512-mwhXGkRV5dlvQc4EgPDxDxO6WuMBVymGFd1CA+2Y+z5dG9MNspoQ+AWjl/Ld1MnpCL8AKbosZlDVohqcIwuWsw==
 
+"@sindresorhus/is@^2.0.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-2.1.0.tgz#6ad4ca610f696098e92954ab431ff83bea0ce13f"
+  integrity sha512-lXKXfypKo644k4Da4yXkPCrwcvn6SlUW2X2zFbuflKHNjf0w9htru01bo26uMhleMXsDmnZ12eJLdrAZa9MANg==
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
@@ -3728,10 +3733,10 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-firost@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/firost/-/firost-1.0.0.tgz#0a70b04cb9113c12dc372120128e3b28b0a0e2d4"
-  integrity sha512-FTuBsD2WwM14nkrrmwWwD5ctNAN4bco7xb/HohAAxUZD4ddEKopFMWoyug2cpgf0RVb1/FNXYP5xRysPNzIQ3Q==
+firost@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-1.0.1.tgz#d5a2f01723b06d538bb0b40492871c1d3b9b9f51"
+  integrity sha512-RgKIAYObYbYafaiuHv2rALuPt+K+F44UU6SCjq5bvk25PnfzsxbvYhkfgIAw25YVXKw/tPoOqd76nD6bU+eR9Q==
   dependencies:
     chokidar "3.3.1"
     esm "3.2.25"
@@ -4167,6 +4172,24 @@ golgoth@1.0.3:
     query-string "6.10.1"
     time-span "3.1.0"
 
+golgoth@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-1.0.4.tgz#110ba9bf1a994e3cc2f9b0517dead1f0b9a79469"
+  integrity sha512-8ZAl0hNHs9ZPcV711g4gMJv8RUWB4qE5R5Pdi8p8OeOt8QOdxb10woEE4WN/shR4NNznLjUPWvrQ8341GziRZQ==
+  dependencies:
+    chalk "3.0.0"
+    dayjs "1.8.20"
+    esm "3.2.25"
+    flat "5.0.0"
+    got "10.5.7"
+    lodash "^4.17.15"
+    p-all "2.1.0"
+    p-map "3.0.0"
+    p-map-series "2.1.0"
+    pify "4.0.1"
+    query-string "6.11.0"
+    time-span "3.1.0"
+
 gonzales-pe@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/gonzales-pe/-/gonzales-pe-4.2.4.tgz#356ae36a312c46fe0f1026dd6cb539039f8500d2"
@@ -4194,6 +4217,27 @@ got@10.5.5:
     responselike "^2.0.0"
     to-readable-stream "^2.0.0"
     type-fest "^0.9.0"
+
+got@10.5.7:
+  version "10.5.7"
+  resolved "https://registry.yarnpkg.com/got/-/got-10.5.7.tgz#bd0ef35404345d31f1d6793ed8133896ea911a19"
+  integrity sha512-ZDu27XJw4XuOM3wOjOfHPLQiyE0h/+CqX5DkfptEJD2bnn2idqua6uQl9HUGwgQE3Ogv8uOvE2W8jUTrTVrRbw==
+  dependencies:
+    "@sindresorhus/is" "^2.0.0"
+    "@szmarczak/http-timer" "^4.0.0"
+    "@types/cacheable-request" "^6.0.1"
+    cacheable-lookup "^2.0.0"
+    cacheable-request "^7.0.1"
+    decompress-response "^5.0.0"
+    duplexer3 "^0.1.4"
+    get-stream "^5.0.0"
+    lowercase-keys "^2.0.0"
+    mimic-response "^2.0.0"
+    p-cancelable "^2.0.0"
+    p-event "^4.0.0"
+    responselike "^2.0.0"
+    to-readable-stream "^2.0.0"
+    type-fest "^0.10.0"
 
 got@9.6.0, got@^9.6.0:
   version "9.6.0"
@@ -7465,6 +7509,15 @@ query-string@6.10.1:
     split-on-first "^1.0.0"
     strict-uri-encode "^2.0.0"
 
+query-string@6.11.0:
+  version "6.11.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.11.0.tgz#dc27a05733d1be66f16d0f83dfa957270f45f66d"
+  integrity sha512-jS+me8X3OEGFTsF6kF+vUUMFG/d3WUCvD7bHhfZP5784nOq1pjj8yau/u86nfOncmcN6ZkSWKWkKAvv/MGxzLA==
+  dependencies:
+    decode-uri-component "^0.2.0"
+    split-on-first "^1.0.0"
+    strict-uri-encode "^2.0.0"
+
 quick-lru@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-1.1.0.tgz#4360b17c61136ad38078397ff11416e186dcfbb8"
@@ -8966,6 +9019,11 @@ type-check@~0.3.2:
   integrity sha1-WITKtRLPHTVeP7eE8wgEsrUg23I=
   dependencies:
     prelude-ls "~1.1.2"
+
+type-fest@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.10.0.tgz#7f06b2b9fbfc581068d1341ffabd0349ceafc642"
+  integrity sha512-EUV9jo4sffrwlg8s0zDhP0T2WD3pru5Xi0+HTE3zTUmBaZNhfkite9PdSJwdXLwPVW0jnAHT56pZHIOYckPEiw==
 
 type-fest@^0.3.0:
   version "0.3.1"
