@@ -35,6 +35,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0",
     "babel-jest": "24.9.0",
+    "callsites": "3.1.0",
     "ci-info": "2.0.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.0",
@@ -44,7 +45,7 @@
     "eslint-plugin-prettier": "3.1.2",
     "esm": "3.2.25",
     "firost": "0.21.0",
-    "golgoth": "0.6.4",
+    "golgoth": "1.0.3",
     "husky": "3.1.0",
     "jasmine-fail-fast": "2.0.1",
     "jest": "24.9.0",
@@ -58,6 +59,5 @@
     "strip-ansi": "6.0.0",
     "stylelint": "12.0.1",
     "yaml-lint": "1.2.4"
-  },
-  "devDependencies": {}
+  }
 }
