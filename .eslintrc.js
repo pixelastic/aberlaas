@@ -1,4 +1,3 @@
-
 module.exports = {
   extends: ['./lib/configs/eslint.js'],
   overrides: [
