@@ -1298,11 +1298,11 @@
     defer-to-connect "^1.0.1"
 
 "@szmarczak/http-timer@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-4.0.0.tgz#309789ccb7842ff1e41848cf43da587f78068836"
-  integrity sha512-3yoXv8OtGr/r3R5gaWWNQ3VUoQ5G3Gmo8DXX95V14ZVvE2b7Pj6Ide9uIDON8ym4D/ItyfL9ejohYUPqOyvRXw==
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-4.0.5.tgz#bfbd50211e9dfa51ba07da58a14cdfd333205152"
+  integrity sha512-PyRA9sm1Yayuj5OIoJ1hGt2YISX45w9WcFbh6ddT0Z/0yaFxOtGLInr4jUfU1EAFVs0Yfyfev4RNwBlUaHdlDQ==
   dependencies:
-    defer-to-connect "^1.1.1"
+    defer-to-connect "^2.0.0"
 
 "@types/babel__core@^7.1.0":
   version "7.1.3"
@@ -2904,10 +2904,10 @@ defer-to-connect@^1.0.1:
   resolved "https://registry.yarnpkg.com/defer-to-connect/-/defer-to-connect-1.1.0.tgz#b41bd7efa8508cef13f8456975f7a278c72833fd"
   integrity sha512-WE2sZoctWm/v4smfCAdjYbrfS55JiMRdlY9ZubFhsYbteCK9+BvAx4YV7nPjYM6ZnX5BcoVKwfmyx9sIFTgQMQ==
 
-defer-to-connect@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/defer-to-connect/-/defer-to-connect-1.1.1.tgz#88ae694b93f67b81815a2c8c769aef6574ac8f2f"
-  integrity sha512-J7thop4u3mRTkYRQ+Vpfwy2G5Ehoy82I14+14W4YMDLKdWloI9gSzRbV30s/NckQGVJtPkWNcW4oMAUigTdqiQ==
+defer-to-connect@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/defer-to-connect/-/defer-to-connect-2.0.0.tgz#83d6b199db041593ac84d781b5222308ccf4c2c1"
+  integrity sha512-bYL2d05vOSf1JEZNx5vSAtPuBMkX8K9EUutg7zlKvTqKXHt7RhWJFbmd7qakVuf13i+IkGmp6FwSsONOf6VYIg==
 
 define-properties@^1.1.2, define-properties@^1.1.3:
   version "1.1.3"
@@ -3728,10 +3728,10 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-firost@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/firost/-/firost-1.1.1.tgz#ea4b972023696baacc43bf84ab68028fb1085e4b"
-  integrity sha512-B7T0w/pELr56mJg/zSmgZ/YUh3ZLvxcSLptsDjXFS984zBWAL10tQ1w7ivctAmBw9yxiy8EhHjMKyoqkP4bCfg==
+firost@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-1.2.1.tgz#b13726fb83c0ff076b83e1adbbe417477a9a81c1"
+  integrity sha512-vek/xWQ/TEQwLiRjDKA49QvU+uQ2E60i/2wm9DCfIJF1h3vr6VxlEVJFvulEMhwTSlMNyGRd5vSbaWTkJOsiBw==
   dependencies:
     chokidar "3.3.1"
     esm "3.2.25"
@@ -3739,7 +3739,7 @@ firost@1.1.1:
     execa "4.0.0"
     fs-extra "8.1.0"
     globby "10.0.2"
-    golgoth "1.0.4"
+    golgoth "1.1.1"
     inquirer "7.0.4"
     is-glob "4.0.1"
     json-stable-stringify "1.0.1"
@@ -4149,17 +4149,17 @@ globjoin@^0.1.4:
   resolved "https://registry.yarnpkg.com/globjoin/-/globjoin-0.1.4.tgz#2f4494ac8919e3767c5cbb691e9f463324285d43"
   integrity sha1-L0SUrIkZ43Z8XLtpHp9GMyQoXUM=
 
-golgoth@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-1.0.4.tgz#110ba9bf1a994e3cc2f9b0517dead1f0b9a79469"
-  integrity sha512-8ZAl0hNHs9ZPcV711g4gMJv8RUWB4qE5R5Pdi8p8OeOt8QOdxb10woEE4WN/shR4NNznLjUPWvrQ8341GziRZQ==
+golgoth@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/golgoth/-/golgoth-1.1.1.tgz#3d617f2a7e2a3c3954072460189fe0b412a78b22"
+  integrity sha512-HVh0mZt9enbrDgfYepU//QD/0hvOBvl3XAvJbngAAlr2u5ySMczZOd/M/LtgFbLKnCjJeVOCMT5M/JUKN54nwQ==
   dependencies:
     chalk "3.0.0"
     dayjs "1.8.20"
     esm "3.2.25"
     flat "5.0.0"
     got "10.5.7"
-    lodash "^4.17.15"
+    lodash "4.17.15"
     p-all "2.1.0"
     p-map "3.0.0"
     p-map-series "2.1.0"
@@ -6261,9 +6261,9 @@ mimic-response@^1.0.0, mimic-response@^1.0.1:
   integrity sha512-j5EctnkH7amfV/q5Hgmoal1g2QHFJRraOtmx0JpIqkxhBhI/lJSl1nMpQ45hVarwNETOoWEimndZ4QK0RHxuxQ==
 
 mimic-response@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-2.0.0.tgz#996a51c60adf12cb8a87d7fb8ef24c2f3d5ebb46"
-  integrity sha512-8ilDoEapqA4uQ3TwS0jakGONKXVJqpy+RpM+3b7pLdOjghCrEiGp9SRkFbUHAmZW9vdnrENWHjaweIoTIJExSQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-2.1.0.tgz#d13763d35f613d09ec37ebb30bac0469c0ee8f43"
+  integrity sha512-wXqjST+SLt7R009ySCglWBCFpjUygmCIfD790/kVbiGmUgfYGuB14PiTd5DwVxSV4NcYHjzMkoj5LjQZwTQLEA==
 
 minimatch@^3.0.4:
   version "3.0.4"
