@@ -111,8 +111,8 @@ package. If called with an argument, this will be used as the next version
 number (for example, `yarn run release 1.1.3`). You can also use SemVer
 increments (for example, `yarn run release minor`).
 
-Use `-n` to start a dry-run. It will simulate a release but won't actually push
-anything to GitHub or npm.
+Use `--dry-run` to start a dry-run. It will simulate a release but won't
+actually push anything to GitHub or npm.
 
 Note that by default it will also pull the code from your remote, test
 everything (unless `--no-test` is set ) before pushing.
