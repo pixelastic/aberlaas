@@ -2090,7 +2090,7 @@ callsite@1.0.0:
   resolved "https://registry.yarnpkg.com/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
   integrity sha1-KAOY5dZkvXQDi28JBRU+borxvCA=
 
-callsites@3.1.0, callsites@^3.0.0:
+callsites@3.1.0, callsites@^3.0.0, callsites@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
@@ -2289,6 +2289,14 @@ clean-stack@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
+
+clear-module@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/clear-module/-/clear-module-4.1.0.tgz#4d167d40984ed857553084fb2cf8957f89d0a620"
+  integrity sha512-g9eQ9JxeUGK00GNKOt6tjtl7JitTqN/pCjoKXVzAe99xSWXAtdqfApjZAsGApbOs2Q9vFHU5UjpIXsCiGBsGuA==
+  dependencies:
+    parent-module "^2.0.0"
+    resolve-from "^5.0.0"
 
 cli-boxes@^2.2.0:
   version "2.2.0"
@@ -3744,13 +3752,14 @@ find-versions@^3.2.0:
   dependencies:
     semver-regex "^2.0.0"
 
-firost@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/firost/-/firost-1.3.0.tgz#49baf87f39d4f6be5d7714dc54ee087202a77bd6"
-  integrity sha512-HPzc6UHxddLRenI6N74mzaA8OW2Fm/QVHYEvlbZUN+78RrIFYaJV6YvVQebOphjYAxXGi/3vB5F7eiUzlngREw==
+firost@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-1.3.1.tgz#883292fecdc4f20d48aa5f580989df127eacb0e4"
+  integrity sha512-8hfOdgnh22ohiWGIr5R2v35I6QDyfn5NsdV2QVLzfWllvVXJdoYrHDNbjhS4Kpc8puNXPBzqX43ugp0eGgjdcw==
   dependencies:
     callsite "1.0.0"
     chokidar "3.3.1"
+    clear-module "4.1.0"
     esm "3.2.25"
     eventemitter2 "6.0.0"
     execa "4.0.0"
@@ -7089,6 +7098,13 @@ parent-module@^1.0.0:
   integrity sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==
   dependencies:
     callsites "^3.0.0"
+
+parent-module@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/parent-module/-/parent-module-2.0.0.tgz#fa71f88ff1a50c27e15d8ff74e0e3a9523bf8708"
+  integrity sha512-uo0Z9JJeWzv8BG+tRcapBKNJ0dro9cLyczGzulS6EfeyAdeC9sbojtW6XwvYxJkEne9En+J2XEl4zyglVeIwFg==
+  dependencies:
+    callsites "^3.1.0"
 
 parse-entities@^1.0.2, parse-entities@^1.1.0:
   version "1.2.2"
