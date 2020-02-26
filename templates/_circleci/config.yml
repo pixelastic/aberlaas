@@ -16,7 +16,6 @@ aliases:
         - ~/.cache/yarn
 
 jobs:
-  # Test/lint
   ci:
     <<: *defaults
     steps:
@@ -28,7 +27,7 @@ jobs:
 
 workflows:
   version: 2
-  # On every commit: Test/Lint
+  # On every commit
   commit:
     jobs:
       - ci
