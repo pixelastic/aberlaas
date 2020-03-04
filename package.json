@@ -54,7 +54,7 @@
     "minimist": "1.2.0",
     "np": "6.2.0",
     "prettier": "1.19.1",
-    "release-it": "12.6.2",
+    "release-it": "12.6.3",
     "std-mocks": "1.0.1",
     "strip-ansi": "6.0.0",
     "stylelint": "13.2.0",
