@@ -22,11 +22,10 @@ The following table lists all the scripts added:
 | `yarn run husky:precommit` | Run before any commit (through Husky)                     |
 | `yarn run test`            | Run tests using Jest                                      |
 | `yarn run test:watch`      | Run tests using Jest in watch mode                        |
+| `yarn run ci`              | Run testing and linting in CI|
 | `yarn run lint`            | Lint all supported file types                             |
 | `yarn run lint:fix`        | Attempt to fix linting issues on all supported file types |
 | `yarn run release`         | Release the module on npm                                 |
-| `yarn run build`           | Build JavaScript files through Babel                      |
-| `yarn run build:watch`     | Build JavaScript files through Babel in watch mode        |
 
 ## Linting
 
@@ -40,14 +39,14 @@ argument to your command.
 The following table show the file types supported and the corresponding command
 and linter used.
 
-| Command                    | File type              | Linter used                                     | Fixer used                | Config files                        |
-| -------------------------- | ---------------------- | ----------------------------------------------- | ------------------------- | ----------------------------------- |
-| `aberlaas lint`            | All supported          | N/A                                             | N/A                       | See individual file type            |
-| `aberlaas lint --js`       | JavaScript             | ESLint                                          | Prettier (through ESLint) | `.eslintrc.js` or `--config.js`     |
-| `aberlaas lint --css`      | CSS                    | Stylelint                                       | Prettier                  | `.stylelintrc.js` or `--config.css` |
-| `aberlaas lint --json`     | JSON                   | jsonlint                                        | Prettier                  |                                     |
-| `aberlaas lint --yml`      | YAML                   | yaml-lint                                       | Prettier                  |                                     |
-| `aberlaas lint --circleci` | `.circleci/config.yml` | yaml-lint, `circleci` (if available in `$PATH`) | Prettier                  |                                     |
+| Command                             | File type              | Linter used                                     | Fixer used                | Config files                        |
+| ----------------------------------- | ---------------------- | ----------------------------------------------- | ------------------------- | ----------------------------------- |
+| `aberlaas lint`                     | All supported          | N/A                                             | N/A                       | See individual file type            |
+| `aberlaas lint --js`                | JavaScript             | ESLint                                          | Prettier (through ESLint) | `.eslintrc.js` or `--config.js`     |
+| `aberlaas lint --css`               | CSS                    | Stylelint                                       | Prettier                  | `.stylelintrc.js` or `--config.css` |
+| `aberlaas lint --json`              | JSON                   | jsonlint                                        | Prettier                  |                                     |
+| `aberlaas lint --yml` (or `--yaml`) | YAML                   | yaml-lint                                       | Prettier                  |                                     |
+| `aberlaas lint --circleci`          | `.circleci/config.yml` | yaml-lint, `circleci` (if available in `$PATH`) | Prettier                  |                                     |
 
 ## Testing (with Jest)
 
@@ -114,9 +113,6 @@ increments (for example, `yarn run release minor`).
 Use `--dry-run` to start a dry-run. It will simulate a release but won't
 actually push anything to GitHub or npm.
 
-Note that by default it will also pull the code from your remote, test
-everything (unless `--no-test` is set ) before pushing.
-
 ## Continuous Integration
 
 `aberlaas ci` is triggered by CI Servers (currently only CircleCI is supported),
@@ -130,13 +126,16 @@ The node and yarn version used both locally and on the CI server will be the
 same. A `.nvmrc` file is created when running `yarn run aberlaas init` that will
 force local users to use the specified version. The same version is also
 specified in the Docker image pulled by CircleCI. As for Yarn, a local copy of
-the whole yarn program is added to the repo when first initializing it, so both
-locals and CI servers will use it.
+the whole yarn program is added to the repository when first initializing it, so
+both locals and CI servers will use it.
 
 ## Building (with Babel)
 
+_This command is still available but deprecated. aberlaas expect code to use
+node >= v12, and `require` in place of `import`_
+
 `aberlaas build` can build all files located in `./lib` into `./build` using
-Babel. This is optional as all files should already be using `esm`.
+Babel.
 
 | CLI Argument         | Default value       | Description                                                                         |
 | -------------------- | ------------------- | ----------------------------------------------------------------------------------- |
@@ -148,7 +147,6 @@ Babel. This is optional as all files should already be using `esm`.
 
 You can extend the internal Babel by editing the `babel.config.js` created at
 the root of your project.
-
 
 ## File structure
 
