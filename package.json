@@ -50,7 +50,7 @@
     "jasmine-fail-fast": "2.0.1",
     "jest": "25.2.3",
     "jest-extended": "0.11.5",
-    "lint-staged": "10.0.9",
+    "lint-staged": "10.0.10",
     "minimist": "1.2.5",
     "np": "pixelastic/np#feat/no-2fa",
     "prettier": "1.19.1",
