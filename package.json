@@ -48,7 +48,7 @@
     "husky": "4.2.3",
     "import-lazy": "4.0.0",
     "jasmine-fail-fast": "2.0.1",
-    "jest": "25.2.6",
+    "jest": "25.2.7",
     "jest-extended": "0.11.5",
     "lint-staged": "10.1.1",
     "minimist": "1.2.5",
@@ -57,7 +57,7 @@
     "release-it": "12.6.3",
     "std-mocks": "1.0.1",
     "strip-ansi": "6.0.0",
-    "stylelint": "13.2.1",
+    "stylelint": "13.3.0",
     "yaml-lint": "1.2.4"
   }
 }
