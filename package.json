@@ -45,7 +45,7 @@
     "esm": "3.2.25",
     "firost": "1.5.0",
     "golgoth": "1.2.0",
-    "husky": "4.2.4",
+    "husky": "4.2.5",
     "import-lazy": "4.0.0",
     "jasmine-fail-fast": "2.0.1",
     "jest": "25.3.0",
