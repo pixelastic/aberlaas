@@ -1,6 +1,6 @@
 {
   "name": "aberlaas",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Shared default config for npm packages.",
   "repository": "git@github.com:pixelastic/aberlaas.git",
   "author": "Pixelastic <tim@pixelastic.com>",
@@ -44,8 +44,8 @@
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jest": "23.8.2",
     "eslint-plugin-jsdoc": "21.0.0",
-    "eslint-plugin-prettier": "3.1.3",
     "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.1.3",
     "esm": "3.2.25",
     "firost": "1.5.0",
     "golgoth": "1.2.0",
