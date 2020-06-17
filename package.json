@@ -23,6 +23,7 @@
     "lib/configs/jest/*.js",
     "templates/"
   ],
+  "main": "lib/main.js",
   "scripts": {
     "ci": "./scripts/ci",
     "husky:precommit": "./scripts/husky-precommit",
