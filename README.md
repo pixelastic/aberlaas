@@ -149,7 +149,8 @@ both locals and CI servers will use it.
 
 ## Building (with Babel)
 
-_This command is still available but deprecated. aberlaas expect code to use
+_This command is available only for environment where you need to transpile your
+code (for example in Netlify functions). aberlaas expect typical code to use
 node >= v12, and `require` in place of `import`_
 
 `aberlaas build` can build all files located in `./lib` into `./build` using
