@@ -81,6 +81,24 @@ const actual = await captureOutput(async () => {
 // actual.stdout = ['foo']
 ```
 
+[dedent](https://github.com/dmnd/dedent) is included in all tests, so you can
+write multiline strings without having to break your indentation.
+
+```javascript
+describe('moduleName', () => {
+  describe('methodName', () => {
+    it('should test a multiline string', () => {
+      const input = dedent`
+        Leading and trailing lines will be trimmed, so you can write something like
+        this and have it work as you expect:
+
+          * how convenient it is
+          * that I can use an indented list
+             - and still have it do the right thing`;
+      // …
+    });
+  });
+```
 ## Precommit hooks
 
 `aberlaas` uses `husky` and `lint-staged` to make sure all committed code
