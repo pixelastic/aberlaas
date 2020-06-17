@@ -15,7 +15,12 @@
   },
   "files": [
     "bin/",
-    "lib/",
+    "lib/*.js",
+    "lib/commands/*.js",
+    "lib/commands/lint/*.js",
+    "lib/commands/ci/*.js",
+    "lib/configs/*.js",
+    "lib/configs/jest/*.js",
     "templates/"
   ],
   "scripts": {
