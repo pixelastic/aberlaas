@@ -17,8 +17,9 @@
     "bin/",
     "lib/*.js",
     "lib/commands/*.js",
-    "lib/commands/lint/*.js",
     "lib/commands/ci/*.js",
+    "lib/commands/lint/*.js",
+    "lib/commands/setup/*.js",
     "lib/configs/*.js",
     "lib/configs/jest/*.js",
     "templates/"
@@ -60,6 +61,7 @@
     "lint-staged": "10.1.3",
     "minimist": "1.2.5",
     "np": "pixelastic/np#feat/no-2fa",
+    "parse-github-repo-url": "1.4.1",
     "prettier": "1.19.1",
     "simple-git": "2.7.0",
     "std-mocks": "1.0.1",

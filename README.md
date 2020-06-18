@@ -8,12 +8,19 @@ exposes the inner configuration of the tools it uses.
 
 ## Installing aberlaas
 
-Run `yarn add --dev aberlaas && yarn run aberlaas init` to bootstrap your
-project with Aberlaas scripts and configuration.
+- Run `yarn add --dev aberlaas` to install it
+- Run `yarn run aberlaas init` to bootstrap your project with all the scripts
+  and configuration
+- Commit and push
+- Run `yarn run aberlaas setup` to enable the external services (CircleCI and
+  Renovate)
 
-This will update your `package.json` to add custom scripts (located in
-`./scripts`), and also add default configuration files for all the tool used at
-the root of your project.
+`aberlaas init` will add custom scripts (in `./scripts` and in your
+`package.json`), scaffold a `./lib` folder and create default config files for
+the tools used internally/
+
+`aberlaas setup` will enable CircleCI and Renovate, but requires the repository
+to have been pushed to GitHub first.
 
 The following table lists all the scripts added:
 
@@ -22,7 +29,7 @@ The following table lists all the scripts added:
 | `yarn run husky:precommit` | Run before any commit (through Husky)                     |
 | `yarn run test`            | Run tests using Jest                                      |
 | `yarn run test:watch`      | Run tests using Jest in watch mode                        |
-| `yarn run ci`              | Run testing and linting in CI|
+| `yarn run ci`              | Run testing and linting in CI                             |
 | `yarn run lint`            | Lint all supported file types                             |
 | `yarn run lint:fix`        | Attempt to fix linting issues on all supported file types |
 | `yarn run release`         | Release the module on npm                                 |
@@ -81,7 +88,7 @@ const actual = await captureOutput(async () => {
 // actual.stdout = ['foo']
 ```
 
-[dedent](https://github.com/dmnd/dedent) is included in all tests, so you can
+[dedent][3] is included in all tests, so you can
 write multiline strings without having to break your indentation.
 
 ```javascript
@@ -99,6 +106,7 @@ describe('moduleName', () => {
     });
   });
 ```
+
 ## Precommit hooks
 
 `aberlaas` uses `husky` and `lint-staged` to make sure all committed code
@@ -194,3 +202,4 @@ For your convenience, `aberlass` and `aberlas` are added as aliases by default.
 
 [1]: https://github.com/jest-community/jest-extended
 [2]: https://github.com/pixelastic/renovate-config-aberlaas
+[3]: https://github.com/dmnd/dedent
