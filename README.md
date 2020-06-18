@@ -20,7 +20,9 @@ exposes the inner configuration of the tools it uses.
 the tools used internally/
 
 `aberlaas setup` will enable CircleCI and Renovate, but requires the repository
-to have been pushed to GitHub first.
+to have been pushed to GitHub first. If you have a `CIRCLECI_TOKEN` and
+`GITHUB_TOKEN` defined, everything will be automatically enabled for you.
+Otherwise, the relevant URLs will be displayed so you can enable them manually.
 
 The following table lists all the scripts added:
 
