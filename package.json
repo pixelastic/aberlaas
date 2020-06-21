@@ -21,6 +21,7 @@
     "lib/commands/lint/*.js",
     "lib/commands/setup/*.js",
     "lib/commands/setup/autoRelease/*.js",
+    "lib/commands/setup/helpers/*.js",
     "lib/configs/*.js",
     "lib/configs/jest/*.js",
     "templates/"
@@ -41,6 +42,7 @@
     "@babel/node": "7.8.7",
     "@babel/plugin-proposal-object-rest-spread": "7.9.5",
     "@babel/preset-env": "7.9.5",
+    "@octokit/rest": "18.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1",
     "babel-jest": "25.3.0",
