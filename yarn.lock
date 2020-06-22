@@ -3681,10 +3681,10 @@ find-versions@^3.2.0:
   dependencies:
     semver-regex "^2.0.0"
 
-firost@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.npmjs.org/firost/-/firost-1.6.0.tgz#c17d06af92f4495f4e8e4bc92077cb136fae89c0"
-  integrity sha512-pqX8t7AFcKcGKLfsYNOX/gO2oFhfRAuzjmNuwyfleuXn3NRSeEgtOcxCE9mii6EnlGkaLaJVkh6/XGIweHQ3BA==
+firost@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.npmjs.org/firost/-/firost-1.7.0.tgz#61a14f18f1a60f250b35122305050969e571e152"
+  integrity sha512-FWjk+9I41+44ECLwrWt+mgNG4bSBqx0CExbXbEF6suaMNOb9rWTTZq4yOJSnIB7hnlPWoyBEOxFCSPkBEHnILw==
   dependencies:
     callsite "1.0.0"
     chokidar "3.4.0"
@@ -3701,6 +3701,7 @@ firost@1.6.0:
     ora "4.0.4"
     shelljs "0.8.4"
     tempy "0.5.0"
+    untildify "4.0.0"
     which "2.0.2"
 
 flat-cache@^2.0.1:
@@ -8593,6 +8594,11 @@ unset-value@^1.0.0:
   dependencies:
     has-value "^0.3.1"
     isobject "^3.0.0"
+
+untildify@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/untildify/-/untildify-4.0.0.tgz#2bc947b953652487e4600949fb091e3ae8cd919b"
+  integrity sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==
 
 upath@^1.1.1:
   version "1.2.0"
