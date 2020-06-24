@@ -157,26 +157,6 @@ specified in the Docker image pulled by CircleCI. As for Yarn, a local copy of
 the whole yarn program is added to the repository when first initializing it, so
 both locals and CI servers will use it.
 
-## Building (with Babel)
-
-_This command is available only for environment where you need to transpile your
-code (for example in Netlify functions). aberlaas expect typical code to use
-node >= v12, and `require` in place of `import`_
-
-`aberlaas build` can build all files located in `./lib` into `./build` using
-Babel.
-
-| CLI Argument         | Default value       | Description                                                                         |
-| -------------------- | ------------------- | ----------------------------------------------------------------------------------- |
-| `[...]`              | `./lib`             | Files or directory to build                                                         |
-| `--config`           | `./babel.config.js` | Babel config file to use                                                            |
-| `--out-dir`          | `./build`           | Build directory                                                                     |
-| `--ignore {pattern}` | empty               | Define patterns of files to ignore. Accepts globs, and can be passed more than once |
-| `--watch`            | `false`             | If enabled, will listen for changes on files and rebuild                            |
-
-You can extend the internal Babel by editing the `babel.config.js` created at
-the root of your project.
-
 ## File structure
 
 `./lib/configs` contain the default configuration for all the tools. They are
@@ -186,9 +166,9 @@ exported by the package and thus can be `import`ed in userland.
 extends the configuration exported in the previous files. Copying files to
 userland allows user to change the files if they want to change the behavior.
 
-`babel.config.js`, `.eslintrc.js`, `.stylelintrc.js`, `jest.config.js` and
-`.huskyrc.js` are local configuration files for `aberlaas` itself. They eat
-their own dog food by referencing the same configs as above.
+`.eslintrc.js`, `.stylelintrc.js`, `jest.config.js` and `.huskyrc.js` are local
+configuration files for `aberlaas` itself. They eat their own dog food by
+referencing the same configs as above.
 
 ## Related packages
 
