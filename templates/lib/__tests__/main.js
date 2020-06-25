@@ -1,10 +1,10 @@
-const module = require('../main');
+const current = require('../main');
 
-describe('module', () => {
+describe('current', () => {
   it('should do something', async () => {
     const input = 'foo';
 
-    const actual = module.run(input);
+    const actual = current.run(input);
 
     expect(actual).toEqual(true);
   });
