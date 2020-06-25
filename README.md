@@ -160,7 +160,7 @@ both locals and CI servers will use it.
 ## File structure
 
 `./lib/configs` contain the default configuration for all the tools. They are
-exported by the package and thus can be `import`ed in userland.
+exported by the package and thus can be `require`d in userland.
 
 `./templates` contains default configurations files copied to userland. Each
 extends the configuration exported in the previous files. Copying files to
