@@ -2649,10 +2649,10 @@ find-versions@^3.2.0:
   dependencies:
     semver-regex "^2.0.0"
 
-firost@1.7.2:
-  version "1.7.2"
-  resolved "https://registry.npmjs.org/firost/-/firost-1.7.2.tgz#f48c09c6caaac5bdbbf523510ee5fde99672404b"
-  integrity sha512-wGJOnuuaN75OnKLCCJyAmhnsldfhVHCQcf3uvEtQ/gT632qTIGCDI71IaYzV0Dae4dJXXAuqo0kkcT7ol6tA4g==
+firost@1.8.1:
+  version "1.8.1"
+  resolved "https://registry.npmjs.org/firost/-/firost-1.8.1.tgz#bd0d43cb0d388231c8e8d110e8c701796cd26bb1"
+  integrity sha512-v1IeU5NTpPl4K/jTYG1xiJI98zmktBSYJYG7VV+S9SplFqnqEoVYMpO227HRBFWHwLMk0vIyCNP+ggZJTJDtkA==
   dependencies:
     callsites "3.1.0"
     chokidar "3.4.0"
@@ -2667,6 +2667,7 @@ firost@1.7.2:
     json-stable-stringify "1.0.1"
     nanoid "3.1.10"
     ora "4.0.4"
+    pkg-dir "4.2.0"
     shelljs "0.8.4"
     tempy "0.5.0"
     untildify "4.0.0"
@@ -5432,9 +5433,9 @@ pirates@^4.0.1:
   dependencies:
     node-modules-regexp "^1.0.0"
 
-pkg-dir@^4.1.0, pkg-dir@^4.2.0:
+pkg-dir@4.2.0, pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   version "4.2.0"
-  resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
+  resolved "https://registry.npmjs.org/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
   integrity sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
   dependencies:
     find-up "^4.0.0"
