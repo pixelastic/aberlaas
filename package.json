@@ -40,7 +40,7 @@
     "@octokit/rest": "18.0.0",
     "ci-info": "2.0.0",
     "dedent": "0.7.0",
-    "eslint": "7.3.1",
+    "eslint": "7.4.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-jest": "23.17.1",
     "eslint-plugin-jsdoc": "28.6.1",
