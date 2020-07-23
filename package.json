@@ -18,6 +18,7 @@
     "lib/*.js",
     "lib/commands/*.js",
     "lib/commands/ci/*.js",
+    "lib/commands/compress/*.js",
     "lib/commands/lint/*.js",
     "lib/commands/setup/*.js",
     "lib/commands/setup/autoRelease/*.js",
