@@ -157,6 +157,24 @@ specified in the Docker image pulled by CircleCI. As for Yarn, a local copy of
 the whole yarn program is added to the repository when first initializing it, so
 both locals and CI servers will use it.
 
+### Auto-Releasing
+
+As an optional feature, you can have aberlaas automatically release a new
+version of your module from the CI environment when relevant.
+
+The CI will then check all the commits since the last release. If any commit is
+a `feat()` it will release a new minor version; it any commit is a `fix()` it
+will release a new patch version. For major release, you'll have to do it
+manually.
+
+This option is not enabled by default. If you need it, you need to follow those
+steps:
+
+- Run `aberlaas setup --autoRelease`. It will setup the required `ENV` variables
+  and ssh keys
+- Update your `aberlaas ci` script to `aberlaas ci --autoRelease`
+- Uncomment the `add_ssh_keys` in your `.circleci.yml` file
+
 ## File structure
 
 `./lib/configs` contain the default configuration for all the tools. They are
