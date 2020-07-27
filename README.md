@@ -170,9 +170,9 @@ manually.
 This option is not enabled by default. If you need it, you need to follow those
 steps:
 
-- Run `aberlaas setup --autoRelease`. It will setup the required `ENV` variables
+- Run `aberlaas setup --auto-release`. It will setup the required `ENV` variables
   and ssh keys
-- Update your `aberlaas ci` script to `aberlaas ci --autoRelease`
+- Update your `aberlaas ci` script to `aberlaas ci --auto-release`
 - Uncomment the `add_ssh_keys` in your `.circleci.yml` file
 
 ## File structure
