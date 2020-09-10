@@ -20,6 +20,7 @@
     "lib/commands/ci/*.js",
     "lib/commands/compress/*.js",
     "lib/commands/lint/*.js",
+    "lib/commands/readme/*.js",
     "lib/commands/setup/*.js",
     "lib/commands/setup/autoRelease/*.js",
     "lib/commands/setup/helpers/*.js",
