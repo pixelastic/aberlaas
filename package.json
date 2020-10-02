@@ -1,6 +1,6 @@
 {
   "name": "aberlaas",
-  "version": "1.13.2",
+  "version": "1.13.3",
   "description": "Shared default config for npm packages.",
   "repository": "git@github.com:pixelastic/aberlaas.git",
   "author": "Pixelastic <tim@pixelastic.com>",
@@ -39,6 +39,7 @@
     "test:watch": "./scripts/test-watch"
   },
   "dependencies": {
+    "@octokit/rest": "18.0.6",
     "ci-info": "2.0.0",
     "dedent": "0.7.0",
     "eslint": "7.10.0",
@@ -63,7 +64,6 @@
     "std-mocks": "1.0.1",
     "strip-ansi": "6.0.0",
     "stylelint": "13.7.2",
-    "yaml-lint": "1.2.4",
-    "@octokit/rest": "18.0.6"
+    "yaml-lint": "1.2.4"
   }
 }
