@@ -1,5 +1,10 @@
 module.exports = {
   extends: ['./lib/configs/eslint.js'],
+  globals: {
+    // We use Jasmine to add a global testName and fail fast in
+    // setupFileAfterEnv.js
+    jasmine: false,
+  },
   overrides: [
     {
       files: ['./templates/*.js'],
