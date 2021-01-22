@@ -39,7 +39,7 @@
     "test:watch": "./scripts/test-watch"
   },
   "dependencies": {
-    "@octokit/rest": "18.0.12",
+    "@octokit/rest": "18.0.14",
     "ci-info": "2.0.0",
     "dedent": "0.7.0",
     "eslint": "7.18.0",
