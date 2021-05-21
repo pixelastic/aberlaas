@@ -6,7 +6,7 @@
   "author": "Pixelastic <tim@pixelastic.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=14.17.0"
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "bin": {
     "aberlaas": "bin/aberlaas",
