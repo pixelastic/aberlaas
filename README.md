@@ -159,6 +159,11 @@ specified in the Docker image pulled by CircleCI. As for Yarn, a local copy of
 the whole yarn program is added to the repository when first initializing it, so
 both locals and CI servers will use it.
 
+By default, tests running on the CI will be parallelized on two CPUs (this is
+what most free CI tier offer). If you have access to higher end machines, you
+can update this value by passing the `--cpu-count=X` flag to your `aberlaas ci`
+call.
+
 ### Auto-Releasing
 
 As an optional feature, you can have aberlaas automatically release a new
