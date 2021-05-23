@@ -5,6 +5,9 @@
   "repository": "git@github.com:pixelastic/aberlaas.git",
   "author": "Pixelastic <tim@pixelastic.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=14.17.0"
+  },
   "bin": {
     "aberlaas": "bin/aberlaas",
     "aberlass": "bin/aberlaas",
