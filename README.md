@@ -73,9 +73,7 @@ Note that you can also pass any other command-line flag and they will be passed
 directly to Jest under the hood.
 
 Jest is loaded with [jest-extended][1] allowing you to use new matchers like
-`.toBeString()`, `.toStartWith()`, etc. It also includes `jest-expect-message`
-to add custom error messages when test fails, as `expect(actual, "Custom error
-message").toBe(true)`.
+`.toBeString()`, `.toStartWith()`, etc.
 
 ### New global variables
 
