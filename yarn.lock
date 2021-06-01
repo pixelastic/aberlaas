@@ -896,10 +896,10 @@
     once "^1.4.0"
     universal-user-agent "^6.0.0"
 
-"@octokit/rest@18.5.5":
-  version "18.5.5"
-  resolved "https://registry.npmjs.org/@octokit/rest/-/rest-18.5.5.tgz#5a930736767ce4ac960b8b964c453432adf3d0a8"
-  integrity sha512-Py9sWvxBGeAwNY8UnhxP6jnq7aflvQ0uQ6gmZObyJLR9hmd5NEz9piu/A77cxV6+0l9UNACJVXX6FOnl5LIcPw==
+"@octokit/rest@18.5.6":
+  version "18.5.6"
+  resolved "https://registry.npmjs.org/@octokit/rest/-/rest-18.5.6.tgz#8c9a7c9329c7bbf478af20df78ddeab0d21f6d89"
+  integrity sha512-8HdG6ZjQdZytU6tCt8BQ2XLC7EJ5m4RrbyU/EARSkAM1/HP3ceOzMG/9atEfe17EDMer3IVdHWLedz2wDi73YQ==
   dependencies:
     "@octokit/core" "^3.2.3"
     "@octokit/plugin-paginate-rest" "^2.6.2"
@@ -4328,6 +4328,11 @@ jest-environment-node@27.0.3, jest-environment-node@^27.0.3:
     "@types/node" "*"
     jest-mock "^27.0.3"
     jest-util "^27.0.2"
+
+jest-expect-message@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/jest-expect-message/-/jest-expect-message-1.0.2.tgz#6d67cdf093457a607d231038a3b84aa3a076bcba"
+  integrity sha512-WFiXMgwS2lOqQZt1iJMI/hOXpUm32X+ApsuzYcQpW5m16Pv6/Gd9kgC+Q+Q1YVNU04kYcAOv9NXMnjg6kKUy6Q==
 
 jest-extended@0.11.5:
   version "0.11.5"
