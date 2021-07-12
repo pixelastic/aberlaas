@@ -3161,10 +3161,10 @@ find-versions@^4.0.0:
   dependencies:
     semver-regex "^3.1.2"
 
-firost@2.16.1:
-  version "2.16.1"
-  resolved "https://registry.npmjs.org/firost/-/firost-2.16.1.tgz#f9e033eeba33e48b1c5097c1ff2e17ecbf7e8635"
-  integrity sha512-2mmrYhezVsj9MDc7dhfWEb9V968T7f23BLXlNX+oZG0dreNX+lScFMqpRpNF6MZjs0lT5wTyD+uv0dC4fqtnig==
+firost@2.16.2:
+  version "2.16.2"
+  resolved "https://registry.npmjs.org/firost/-/firost-2.16.2.tgz#d829062bb28b6d93be329cadf0d0608299ebb328"
+  integrity sha512-ghOY9ZBlm8aGWM8tN611YAPS4yA8ZVoLsLvBdspNMjuSrQBQnHnC5Mnajurqjp3+VGAkI3M7ZRMlJt6DWUz3Mg==
   dependencies:
     callsites "3.1.0"
     chokidar "3.5.2"
@@ -3183,7 +3183,7 @@ firost@2.16.1:
     ora "5.4.1"
     std-mocks "1.0.1"
     strip-ansi "6.0.0"
-    tempy "1.0.1"
+    temp-dir "2.0.0"
     untildify "4.0.0"
     which "2.0.2"
 
@@ -7266,21 +7266,10 @@ table@^6.6.0:
     string-width "^4.2.0"
     strip-ansi "^6.0.0"
 
-temp-dir@^2.0.0:
+temp-dir@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/temp-dir/-/temp-dir-2.0.0.tgz#bde92b05bdfeb1516e804c9c00ad45177f31321e"
   integrity sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==
-
-tempy@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/tempy/-/tempy-1.0.1.tgz#30fe901fd869cfb36ee2bd999805aa72fbb035de"
-  integrity sha512-biM9brNqxSc04Ee71hzFbryD11nX7VPhQQY32AdDmjFvodsRFz/3ufeoTZ6uYkRFfGo188tENcASNs3vTdsM0w==
-  dependencies:
-    del "^6.0.0"
-    is-stream "^2.0.0"
-    temp-dir "^2.0.0"
-    type-fest "^0.16.0"
-    unique-string "^2.0.0"
 
 term-size@^2.1.0:
   version "2.2.0"
@@ -7461,11 +7450,6 @@ type-fest@^0.11.0:
   version "0.11.0"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.11.0.tgz#97abf0872310fed88a5c466b25681576145e33f1"
   integrity sha512-OdjXJxnCN1AvyLSzeKIgXTXxV+99ZuXl3Hpo9XpJAv9MBcHrrJOQ5kV7ypXOuQie+AmWG25hLbiKdwYTifzcfQ==
-
-type-fest@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.16.0.tgz#3240b891a78b0deae910dbeb86553e552a148860"
-  integrity sha512-eaBzG6MxNzEn9kiwvtre90cXaNLkmadMWa1zQMs3XORCXNbsH/OewwbxC5ia9dCxIxnTAsSxXJaa/p5y8DlvJg==
 
 type-fest@^0.18.0:
   version "0.18.1"
