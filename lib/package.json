@@ -1,0 +1,72 @@
+{
+  "name": "aberlaas",
+  "description": "Shared default config for npm packages.",
+  "version": "1.24.1",
+  "repository": "pixelastic/aberlaas",
+  "homepage": "https://projects.pixelastic.com/aberlaas/",
+  "author": "Tim Carry (@pixelastic)",
+  "license": "MIT",
+  "main": "main.js",
+  "files": [
+    "bin/",
+    "*.js",
+    "commands/*.js",
+    "commands/ci/*.js",
+    "commands/compress/*.js",
+    "commands/lint/*.js",
+    "commands/readme/*.js",
+    "commands/setup/*.js",
+    "commands/setup/autoRelease/*.js",
+    "commands/setup/helpers/*.js",
+    "configs/*.js",
+    "configs/jest/*.js",
+    "templates/"
+  ],
+  "bin": {
+    "aberlaas": "bin/aberlaas",
+    "aberlass": "bin/aberlaas",
+    "aberlas": "bin/aberlaas"
+  },
+  "dependencies": {
+    "@octokit/rest": "18.6.7",
+    "ci-info": "3.2.0",
+    "dedent": "0.7.0",
+    "eslint": "7.31.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-jest": "24.3.6",
+    "eslint-plugin-jsdoc": "35.4.5",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "find-up": "5.0.0",
+    "firost": "2.16.2",
+    "front-matter": "4.0.2",
+    "golgoth": "2.0.0",
+    "husky": "4.3.8",
+    "jest": "27.0.6",
+    "jest-environment-node": "27.0.6",
+    "jest-expect-message": "1.0.2",
+    "jest-extended": "0.11.5",
+    "lint-staged": "11.0.1",
+    "minimist": "1.2.5",
+    "np": "7.5.0",
+    "parse-github-repo-url": "1.4.1",
+    "prettier": "2.3.2",
+    "std-mocks": "1.0.1",
+    "strip-ansi": "6.0.0",
+    "stylelint": "13.13.1",
+    "yaml-lint": "1.2.4"
+  },
+  "engines": {
+    "node": ">=14.17.0"
+  },
+  "scripts": {
+    "build": "../scripts/docs/build",
+    "build:prod": "../scripts/docs/build-prod",
+    "lint": "../scripts/lib/lint",
+    "lint:fix": "../scripts/lib/lint-fix",
+    "release": "../scripts/release",
+    "serve": "../scripts/docs/serve",
+    "test": "../scripts/lib/test",
+    "test:watch": "../scripts/lib/test-watch"
+  }
+}
