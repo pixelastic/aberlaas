@@ -1,6 +1,6 @@
 {
   "name": "aberlaas",
-  "description": "Shared default config for npm packages.",
+  "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
   "version": "1.24.1",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
