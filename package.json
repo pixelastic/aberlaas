@@ -10,6 +10,7 @@
   ],
   "files": [],
   "devDependencies": {
+    "aberlaas": "link:./lib",
     "lerna": "4.0.0"
   },
   "scripts": {
@@ -24,8 +25,5 @@
     "serve": "./scripts/docs/serve",
     "test": "./scripts/lib/test",
     "test:watch": "./scripts/lib/test-watch"
-  },
-  "dependencies": {
-    "aberlaas": "1.24.1"
   }
 }

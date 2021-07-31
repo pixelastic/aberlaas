@@ -18,11 +18,24 @@ module.exports = {
       ],
     },
     {
+      name: 'Init',
+      links: [
+        {
+          title: 'Overview',
+          href: 'init/',
+        },
+      ],
+    },
+    {
       name: 'Setup',
       links: [
         {
           title: 'Overview',
           href: 'setup/',
+        },
+        {
+          title: 'GitHub',
+          href: 'setup/github',
         },
         {
           title: 'CircleCI',

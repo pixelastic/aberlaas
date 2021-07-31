@@ -2,28 +2,46 @@
 title: aberlaas
 ---
 
-<div class="lead">Shared default config for npm packages.</div>
+<div class="lead">Scaffold your JavaScript projects with a consistent config for tests, lint, release and CI.</div>
 
-# Aberlaas
+`aberlaas` is a wrapper around Jest, ESLint, Prettier, etc and their plugins so
+you only install one package in your `devDependencies` instead of dozens. 
 
-Start a new npm package with all the right tooling in place.
+I created this module because I got tired of copy-pasting the same configuration
+files from project to project. With one _meta_ module to handle all the tooling,
+I could get started on a new project in minutes instead of hours.
 
-This package exposes the `aberlaas` script that can be used to perform the most
-common tasks on a package: `lint`, `test` and `release`. It also
-exposes the inner configuration of the tools it uses.
+Using `aberlaas` on every project ensured my linting rules and release process
+is consistent across my projects. Of course, if you don't like the defaults
+it's shipped with, you can override them as all configuration files are exposed.
 
-## Installing aberlaas
+## Installation
 
-- Run `yarn add --dev aberlaas` to install it
-- Run `yarn run aberlaas init` to bootstrap your project with all the scripts
-  and configuration
-- Commit and push
-- Run `yarn run aberlaas setup` to enable the external services (CircleCI and
-  Renovate)
+```shell
+yarn add --dev aberlaas
 
-`aberlaas init` will add custom scripts (in `./scripts` and in your
-`package.json`), scaffold a `./lib` folder and create default config files for
-the tools used internally/
+yarn run aberlaas init
+```
+
+This will add `aberlaas` to your `devDependencies` and bootstrap your project.
+Config files for all the tools will be created (`.eslintrc.js`,
+`jest.config.js`, etc) and new `yarn run` scripts will be added for the most
+common tasks (`lint`, `test`, `release`, etc).
+
+At that point, you should probably commit all the changes.
+
+### (Optional) Setup the external services
+
+```shell
+yarn run aberlaas setup
+```
+
+This will configure third party services like GitHub and CircleCI to work better
+with `aberlaas`.
+
+---
+
+
 
 `aberlaas setup` will enable CircleCI and Renovate, but requires the repository
 to have been pushed to GitHub first. If you have a `CIRCLECI_TOKEN` and
