@@ -17,5 +17,5 @@
     "test": "../scripts/lib/test",
     "test:watch": "../scripts/lib/test-watch"
   },
-  "version": "1.24.2"
+  "version": "1.24.3"
 }
