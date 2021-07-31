@@ -2,7 +2,7 @@ module.exports = {
   extends: ['./lib/configs/eslint.js'],
   overrides: [
     {
-      files: ['./lib/templates/*.js'],
+      files: ['**/templates/*.js'],
       rules: {
         // Files in templates are trying to require('aberlaas/lib/*')
         // This works when copied into the root of a project as expected, but
