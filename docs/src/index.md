@@ -43,10 +43,6 @@ with `aberlaas`.
 
 
 
-`aberlaas setup` will enable CircleCI and Renovate, but requires the repository
-to have been pushed to GitHub first. If you have a `CIRCLECI_TOKEN` and
-`GITHUB_TOKEN` defined, everything will be automatically enabled for you.
-Otherwise, the relevant URLs will be displayed so you can enable them manually.
 
 The following table lists all the scripts added:
 
@@ -217,10 +213,6 @@ userland allows user to change the files if they want to change the behavior.
 configuration files for `aberlaas` itself. They eat their own dog food by
 referencing the same configs as above.
 
-## Related packages
-
-Check [renovate-config-aberlaas][2] for the Renovate bot config used.
-
 ## Where does the name Aberlaas come from?
 
 Aberlaas is the base camp from which all great expedition start in the _La Horde
@@ -230,5 +222,4 @@ modules.
 For your convenience, `aberlass` and `aberlas` are added as aliases by default.
 
 [1]: https://github.com/jest-community/jest-extended
-[2]: https://github.com/pixelastic/renovate-config-aberlaas
 [3]: https://github.com/dmnd/dedent

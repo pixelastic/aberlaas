@@ -106,7 +106,20 @@ module.exports = {
         },
         {
           title: 'Auto-release',
-          href: 'release/auto-release',
+          href: 'release/autorelease',
+        },
+      ],
+    },
+    {
+      name: 'CI',
+      links: [
+        {
+          title: 'Overview',
+          href: 'ci/',
+        },
+        {
+          title: 'Auto-release',
+          href: 'ci/autorelease',
         },
       ],
     },
@@ -129,7 +142,7 @@ module.exports = {
     },
     {
       name: 'Other commands',
-      links: ['ci', 'compress', 'readme', 'setup'],
+      links: ['compress', 'readme'],
     },
   ],
 };
