@@ -9,6 +9,7 @@
   "main": "main.js",
   "files": [
     "bin/",
+    "lib/",
     "*.js",
     "commands/*.js",
     "commands/ci/*.js",
@@ -18,8 +19,7 @@
     "commands/setup/*.js",
     "commands/setup/autoRelease/*.js",
     "commands/setup/helpers/*.js",
-    "configs/*.js",
-    "configs/jest/*.js",
+    "configs/",
     "templates/"
   ],
   "bin": {
