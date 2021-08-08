@@ -52,30 +52,7 @@ The following table lists all the scripts added:
 | `yarn run test`            | Run tests using Jest                                      |
 | `yarn run test:watch`      | Run tests using Jest in watch mode                        |
 | `yarn run ci`              | Run testing and linting in CI                             |
-| `yarn run lint`            | Lint all supported file types                             |
-| `yarn run lint:fix`        | Attempt to fix linting issues on all supported file types |
 | `yarn run release`         | Release the module on npm                                 |
-
-## Linting
-
-`aberlaas lint` will lint all supported files. Each file type can be linted
-independently with the corresponding argument (`aberlaas lint --json` will lint
-JSON files for example).
-
-You can have Aberlaas trying to autofix linting issues by adding the `--fix`
-argument to your command.
-
-The following table show the file types supported and the corresponding command
-and linter used.
-
-| Command                             | File type              | Linter used                                     | Fixer used                | Config files                        |
-| ----------------------------------- | ---------------------- | ----------------------------------------------- | ------------------------- | ----------------------------------- |
-| `aberlaas lint`                     | All supported          | N/A                                             | N/A                       | See individual file type            |
-| `aberlaas lint --js`                | JavaScript             | ESLint                                          | Prettier (through ESLint) | `.eslintrc.js` or `--config.js`     |
-| `aberlaas lint --css`               | CSS                    | Stylelint                                       | Prettier                  | `.stylelintrc.js` or `--config.css` |
-| `aberlaas lint --json`              | JSON                   | jsonlint                                        | Prettier                  |                                     |
-| `aberlaas lint --yml` (or `--yaml`) | YAML                   | yaml-lint                                       | Prettier                  |                                     |
-| `aberlaas lint --circleci`          | `.circleci/config.yml` | yaml-lint, `circleci` (if available in `$PATH`) | Prettier                  |                                     |
 
 ## Testing (with Jest)
 
