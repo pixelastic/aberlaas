@@ -5,7 +5,7 @@
 
 # aberlaas
 
-<div class="lead">Scaffold your JavaScript projects with a consistent config for tests, lint, release and CI.</div>
+<div class="lead">Scaffold your JavaScript projects with consistent config for tests, lint, release and CI.</div>
 
 `aberlaas` is a wrapper around Jest, ESLint, Prettier, etc and their plugins so
 you only install one package in your `devDependencies` instead of dozens. 

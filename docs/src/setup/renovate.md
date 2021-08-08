@@ -1,5 +1,5 @@
 ---
-title: Renovate
+title: Setup Renovate
 ---
 
 The `aberlaas setup` will enable [Renovate][1] on your GitHub repository.
@@ -23,7 +23,8 @@ the custom [aberlaas][2] preset.
   as well.
 
 You can update your Renovate configuration by updating the
-`.github/renovate.json` file.
+`.github/renovate.json` file. If you don't want renovate installed, pass
+`--no-renovate` to `aberlaas setup`.
 
 [1]: https://github.com/renovatebot/renovate
 [2]: https://github.com/pixelastic/renovate-config-aberlaas

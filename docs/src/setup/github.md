@@ -1,5 +1,5 @@
 ---
-title: GitHub
+title: Setup GitHub
 ---
 
 The `aberlaas setup` will configure your GitHub repo with the following

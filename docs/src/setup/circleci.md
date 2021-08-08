@@ -1,5 +1,5 @@
 ---
-title: CircleCI
+title: Setup CircleCI
 ---
 
 The `aberlaas setup` command will automatically **follow** your repository on
@@ -11,6 +11,9 @@ See the [aberlaas ci](/ci/) command for more details.
 You will need a `CIRCLECI_TOKEN` environment variable for this command to
 correctly follow your repository. If no such token is available, the URL to
 manually follow the project will be displayed.
+
+Add the `--no-circleci` flag to `aberlaas setup` if you don't want to configure
+CircleCI on a project.
 
 To go further with CircleCI, you can check
 [on-circle](https://projects.pixelastic.com/on-circle/). It provides

@@ -59,12 +59,12 @@ module.exports = {
           href: 'test/configuration',
         },
         {
-          title: 'CSS',
-          href: 'lint/css',
+          title: 'JavaScript',
+          href: 'lint/javascript',
         },
         {
-          title: 'JavaScript',
-          href: 'lint/js',
+          title: 'CSS',
+          href: 'lint/css',
         },
         {
           title: 'JSON',
@@ -73,10 +73,6 @@ module.exports = {
         {
           title: 'YAML',
           href: 'lint/yaml',
-        },
-        {
-          title: 'CircleCI',
-          href: 'lint/circleci',
         },
       ],
     },
@@ -128,7 +124,7 @@ module.exports = {
       links: [
         {
           title: 'Overview',
-          href: 'lint/',
+          href: 'precommit/',
         },
         {
           title: 'Husky',
