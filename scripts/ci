@@ -2,4 +2,10 @@
 set -e
 cd "$(dirname "$0")/.."
 
+# ADDING ABERLAAS BINARY
+# On CircleCi, the aberlaas binary is not properly added to the
+# node_modules/.bin folder.
+# We will force adding it so other scripts can use it
+ln -s ../../lib/bin/aberlaas ./node_modules/.bin/aberlaas
+
 aberlaas ci "$@"
