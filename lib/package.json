@@ -50,7 +50,7 @@
     "minimist": "1.2.5",
     "np": "7.5.0",
     "parse-github-repo-url": "1.4.1",
-    "prettier": "2.4.0",
+    "prettier": "2.4.1",
     "std-mocks": "1.0.1",
     "strip-ansi": "6.0.0",
     "stylelint": "13.13.1",
