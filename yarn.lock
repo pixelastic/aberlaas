@@ -4036,7 +4036,7 @@ abbrev@1:
     parse-github-repo-url "1.4.1"
     prettier "2.4.1"
     std-mocks "1.0.1"
-    strip-ansi "6.0.0"
+    strip-ansi "6.0.1"
     stylelint "13.13.1"
     yaml-lint "1.2.4"
 
@@ -16665,6 +16665,13 @@ strip-ansi@6.0.0, strip-ansi@^6.0.0:
   integrity sha512-AuvKTrTfQNYNIctbR1K/YGTR1756GycPsg7b9bdV9Duqur4gv6aKqHXah67Z8ImS7WEz5QVcOtlfW2rZEugt6w==
   dependencies:
     ansi-regex "^5.0.0"
+
+strip-ansi@6.0.1:
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
 
 strip-ansi@^0.3.0:
   version "0.3.0"
