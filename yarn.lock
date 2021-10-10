@@ -4006,7 +4006,7 @@ abbrev@1:
     dedent "0.7.0"
     eslint "7.32.0"
     eslint-config-prettier "8.3.0"
-    eslint-plugin-jest "24.6.0"
+    eslint-plugin-jest "24.7.0"
     eslint-plugin-jsdoc "36.1.1"
     eslint-plugin-node "11.1.0"
     eslint-plugin-prettier "3.4.1"
@@ -4019,7 +4019,7 @@ abbrev@1:
     jest-environment-node "27.2.5"
     jest-expect-message "1.0.2"
     jest-extended "0.11.5"
-    lint-staged "11.2.2"
+    lint-staged "11.2.3"
     minimist "1.2.5"
     np "7.5.0"
     parse-github-repo-url "1.4.1"
@@ -7399,10 +7399,10 @@ eslint-plugin-es@^3.0.0:
     eslint-utils "^2.0.0"
     regexpp "^3.0.0"
 
-eslint-plugin-jest@24.6.0:
-  version "24.6.0"
-  resolved "https://registry.npmjs.org/eslint-plugin-jest/-/eslint-plugin-jest-24.6.0.tgz#73ac7cd40419a227b3f1b2b686c023563ceb1e51"
-  integrity sha512-xNz0ajbu7ijrNMI1RMDXZis40DWBNTe/i+eXIzovva1Jk2UmI6AdN6xleZiunb1U0G/doMwG3rJjrmlCl5IHkQ==
+eslint-plugin-jest@24.7.0:
+  version "24.7.0"
+  resolved "https://registry.npmjs.org/eslint-plugin-jest/-/eslint-plugin-jest-24.7.0.tgz#206ac0833841e59e375170b15f8d0955219c4889"
+  integrity sha512-wUxdF2bAZiYSKBclsUMrYHH6WxiBreNjyDxbRv345TIvPeoCEgPNEn3Sa+ZrSqsf1Dl9SqqSREXMHExlMMu1DA==
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.0.1"
 
@@ -11274,10 +11274,10 @@ linkify-it@^3.0.1:
   dependencies:
     uc.micro "^1.0.1"
 
-lint-staged@11.2.2:
-  version "11.2.2"
-  resolved "https://registry.npmjs.org/lint-staged/-/lint-staged-11.2.2.tgz#b2b96d8c4eb350f832143c812defa2c70b9d0a2c"
-  integrity sha512-rbtLCRTyndPJvtjpLwVjjb6K91jQrJ06oNArA4igPTGYlDCrJMIFbNDUAQGa4GRd8AjUBHkAAmq+K38tcmMaAQ==
+lint-staged@11.2.3:
+  version "11.2.3"
+  resolved "https://registry.npmjs.org/lint-staged/-/lint-staged-11.2.3.tgz#fc3f4569cc4f46553309dfc1447b8aef69f744fb"
+  integrity sha512-Tfmhk8O2XFMD25EswHPv+OYhUjsijy5D7liTdxeXvhG2rsadmOLFtyj8lmlfoFFXY8oXWAIOKpoI+lJe1DB1mw==
   dependencies:
     cli-truncate "2.1.0"
     colorette "^1.4.0"
