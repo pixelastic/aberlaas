@@ -4021,7 +4021,7 @@ abbrev@1:
     jest-extended "0.11.5"
     lint-staged "11.2.6"
     minimist "1.2.5"
-    np "7.5.0"
+    np "7.6.0"
     parse-github-repo-url "1.4.1"
     prettier "2.4.1"
     std-mocks "1.0.1"
@@ -13186,10 +13186,10 @@ norska@2.9.0:
     norska-revv "^2.8.0"
     norska-serve "^2.8.0"
 
-np@7.5.0:
-  version "7.5.0"
-  resolved "https://registry.npmjs.org/np/-/np-7.5.0.tgz#03e3f8fb77ff0b8718dfd54b76cbd3c0f383a221"
-  integrity sha512-CdpgqtO6JpDKJjQ2gueY0jnbz6APWA9wFXSwPv5bXg4seSBibHqQ8JyWxYlS8YRfVbpeDtj582wcAWTlfy5qNA==
+np@7.6.0:
+  version "7.6.0"
+  resolved "https://registry.npmjs.org/np/-/np-7.6.0.tgz#779e885a9a98246a1d7bbf6e4c1469d348929ac1"
+  integrity sha512-WWGZtfNkE6MEkI7LE8NtG7poTqzTHj/tssBzcPnBAdMVPXkXDtX2wk0ptrj8YZ3u4TFmGSqioSohdud86aJxSg==
   dependencies:
     "@samverschueren/stream-to-observable" "^0.3.1"
     any-observable "^0.5.1"
