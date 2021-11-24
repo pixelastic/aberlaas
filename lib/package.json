@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@octokit/rest": "18.12.0",
-    "ci-info": "3.2.0",
+    "ci-info": "3.3.0",
     "dedent": "0.7.0",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
