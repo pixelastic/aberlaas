@@ -52,7 +52,7 @@
     "parse-github-repo-url": "1.4.1",
     "prettier": "2.5.1",
     "std-mocks": "1.0.1",
-    "strip-ansi": "6.0.1",
+    "strip-ansi": "7.0.1",
     "stylelint": "13.13.1",
     "yaml-lint": "1.2.4"
   },
