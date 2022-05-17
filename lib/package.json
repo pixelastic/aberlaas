@@ -29,10 +29,10 @@
   },
   "dependencies": {
     "@octokit/rest": "18.12.0",
-    "ci-info": "3.3.0",
+    "ci-info": "3.3.1",
     "dedent": "0.7.0",
     "eslint": "7.32.0",
-    "eslint-config-prettier": "8.3.0",
+    "eslint-config-prettier": "8.5.0",
     "eslint-plugin-jest": "24.7.0",
     "eslint-plugin-jsdoc": "36.1.1",
     "eslint-plugin-node": "11.1.0",
@@ -42,19 +42,19 @@
     "front-matter": "4.0.2",
     "golgoth": "2.1.0",
     "husky": "4.3.8",
-    "jest": "27.4.5",
-    "jest-environment-node": "27.4.4",
+    "jest": "27.5.1",
+    "jest-environment-node": "27.5.1",
     "jest-expect-message": "1.0.2",
     "jest-extended": "0.11.5",
     "lint-staged": "11.2.6",
     "minimist": "1.2.6",
     "np": "7.6.1",
     "parse-github-repo-url": "1.4.1",
-    "prettier": "2.5.1",
+    "prettier": "2.6.2",
     "std-mocks": "1.0.1",
     "strip-ansi": "6.0.1",
     "stylelint": "13.13.1",
-    "yaml-lint": "1.2.4"
+    "yaml-lint": "1.7.0"
   },
   "engines": {
     "node": ">=14.17.0"
