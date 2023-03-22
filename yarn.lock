@@ -4228,7 +4228,7 @@ abbrev@1:
     ci-info "3.8.0"
     dedent "0.7.0"
     eslint "7.32.0"
-    eslint-config-prettier "8.7.0"
+    eslint-config-prettier "8.8.0"
     eslint-plugin-jest "24.7.0"
     eslint-plugin-jsdoc "36.1.1"
     eslint-plugin-node "11.1.0"
@@ -4246,7 +4246,7 @@ abbrev@1:
     minimist "1.2.8"
     np "7.6.4"
     parse-github-repo-url "1.4.1"
-    prettier "2.8.4"
+    prettier "2.8.6"
     std-mocks "1.0.1"
     strip-ansi "6.0.1"
     stylelint "13.13.1"
@@ -7631,10 +7631,10 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@8.7.0:
-  version "8.7.0"
-  resolved "https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-8.7.0.tgz#f1cc58a8afebc50980bd53475451df146c13182d"
-  integrity sha512-HHVXLSlVUhMSmyW4ZzEuvjpwqamgmlfkutD53cYXLikh4pt/modINRcCIApJ84czDxM4GZInwUrromsDdTImTA==
+eslint-config-prettier@8.8.0:
+  version "8.8.0"
+  resolved "https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-8.8.0.tgz#bfda738d412adc917fd7b038857110efe98c9348"
+  integrity sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA==
 
 eslint-plugin-es@^3.0.0:
   version "3.0.0"
@@ -14992,10 +14992,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@2.8.4:
-  version "2.8.4"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-2.8.4.tgz#34dd2595629bfbb79d344ac4a91ff948694463c3"
-  integrity sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==
+prettier@2.8.6:
+  version "2.8.6"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-2.8.6.tgz#5c174b29befd507f14b83e3c19f83fdc0e974b71"
+  integrity sha512-mtuzdiBbHwPEgl7NxWlqOkithPyp4VN93V7VeHVWBF+ad3I5avc0RVDT4oImXQy9H/AqxA2NSQH8pSxHW6FYbQ==
 
 pretty-format@^22.4.3:
   version "22.4.3"
