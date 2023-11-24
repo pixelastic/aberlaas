@@ -2,4 +2,4 @@
 set -e
 cd "$(dirname "$0")/../../lib"
 
-aberlaas lint "$@"
+./bin/aberlaas.js lint "$@"

@@ -7,7 +7,13 @@
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
   "license": "MIT",
-  "exports": "./main.js",
+  "exports": {
+    ".": "./main.js",
+    "./configs/husky.cjs": "./configs/husky.cjs",
+    "./configs/lintstaged.cjs": "./configs/lintstaged.cjs",
+    "./configs/prettier.cjs": "./configs/prettier.cjs",
+    "./configs/styleling.cjs": "./configs/styleling.cjs"
+  },
   "files": [
     "bin/",
     "lib/",
@@ -36,7 +42,7 @@
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-jest": "27.6.0",
     "eslint-plugin-jsdoc": "46.9.0",
-    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-n": "16.3.1",
     "eslint-plugin-prettier": "5.0.1",
     "find-up": "5.0.0",
     "firost": "2.17.0",

@@ -2,4 +2,4 @@
 set -e
 cd "$(dirname "$0")/../../docs"
 
-aberlaas lint --fix "$@"
+../bin/aberlaas.js lint --fix "$@"

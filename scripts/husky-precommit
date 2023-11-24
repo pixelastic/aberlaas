@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 set -e
 
-aberlaas precommit "$@"
+./lib/bin/aberlaas.js precommit "$@"

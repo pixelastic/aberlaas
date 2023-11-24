@@ -1,1 +1,1 @@
-module.exports = require('./lib/configs/husky.js');
+module.exports = require('./lib/configs/husky.cjs');
