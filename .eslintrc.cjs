@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['./lib/configs/eslint.js'],
+  extends: ['./lib/configs/eslint.cjs'],
   overrides: [
     {
       files: ['**/templates/*.js'],
