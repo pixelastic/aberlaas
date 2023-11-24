@@ -18,14 +18,17 @@
     "bin/",
     "lib/",
     "*.js",
-    "commands/*.js",
     "commands/ci/*.js",
     "commands/compress/*.js",
+    "commands/init/*.js",
     "commands/lint/*.js",
+    "commands/precommit/*.js",
     "commands/readme/*.js",
+    "commands/release/*.js",
     "commands/setup/*.js",
     "commands/setup/autoRelease/*.js",
     "commands/setup/helpers/*.js",
+    "commands/test/*.js",
     "configs/",
     "templates/"
   ],
@@ -61,6 +64,7 @@
     "std-mocks": "1.0.1",
     "strip-ansi": "6.0.1",
     "stylelint": "13.13.1",
+    "vitest": "0.34.6",
     "yaml-lint": "1.7.0"
   },
   "engines": {
