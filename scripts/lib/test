@@ -2,4 +2,4 @@
 set -e
 cd "$(dirname "$0")/../../lib"
 
-NODE_OPTIONS=--experimental-vm-modules ./bin/aberlaas.js test "$@"
+./bin/aberlaas.js test "$@"
