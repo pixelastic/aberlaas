@@ -22,6 +22,7 @@
     "commands/compress/*.js",
     "commands/init/*.js",
     "commands/lint/*.js",
+    "commands/lint/helpers/*.js",
     "commands/precommit/*.js",
     "commands/readme/*.js",
     "commands/release/*.js",
@@ -74,5 +75,9 @@
     "serve": "../scripts/docs/serve",
     "test": "../scripts/lib/test",
     "test:watch": "../scripts/lib/test-watch"
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "2.29.0",
+    "eslint-plugin-vitest": "0.3.10"
   }
 }
