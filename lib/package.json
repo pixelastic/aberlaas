@@ -52,6 +52,7 @@
     "front-matter": "4.0.2",
     "golgoth": "2.1.0",
     "husky": "4.3.8",
+    "jest-extended": "4.0.2",
     "lint-staged": "11.2.6",
     "minimist": "1.2.8",
     "np": "7.7.0",
