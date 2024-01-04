@@ -24,5 +24,6 @@
     "serve": "./scripts/docs/serve",
     "test": "./scripts/lib/test",
     "test:watch": "./scripts/lib/test-watch"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }
