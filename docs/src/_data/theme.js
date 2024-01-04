@@ -127,10 +127,6 @@ module.exports = {
           href: 'precommit/',
         },
         {
-          title: 'Husky',
-          href: 'precommit/husky',
-        },
-        {
           title: 'Lintstaged',
           href: 'precommit/lintstaged',
         },

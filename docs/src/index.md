@@ -48,7 +48,6 @@ The following table lists all the scripts added:
 
 | Script                     | Description                                               |
 | -------------------------- | --------------------------------------------------------- |
-| `yarn run husky:precommit` | Run before any commit (through Husky)                     |
 | `yarn run test`            | Run tests using Jest                                      |
 | `yarn run test:watch`      | Run tests using Jest in watch mode                        |
 | `yarn run ci`              | Run testing and linting in CI                             |
@@ -108,7 +107,7 @@ describe('moduleName', () => {
 
 ## Precommit hooks
 
-`aberlaas` uses `husky` and `lint-staged` to make sure all committed code
+`aberlaas` uses `lint-staged` to make sure all committed code
 follows your coding standard.
 
 All `css`, `js`, `json` and `yml` files will be checked for parsing errors
@@ -186,7 +185,7 @@ exported by the package and thus can be `require`d in userland.
 extends the configuration exported in the previous files. Copying files to
 userland allows user to change the files if they want to change the behavior.
 
-`.eslintrc.js`, `.stylelintrc.js`, `jest.config.js` and `.huskyrc.js` are local
+`.eslintrc.js`, `.stylelintrc.js` and `jest.config.js` are local
 configuration files for `aberlaas` itself. They eat their own dog food by
 referencing the same configs as above.
 

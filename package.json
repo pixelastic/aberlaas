@@ -18,7 +18,6 @@
     "build:prod": "./scripts/docs/build-prod",
     "ci": "./scripts/ci",
     "cms": "./scripts/docs/cms",
-    "husky:precommit": "./scripts/husky-precommit",
     "lint": "./scripts/lint",
     "lint:fix": "./scripts/lint-fix",
     "release": "./scripts/release",

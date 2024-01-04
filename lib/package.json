@@ -9,7 +9,6 @@
   "license": "MIT",
   "exports": {
     ".": "./main.js",
-    "./configs/husky.cjs": "./configs/husky.cjs",
     "./configs/lintstaged.cjs": "./configs/lintstaged.cjs",
     "./configs/prettier.cjs": "./configs/prettier.cjs",
     "./configs/styleling.cjs": "./configs/styleling.cjs"
@@ -17,6 +16,7 @@
   "files": [
     "bin/",
     "lib/",
+    "scripts/",
     "*.js",
     "commands/ci/*.js",
     "commands/compress/*.js",
@@ -50,8 +50,8 @@
     "find-up": "5.0.0",
     "firost": "3.1.0",
     "front-matter": "4.0.2",
+    "gilmore": "0.1.0",
     "golgoth": "2.1.0",
-    "husky": "4.3.8",
     "jest-extended": "4.0.2",
     "lint-staged": "11.2.6",
     "minimist": "1.2.8",
@@ -74,7 +74,8 @@
     "release": "../scripts/release",
     "serve": "../scripts/docs/serve",
     "test": "../scripts/lib/test",
-    "test:watch": "../scripts/lib/test-watch"
+    "test:watch": "../scripts/lib/test-watch",
+    "postinstall": "./scripts/postinstall"
   },
   "devDependencies": {
     "eslint-plugin-import": "2.29.0",

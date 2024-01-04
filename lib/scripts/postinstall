@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# This script *should be* automatically run when aberlaas in installed
+# It will configure the local git repository to use ./scripts/hooks (if it
+# exists) for git hooks
+#
+# Note that npm/yarn/etc might have caching mechanisms that will prevent this
+# script from running in some circumstances. It's not (and will never be)
+# a bulletproof approach, but should cover the most basic needs.
+#
+# In case hooks no longer trigger, you will need to manually run:
+# $ git config core.hooksPath scripts/hooks
+
+if [ ! -d "./scripts/hooks" ]; then
+	git config core.hooksPath scripts/hooks
+fi
