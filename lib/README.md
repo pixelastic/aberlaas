@@ -7,7 +7,7 @@
 
 <div class="lead">Scaffold your JavaScript projects with consistent config for tests, lint, release and CI.</div>
 
-`aberlaas` is a wrapper around Vitest, ESLint, Prettier, etc and their plugins so
+`aberlaas` is a wrapper around Jest, ESLint, Prettier, etc and their plugins so
 you only install one package in your `devDependencies` instead of dozens. 
 
 I created this module because I got tired of copy-pasting the same configuration
@@ -28,7 +28,7 @@ yarn run aberlaas init
 
 This will add `aberlaas` to your `devDependencies` and bootstrap your project.
 Config files for all the tools will be created (`.eslintrc.js`,
-`vite.config.js`, etc) and new `yarn run` scripts will be added for the most
+`jest.config.js`, etc) and new `yarn run` scripts will be added for the most
 common tasks (`lint`, `test`, `release`, etc).
 
 At that point, you should probably commit all the changes.
@@ -51,28 +51,27 @@ The following table lists all the scripts added:
 
 | Script                     | Description                                               |
 | -------------------------- | --------------------------------------------------------- |
-| `yarn run test`            | Run tests using Vitest                                    |
-| `yarn run test:watch`      | Run tests using Vitest in watch mode                      |
+| `yarn run test`            | Run tests using Jest                                      |
+| `yarn run test:watch`      | Run tests using Jest in watch mode                        |
 | `yarn run ci`              | Run testing and linting in CI                             |
 | `yarn run release`         | Release the module on npm                                 |
 
-## Testing (with Vitest)
+## Testing (with Jest)
 
-`aberlaas test` to run all the Vitest tests in `./lib`. You can alter the behavior
+`aberlaas test` to run all the Jest tests in `./lib`. You can alter the behavior
 with the following options:
 
 | CLI Argument | Default value    | Description                                                  |
 | ------------ | ---------------- | ------------------------------------------------------------ |
 | `[...]`      | `./lib`          | Files and directories to test.                               |
-| `--config`   | `vite.config.js` | Vite config file to use (`.test` key)                        |
+| `--config`   | `jest.config.js` | Jest config file to use                                      |
 | `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
 | `--failFast` | `false`          | If enabled, will stop as soon as one test fails              |
-| `--related`  | `false`          | If enabled, run all related tests                            |
 
 Note that you can also pass any other command-line flag and they will be passed
-directly to Vitest under the hood.
+directly to Jest under the hood.
 
-Vitest is loaded with [jest-extended][1] allowing you to use new matchers like
+Jest is loaded with [jest-extended][1] allowing you to use new matchers like
 `.toBeString()`, `.toStartWith()`, etc.
 
 ### New global variables
@@ -189,7 +188,7 @@ exported by the package and thus can be `require`d in userland.
 extends the configuration exported in the previous files. Copying files to
 userland allows user to change the files if they want to change the behavior.
 
-`.eslintrc.js` and `.stylelintrc.js` are local
+`.eslintrc.js`, `.stylelintrc.js` and `jest.config.js` are local
 configuration files for `aberlaas` itself. They eat their own dog food by
 referencing the same configs as above.
 
