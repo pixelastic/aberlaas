@@ -1,4 +1,4 @@
-const lintStagedConfig = require('./lib/configs/lintstaged.cjs');
+const config = require('./lib/configs/lintstaged.cjs');
 module.exports = {
-  ...lintStagedConfig,
+  ...config,
 };

@@ -192,6 +192,43 @@ userland allows user to change the files if they want to change the behavior.
 configuration files for `aberlaas` itself. They eat their own dog food by
 referencing the same configs as above.
 
+## Tools used and their future
+
+### ESLint
+
+ESLint doesn't yet support ESM config files. We'll upgrade to the latest ESLint
+when it does. This should also help fix the issue with Yarn PnP (see below).
+
+### Yarn
+
+**tl;dr; We'll move to Yarn PnP once ESLint has support for Flat Configs**
+
+Aberlaas is using Yarn Berry (v2+) as its main package management tool.
+
+Yarn Berry comes with a Plug And Play (PnP) feature that replaces the usage of
+`node_modules` in favor of a `.pnp.cjs` file. Instead of having a very large
+`node_modules` folder, a unique copy of each dependency is stored in the user
+home folder and the `.pnp.cjs` file only keeps references to those folder. This
+makes installing dependencies faster as it needs way less I/O.
+
+By ditching the whole `node_modules` principle, it also removes concepts like
+hoisting of dependencies in a monorepo. This, unfortunately, breaks ESLint.
+
+ESLint expect all its plugins to be defined as `peerDependencies` at the root of
+a mono-repo, as it will always try to include them from there. It works more or
+less correctly at the best of times, and `aberlaas` already has some hacks
+(including `resolvePluginsRelativeTo`) to work around that.
+
+But with PnP, there is no way to make it work correctly, so I will need to wait
+for a better compatibility between ESLint and Yarn 2 before using it.
+
+Sources:
+- [GitHub issue that explicitly explain the problem](https://github.com/yarnpkg/berry/discussions/3909)
+- [`eslint-patch`, an ESLint plugin that hacks around this issue](https://yarnpkg.com/package?name=@rushstack/eslint-patch)
+- [The `resolvePluginsRelativeTo` bandaid from ESLint](https://eslint.org/docs/latest/use/command-line-interface#--resolve-plugins-relative-to)
+- [A nice postmortem of moving to Yarn 2](https://www.dolthub.com/blog/2022-03-18-migrating-to-yarn-2/)
+- [The Flat Config feature in ESLint that should solve the problem](https://eslint.org/docs/latest/use/configure/configuration-files-new)
+
 ## Where does the name Aberlaas come from?
 
 Aberlaas is the base camp from which all great expedition start in the _La Horde
