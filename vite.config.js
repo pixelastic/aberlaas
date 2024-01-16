@@ -1,4 +1,4 @@
-import viteConfig from './lib/configs/vite.js';
+import config from './lib/configs/vite.js';
 export default {
-  ...viteConfig,
+  ...config,
 };
