@@ -1,4 +1,4 @@
-const prettierConfig = require('./lib/configs/prettier.cjs');
+const config = require('./lib/configs/prettier.cjs');
 module.exports = {
-  ...prettierConfig,
+  ...config,
 };
