@@ -1,4 +1,4 @@
-const stylelintConfig = require('./lib/configs/stylelint.cjs');
+const config = require('./lib/configs/stylelint.cjs');
 module.exports = {
-  ...stylelintConfig,
+  ...config,
 };
