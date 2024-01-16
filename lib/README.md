@@ -201,7 +201,11 @@ when it does. This should also help fix the issue with Yarn PnP (see below).
 
 ### Yarn
 
-**tl;dr; We'll move to Yarn PnP once ESLint has support for Flat Configs**
+**tl;dr; We'll move to Yarn PnP once ESLint has support for Flat Configs, and
+default `yarn run` doesn't add a ~1s delay overhead**
+
+#### PnP
+
 
 Aberlaas is using Yarn Berry (v2+) as its main package management tool.
 
@@ -223,11 +227,93 @@ But with PnP, there is no way to make it work correctly, so I will need to wait
 for a better compatibility between ESLint and Yarn 2 before using it.
 
 Sources:
+- [#8](https://github.com/yarnpkg/berry/issues/8), the initial case study of Yarn + ESLint
 - [GitHub issue that explicitly explain the problem](https://github.com/yarnpkg/berry/discussions/3909)
 - [`eslint-patch`, an ESLint plugin that hacks around this issue](https://yarnpkg.com/package?name=@rushstack/eslint-patch)
 - [The `resolvePluginsRelativeTo` bandaid from ESLint](https://eslint.org/docs/latest/use/command-line-interface#--resolve-plugins-relative-to)
 - [A nice postmortem of moving to Yarn 2](https://www.dolthub.com/blog/2022-03-18-migrating-to-yarn-2/)
 - [The Flat Config feature in ESLint that should solve the problem](https://eslint.org/docs/latest/use/configure/configuration-files-new)
+
+#### Calling binaries from the host
+
+In yarn v1, if you install `aberlaas` in your project, all of `aberlaas`
+dependencies (including binaries) were hoisted to the root. This was a design
+flaw, as if several dependencies defined binaries by the same name, they would
+fight in a race condition to take the slot in `node_modules/.bin`.
+
+This has been fixed in Yarn Berry, but it also means it's no longer possible to
+call `yarn run eslint` from a repository that includes `aberlaas`, because
+`eslint` is not a direct dependency of the repo.
+
+It might be possible to define proxy binaries inside of `aberlaas`, but those
+will incur performance issues as they will need to spawn one more yarn context
+(see below).
+
+#### Calling binaries from aberlaas
+
+In Yarn V1, I was calling binaries that `aberlaas` depends on (`eslint`, `vitest`,
+etc) by calling `yarn run`. This was adding some overhead but was acceptable.
+Yarn Berry adds even more overhead and it is becoming noticeable.
+
+Now, my prefered way it to use the NodeJS API of the dependencies instead of
+their CLI, to limit the overhead. I managed to move most tools to this new
+approach, but sometimes I still need to use the CLI (`vitest` for example has
+awesome live watching and display reloading that I don't think I can easily
+replicate through code).
+
+I ran some performance tests to see what would be the fastest way to call
+`vitest` from `aberlaas`
+
+```
+hyperfine \
+    "zsh -i -c 'yarn bin vitest && /home/tim/local/www/projects/aberlaas/node_modules/vitest/vitest.mjs --version'" \
+    "zsh -i -c 'yarn run vitest --version'" \
+    "/home/tim/local/www/projects/aberlaas/node_modules/vitest/vitest.mjs --version" \
+    "/home/tim/local/www/projects/aberlaas/node_modules/.bin/vitest --version" 
+Benchmark 1: zsh -i -c 'yarn run vitest --version'
+  Time (mean ± σ):      1.945 s ±  0.051 s    [User: 1.986 s, System: 0.850 s]
+  Range (min … max):    1.859 s …  2.018 s    10 runs
+ 
+Benchmark 2: zsh -i -c 'yarn bin vitest && /home/tim/local/www/projects/aberlaas/node_modules/vitest/vitest.mjs --version'
+  Time (mean ± σ):      2.108 s ±  0.150 s    [User: 2.108 s, System: 0.843 s]
+  Range (min … max):    1.930 s …  2.289 s    10 runs
+ 
+Benchmark 3: /home/tim/local/www/projects/aberlaas/node_modules/vitest/vitest.m
+js --version
+  Time (mean ± σ):     482.5 ms ±  40.9 ms    [User: 448.4 ms, System: 327.2 ms]
+  Range (min … max):   442.1 ms … 553.3 ms    10 runs
+ 
+Benchmark 4: /home/tim/local/www/projects/aberlaas/node_modules/.bin/vitest --version
+  Time (mean ± σ):     491.9 ms ±  29.6 ms    [User: 454.1 ms, System: 331.2 ms]
+  Range (min … max):   453.8 ms … 535.4 ms    10 runs
+```
+
+Finding the binary through `yarn bin` then calling it is the slowest, but `yarn
+run` isn't much faster. Directly calling the binary is the fastest, but it's
+path can't be easily guessed (apart from reading and parsing a `package.json`).
+But using the symlinks in `node_modules/.bin` is consistent, barely slower than
+calling the binary directly and much faster than using yarn.
+
+This is what I'll be using. Of course, this will break when I'll move to PnP as
+the `node_modules` folder won't be there, but hopefully Yarn will be faster by
+then and I can use `yarn run` reliably.
+
+#### Speed
+
+With Yarn 2+, calling `yarn run` seem to add ~1s of overhead each time. This is
+a known issue (due to the fact Yarn 2 needs to spawn yarn 1, node and a few
+other layers). 
+
+1s is not much in itself, but grows quickly when you have nested `yarn run
+aberlaas` calls that call `yarn run eslint`, and even more when you need to deal
+with monorepos and multiple packages that each have their own yarn scope.
+
+There are open issues on the topic, but nothing merged yet:
+
+- [#3732](https://github.com/yarnpkg/berry/issues/3732), where it is discussed to make yarn run aware that it's running yarn run
+  and keep the same state without spawning new yarns
+- [#2575](https://github.com/yarnpkg/berry/issues/2575), which is the main issue about Yarn performance, with benchmarks against
+  npm/npx/yarn v1.
 
 ## Where does the name Aberlaas come from?
 
