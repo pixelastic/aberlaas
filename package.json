@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "aberlaas-monorepo",
+  "type": "module",
   "description": "aberlaas monorepo",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "keywords": [],
