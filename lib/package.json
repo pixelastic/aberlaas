@@ -2,7 +2,7 @@
   "name": "aberlaas",
   "type": "module",
   "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
