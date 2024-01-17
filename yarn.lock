@@ -4558,12 +4558,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas-monorepo@workspace:."
   dependencies:
-    aberlaas: "npm:2.1.0"
+    aberlaas: "npm:2.2.0"
     lerna: "npm:4.0.0"
   languageName: unknown
   linkType: soft
 
-"aberlaas@npm:2.1.0, aberlaas@workspace:lib":
+"aberlaas@npm:2.2.0, aberlaas@workspace:lib":
   version: 0.0.0-use.local
   resolution: "aberlaas@workspace:lib"
   dependencies:
