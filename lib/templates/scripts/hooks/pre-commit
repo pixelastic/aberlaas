@@ -8,4 +8,4 @@
 # $ git config core.hooksPath scripts/hooks
 set -e
 
-aberlaas precommit "$@"
+yarn run aberlaas precommit

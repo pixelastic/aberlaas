@@ -37,6 +37,15 @@ rm -rf ./.git/hooks
 git init
 ```
 
+Use `./scripts/hooks` instead
+
+```
+git config core.hooksPath scripts/hooks
+mkdir -p ./scripts/hooks
+cp ./node_modules/aberlaas/templates/scripts/hooks/* ./scripts/hooks
+```
+
+
 ## Node
 
 The new default node version is 18.18. You might need to change your repository
@@ -61,11 +70,43 @@ aliases:
 
 ## Yarn
 
-Run `yarn set version 4.0.2`. This will add a `packageManager` field to your
+### Use Berry
+
+This will add a `packageManager` field to your
 `package.json`, and remove any previously committed yarn version.
 
+```
+yarn set version 4.0.2
+```
 
-## Scripts
+### Update configuration file
+
+```
+cp ./node_modules/aberlaas/templates/_yarnrc.yml ./.yarnrc.yml
+rm ./yarnrc
+```
+
+### Update dependencies
+
+```
+rm ./yarn.lock
+rm -rf ./node_modules
+yarn
+```
+
+
+## ESLint
+
+### `.eslintignore`
+
+Updated to ignore files in `.yarn`
+
+```
+cp -f ./node_modules/aberlaas/templates/_eslintignore.conf ./.eslintignore
+```
+
+
+## Husky
 
 ### `pre-commit`
 
@@ -73,4 +114,14 @@ Removes previous husky scripts as we no longer use Husky.
 
 ```
 rm ./scripts/husky-precommit
+```
+
+## Lint-Staged
+
+### `.lintstagedrc.js`
+
+Lint-Staged now uses ESM syntax
+
+```
+cp -f ./node_modules/aberlaas/templates/_lintstagedrc.js ./.lintstaged.js
 ```
