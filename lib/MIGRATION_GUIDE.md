@@ -105,6 +105,18 @@ Updated to ignore files in `.yarn`
 cp -f ./node_modules/aberlaas/templates/_eslintignore.conf ./.eslintignore
 ```
 
+
+## Prettier
+
+### `prettier.config.js`
+
+Use ESM version of prettier config
+
+```
+rm .prettierrc.js
+cp -f ./node_modules/aberlaas/templates/prettier.config.js ./prettier.config.js
+```
+
 ## Stylelint
 
 ### `stylelint.config.js`
@@ -116,7 +128,17 @@ rm .stylelintrc.js
 cp -f ./node_modules/aberlaas/templates/stylelint.config.js ./stylelint.config.js
 ```
 
+## Lint-Staged
 
+
+### `lintstaged.config.js`
+
+Use ESM version of lint-staged config
+
+```
+rm .lintstagedrc.js
+cp -f ./node_modules/aberlaas/templates/lintstaged.config.js ./lintstaged.config.js
+```
 
 ## Husky
 
@@ -128,12 +150,3 @@ Removes previous husky scripts as we no longer use Husky.
 rm ./scripts/husky-precommit
 ```
 
-## Lint-Staged
-
-### `.lintstagedrc.js`
-
-Lint-Staged now uses ESM syntax
-
-```
-cp -f ./node_modules/aberlaas/templates/_lintstagedrc.js ./.lintstaged.js
-```
