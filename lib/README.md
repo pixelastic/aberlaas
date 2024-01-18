@@ -188,7 +188,7 @@ exported by the package and thus can be `require`d in userland.
 extends the configuration exported in the previous files. Copying files to
 userland allows user to change the files if they want to change the behavior.
 
-`.eslintrc.js`, `.stylelintrc.js` and `jest.config.js` are local
+`.eslintrc.js`, `stylelint.config.js` and `vite.config.js` are local
 configuration files for `aberlaas` itself. They eat their own dog food by
 referencing the same configs as above.
 

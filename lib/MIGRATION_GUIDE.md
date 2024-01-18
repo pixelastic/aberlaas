@@ -105,6 +105,18 @@ Updated to ignore files in `.yarn`
 cp -f ./node_modules/aberlaas/templates/_eslintignore.conf ./.eslintignore
 ```
 
+## Stylelint
+
+### `stylelint.config.js`
+
+Use ESM version of stylelint config
+
+```
+rm .stylelintrc.js
+cp -f ./node_modules/aberlaas/templates/stylelint.config.js ./stylelint.config.js
+```
+
+
 
 ## Husky
 
