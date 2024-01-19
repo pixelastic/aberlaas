@@ -94,6 +94,17 @@ rm -rf ./node_modules
 yarn
 ```
 
+### Scripts
+
+Update the `scripts` section like this:
+
+```
+// package.json
+TODO
+
+// lib/package.json
+TODO
+```
 
 ## ESLint
 
@@ -142,6 +153,14 @@ cp -f ./node_modules/aberlaas/templates/lintstaged.config.js ./lintstaged.config
 
 ## Husky
 
+### `.huskyrc.js'
+
+Remove the file
+
+```
+rm ./.huskyrc.js
+```
+
 ### `pre-commit`
 
 Removes previous husky scripts as we no longer use Husky.
@@ -149,4 +168,8 @@ Removes previous husky scripts as we no longer use Husky.
 ```
 rm ./scripts/husky-precommit
 ```
+
+Also remove the `scripts.husky:precommit` from the `package.json` and
+`./lib/package.json`
+
 
