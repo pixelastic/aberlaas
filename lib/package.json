@@ -21,7 +21,6 @@
     "commands/readme/*.js",
     "commands/release/*.js",
     "commands/setup/*.js",
-    "commands/setup/autoRelease/*.js",
     "commands/setup/helpers/*.js",
     "commands/test/*.js",
     "configs/",

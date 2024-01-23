@@ -20,7 +20,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      # - add_ssh_keys # Uncomment to enable --autoRelease
       - *restore_cache
       - *yarn_install
       - *save_cache
