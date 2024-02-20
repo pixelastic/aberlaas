@@ -1,6 +1,0 @@
-43 error Error: Command failed with exit code 128: git tag v1.24.3 -m v1.24.3
-43 error fatal: tag 'v1.24.3' already exists
-43 error     at makeError (/home/tim/local/www/projects/aberlaas/node_modules/execa/lib/error.js:59:11)
-43 error     at handlePromise (/home/tim/local/www/projects/aberlaas/node_modules/execa/index.js:114:26)
-43 error     at processTicksAndRejections (internal/process/task_queues.js:95:5)
-43 error     at async Promise.all (index 0)
