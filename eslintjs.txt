@@ -1,0 +1,19 @@
+[{"filePath":"/home/tim/local/www/projects/aberlaas/lib/commands/ci/__tests__/index.js","messages":[{"ruleId":"no-unused-vars","severity":2,"message":"'current' is defined but never used. Allowed unused vars must match /^_./u.","line":1,"column":8,"nodeType":"Identifier","messageId":"unusedVar","endLine":1,"endColumn":15},{"ruleId":"no-unused-vars","severity":2,"message":"'helper' is defined but never used. Allowed unused vars must match /^_./u.","line":2,"column":8,"nodeType":"Identifier","messageId":"unusedVar","endLine":2,"endColumn":14},{"ruleId":"no-unused-vars","severity":2,"message":"'emptyDir' is defined but never used. Allowed unused vars must match /^_./u.","line":3,"column":8,"nodeType":"Identifier","messageId":"unusedVar","endLine":3,"endColumn":16},{"ruleId":"no-unused-vars","severity":2,"message":"'writeJson' is defined but never used. Allowed unused vars must match /^_./u.","line":4,"column":8,"nodeType":"Identifier","messageId":"unusedVar","endLine":4,"endColumn":17},{"ruleId":"vitest/expect-expect","severity":2,"message":"Use expect in test body","line":9,"column":7,"nodeType":"Identifier","messageId":"expectedExpect","endLine":9,"endColumn":9},{"ruleId":"vitest/expect-expect","severity":2,"message":"Use expect in test body","line":13,"column":7,"nodeType":"Identifier","messageId":"expectedExpect","endLine":13,"endColumn":9},{"ruleId":"vitest/expect-expect","severity":2,"message":"Use expect in test body","line":14,"column":7,"nodeType":"Identifier","messageId":"expectedExpect","endLine":14,"endColumn":9},{"ruleId":"vitest/expect-expect","severity":2,"message":"Use expect in test body","line":15,"column":7,"nodeType":"Identifier","messageId":"expectedExpect","endLine":15,"endColumn":9}],"suppressedMessages":[],"errorCount":8,"fatalErrorCount":0,"warningCount":0,"fixableErrorCount":0,"fixableWarningCount":0,"source":"import current from '../index.js';
+import helper from '../../../helper.js';
+import emptyDir from 'firost/emptyDir.js';
+import writeJson from 'firost/writeJson.js';
+
+describe('ci', () => {
+  describe('run', () => {
+    describe('locally', () => {
+      it('should do nothing when not on a CI server', async () => {});
+    });
+    describe('on CI server', () => {
+      beforeEach(async () => {});
+      it('should fail if any step fails', async () => {});
+      it('should not call further steps if one fails', async () => {});
+      it('should succeed if all steps succeed', async () => {});
+    });
+  });
+});
+","usedDeprecatedRules":[{"ruleId":"max-len","replacedBy":[]},{"ruleId":"quote-props","replacedBy":[]},{"ruleId":"quotes","replacedBy":[]}]}]
