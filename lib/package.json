@@ -28,6 +28,7 @@
   ],
   "exports": {
     ".": "./main.js",
+    "./configs/vite": "./configs/vite.js",
     "./configs/lintstaged": "./configs/lintstaged.js",
     "./configs/prettier": "./configs/prettier.js",
     "./configs/stylelint": "./configs/stylelint.js"
