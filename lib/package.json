@@ -9,9 +9,6 @@
   "license": "MIT",
   "files": [
     "bin/",
-    "lib/",
-    "scripts/",
-    "*.js",
     "commands/ci/*.js",
     "commands/compress/*.js",
     "commands/init/*.js",
@@ -19,12 +16,13 @@
     "commands/lint/helpers/*.js",
     "commands/precommit/*.js",
     "commands/readme/*.js",
-    "commands/release/*.js",
     "commands/setup/*.js",
     "commands/setup/helpers/*.js",
     "commands/test/*.js",
     "configs/",
-    "templates/"
+    "scripts/",
+    "templates/",
+    "*.js"
   ],
   "exports": {
     ".": "./main.js",
@@ -66,14 +64,16 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "../scripts/docs/build",
-    "build:prod": "../scripts/docs/build-prod",
-    "lint": "../scripts/lib/lint",
-    "lint:fix": "../scripts/lib/lint-fix",
-    "release": "../scripts/release",
-    "serve": "../scripts/docs/serve",
-    "test": "../scripts/lib/test",
-    "test:watch": "../scripts/lib/test-watch",
+    "build": "yarn g:build",
+    "build:prod": "yarn g:build:prod",
+    "cms": "yarn g:cms",
+    "serve": "yarn g:serve",
+    "release": "yarn g:release",
+    "test": "yarn g:test",
+    "test:watch": "yarn g:test:watch",
+    "compress": "yarn g:compress",
+    "lint": "yarn g:lint",
+    "lint:fix": "yarn g:lint:fix",
     "postinstall": "./scripts/postinstall"
   }
 }
