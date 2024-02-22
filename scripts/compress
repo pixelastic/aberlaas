@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+./lib/bin/aberlaas.js compress "$@"
