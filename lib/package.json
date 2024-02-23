@@ -31,6 +31,7 @@
     "./configs/prettier": "./configs/prettier.js",
     "./configs/stylelint": "./configs/stylelint.js"
   },
+  "main": "./main.js",
   "bin": "bin/aberlaas.js",
   "dependencies": {
     "@octokit/rest": "18.12.0",
