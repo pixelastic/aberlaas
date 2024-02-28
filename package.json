@@ -11,7 +11,6 @@
   ],
   "files": [],
   "devDependencies": {
-    "aberlaas": "2.2.0",
     "lerna": "4.0.0"
   },
   "scripts": {
