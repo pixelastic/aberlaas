@@ -8,6 +8,7 @@ module.exports = {
         // This works when copied into the root of a project as expected, but
         // not when inside the project itself as this path does not resolve
         'n/no-missing-import': ['off'],
+        'import/no-unresolved': ['off'],
       },
     },
   ],
