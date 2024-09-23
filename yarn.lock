@@ -4573,7 +4573,7 @@ __metadata:
     eslint-plugin-vitest: "npm:0.4.1"
     eslint-plugin-vitest-globals: "npm:1.5.0"
     find-up: "npm:5.0.0"
-    firost: "npm:3.2.1"
+    firost: "npm:3.5.0"
     front-matter: "npm:4.0.2"
     gilmore: "npm:0.2.0"
     golgoth: "npm:2.1.0"
@@ -9602,9 +9602,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firost@npm:3.2.1":
-  version: 3.2.1
-  resolution: "firost@npm:3.2.1"
+"firost@npm:3.5.0":
+  version: 3.5.0
+  resolution: "firost@npm:3.5.0"
   dependencies:
     callsites: "npm:3.1.0"
     chokidar: "npm:3.6.0"
@@ -9627,7 +9627,7 @@ __metadata:
     temp-dir: "npm:2.0.0"
     untildify: "npm:4.0.0"
     which: "npm:2.0.2"
-  checksum: 10c0/f187561362c7f7efb4bc1f2de3f816737f89c1922437608dcabdbef2029e107d465ce3c63c26fca2b1f29de7b6c1dcd593de6dc4d62b4abe010cf27f38ff6ae7
+  checksum: 10c0/f9e5fbc359d3a0a3c65a76a2076847e263b8af4806909296efe5d2d9e82509352fa194a6325c572a1591ba6836fbe6aff86f0a30dbce11742d01c4a5ab8d46bc
   languageName: node
   linkType: hard
 
