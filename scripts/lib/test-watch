@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-./lib/bin/aberlaas.js test --watch "${@:-./lib}"
+cd ./lib
+./bin/aberlaas.js test --watch "$@"
