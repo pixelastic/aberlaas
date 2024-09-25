@@ -3,17 +3,16 @@ title: aberlaas init
 ---
 
 The `aberlaas init` command will bootstrap the current repository to use
-`aberlaas`. It should only be run once.
+`aberlaas` as your default binary for all dev tasks (lint, test, release, etc).
 
-This will do three main things:
+You should only need to run it twice, right when you start your project.
 
-- Add custom `yarn run` scripts for the most common tasks
+What it will do:
+
+- Add custom `yarn run` scripts for the most common tasks, that can be called
+  from any subdirectory
 - Expose the configuration of the underlying tools through their config files
 - Scaffold a `./lib` folder to hold your code
-
-_Note that it is better to run this command on a fresh repository rather that one
-that already has some of the tools configured because it could create
-conflicting configurations._
 
 ## Custom scripts
 
@@ -56,4 +55,24 @@ your module, as well as already having a test system in place.
 
 Note that the root `package.json` has been updated accordingly and will release
 all files located in `./lib`.
+
+## Monorepo setup
+
+You can call `aberlaas init --monorepo` to initialize a slightly more complex
+repository layout.
+
+The main differences are:
+
+- The root of the project will be used as the monorepo root.
+- Actual library files will be stored in `./lib` and documentation in `./docs`
+- Both `./lib` and `./docs` will be treated as workspaces, so can have their own
+  dependencies
+- The root will only contain dev tooling (`aberlaas` and `lerna` mostly).
+
+This setup is interesting if you plan on developing a module you plan on
+releasing. It already gives you the scaffolding to write and push the
+documentation along with the code.
+
+If you don't plan to build a module, or want to keep it private, you might not
+need the `--monorepo` flag.
 
