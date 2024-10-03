@@ -96,3 +96,11 @@ expect_to_contain() {
 	EXPECT_NAME="Output contains the string \"$input\""
 	if [[ "$ACTUAL_STDOUT" == *$input* ]]; then success; else failure; fi
 }
+
+expect_not_to_contain() {
+	getResult
+	input=$1
+
+	EXPECT_NAME="Output does not contains the string \"$input\""
+	if [[ "$ACTUAL_STDOUT" == *$input* ]]; then failure; else success; fi
+}
