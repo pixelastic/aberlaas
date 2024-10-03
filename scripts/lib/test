@@ -2,4 +2,4 @@
 set -e
 
 cd ./lib
-./bin/aberlaas.js test "$@"
+./bin/aberlaas.js test --exclude="**/__meta_tests__/**" "$@"

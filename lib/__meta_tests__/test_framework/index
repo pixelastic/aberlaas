@@ -13,10 +13,16 @@
 # expect_to_fail
 # expect_to_succeed
 
-source "$(dirname "${BASH_SOURCE[0]}")/catch"
+# shellcheck disable=SC1091
+ROOT="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")/../../../")"
+HERE="$(readlink -f "$(dirname "$0")")"
+export HERE
+
+source "${ROOT}/lib/__meta_tests__/test_framework/catch"
 
 # Global vars used by the framework
 EXPECT_NAME=""
+IS_VERBOSE=0
 ACTUAL_IS_RUN=0
 ACTUAL_STDOUT=""
 ACTUAL_STDERR=""
@@ -24,8 +30,12 @@ ACTUAL_EXITCODE=-1
 
 # Default testName is empty, but define it with test
 test() {
-	echo "---"
 	echo "Test: $1"
+}
+
+# Enable verbose mode
+verbose() {
+	IS_VERBOSE=1
 }
 
 # End the test as a success
@@ -46,8 +56,18 @@ getResult() {
 	[[ $ACTUAL_IS_RUN == 1 ]] && return
 
 	# Split stdout, stderr and exit code into their own variables
-	catch ACTUAL_STDOUT ACTUAL_STDERR actual
+	FORCE_COLOR=1 catch ACTUAL_STDOUT ACTUAL_STDERR actual
 	ACTUAL_EXITCODE=$?
+
+	# Display output if verbose is enabled
+	if [[ $IS_VERBOSE == 1 ]]; then
+		if [[ $ACTUAL_STDOUT != "" ]]; then
+			echo "$ACTUAL_STDOUT"
+		fi
+		if [[ $ACTUAL_STDERR != "" ]]; then
+			echo "$ACTUAL_STDERR"
+		fi
+	fi
 
 	# Mark as run
 	ACTUAL_IS_RUN=1
@@ -58,7 +78,7 @@ expect_to_succeed() {
 	getResult
 
 	EXPECT_NAME="Tests are passing"
-	([[ "$ACTUAL_EXITCODE" == 0 ]] && success) || failure
+	if [[ "$ACTUAL_EXITCODE" == 0 ]]; then success; else failure; fi
 }
 
 # Check the exitCode, and expect it to fail
@@ -66,13 +86,13 @@ expect_to_fail() {
 	getResult
 
 	EXPECT_NAME="Tests are failing"
-	([[ "$ACTUAL_EXITCODE" == 0 ]] && failure) || success
+	if [[ "$ACTUAL_EXITCODE" == 0 ]]; then failure; else success; fi
 }
 
 expect_to_contain() {
 	getResult
 	input=$1
 
-	EXPECT_NAME="Output to contain $input"
-	([[ "$ACTUAL_STDOUT" == *$input* ]] && success) || failure
+	EXPECT_NAME="Output contains the string \"$input\""
+	if [[ "$ACTUAL_STDOUT" == *$input* ]]; then success; else failure; fi
 }

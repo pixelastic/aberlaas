@@ -72,6 +72,7 @@
     "release": "ABERLAAS_CWD=$INIT_CWD yarn g:release",
     "test": "ABERLAAS_CWD=$INIT_CWD yarn g:test",
     "test:watch": "ABERLAAS_CWD=$INIT_CWD yarn g:test:watch",
+    "test:meta": "ABERLAAS_CWD=$INIT_CWD yarn g:test:meta",
     "compress": "ABERLAAS_CWD=$INIT_CWD yarn g:compress",
     "lint": "ABERLAAS_CWD=$INIT_CWD yarn g:lint",
     "lint:fix": "ABERLAAS_CWD=$INIT_CWD yarn g:lint:fix",

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 for testFile in "$(dirname "$0")"/*/test.sh; do
+	echo ""
+	echo "-----"
 	echo "# $testFile"
 	$testFile
 done

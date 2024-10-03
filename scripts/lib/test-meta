@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+# This will test aberlaas test one lever of abstraction higher, by running yarn
+# run test directly and checking exit code and output
+# Note: Those tests are very slow to run
+
+cd ./lib/__meta_tests__
+./test_all

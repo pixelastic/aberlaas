@@ -21,6 +21,7 @@
     "release": "./scripts/lib/release",
     "test": "./scripts/lib/test",
     "test:watch": "./scripts/lib/test-watch",
+    "test:meta": "./scripts/lib/test-meta",
     "ci": "./scripts/ci",
     "compress": "./scripts/compress",
     "lint": "./scripts/lint",
@@ -32,6 +33,7 @@
     "g:release": "./scripts/lib/release",
     "g:test": "./scripts/lib/test",
     "g:test:watch": "./scripts/lib/test-watch",
+    "g:test:meta": "./scripts/lib/test-meta",
     "g:compress": "./scripts/compress",
     "g:lint": "./scripts/lint",
     "g:lint:fix": "./scripts/lint-fix"
