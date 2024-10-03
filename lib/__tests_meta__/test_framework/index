@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# This is a very simple test framework, to test at the CLI level that our "yarn
+# test" command actually work as expected
+#
+# A typical test file should look like:
+#
+# test "name of the test"
+# actual() {
+#   # Code of the method to run
+# }
+#
+# Add any expectation
+# expect_to_fail
+# expect_to_succeed
+
+source "$(dirname "${BASH_SOURCE[0]}")/catch"
+
+# Global vars used by the framework
+EXPECT_NAME=""
+ACTUAL_IS_RUN=0
+ACTUAL_STDOUT=""
+ACTUAL_STDERR=""
+ACTUAL_EXITCODE=-1
+
+# Default testName is empty, but define it with test
+test() {
+	echo "---"
+	echo "Test: $1"
+}
+
+# End the test as a success
+success() {
+	echo "✔ $EXPECT_NAME"
+	return 0
+}
+
+# End the test as a failure
+failure() {
+	echo "✗ $EXPECT_NAME"
+	return 1
+}
+
+# Run the "actual" function, and set ACTUAL_* vars
+getResult() {
+	# Only run it once
+	[[ $ACTUAL_IS_RUN == 1 ]] && return
+
+	# Split stdout, stderr and exit code into their own variables
+	catch ACTUAL_STDOUT ACTUAL_STDERR actual
+	ACTUAL_EXITCODE=$?
+
+	# Mark as run
+	ACTUAL_IS_RUN=1
+}
+
+# Check the exitCode, and expect it to succeed
+expect_to_succeed() {
+	getResult
+
+	EXPECT_NAME="Tests are passing"
+	([[ "$ACTUAL_EXITCODE" == 0 ]] && success) || failure
+}
+
+# Check the exitCode, and expect it to fail
+expect_to_fail() {
+	getResult
+
+	EXPECT_NAME="Tests are failing"
+	([[ "$ACTUAL_EXITCODE" == 0 ]] && failure) || success
+}
+
+expect_to_contain() {
+	getResult
+	input=$1
+
+	EXPECT_NAME="Output to contain $input"
+	([[ "$ACTUAL_STDOUT" == *$input* ]] && success) || failure
+}
