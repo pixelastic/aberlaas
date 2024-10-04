@@ -20,11 +20,11 @@ for testFile in "$(dirname "$0")"/*/test.sh; do
 	TEST_EXIT_CODE=$?
 	if [[ $TEST_EXIT_CODE == 1 ]]; then
 		echo ""
-		echo "[48;5;1m    Tests are failing    [00m"
+		echo "[48;5;1m    Meta-tests are failing    [00m"
 		exit 1
 	fi
 done
 
 echo ""
-echo "[48;5;2m    Tests are passing    [00m"
+echo "[48;5;2m    Meta-tests are passing    [00m"
 exit 0
