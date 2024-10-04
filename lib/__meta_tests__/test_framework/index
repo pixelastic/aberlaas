@@ -40,13 +40,13 @@ verbose() {
 
 # End the test as a success
 success() {
-	echo "✔ $EXPECT_NAME"
+	echo "[38;5;2m✔[00m $EXPECT_NAME"
 	return 0
 }
 
 # End the test as a failure
 failure() {
-	echo "✗ $EXPECT_NAME"
+	echo "[38;5;1m✗[00m $EXPECT_NAME"
 	return 1
 }
 

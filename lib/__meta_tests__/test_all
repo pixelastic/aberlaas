@@ -1,8 +1,30 @@
 #!/usr/bin/env bash
+# This will run all "meta" tests.
+# Those are testing the internal "aberlaas test" command. Due to the recursive
+# nature of testing the testing framework, those tests can't be written directly
+# in JavaScript.
+# I have opted instead to run them in bash, actually running
+# `./bin/aberlaas.js test` with various command line arguments and checking the
+# error codes and output
 
 for testFile in "$(dirname "$0")"/*/test.sh; do
+	testName="$(basename "$(dirname "$testFile")")"
 	echo ""
 	echo "-----"
-	echo "# $testFile"
+	echo "# $testName"
+
+	# Run the test
 	$testFile
+
+	# Check the result
+	TEST_EXIT_CODE=$?
+	if [[ $TEST_EXIT_CODE == 1 ]]; then
+		echo ""
+		echo "[48;5;1m    Tests are failing    [00m"
+		exit 1
+	fi
 done
+
+echo ""
+echo "[48;5;2m    Tests are passing    [00m"
+exit 0
