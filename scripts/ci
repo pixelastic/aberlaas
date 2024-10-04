@@ -4,3 +4,4 @@ set -e
 echo "node $(node --version), yarn $(yarn --version)"
 
 ./lib/bin/aberlaas.js ci "$@"
+yarn run test:meta
