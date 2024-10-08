@@ -27,8 +27,8 @@ yarn run aberlaas init
 ```
 
 This will add `aberlaas` to your `devDependencies` and bootstrap your project.
-Config files for all the tools will be created (`eslint.config.js`,
-`vite.config.js`, etc) and new `yarn run` scripts will be added for the most
+Config files for all the tools will be created (`.eslintrc.js`,
+`jest.config.js`, etc) and new `yarn run` scripts will be added for the most
 common tasks (`lint`, `test`, `release`, etc).
 
 At that point, you should probably commit all the changes.

@@ -3,7 +3,7 @@ title: Setup CircleCI
 ---
 
 The `aberlaas setup` command will automatically **follow** your repository on
-CircleCI. This means that each git push on the `master` branch will trigger
+CircleCI. This means that each git push on the `main` branch will trigger
 a run of `aberlaas ci`.
 
 See the [aberlaas ci](/ci/) command for more details.
