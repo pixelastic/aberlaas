@@ -4639,7 +4639,7 @@ __metadata:
     find-up: "npm:7.0.0"
     firost: "npm:4.0.1"
     front-matter: "npm:4.0.2"
-    gilmore: "npm:0.2.0"
+    gilmore: "npm:1.0.0"
     golgoth: "npm:2.4.0"
     jest-extended: "npm:4.0.2"
     lint-staged: "npm:11.2.6"
@@ -6264,6 +6264,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chokidar@npm:3.6.0":
+  version: 3.6.0
+  resolution: "chokidar@npm:3.6.0"
+  dependencies:
+    anymatch: "npm:~3.1.2"
+    braces: "npm:~3.0.2"
+    fsevents: "npm:~2.3.2"
+    glob-parent: "npm:~5.1.2"
+    is-binary-path: "npm:~2.1.0"
+    is-glob: "npm:~4.0.1"
+    normalize-path: "npm:~3.0.0"
+    readdirp: "npm:~3.6.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  checksum: 10c0/8361dcd013f2ddbe260eacb1f3cb2f2c6f2b0ad118708a343a5ed8158941a39cb8fb1d272e0f389712e74ee90ce8ba864eece9e0e62b9705cb468a2f6d917462
+  languageName: node
+  linkType: hard
+
 "chokidar@npm:4.0.1":
   version: 4.0.1
   resolution: "chokidar@npm:4.0.1"
@@ -6380,6 +6399,16 @@ __metadata:
     parent-module: "npm:^2.0.0"
     resolve-from: "npm:^5.0.0"
   checksum: 10c0/9f4b6b5e56fc2b4a179da49db27dc5cba3498ea03d4567e7d8ab9673ad84e4bccdb02b677b4c0a7139fb64e09fce08a4f0c8fe7c446a7fb19a8722bf85612b72
+  languageName: node
+  linkType: hard
+
+"clear-module@npm:4.1.2":
+  version: 4.1.2
+  resolution: "clear-module@npm:4.1.2"
+  dependencies:
+    parent-module: "npm:^2.0.0"
+    resolve-from: "npm:^5.0.0"
+  checksum: 10c0/73207f06af256e3c8901ceaa74f7e4468a777aa68dedc7f745db4116861a7f8e69c558e16dbdf7b3d2295675d5896f916ba55b5dc737dda81792dbeee1488127
   languageName: node
   linkType: hard
 
@@ -9672,6 +9701,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"firost@npm:3.5.0":
+  version: 3.5.0
+  resolution: "firost@npm:3.5.0"
+  dependencies:
+    callsites: "npm:3.1.0"
+    chokidar: "npm:3.6.0"
+    clear-module: "npm:4.1.2"
+    eventemitter2: "npm:6.4.9"
+    execa: "npm:5.1.1"
+    find-up: "npm:5.0.0"
+    fs-extra: "npm:10.1.0"
+    globby: "npm:11.1.0"
+    golgoth: "npm:2.4.0"
+    inquirer: "npm:8.2.6"
+    is-glob: "npm:4.0.3"
+    json-stable-stringify: "npm:1.1.1"
+    nanoid: "npm:3.3.7"
+    normalize-url: "npm:6.1.0"
+    ora: "npm:5.4.1"
+    rev-hash: "npm:4.1.0"
+    std-mocks: "npm:1.0.1"
+    strip-ansi: "npm:6.0.1"
+    temp-dir: "npm:2.0.0"
+    untildify: "npm:4.0.0"
+    which: "npm:2.0.2"
+  checksum: 10c0/f9e5fbc359d3a0a3c65a76a2076847e263b8af4806909296efe5d2d9e82509352fa194a6325c572a1591ba6836fbe6aff86f0a30dbce11742d01c4a5ab8d46bc
+  languageName: node
+  linkType: hard
+
 "firost@npm:4.0.1":
   version: 4.0.1
   resolution: "firost@npm:4.0.1"
@@ -9898,6 +9956,17 @@ __metadata:
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
   checksum: 10c0/85802f3d9e49d197744a8372f0d78d5a1faa3df73f4c5375d6366a4b9f745197d3da1f095841443d50f29a9f81cdc01363eb6d17bef2ba70c268559368211040
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:10.1.0":
+  version: 10.1.0
+  resolution: "fs-extra@npm:10.1.0"
+  dependencies:
+    graceful-fs: "npm:^4.2.0"
+    jsonfile: "npm:^6.0.1"
+    universalify: "npm:^2.0.0"
+  checksum: 10c0/5f579466e7109719d162a9249abbeffe7f426eb133ea486e020b89bc6d67a741134076bf439983f2eb79276ceaf6bd7b7c1e43c3fd67fe889863e69072fb0a5e
   languageName: node
   linkType: hard
 
@@ -10253,14 +10322,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gilmore@npm:0.2.0":
-  version: 0.2.0
-  resolution: "gilmore@npm:0.2.0"
+"gilmore@npm:1.0.0":
+  version: 1.0.0
+  resolution: "gilmore@npm:1.0.0"
   dependencies:
-    firost: "npm:2.17.0"
-    golgoth: "npm:2.1.0"
+    firost: "npm:3.5.0"
+    golgoth: "npm:2.4.0"
     parse-github-repo-url: "npm:1.4.1"
-  checksum: 10c0/ea6e16bcd2d6b17a03fe775132d620072d1bc80636b9a5c950a66bd66a5ee19441c0b702da2ef12680a8c93d0b8aca2d2369391c4241ed30a5b81cad1def21aa
+  checksum: 10c0/dbab352f85a75a3af62edb7c6ec55619ae3d1b93b1bd605d048608425320ae32177248b49e599fe89bc5d73530c092e5b0ea8d9cd889abaca6ca69b7f2a2e952
   languageName: node
   linkType: hard
 
@@ -10510,6 +10579,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globby@npm:11.1.0, globby@npm:^11.0.1, globby@npm:^11.0.2, globby@npm:^11.0.3, globby@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "globby@npm:11.1.0"
+  dependencies:
+    array-union: "npm:^2.1.0"
+    dir-glob: "npm:^3.0.1"
+    fast-glob: "npm:^3.2.9"
+    ignore: "npm:^5.2.0"
+    merge2: "npm:^1.4.1"
+    slash: "npm:^3.0.0"
+  checksum: 10c0/b39511b4afe4bd8a7aead3a27c4ade2b9968649abab0a6c28b1a90141b96ca68ca5db1302f7c7bd29eab66bf51e13916b8e0a3d0ac08f75e1e84a39b35691189
+  languageName: node
+  linkType: hard
+
 "globby@npm:14.0.2":
   version: 14.0.2
   resolution: "globby@npm:14.0.2"
@@ -10537,20 +10620,6 @@ __metadata:
     merge2: "npm:^1.2.3"
     slash: "npm:^3.0.0"
   checksum: 10c0/9c610ad47117b9dfbc5b0c6c2408c3b72f89c1b9f91ee14c4dc794794e35768ee0920e2a403b688cfa749f48617c6ba3f3a52df07677ed73d602d4349b68c810
-  languageName: node
-  linkType: hard
-
-"globby@npm:^11.0.1, globby@npm:^11.0.2, globby@npm:^11.0.3, globby@npm:^11.1.0":
-  version: 11.1.0
-  resolution: "globby@npm:11.1.0"
-  dependencies:
-    array-union: "npm:^2.1.0"
-    dir-glob: "npm:^3.0.1"
-    fast-glob: "npm:^3.2.9"
-    ignore: "npm:^5.2.0"
-    merge2: "npm:^1.4.1"
-    slash: "npm:^3.0.0"
-  checksum: 10c0/b39511b4afe4bd8a7aead3a27c4ade2b9968649abab0a6c28b1a90141b96ca68ca5db1302f7c7bd29eab66bf51e13916b8e0a3d0ac08f75e1e84a39b35691189
   languageName: node
   linkType: hard
 
@@ -14480,21 +14549,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:3.3.7, nanoid@npm:^3.3.4, nanoid@npm:^3.3.7":
+  version: 3.3.7
+  resolution: "nanoid@npm:3.3.7"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 10c0/e3fb661aa083454f40500473bb69eedb85dc160e763150b9a2c567c7e9ff560ce028a9f833123b618a6ea742e311138b591910e795614a629029e86e180660f3
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:5.0.7":
   version: 5.0.7
   resolution: "nanoid@npm:5.0.7"
   bin:
     nanoid: bin/nanoid.js
   checksum: 10c0/a3fb1c157e3e35378f44e5a7130c70f80c9037f66c9a37285e5e3d8298e8405fcb2399baaa420980b0fe5fd9c2e4186a6a31c3526f21de03cf34c1b459871401
-  languageName: node
-  linkType: hard
-
-"nanoid@npm:^3.3.4, nanoid@npm:^3.3.7":
-  version: 3.3.7
-  resolution: "nanoid@npm:3.3.7"
-  bin:
-    nanoid: bin/nanoid.cjs
-  checksum: 10c0/e3fb661aa083454f40500473bb69eedb85dc160e763150b9a2c567c7e9ff560ce028a9f833123b618a6ea742e311138b591910e795614a629029e86e180660f3
   languageName: node
   linkType: hard
 
@@ -19644,7 +19713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:^6.0.0, strip-ansi@npm:^6.0.1":
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:6.0.1, strip-ansi@npm:^6.0.0, strip-ansi@npm:^6.0.1":
   version: 6.0.1
   resolution: "strip-ansi@npm:6.0.1"
   dependencies:
