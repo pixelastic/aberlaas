@@ -4640,7 +4640,7 @@ __metadata:
     firost: "npm:4.0.1"
     front-matter: "npm:4.0.2"
     gilmore: "npm:0.2.0"
-    golgoth: "npm:2.1.0"
+    golgoth: "npm:2.4.0"
     jest-extended: "npm:4.0.2"
     lint-staged: "npm:11.2.6"
     minimist: "npm:1.2.8"
