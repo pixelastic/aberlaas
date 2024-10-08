@@ -38,5 +38,5 @@
     "g:lint": "./scripts/lint",
     "g:lint:fix": "./scripts/lint-fix"
   },
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.5.0"
 }
