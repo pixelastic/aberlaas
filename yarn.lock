@@ -4646,7 +4646,7 @@ __metadata:
     minimist: "npm:1.2.8"
     parse-github-repo-url: "npm:1.4.1"
     prettier: "npm:3.2.5"
-    std-mocks: "npm:1.0.1"
+    std-mocks: "npm:2.0.0"
     stylelint: "npm:13.13.1"
     vitest: "npm:2.1.1"
     yaml-lint: "npm:1.7.0"

@@ -55,7 +55,7 @@
     "minimist": "1.2.8",
     "parse-github-repo-url": "1.4.1",
     "prettier": "3.2.5",
-    "std-mocks": "1.0.1",
+    "std-mocks": "2.0.0",
     "stylelint": "13.13.1",
     "vitest": "2.1.1",
     "yaml-lint": "1.7.0"
