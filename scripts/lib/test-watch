@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-cd ./lib
+cd ./modules/lib
 ./bin/aberlaas.js test --exclude="**/__meta_tests__/**" --watch "$@"

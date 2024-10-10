@@ -1,4 +1,4 @@
-import config from './lib/configs/lintstaged.js';
+import config from 'aberlaas/configs/lintstaged';
 
 // Note: This is a local override when developing aberlaas itself. We can't call
 // yarn run aberlaas, so we need to manually call the ./lib/bin/aberlaas.js file

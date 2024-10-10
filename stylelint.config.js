@@ -1,4 +1,4 @@
-import config from './lib/configs/stylelint.js';
+import config from 'aberlaas/configs/stylelint';
 
 export default {
   ...config,

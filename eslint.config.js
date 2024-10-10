@@ -1,4 +1,4 @@
-import config from './lib/configs/eslint.js';
+import config from 'aberlaas/configs/eslint';
 
 export default [
   ...config,

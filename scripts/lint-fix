@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-./lib/bin/aberlaas.js lint --fix "${@:-$INIT_CWD}"
+./modules/lib/bin/aberlaas.js lint --fix "${@:-$INIT_CWD}"

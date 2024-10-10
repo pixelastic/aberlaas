@@ -6,8 +6,7 @@
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "keywords": [],
   "workspaces": [
-    "lib",
-    "docs"
+    "modules/*"
   ],
   "files": [],
   "devDependencies": {

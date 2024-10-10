@@ -8,4 +8,4 @@
 # $ git config core.hooksPath scripts/hooks
 set -e
 
-./lib/bin/aberlaas.js precommit
+./modules/lib/bin/aberlaas.js precommit

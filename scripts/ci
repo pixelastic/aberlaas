@@ -14,7 +14,7 @@ yarn run test
 # "aberlaas test". This is fine in most cases, for consumers, but when
 # developing aberlaas itself it would make "aberlaas test" also run the
 # meta-tests (where some are expected to fail, as it's what we want to test)
-./lib/bin/aberlaas.js ci --no-test "$@"
+./modules/lib/bin/aberlaas.js ci --no-test "$@"
 
 # Finally, we run the meta-tests
 yarn run test:meta
