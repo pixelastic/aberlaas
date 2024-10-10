@@ -4,9 +4,9 @@ import helper from '../../../helper.js';
 import current from '../js.js';
 
 describe('lint-js', () => {
-  // Note: tmpDirectory must be a children of ./lib, as ESLint will refuse to
-  // lint files outside of its base directory
-  const tmpDirectory = absolute('<gitRoot>/lib/tmp/lint/js');
+  // Note: tmpDirectory must be a children of the package that loads ESLint
+  // as ESLint will refuse to lint files outside of its base directory
+  const tmpDirectory = absolute('<gitRoot>/modules/lib/tmp/lint/js');
   beforeEach(async () => {
     vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);

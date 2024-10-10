@@ -1,4 +1,4 @@
-import config from 'aberlaas/configs/prettier';
+import config from './modules/lib/configs/prettier.js';
 
 export default {
   ...config,

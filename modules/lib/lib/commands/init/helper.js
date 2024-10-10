@@ -3,7 +3,7 @@ import Gilmore from 'gilmore';
 import { copy, error as firostError, isFile, move, read, write } from 'firost';
 import { _ } from 'golgoth';
 import helper from '../../helper.js';
-import { nodeVersion, yarnVersion } from '../../configs/node.js';
+import { nodeVersion, yarnVersion } from '../../../configs/node.js';
 
 /**
  * This hold functions shared for both the monorepo and simple init scenarios

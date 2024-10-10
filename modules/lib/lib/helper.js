@@ -25,7 +25,7 @@ export default {
    * @returns {string} Absolute path to aberlaas dir
    */
   aberlaasRoot() {
-    return url.fileURLToPath(new URL('.', import.meta.url));
+    return path.dirname(url.fileURLToPath(new URL('.', import.meta.url)));
   },
   /**
    * Return an absolute path to a file in the aberlaas directory

@@ -7,7 +7,7 @@ import {
   norskaThemeDocsVersion,
   norskaVersion,
   yarnVersion,
-} from '../../configs/node.js';
+} from '../../../configs/node.js';
 import initHelper from './helper.js';
 
 export default {

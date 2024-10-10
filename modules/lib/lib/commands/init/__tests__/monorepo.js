@@ -7,7 +7,7 @@ import {
   norskaThemeDocsVersion,
   norskaVersion,
   yarnVersion,
-} from '../../../configs/node.js';
+} from '../../../../configs/node.js';
 
 const currentAberlaasVersion = (
   await readJson(helper.aberlaasPath('./package.json'))

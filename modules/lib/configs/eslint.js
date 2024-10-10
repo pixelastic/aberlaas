@@ -15,7 +15,7 @@ export default [
   {
     name: 'aberlaas/base',
     files: ['**/*.js'],
-    ignores: ['node_modules/*', '.yarn/*', 'docs/**/*.js'],
+    ignores: ['node_modules/*', '.yarn/*', '**/docs/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

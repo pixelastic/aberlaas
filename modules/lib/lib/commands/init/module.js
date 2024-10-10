@@ -1,7 +1,7 @@
 import { readJson, writeJson } from 'firost';
 
 import helper from '../../helper.js';
-import { nodeVersion, yarnVersion } from '../../configs/node.js';
+import { nodeVersion, yarnVersion } from '../../../configs/node.js';
 import initHelper from './helper.js';
 
 export default {

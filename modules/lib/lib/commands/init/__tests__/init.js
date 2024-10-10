@@ -2,7 +2,7 @@ import Gilmore from 'gilmore';
 import { glob, read, remove, tmpDirectory } from 'firost';
 import current from '../index.js';
 import helper from '../../../helper.js';
-import { nodeVersion } from '../../../configs/node.js';
+import { nodeVersion } from '../../../../configs/node.js';
 
 describe('init', () => {
   beforeEach(async () => {
