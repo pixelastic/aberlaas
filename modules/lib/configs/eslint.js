@@ -9,13 +9,13 @@ import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 // @typescript-eslint/utils to aberlaas for the plugin to work
 // See: https://github.com/vitest-dev/eslint-plugin-vitest/issues/543
 import pluginVitest from '@vitest/eslint-plugin';
-import { nodeVersion } from './node.js';
+import { nodeVersion } from 'aberlaas-versions';
 
 export default [
   {
     name: 'aberlaas/base',
     files: ['**/*.js'],
-    ignores: ['node_modules/*', '.yarn/*', '**/docs/**/*.js'],
+    ignores: ['node_modules/*', '.yarn/*', 'docs/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

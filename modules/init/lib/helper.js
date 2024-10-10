@@ -2,8 +2,8 @@ import path from 'path';
 import Gilmore from 'gilmore';
 import { copy, error as firostError, isFile, move, read, write } from 'firost';
 import { _ } from 'golgoth';
-import helper from '../../helper.js';
-import { nodeVersion, yarnVersion } from '../../../configs/node.js';
+import helper from 'aberlaas-helper';
+import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 
 /**
  * This hold functions shared for both the monorepo and simple init scenarios

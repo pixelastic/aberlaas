@@ -1,7 +1,7 @@
 {
-  "name": "aberlaas-init",
+  "name": "aberlaas-helper",
   "type": "module",
-  "description": "aberlaas init command: Setup the repository with all needed config",
+  "description": "aberlaas shared helper: Common methods used by all commands",
   "version": "2.9.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
@@ -31,9 +31,8 @@
     "lint:fix": "ABERLAAS_CWD=$INIT_CWD yarn g:lint:fix"
   },
   "dependencies": {
-    "aberlaas-helper": "^2.9.0",
-    "aberlaas-versions": "^2.9.0",
+    "find-up": "7.0.0",
     "firost": "4.0.1",
-    "gilmore": "1.0.0"
+    "golgoth": "2.4.0"
   }
 }

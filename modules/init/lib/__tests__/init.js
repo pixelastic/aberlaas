@@ -1,8 +1,8 @@
 import Gilmore from 'gilmore';
 import { glob, read, remove, tmpDirectory } from 'firost';
-import current from '../index.js';
-import helper from '../../../helper.js';
-import { nodeVersion } from '../../../../configs/node.js';
+import helper from 'aberlaas-helper';
+import { nodeVersion } from 'aberlaas-versions';
+import current from '../main.js';
 
 describe('init', () => {
   beforeEach(async () => {

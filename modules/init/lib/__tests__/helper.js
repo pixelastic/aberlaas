@@ -9,9 +9,9 @@ import {
   tmpDirectory,
   write,
 } from 'firost';
+import helper from 'aberlaas-helper';
+import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../helper.js';
-import helper from '../../../helper.js';
-import { nodeVersion, yarnVersion } from '../../../../configs/node.js';
 
 describe('init > helper', () => {
   beforeEach(async () => {

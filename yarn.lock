@@ -4573,9 +4573,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"aberlaas-helper@npm:^2.9.0, aberlaas-helper@workspace:modules/helper":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-helper@workspace:modules/helper"
+  dependencies:
+    find-up: "npm:7.0.0"
+    firost: "npm:4.0.1"
+    golgoth: "npm:2.4.0"
+  languageName: unknown
+  linkType: soft
+
 "aberlaas-init@npm:^2.9.0, aberlaas-init@workspace:modules/init":
   version: 0.0.0-use.local
   resolution: "aberlaas-init@workspace:modules/init"
+  dependencies:
+    aberlaas-helper: "npm:^2.9.0"
+    aberlaas-versions: "npm:^2.9.0"
+    firost: "npm:4.0.1"
+    gilmore: "npm:1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -4583,11 +4598,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas-monorepo@workspace:."
   dependencies:
+    aberlaas: "npm:^2.9.0"
     lerna: "npm:8.1.8"
   languageName: unknown
   linkType: soft
 
-"aberlaas@workspace:modules/lib":
+"aberlaas-versions@npm:^2.9.0, aberlaas-versions@workspace:modules/versions":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-versions@workspace:modules/versions"
+  languageName: unknown
+  linkType: soft
+
+"aberlaas@npm:^2.9.0, aberlaas@workspace:modules/lib":
   version: 0.0.0-use.local
   resolution: "aberlaas@workspace:modules/lib"
   dependencies:
@@ -4595,7 +4617,9 @@ __metadata:
     "@octokit/rest": "npm:21.0.2"
     "@typescript-eslint/utils": "npm:8.8.1"
     "@vitest/eslint-plugin": "npm:1.1.7"
+    aberlaas-helper: "npm:^2.9.0"
     aberlaas-init: "npm:^2.9.0"
+    aberlaas-versions: "npm:^2.9.0"
     ci-info: "npm:4.0.0"
     dedent: "npm:1.5.3"
     eslint: "npm:9.12.0"

@@ -1,13 +1,13 @@
 import { exists, glob, readJson, remove, tmpDirectory } from 'firost';
-import current from '../monorepo.js';
-import helper from '../../../helper.js';
+import helper from 'aberlaas-helper';
 import {
   lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
   norskaVersion,
   yarnVersion,
-} from '../../../../configs/node.js';
+} from 'aberlaas-versions';
+import current from '../monorepo.js';
 
 const currentAberlaasVersion = (
   await readJson(helper.aberlaasPath('./package.json'))

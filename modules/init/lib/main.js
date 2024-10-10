@@ -1,8 +1,8 @@
 import { consoleInfo, run, spinner, write } from 'firost';
 
 import Gilmore from 'gilmore';
-import helper from '../../helper.js';
-import { nodeVersion } from '../../../configs/node.js';
+import helper from 'aberlaas-helper';
+import { nodeVersion } from 'aberlaas-versions';
 import initMonorepo from './monorepo.js';
 import initModule from './module.js';
 

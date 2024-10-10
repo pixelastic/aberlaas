@@ -1,13 +1,13 @@
 import { readJson, writeJson } from 'firost';
 
-import helper from '../../helper.js';
+import helper from 'aberlaas-helper';
 import {
   lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
   norskaVersion,
   yarnVersion,
-} from '../../../configs/node.js';
+} from 'aberlaas-versions';
 import initHelper from './helper.js';
 
 export default {

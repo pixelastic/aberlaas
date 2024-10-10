@@ -6,7 +6,7 @@ import {
   write,
 } from 'firost';
 import { _, pMap } from 'golgoth';
-import current from '../helper.js';
+import current from '../main.js';
 
 describe('current', () => {
   describe('hostRoot', () => {
