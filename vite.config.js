@@ -1,4 +1,4 @@
-import config from './modules/lib/configs/vite.js';
+import config from 'aberlaas/configs/vite';
 
 export default {
   ...config,

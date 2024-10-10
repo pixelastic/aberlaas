@@ -4564,6 +4564,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"aberlaas-ci@npm:^2.9.0, aberlaas-ci@workspace:modules/ci":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-ci@workspace:modules/ci"
+  dependencies:
+    aberlaas-lint: "npm:^2.9.0"
+    aberlaas-test: "npm:^2.9.0"
+    ci-info: "npm:4.0.0"
+    firost: "npm:4.0.1"
+  languageName: unknown
+  linkType: soft
+
+"aberlaas-compress@npm:^2.9.0, aberlaas-compress@workspace:modules/compress":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-compress@workspace:modules/compress"
+  dependencies:
+    aberlaas-helper: "npm:^2.9.0"
+    firost: "npm:4.0.1"
+    golgoth: "npm:2.4.0"
+  languageName: unknown
+  linkType: soft
+
 "aberlaas-docs@workspace:modules/docs":
   version: 0.0.0-use.local
   resolution: "aberlaas-docs@workspace:modules/docs"
@@ -4594,12 +4615,82 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"aberlaas-lint@npm:^2.9.0, aberlaas-lint@workspace:modules/lint":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-lint@workspace:modules/lint"
+  dependencies:
+    "@eslint/js": "npm:9.12.0"
+    "@typescript-eslint/utils": "npm:8.8.1"
+    aberlaas-helper: "npm:^2.9.0"
+    ci-info: "npm:4.0.0"
+    eslint: "npm:9.12.0"
+    eslint-config-prettier: "npm:9.1.0"
+    eslint-plugin-import: "npm:2.31.0"
+    eslint-plugin-jsdoc: "npm:50.3.1"
+    eslint-plugin-n: "npm:17.11.1"
+    eslint-plugin-prettier: "npm:5.2.1"
+    firost: "npm:4.0.1"
+    golgoth: "npm:2.4.0"
+    prettier: "npm:3.3.3"
+    stylelint: "npm:16.9.0"
+    typescript: "npm:5.6.3"
+    yaml-lint: "npm:1.7.0"
+  languageName: unknown
+  linkType: soft
+
 "aberlaas-monorepo@workspace:.":
   version: 0.0.0-use.local
   resolution: "aberlaas-monorepo@workspace:."
   dependencies:
     aberlaas: "npm:^2.9.0"
     lerna: "npm:8.1.8"
+  languageName: unknown
+  linkType: soft
+
+"aberlaas-precommit@npm:^2.9.0, aberlaas-precommit@workspace:modules/precommit":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-precommit@workspace:modules/precommit"
+  dependencies:
+    aberlaas-helper: "npm:^2.9.0"
+    firost: "npm:4.0.1"
+    lint-staged: "npm:15.2.10"
+  languageName: unknown
+  linkType: soft
+
+"aberlaas-readme@npm:^2.9.0, aberlaas-readme@workspace:modules/readme":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-readme@workspace:modules/readme"
+  dependencies:
+    aberlaas-helper: "npm:^2.9.0"
+    firost: "npm:4.0.1"
+    front-matter: "npm:4.0.2"
+    golgoth: "npm:2.4.0"
+  languageName: unknown
+  linkType: soft
+
+"aberlaas-setup@npm:^2.9.0, aberlaas-setup@workspace:modules/setup":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-setup@workspace:modules/setup"
+  dependencies:
+    "@octokit/rest": "npm:21.0.2"
+    aberlaas-helper: "npm:^2.9.0"
+    firost: "npm:4.0.1"
+    golgoth: "npm:2.4.0"
+    parse-github-repo-url: "npm:1.4.1"
+  languageName: unknown
+  linkType: soft
+
+"aberlaas-test@npm:^2.9.0, aberlaas-test@workspace:modules/test":
+  version: 0.0.0-use.local
+  resolution: "aberlaas-test@workspace:modules/test"
+  dependencies:
+    "@vitest/eslint-plugin": "npm:1.1.7"
+    aberlaas-helper: "npm:^2.9.0"
+    firost: "npm:4.0.1"
+    globals: "npm:15.11.0"
+    golgoth: "npm:2.4.0"
+    jest-extended: "npm:4.0.2"
+    vitest: "npm:2.1.2"
   languageName: unknown
   linkType: soft
 
@@ -4613,37 +4704,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas@workspace:modules/lib"
   dependencies:
-    "@eslint/js": "npm:9.12.0"
-    "@octokit/rest": "npm:21.0.2"
-    "@typescript-eslint/utils": "npm:8.8.1"
-    "@vitest/eslint-plugin": "npm:1.1.7"
+    aberlaas-ci: "npm:^2.9.0"
+    aberlaas-compress: "npm:^2.9.0"
     aberlaas-helper: "npm:^2.9.0"
     aberlaas-init: "npm:^2.9.0"
+    aberlaas-lint: "npm:^2.9.0"
+    aberlaas-precommit: "npm:^2.9.0"
+    aberlaas-readme: "npm:^2.9.0"
+    aberlaas-setup: "npm:^2.9.0"
+    aberlaas-test: "npm:^2.9.0"
     aberlaas-versions: "npm:^2.9.0"
-    ci-info: "npm:4.0.0"
     dedent: "npm:1.5.3"
-    eslint: "npm:9.12.0"
-    eslint-config-prettier: "npm:9.1.0"
-    eslint-plugin-import: "npm:2.31.0"
-    eslint-plugin-jsdoc: "npm:50.3.1"
-    eslint-plugin-n: "npm:17.11.1"
-    eslint-plugin-prettier: "npm:5.2.1"
-    find-up: "npm:7.0.0"
     firost: "npm:4.0.1"
-    front-matter: "npm:4.0.2"
     gilmore: "npm:1.0.0"
-    globals: "npm:15.11.0"
     golgoth: "npm:2.4.0"
-    jest-extended: "npm:4.0.2"
-    lint-staged: "npm:15.2.10"
     minimist: "npm:1.2.8"
-    parse-github-repo-url: "npm:1.4.1"
-    prettier: "npm:3.3.3"
     std-mocks: "npm:2.0.0"
-    stylelint: "npm:16.9.0"
-    typescript: "npm:5.6.3"
-    vitest: "npm:2.1.2"
-    yaml-lint: "npm:1.7.0"
   bin:
     aberlaas: bin/aberlaas.js
   languageName: unknown

@@ -1,4 +1,3 @@
-export default {
-  singleQuote: true,
-  printWidth: 80,
-};
+import config from 'aberlaas-lint/configs/prettier';
+
+export default config;

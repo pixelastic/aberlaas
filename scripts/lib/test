@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-cd ./modules/lib
-./bin/aberlaas.js test --exclude="**/__meta_tests__/**" "$@"
+[[ "$ABERLAAS_CWD" != "" ]] && cd "$ABERLAAS_CWD"
+aberlaas test --exclude="**/__meta_tests__/**" "$@"

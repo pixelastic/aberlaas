@@ -3,13 +3,13 @@ import minimist from 'minimist';
 import { absolute, consoleError, env, exit } from 'firost';
 import { _ } from 'golgoth';
 import commandInit from 'aberlaas-init';
-import commandCi from './commands/ci/index.js';
-import commandCompress from './commands/compress/index.js';
-import commandPrecommit from './commands/precommit/index.js';
-import commandTest from './commands/test/index.js';
-import commandLint from './commands/lint/index.js';
-import commandReadme from './commands/readme/index.js';
-import commandSetup from './commands/setup/index.js';
+import commandCi from 'aberlaas-ci';
+import commandCompress from 'aberlaas-compress';
+import commandPrecommit from 'aberlaas-precommit';
+import commandTest from 'aberlaas-test';
+import commandLint from 'aberlaas-lint';
+import commandReadme from 'aberlaas-readme';
+import commandSetup from 'aberlaas-setup';
 
 export default {
   /**

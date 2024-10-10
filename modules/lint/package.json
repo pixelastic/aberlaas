@@ -1,0 +1,55 @@
+{
+  "name": "aberlaas-lint",
+  "type": "module",
+  "description": "aberlaas lint command: Lint files",
+  "version": "2.9.0",
+  "repository": "pixelastic/aberlaas",
+  "homepage": "https://projects.pixelastic.com/aberlaas/",
+  "author": "Tim Carry (@pixelastic)",
+  "license": "MIT",
+  "files": [
+    "lib/*.js",
+    "configs/*.js"
+  ],
+  "exports": {
+    ".": "./lib/main.js",
+    "./configs/eslint": "./configs/eslint.js",
+    "./configs/prettier": "./configs/prettier.js",
+    "./configs/stylelint": "./configs/stylelint.js"
+  },
+  "main": "./lib/main.js",
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "scripts": {
+    "build": "ABERLAAS_CWD=$INIT_CWD yarn g:build",
+    "build:prod": "ABERLAAS_CWD=$INIT_CWD yarn g:build:prod",
+    "cms": "ABERLAAS_CWD=$INIT_CWD yarn g:cms",
+    "serve": "ABERLAAS_CWD=$INIT_CWD yarn g:serve",
+    "release": "ABERLAAS_CWD=$INIT_CWD yarn g:release",
+    "test": "ABERLAAS_CWD=$INIT_CWD yarn g:test",
+    "test:watch": "ABERLAAS_CWD=$INIT_CWD yarn g:test:watch",
+    "test:meta": "ABERLAAS_CWD=$INIT_CWD yarn g:test:meta",
+    "compress": "ABERLAAS_CWD=$INIT_CWD yarn g:compress",
+    "lint": "ABERLAAS_CWD=$INIT_CWD yarn g:lint",
+    "lint:fix": "ABERLAAS_CWD=$INIT_CWD yarn g:lint:fix"
+  },
+  "dependencies": {
+    "@eslint/js": "9.12.0",
+    "@typescript-eslint/utils": "8.8.1",
+    "aberlaas-helper": "^2.9.0",
+    "ci-info": "4.0.0",
+    "eslint": "9.12.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jsdoc": "50.3.1",
+    "eslint-plugin-n": "17.11.1",
+    "eslint-plugin-prettier": "5.2.1",
+    "firost": "4.0.1",
+    "golgoth": "2.4.0",
+    "prettier": "3.3.3",
+    "stylelint": "16.9.0",
+    "typescript": "5.6.3",
+    "yaml-lint": "1.7.0"
+  }
+}
