@@ -26,7 +26,6 @@
   ],
   "exports": {
     ".": "./lib/main.js",
-    "./": "./",
     "./configs/node": "./configs/node.js",
     "./configs/eslint": "./configs/eslint.js",
     "./configs/lintstaged": "./configs/lintstaged.js",
