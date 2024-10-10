@@ -14,8 +14,6 @@
     ".": "./lib/main.js"
   },
   "main": "./lib/main.js",
-  "dependencies": {
-  },
   "engines": {
     "node": ">=18.18.0"
   },
