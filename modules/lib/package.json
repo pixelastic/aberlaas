@@ -25,14 +25,14 @@
     "lib/*.js"
   ],
   "exports": {
-    ".": "./main.js",
-    "./configs/eslint": "./configs/eslint.js",
-    "./configs/lintstaged": "./configs/lintstaged.js",
-    "./configs/prettier": "./configs/prettier.js",
-    "./configs/stylelint": "./configs/stylelint.js",
-    "./configs/vite": "./configs/vite.js"
+    ".": "./lib/main.js",
+    "./configs/eslint": "./lib/configs/eslint.js",
+    "./configs/lintstaged": "./lib/configs/lintstaged.js",
+    "./configs/prettier": "./lib/configs/prettier.js",
+    "./configs/stylelint": "./lib/configs/stylelint.js",
+    "./configs/vite": "./lib/configs/vite.js"
   },
-  "main": "./main.js",
+  "main": "./lib/main.js",
   "bin": "bin/aberlaas.js",
   "dependencies": {
     "@eslint/js": "9.12.0",

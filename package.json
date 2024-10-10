@@ -25,6 +25,7 @@
     "compress": "./scripts/compress",
     "lint": "./scripts/lint",
     "lint:fix": "./scripts/lint-fix",
+    "learn": "lerna",
     "g:build": "./scripts/docs/build",
     "g:build:prod": "./scripts/docs/build-prod",
     "g:cms": "./scripts/docs/cms",
