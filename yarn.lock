@@ -4598,7 +4598,7 @@ __metadata:
     eslint-plugin-n: "npm:17.11.1"
     eslint-plugin-prettier: "npm:5.2.1"
     find-up: "npm:7.0.0"
-    firost: "npm:4.0.1"
+    firost: "npm:4.1.0"
     front-matter: "npm:4.0.2"
     gilmore: "npm:1.0.0"
     globals: "npm:15.11.0"
@@ -9886,9 +9886,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firost@npm:4.0.1":
-  version: 4.0.1
-  resolution: "firost@npm:4.0.1"
+"firost@npm:4.1.0":
+  version: 4.1.0
+  resolution: "firost@npm:4.1.0"
   dependencies:
     callsites: "npm:4.2.0"
     chokidar: "npm:4.0.1"
@@ -9911,7 +9911,7 @@ __metadata:
     temp-dir: "npm:3.0.0"
     untildify: "npm:5.0.0"
     which: "npm:5.0.0"
-  checksum: 10c0/5a68e3677b30f39f3d1360ff7f7cccc576010d634598fe44960aec85d8d6e62cea27217fc042197452712dc3f16bb3f95a12322ca48316eb16620cc379edd2dc
+  checksum: 10c0/095c203f734e139a48b27fbda1edc4bfcb1c0a69c1d535276ce50e84e09e24acb5254bba55642fdc23aedbb46ab46a099b6a59583a4c9b6e52b09592bcc25640
   languageName: node
   linkType: hard
 
