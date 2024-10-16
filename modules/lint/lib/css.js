@@ -1,7 +1,8 @@
 import stylelint from 'stylelint';
 import { _ } from 'golgoth';
-import { firostError, firostImport } from 'firost';
+import { firostError } from 'firost';
 import helper from 'aberlaas-helper';
+import stylelintConfig from '../configs/stylelint.js';
 import { fix as prettierFix } from './helpers/prettier.js';
 
 export default {
@@ -34,12 +35,11 @@ export default {
     }
 
     // Config
-    const configFile = await helper.configFile(
+    const config = await helper.getConfig(
       userConfigFile,
       'stylelint.config.js',
-      'configs/stylelint.js',
+      stylelintConfig,
     );
-    const config = await firostImport(configFile);
 
     const result = await stylelint.lint({
       config,

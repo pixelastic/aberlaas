@@ -1,6 +1,6 @@
 import { absolute, emptyDir, exists, write } from 'firost';
+import helper from 'aberlaas-helper';
 import current from '../ssh.js';
-import helper from '../../../../helper.js';
 import githubHelper from '../github.js';
 
 describe('setup > helpers > ssh', () => {

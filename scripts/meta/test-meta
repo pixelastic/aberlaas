@@ -4,5 +4,4 @@ set -e
 # run test directly and checking exit code and output
 # Note: Those tests are very slow to run
 
-cd ./modules/lib/__meta_tests__
-./test_all
+./__meta_tests/test_all "$@"

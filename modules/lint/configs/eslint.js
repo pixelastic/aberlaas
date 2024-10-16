@@ -90,7 +90,7 @@ export default [
       ],
       // Import
       'import/first': ['error'],
-      'import/no-cycle': ['error'],
+      'import/no-cycle': ['error', { ignoreExternal: true, disableScc: true }],
       'import/order': ['error'],
       'import/newline-after-import': ['error'],
       // Ignoring this rule for lint-staged, as it seem to have a missing .main

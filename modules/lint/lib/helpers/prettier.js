@@ -1,10 +1,8 @@
-import {
-  format as prettierFormat,
-  resolveConfig as prettierResolveConfig,
-} from 'prettier';
+import { format as prettierFormat } from 'prettier';
 import { firostError, read, write } from 'firost';
 import { _, pMap } from 'golgoth';
 import helper from 'aberlaas-helper';
+import prettierConfig from '../../configs/prettier.js';
 
 /**
  * Fix all files using prettier
@@ -12,12 +10,11 @@ import helper from 'aberlaas-helper';
  */
 export async function fix(inputFiles) {
   // Config file
-  const configFile = await helper.configFile(
+  const config = await helper.getConfig(
     null,
     'prettier.config.js',
-    'configs/prettier.js',
+    prettierConfig,
   );
-  const config = await prettierResolveConfig(configFile);
 
   const errors = [];
 

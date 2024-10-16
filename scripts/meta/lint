@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+./modules/lib/bin/aberlaas.js lint "$@"

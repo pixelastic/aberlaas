@@ -16,7 +16,6 @@ export default {
   },
 
   /**
-   
    * Returns path to the binary to execute
    * @returns {string|boolean} Path to the binary, or false if not found
    */

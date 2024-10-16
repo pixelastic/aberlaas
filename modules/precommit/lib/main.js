@@ -1,16 +1,16 @@
 import lintStaged from 'lint-staged';
-import { firostError, firostImport } from 'firost';
+import { firostError } from 'firost';
 import helper from 'aberlaas-helper';
+import lintStagedConfig from '../configs/lintstaged.js';
 
 export default {
   async run(cliArgs) {
     // Config
-    const configPath = await helper.configFile(
+    const config = await helper.getConfig(
       cliArgs.config,
       'lintstaged.config.js',
-      'configs/lintstaged.js',
+      lintStagedConfig,
     );
-    const config = await firostImport(configPath);
 
     try {
       const result = await lintStaged({

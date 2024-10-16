@@ -1,4 +1,4 @@
-import current from '../index.js';
+import current from '../main.js';
 
 describe('setup', () => {
   describe('run', () => {

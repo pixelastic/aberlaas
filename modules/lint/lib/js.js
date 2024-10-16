@@ -2,6 +2,7 @@ import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { ESLint } from 'eslint';
 import helper from 'aberlaas-helper';
+import eslintConfig from '../configs/eslint.js';
 
 export default {
   /**
@@ -32,16 +33,17 @@ export default {
     }
 
     // Config file
-    const configFile = await helper.configFile(
+    const config = await helper.getConfig(
       userConfigFile,
       'eslint.config.js',
-      'configs/eslint.js',
+      eslintConfig,
     );
 
     // Run the actual lint
     const eslint = new ESLint({
-      overrideConfigFile: configFile,
       ...options,
+      overrideConfigFile: true,
+      overrideConfig: config,
     });
     const results = await eslint.lintFiles(files);
 

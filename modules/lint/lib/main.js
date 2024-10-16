@@ -1,18 +1,22 @@
 import { _, pMap } from 'golgoth';
-import { consoleError, firostError } from 'firost';
-import linterCircleCI from './circleci.js';
-import linterCss from './css.js';
-import linterJson from './json.js';
-import linterJs from './js.js';
-import linterYml from './yml.js';
+import { consoleError, firostError, firostImport } from 'firost';
 
 export default {
   linters: {
-    circleci: linterCircleCI,
-    css: linterCss,
-    json: linterJson,
-    js: linterJs,
-    yml: linterYml,
+    circleci: './circleci.js',
+    css: './css.js',
+    json: './json.js',
+    js: './js.js',
+    yml: './yml.js',
+  },
+
+  async getLinter(linterType) {
+    const linterPath = this.linters[linterType];
+    if (!linterPath) {
+      return false;
+    }
+
+    return await firostImport(linterPath);
   },
   /**
    * Wrapper to lint all supported formats
@@ -28,7 +32,7 @@ export default {
     await pMap(typesToLint, async (type) => {
       const methodName = cliArgs.fix ? 'fix' : 'run';
       try {
-        const linter = this.linters[type];
+        const linter = await this.getLinter(type);
 
         const configFile = _.get(cliArgs, `config.${type}`);
         const userPatterns = _.get(cliArgs, '_');

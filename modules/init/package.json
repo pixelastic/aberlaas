@@ -18,22 +18,22 @@
     "node": ">=18.18.0"
   },
   "scripts": {
-    "build": "ABERLAAS_CWD=$INIT_CWD yarn g:build",
-    "build:prod": "ABERLAAS_CWD=$INIT_CWD yarn g:build:prod",
-    "cms": "ABERLAAS_CWD=$INIT_CWD yarn g:cms",
-    "serve": "ABERLAAS_CWD=$INIT_CWD yarn g:serve",
-    "release": "ABERLAAS_CWD=$INIT_CWD yarn g:release",
-    "test": "ABERLAAS_CWD=$INIT_CWD yarn g:test",
-    "test:watch": "ABERLAAS_CWD=$INIT_CWD yarn g:test:watch",
-    "test:meta": "ABERLAAS_CWD=$INIT_CWD yarn g:test:meta",
-    "compress": "ABERLAAS_CWD=$INIT_CWD yarn g:compress",
-    "lint": "ABERLAAS_CWD=$INIT_CWD yarn g:lint",
-    "lint:fix": "ABERLAAS_CWD=$INIT_CWD yarn g:lint:fix"
+    "build": "../../scripts/local/build",
+    "build:prod": "../../scripts/local/build-prod",
+    "cms": "../../scripts/local/cms",
+    "serve": "../../scripts/local/serve",
+    "release": "../../scripts/local/release",
+    "test:meta": "../../scripts/local/test-meta",
+    "test": "../../scripts/local/test",
+    "test:watch": "../../scripts/local/test-watch",
+    "compress": "../../scripts/local/compress",
+    "lint": "../../scripts/local/lint",
+    "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
     "aberlaas-helper": "^2.9.0",
     "aberlaas-versions": "^2.9.0",
-    "firost": "4.0.1",
+    "firost": "4.2.0",
     "gilmore": "1.0.0"
   }
 }

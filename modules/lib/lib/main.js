@@ -1,42 +1,37 @@
 import path from 'path';
 import minimist from 'minimist';
-import { absolute, consoleError, env, exit } from 'firost';
+import { absolute, consoleError, env, exit, firostImport } from 'firost';
 import { _ } from 'golgoth';
-import commandInit from 'aberlaas-init';
-import commandCi from 'aberlaas-ci';
-import commandCompress from 'aberlaas-compress';
-import commandPrecommit from 'aberlaas-precommit';
-import commandTest from 'aberlaas-test';
-import commandLint from 'aberlaas-lint';
-import commandReadme from 'aberlaas-readme';
-import commandSetup from 'aberlaas-setup';
 
 export default {
-  /**
-   * List of allowed commands to run
-   * @returns {Array} List of allowed commands to run
-   */
-  allCommands() {
-    return {
-      ci: commandCi,
-      compress: commandCompress,
-      init: commandInit,
-      lint: commandLint,
-      precommit: commandPrecommit,
-      readme: commandReadme,
-      setup: commandSetup,
-      test: commandTest,
+  async getCommand(commandName) {
+    const mapping = {
+      ci: 'aberlaas-ci',
+      compress: 'aberlaas-compress',
+      init: 'aberlaas-init',
+      lint: 'aberlaas-lint',
+      precommit: 'aberlaas-precommit',
+      readme: 'aberlaas-readme',
+      setup: 'aberlaas-setup',
+      test: 'aberlaas-test',
     };
+    const commandModuleName = mapping[commandName];
+    if (!commandModuleName) {
+      return false;
+    }
+
+    return await firostImport(commandModuleName);
   },
   /**
    * Converts a list of filepaths to absolute filepaths
    * Note: We want to be able to call commands like "aberlaas lint" from the
    * workspace root or any child workspace. We also want to be able to use
    * relative or absolute filepaths as arguments.
-   * INIT_CWD is always set to the directory where the command was called, but
-   * because scripts in child workspaces are actually calling scripts in the
-   * root workspace, that value is overwritten. This is why we save the original
-   * calling directory in ABERLAAS_CWD, and use that value if available.
+   * Yarn always sets INIT_CWD to the directory where the command was called,
+   * but because scripts in child workspaces are actually calling scripts in the
+   * root workspace, through the g: syntax, that value is overwritten. This is
+   * why we save the original calling directory in ABERLAAS_CWD, in our
+   * package.json script definitions and use that value if available.
    * @param {Array} filepaths Array of filepaths
    * @returns {Array} Array of absolute filepaths
    */
@@ -63,7 +58,8 @@ export default {
     });
 
     const commandName = args._[0];
-    const command = this.allCommands()[commandName];
+    const command = await this.getCommand(commandName);
+
     if (!command) {
       this.__consoleError(`Unknown command ${commandName}`);
       this.__exit(1);

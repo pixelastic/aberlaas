@@ -1,8 +1,7 @@
 import path from 'path';
 import * as url from 'url';
 import { _ } from 'golgoth';
-import { glob } from 'firost';
-import { findUp } from 'find-up';
+import { exists, firostImport, glob } from 'firost';
 
 export default {
   /**
@@ -86,30 +85,30 @@ export default {
     return allFiles;
   },
   /**
-   * Guess a path to a config file by first checking the specific path, then the
-   * host folder and finally fallbacking on the aberlaas default
-   * @param {string} userPath User specific config file
-   * @param {string} upFile File to look for up the directory tree
-   * @param {string} aberlaasPath Path to the aberlaas default file, relative to the aberlaas directory
-   * @returns {string} Path to config file
+   * Return a config object for a specific tool.
+   * Will first check for the user supplied path to the config file, then
+   * fallback to the default config file in the host, and finally fallback to
+   * the default base config in the aberlaas module.
+   * @param {string} userConfigPath User specified config file, relative to the host root
+   * @param {string} hostConfigPath Default host config path, relative to the host root
+   * @param {object} baseConfig Base aberlaas config, final fallback
+   * @returns {object} Config object
    */
-  async configFile(userPath, upFile, aberlaasPath) {
+  async getConfig(userConfigPath, hostConfigPath, baseConfig = {}) {
     // Taking value from --config in CLI in priority
-    if (userPath) {
-      return this.hostPath(userPath);
+    if (userConfigPath) {
+      return await firostImport(this.hostPath(userConfigPath));
     }
 
     // Checking for custom config in the host
-    if (upFile) {
-      const upPath = await findUp(upFile, {
-        cwd: this.hostRoot(),
-      });
-      if (upPath) {
-        return upPath;
+    if (hostConfigPath) {
+      const hostConfigFullPath = this.hostPath(hostConfigPath);
+      if (await exists(hostConfigFullPath)) {
+        return await firostImport(hostConfigFullPath);
       }
     }
 
     // Fallback on default config in aberlaas
-    return this.aberlaasPath(aberlaasPath);
+    return baseConfig;
   },
 };

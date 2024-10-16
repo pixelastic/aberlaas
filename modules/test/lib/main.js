@@ -1,7 +1,8 @@
 import { createVitest, registerConsoleShortcuts } from 'vitest/node';
-import { firostError, firostImport } from 'firost';
+import { firostError } from 'firost';
 import { _ } from 'golgoth';
 import helper from 'aberlaas-helper';
+import viteConfig from '../configs/vite.js';
 
 export default {
   /**
@@ -79,12 +80,12 @@ export default {
     ];
 
     // Reading base options from the config file
-    const configFile = await helper.configFile(
+    const config = await helper.getConfig(
       cliArgs.config,
       'vite.config.js',
-      'configs/vite.js',
+      viteConfig,
     );
-    const optionsFromConfig = (await firostImport(configFile)).test;
+    const optionsFromConfig = config.test;
 
     // Enhancing options with custom CLI arguments
     const optionsFromAberlaas = {

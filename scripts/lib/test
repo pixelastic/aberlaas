@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-[[ "$ABERLAAS_CWD" != "" ]] && cd "$ABERLAAS_CWD"
-aberlaas test --exclude="**/__meta_tests__/**" "$@"

@@ -7,16 +7,17 @@
   "name": "aberlaas-docs",
   "private": true,
   "scripts": {
-    "build": "yarn g:build",
-    "build:prod": "yarn g:build:prod",
-    "cms": "yarn g:cms",
-    "serve": "yarn g:serve",
-    "release": "yarn g:release",
-    "test": "yarn g:test",
-    "test:watch": "yarn g:test:watch",
-    "compress": "yarn g:compress",
-    "lint": "yarn g:lint",
-    "lint:fix": "yarn g:lint:fix"
+    "build": "../../scripts/local/build",
+    "build:prod": "../../scripts/local/build-prod",
+    "cms": "../../scripts/local/cms",
+    "serve": "../../scripts/local/serve",
+    "release": "../../scripts/local/release",
+    "test:meta": "../../scripts/local/test-meta",
+    "test": "../../scripts/local/test",
+    "test:watch": "../../scripts/local/test-watch",
+    "compress": "../../scripts/local/compress",
+    "lint": "../../scripts/local/lint",
+    "lint:fix": "../../scripts/local/lint-fix"
   },
   "version": "2.8.0"
 }
