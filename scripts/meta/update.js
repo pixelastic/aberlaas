@@ -24,7 +24,7 @@ await pMap(
           const thisModuleName = thisModulePackageJson.name;
           const thisModulePath = path.dirname(module);
           console.info(`Upgrading ${dependencyToUpdate} in ${thisModuleName}`);
-          await run(`yarn up --exact ${thisModuleName}`, {
+          await run(`yarn up --exact ${dependencyToUpdate}`, {
             cwd: thisModulePath,
           });
         }
