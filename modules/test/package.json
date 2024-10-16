@@ -26,6 +26,7 @@
     "serve": "../../scripts/local/serve",
     "ci": "../../scripts/local/ci",
     "release": "../../scripts/local/release",
+    "update": "node ../../scripts/meta/update.js",
     "test:meta": "../../scripts/local/test-meta",
     "test": "../../scripts/local/test",
     "test:watch": "../../scripts/local/test-watch",

@@ -21,6 +21,7 @@
     "cms": "./scripts/meta/cms",
     "serve": "./scripts/meta/serve",
     "release": "./scripts/meta/release",
+    "update": "node ./scripts/meta/update.js",
     "test": "./scripts/meta/test",
     "test:watch": "./scripts/meta/test-watch",
     "test:meta": "./scripts/meta/test-meta",
@@ -28,7 +29,6 @@
     "compress": "./scripts/meta/compress",
     "lint": "./scripts/meta/lint",
     "lint:fix": "./scripts/meta/lint-fix",
-    "update": "node ./scripts/meta/update.js",
     "learn": "lerna"
   },
   "packageManager": "yarn@4.5.0"

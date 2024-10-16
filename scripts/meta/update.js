@@ -4,11 +4,12 @@
  **/
 import path from 'path';
 import { _, pMap } from 'golgoth';
-import { glob, readJson, run } from 'firost';
+import { gitRoot, glob, readJson, run } from 'firost';
 
 const dependenciesToUpdate = process.argv.slice(2);
 // const modules = await glob(['./package.json', './modules/*/package.json']);
-const modules = await glob('./modules/*/package.json');
+const root = await gitRoot();
+const modules = await glob(`${root}/modules/*/package.json`);
 const concurrency = 3;
 
 await pMap(
