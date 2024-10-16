@@ -2,7 +2,7 @@
   "name": "aberlaas-test",
   "type": "module",
   "description": "aberlaas test command: Run automated tests",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
@@ -35,7 +35,7 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "aberlaas-helper": "^2.9.0",
+    "aberlaas-helper": "^2.10.0",
     "firost": "4.3.0",
     "globals": "15.11.0",
     "golgoth": "2.4.0",

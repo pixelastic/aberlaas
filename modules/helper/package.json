@@ -2,7 +2,7 @@
   "name": "aberlaas-helper",
   "type": "module",
   "description": "aberlaas shared helper: Common methods used by all commands",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",

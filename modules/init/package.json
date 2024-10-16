@@ -2,7 +2,7 @@
   "name": "aberlaas-init",
   "type": "module",
   "description": "aberlaas init command: Setup the repository with all needed config",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
@@ -34,8 +34,8 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "aberlaas-helper": "^2.9.0",
-    "aberlaas-versions": "^2.9.0",
+    "aberlaas-helper": "^2.10.0",
+    "aberlaas-versions": "^2.10.0",
     "firost": "4.3.0",
     "gilmore": "1.0.0"
   }
