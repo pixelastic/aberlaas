@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@eslint/js": "9.12.0",
-    "@typescript-eslint/utils": "8.8.1",
+    "@typescript-eslint/utils": "8.9.0",
     "@vitest/eslint-plugin": "1.1.7",
     "aberlaas-helper": "^2.10.0",
     "aberlaas-versions": "^2.10.0",
@@ -46,13 +46,13 @@
     "eslint": "9.12.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.31.0",
-    "eslint-plugin-jsdoc": "50.3.1",
+    "eslint-plugin-jsdoc": "50.4.1",
     "eslint-plugin-n": "17.11.1",
     "eslint-plugin-prettier": "5.2.1",
     "firost": "4.3.0",
     "golgoth": "2.4.0",
     "prettier": "3.3.3",
-    "stylelint": "16.9.0",
+    "stylelint": "16.10.0",
     "typescript": "5.6.3",
     "yaml-lint": "1.7.0"
   }
