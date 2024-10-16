@@ -9,7 +9,7 @@ import { glob, readJson, run } from 'firost';
 const dependenciesToUpdate = process.argv.slice(2);
 // const modules = await glob(['./package.json', './modules/*/package.json']);
 const modules = await glob('./modules/*/package.json');
-const concurrency = 1;
+const concurrency = 3;
 
 await pMap(
   modules,
@@ -20,12 +20,14 @@ await pMap(
     await pMap(
       dependenciesToUpdate,
       async (dependencyToUpdate) => {
+        const thisModuleName = thisModulePackageJson.name;
+        const thisModulePath = path.dirname(module);
+
         if (_.includes(thisModuleDependencies, dependencyToUpdate)) {
-          const thisModuleName = thisModulePackageJson.name;
-          const thisModulePath = path.dirname(module);
           console.info(`Upgrading ${dependencyToUpdate} in ${thisModuleName}`);
           await run(`yarn up --exact ${dependencyToUpdate}`, {
             cwd: thisModulePath,
+            stdout: false,
           });
         }
       },
