@@ -1,5 +1,5 @@
 import { createVitest, registerConsoleShortcuts } from 'vitest/node';
-import { firostError } from 'firost';
+import { env, firostError, packageRoot } from 'firost';
 import { _ } from 'golgoth';
 import helper from 'aberlaas-helper';
 import viteConfig from '../configs/vite.js';
@@ -21,7 +21,14 @@ export default {
     const options = await this.vitestOptions(cliArgs);
     const isWatchMode = !!options.watch;
     const isRelatedMode = options.related?.length > 0;
-    let files = _.isEmpty(cliArgs._) ? [helper.hostPath()] : cliArgs._;
+
+    // If no files are passed, we assume we want to test the current project
+    // We'll NOT use helper.hostRoot() as this will force going to high in the
+    // parent tree, where aberlaas is installed. Instead, we need to stop at the
+    // first level where a package.json is defined
+    const closestHostRoot = await packageRoot(env('INIT_CWD'));
+    let files = _.isEmpty(cliArgs._) ? [closestHostRoot] : cliArgs._;
+
     // If --related is passed, the list of files will already by in the .related
     // key, and need to be removed from the files
     if (isRelatedMode) files = [];

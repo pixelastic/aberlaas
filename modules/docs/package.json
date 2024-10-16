@@ -11,6 +11,7 @@
     "build:prod": "../../scripts/local/build-prod",
     "cms": "../../scripts/local/cms",
     "serve": "../../scripts/local/serve",
+    "ci": "../../scripts/local/ci",
     "release": "../../scripts/local/release",
     "test:meta": "../../scripts/local/test-meta",
     "test": "../../scripts/local/test",

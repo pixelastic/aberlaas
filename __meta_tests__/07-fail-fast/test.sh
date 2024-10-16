@@ -5,7 +5,7 @@ source "$(dirname "$0")/../test_framework/index"
 test "should fail early with --failFast"
 
 actual() {
-	"${ROOT}"/lib/bin/aberlaas.js test \
+	"${ROOT}"/modules/lib/bin/aberlaas.js test \
 		--failFast \
 		"${HERE}/__tests__/feature.js"
 }

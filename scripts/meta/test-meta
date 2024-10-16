@@ -4,4 +4,4 @@ set -e
 # run test directly and checking exit code and output
 # Note: Those tests are very slow to run
 
-./__meta_tests/test_all "$@"
+./__meta_tests__/test_all "$@"

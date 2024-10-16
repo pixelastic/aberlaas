@@ -6,15 +6,15 @@ echo "node $(node --version), yarn $(yarn --version)"
 # Tests of aberlaas are meta, as we need to test the test framework, so the CI
 # script is a bit more convoluted
 
-# First we run the classic tests
-yarn run test
-
-# Then, the rest of the CI, without the tests
+# First, we run the classic ci script, but skipping tests
 # This is because "yarn run ci" does not run our custom "yarn run test", but
 # "aberlaas test". This is fine in most cases, for consumers, but when
 # developing aberlaas itself it would make "aberlaas test" also run the
 # meta-tests (where some are expected to fail, as it's what we want to test)
 ./modules/lib/bin/aberlaas.js ci --no-test "$@"
+
+# Then we the classic tests
+yarn run test
 
 # Finally, we run the meta-tests
 yarn run test:meta

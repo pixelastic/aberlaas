@@ -1,5 +1,5 @@
 import ciInfo from 'ci-info';
-import { consoleInfo, run } from 'firost';
+import { firostError, run } from 'firost';
 import commandTest from 'aberlaas-test';
 import commandLint from 'aberlaas-lint';
 
@@ -26,8 +26,10 @@ export default {
     };
 
     if (!this.isCI()) {
-      this.__consoleInfo('Current system is not a CI, skipping');
-      return true;
+      throw firostError(
+        'ERROR_CI',
+        'Current system is not a CI. Use CI=1 to force',
+      );
     }
 
     if (args.test) {
@@ -43,5 +45,4 @@ export default {
   __runTest: commandTest.run.bind(commandTest),
   __runLint: commandLint.run.bind(commandLint),
   __run: run,
-  __consoleInfo: consoleInfo,
 };

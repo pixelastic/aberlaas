@@ -6,17 +6,18 @@ describe('ci', () => {
       vi.spyOn(current, '__runTest').mockReturnValue();
       vi.spyOn(current, '__runLint').mockReturnValue();
     });
-    describe('locally', () => {
-      beforeEach(async () => {
-        vi.spyOn(current, 'isCI').mockReturnValue(false);
-        vi.spyOn(current, '__consoleInfo').mockReturnValue();
-      });
-      it('should do nothing when not on a CI server', async () => {
+    it('should fail if not on a CI server', async () => {
+      vi.spyOn(current, 'isCI').mockReturnValue(false);
+      let actual = null;
+      try {
         await current.run();
+      } catch (err) {
+        actual = err;
+      }
 
-        expect(current.__runTest).not.toHaveBeenCalled();
-        expect(current.__runLint).not.toHaveBeenCalled();
-      });
+      expect(current.__runTest).not.toHaveBeenCalled();
+      expect(current.__runLint).not.toHaveBeenCalled();
+      expect(actual).toHaveProperty('code', 'ERROR_CI');
     });
     describe('on CI server', () => {
       beforeEach(async () => {

@@ -14,11 +14,11 @@
 # expect_to_succeed
 
 # shellcheck disable=SC1091
-ROOT="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")/../../../")"
+ROOT="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")/../../")"
 HERE="$(readlink -f "$(dirname "$0")")"
 export HERE
 
-source "${ROOT}/lib/__meta_tests__/test_framework/catch"
+source "${ROOT}/__meta_tests__/test_framework/catch"
 
 # Global vars used by the framework
 EXPECT_NAME=""
