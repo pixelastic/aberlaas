@@ -1,6 +1,6 @@
-import { readJson, writeJson } from 'firost';
+import { writeJson } from 'firost';
 
-import { nodeVersion, yarnVersion } from 'aberlaas-versions';
+import { aberlaasVersion, nodeVersion, yarnVersion } from 'aberlaas-versions';
 import helper from 'aberlaas-helper';
 import initHelper from './helper.js';
 
@@ -9,11 +9,6 @@ export default {
    * Create the top-level package.json
    */
   async createPackageJson() {
-    // Get language and dependency version
-    const { version: aberlaasVersion } = await readJson(
-      helper.aberlaasPath('./package.json'),
-    );
-
     const name = await this.__getProjectName();
     const version = '0.0.1';
 

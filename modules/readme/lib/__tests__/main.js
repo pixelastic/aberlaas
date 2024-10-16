@@ -7,9 +7,6 @@ describe('readme', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/readme');
   beforeEach(async () => {
     vi.spyOn(helper, 'hostRoot').mockReturnValue(`${tmpDirectory}/host`);
-    vi.spyOn(helper, 'aberlaasRoot').mockReturnValue(
-      `${tmpDirectory}/aberlaas`,
-    );
     await emptyDir(tmpDirectory);
   });
   describe('run', () => {
@@ -95,7 +92,7 @@ describe('readme', () => {
       [
         'Aberlaas template',
         {
-          'aberlaas:/templates/_github/README.template.md': 'aberlaas template',
+          'aberlaas:/README.md': 'aberlaas template',
         },
         {},
         'aberlaas template',
@@ -104,7 +101,7 @@ describe('readme', () => {
         'Host template',
         {
           'host:/.github/README.template.md': 'host template',
-          'aberlaas:/templates/_github/README.template.md': 'aberlaas template',
+          'aberlaas:/README.md': 'aberlaas template',
         },
         {},
         'host template',
@@ -114,7 +111,7 @@ describe('readme', () => {
         {
           'host:/README.template.md': 'custom template',
           'host:/.github/README.template.md': 'host template',
-          'aberlaas:/templates/_github/README.template.md': 'aberlaas template',
+          'aberlaas:/README.md': 'aberlaas template',
         },
         { template: 'README.template.md' },
         'custom template',
@@ -123,7 +120,7 @@ describe('readme', () => {
         'Custom template but does not exist',
         {
           'host:/.github/README.template.md': 'host template',
-          'aberlaas:/templates/_github/README.template.md': 'aberlaas template',
+          'aberlaas:/README.md': 'aberlaas template',
         },
         { template: 'README.template.md' },
         'host template',
@@ -131,7 +128,7 @@ describe('readme', () => {
     ])('%s', async (_title, sourceTree, cliArgs, expected) => {
       await pProps(sourceTree, async (filecontent, filepath) => {
         const completeFilepath = _.chain(filepath)
-          .replace('aberlaas:', helper.aberlaasRoot())
+          .replace('aberlaas:', absolute('../../templates'))
           .replace('host:', helper.hostRoot())
           .value();
         await write(filecontent, completeFilepath);

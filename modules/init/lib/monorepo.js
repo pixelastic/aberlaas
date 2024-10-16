@@ -1,7 +1,8 @@
-import { readJson, writeJson } from 'firost';
+import { writeJson } from 'firost';
 
 import helper from 'aberlaas-helper';
 import {
+  aberlaasVersion,
   lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
@@ -15,7 +16,6 @@ export default {
    * Create the top-level monorepo root workspace
    */
   async createRootWorkspace() {
-    const aberlaasData = await readJson(helper.aberlaasPath('./package.json'));
     const sharedProjectData = await this.getSharedProjectData();
 
     const packageContent = {
@@ -43,7 +43,7 @@ export default {
       // Dependencies
       dependencies: {},
       devDependencies: {
-        aberlaas: aberlaasData.version,
+        aberlaas: aberlaasVersion,
         lerna: lernaVersion,
       },
 
@@ -186,7 +186,7 @@ export default {
     await initHelper.addConfigFiles();
 
     // Lerna
-    await initHelper.copyToHost('templates/lerna.json', 'lerna.json');
+    await initHelper.copyTemplateToHost('lerna.json', 'lerna.json');
   },
   /**
    * Add scripts to the repo
@@ -196,20 +196,17 @@ export default {
     await initHelper.addScripts('LICENSE');
 
     // Docs scripts
-    await initHelper.copyToHost(
-      'templates/scripts/docs/build',
+    await initHelper.copyTemplateToHost(
+      'scripts/docs/build',
       'scripts/docs/build',
     );
-    await initHelper.copyToHost(
-      'templates/scripts/docs/build-prod',
+    await initHelper.copyTemplateToHost(
+      'scripts/docs/build-prod',
       'scripts/docs/build-prod',
     );
-    await initHelper.copyToHost(
-      'templates/scripts/docs/cms',
-      'scripts/docs/cms',
-    );
-    await initHelper.copyToHost(
-      'templates/scripts/docs/serve',
+    await initHelper.copyTemplateToHost('scripts/docs/cms', 'scripts/docs/cms');
+    await initHelper.copyTemplateToHost(
+      'scripts/docs/serve',
       'scripts/docs/serve',
     );
   },

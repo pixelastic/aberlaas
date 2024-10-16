@@ -1,9 +1,6 @@
 import current from '../main.js';
 
 describe('aberlaas', () => {
-  beforeEach(async () => {
-    vi.spyOn(current, '__exit').mockReturnValue();
-  });
   describe('run', () => {
     beforeEach(async () => {
       // Define INIT_CWD so we know where the script is called from
@@ -11,10 +8,11 @@ describe('aberlaas', () => {
         const envs = { INIT_CWD: '/workspace/' };
         return envs[input];
       });
+      vi.spyOn(current, '__exit').mockReturnValue();
+      vi.spyOn(current, '__consoleError').mockReturnValue();
     });
     it('should error when calling a command that does not exist', async () => {
-      vi.spyOn(current, 'allCommands').mockReturnValue({});
-      vi.spyOn(current, '__consoleError').mockReturnValue();
+      vi.spyOn(current, 'getCommand').mockReturnValue(false);
 
       const input = ['foo'];
 
@@ -27,9 +25,7 @@ describe('aberlaas', () => {
     });
     it('should call the run method on the specified command', async () => {
       const mockRun = vi.fn();
-      vi.spyOn(current, 'allCommands').mockReturnValue({
-        foo: { run: mockRun },
-      });
+      vi.spyOn(current, 'getCommand').mockReturnValue({ run: mockRun });
 
       const input = ['foo'];
 
@@ -39,9 +35,7 @@ describe('aberlaas', () => {
     });
     it('should call the method with parsed arguments', async () => {
       const mockRun = vi.fn();
-      vi.spyOn(current, 'allCommands').mockReturnValue({
-        foo: { run: mockRun },
-      });
+      vi.spyOn(current, 'getCommand').mockReturnValue({ run: mockRun });
 
       const input = [
         'foo',
@@ -65,14 +59,13 @@ describe('aberlaas', () => {
     });
     it('should expand absolute path even when called from a child workspace', async () => {
       const mockRun = vi.fn();
-      vi.spyOn(current, 'allCommands').mockReturnValue({
-        foo: { run: mockRun },
-      });
+      vi.spyOn(current, 'getCommand').mockReturnValue({ run: mockRun });
+
       // Simulate script being called from a workspace
       vi.spyOn(current, '__env').mockImplementation((input) => {
         const envs = {
           ABERLAAS_CWD: '/workspace/lib/',
-          INIT_CWD: '/workspace/',
+          INIT_CWD: '/',
         };
         return envs[input];
       });

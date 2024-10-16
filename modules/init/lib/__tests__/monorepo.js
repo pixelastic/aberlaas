@@ -1,6 +1,7 @@
 import { exists, glob, readJson, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
 import {
+  aberlaasVersion,
   lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
@@ -8,10 +9,6 @@ import {
   yarnVersion,
 } from 'aberlaas-versions';
 import current from '../monorepo.js';
-
-const currentAberlaasVersion = (
-  await readJson(helper.aberlaasPath('./package.json'))
-).version;
 
 describe('init > monorepo', () => {
   beforeEach(async () => {
@@ -50,7 +47,7 @@ describe('init > monorepo', () => {
           packageManager: `yarn@${yarnVersion}`,
           dependencies: {},
           devDependencies: {
-            aberlaas: currentAberlaasVersion,
+            aberlaas: aberlaasVersion,
             lerna: lernaVersion,
           },
           scripts: {

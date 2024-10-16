@@ -1,5 +1,4 @@
 import path from 'path';
-import * as url from 'url';
 import { _ } from 'golgoth';
 import { exists, firostImport, glob } from 'firost';
 
@@ -18,21 +17,6 @@ export default {
    */
   hostPath(relativePath = '') {
     return path.resolve(this.hostRoot(), relativePath);
-  },
-  /**
-   * Return absolute path to the aberlaas directory
-   * @returns {string} Absolute path to aberlaas dir
-   */
-  aberlaasRoot() {
-    return path.dirname(url.fileURLToPath(new URL('.', import.meta.url)));
-  },
-  /**
-   * Return an absolute path to a file in the aberlaas directory
-   * @param {string} relativePath Relative path from the aberlaas root
-   * @returns {string} Absolute path to the aberlaas file
-   */
-  aberlaasPath(relativePath = '') {
-    return path.resolve(this.aberlaasRoot(), relativePath);
   },
   /**
    * Find files in host directory following glob patterns. Will exclude some

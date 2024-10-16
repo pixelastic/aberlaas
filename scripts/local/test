@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-../lib/bin/aberlaas.js test \
-	--exclude="**/__meta_tests__/**" \
-	"$@"
+cd ../..
+./scripts/meta/test "$@"

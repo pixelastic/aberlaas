@@ -1,9 +1,8 @@
-import path from 'path';
 import {
   tmpDirectory as generateTmpDirectory,
-  readJson,
   remove,
   write,
+  writeJson,
 } from 'firost';
 import { _, pMap } from 'golgoth';
 import current from '../main.js';
@@ -34,22 +33,6 @@ describe('current', () => {
         const actual = current.hostPath('foo/bar/baz.js');
 
         expect(actual).toBe('/basedir/foo/bar/baz.js');
-      });
-    });
-    describe('aberlaasRoot', () => {
-      it('should return the aberlaas root', async () => {
-        const aberlaasRootPath = current.aberlaasRoot();
-        const actual = await readJson(`${aberlaasRootPath}/package.json`);
-
-        expect(actual).toHaveProperty('name', 'aberlaas');
-      });
-    });
-    describe('aberlaasPath', () => {
-      it('should return path relative to aberlaas directory', () => {
-        vi.spyOn(current, 'aberlaasRoot').mockReturnValue('/aberlaas/');
-        const actual = current.aberlaasPath('foo/bar/baz.js');
-
-        expect(actual).toBe('/aberlaas/foo/bar/baz.js');
       });
     });
     describe('findHostFiles', () => {
@@ -128,64 +111,91 @@ describe('current', () => {
         });
       });
     });
-    describe('configFile', () => {
-      it.each([
-        [
-          'Take the specified file if available',
-          ['my-eslintrc.js'],
-          '.',
-          ['my-eslintrc.js', null, null],
-          'my-eslintrc.js',
-        ],
-        [
-          'Allow for absolute CLI arguments',
-          ['my-eslintrc.js'],
-          '.',
-          [current.aberlaasPath('package.json'), null, null],
-          current.aberlaasPath('package.json'),
-        ],
-        [
-          'Still return the userPath even if does not exist',
-          ['.eslintrc.js'],
-          '.',
-          ['my-eslint.js', '.eslintrc.js', null],
-          'my-eslint.js',
-        ],
-        [
-          'Take the closest upPath if no user file set',
-          ['my-eslintrc.js', '.eslintrc.js'],
-          '.',
-          [null, '.eslintrc.js', null],
-          '.eslintrc.js',
-        ],
-        [
-          'Take the closest upPath if no user file set in upper directories',
-          ['lib/index.js', '.eslintrc.js'],
-          './lib',
-          [null, '.eslintrc.js', null],
-          '.eslintrc.js',
-        ],
-        [
-          'Fallback on file in aberlaas',
-          [],
-          '.',
-          [null, null, 'lib/config/eslint.js'],
-          current.aberlaasPath('lib/config/eslint.js'),
-        ],
-      ])('%s', async (_name, files, pathPrefix, args, expected) => {
-        await pMap(files, async (filepath) => {
-          await write('', current.hostPath(filepath));
-        });
-
-        // Change the hostPath so we actually run the method from a lower
-        // directory
-        const fullExpected = current.hostPath(expected);
-        vi.spyOn(current, 'hostRoot').mockReturnValue(
-          path.resolve(current.hostRoot(), pathPrefix),
+    describe('getConfig', () => {
+      beforeEach(async () => {
+        // The package.json with type: module is required so I can import with
+        // the export default syntax
+        await writeJson({ type: 'module' }, current.hostPath('package.json'));
+        await write(
+          "export default { name: 'custom' }",
+          current.hostPath('./custom.js'),
         );
+        await write(
+          "export default { name: 'tool' }",
+          current.hostPath('./tool.config.js'),
+        );
+      });
+      describe('with a specific path given', () => {
+        it('should give priority to the path given', async () => {
+          const actual = await current.getConfig(
+            './custom.js',
+            './tool.config.js',
+            { name: 'fallback' },
+          );
 
-        const actual = await current.configFile(...args);
-        expect(actual).toEqual(fullExpected);
+          expect(actual).toHaveProperty('name', 'custom');
+        });
+        it('should fail if given file does not exist', async () => {
+          let actual = null;
+          try {
+            await current.getConfig('./does-not-exist.js', './tool.config.js', {
+              name: 'fallback',
+            });
+          } catch (err) {
+            actual = err;
+          }
+
+          expect(actual).toHaveProperty('code', 'ERR_MODULE_NOT_FOUND');
+        });
+        it('should allow passing absolute paths', async () => {
+          const actual = await current.getConfig(
+            current.hostPath('custom.js'),
+            './tool.config.js',
+            { name: 'fallback' },
+          );
+
+          expect(actual).toHaveProperty('name', 'custom');
+        });
+      });
+      describe('with a fallback to the default file in the host', () => {
+        it('should return the file in host if no path given', async () => {
+          const actual = await current.getConfig(null, './tool.config.js', {
+            name: 'fallback',
+          });
+
+          expect(actual).toHaveProperty('name', 'tool');
+        });
+        it('should allow passing absolute path to the file in the root', async () => {
+          const actual = await current.getConfig(
+            null,
+            current.hostPath('tool.config.js'),
+            {
+              name: 'fallback',
+            },
+          );
+
+          expect(actual).toHaveProperty('name', 'tool');
+        });
+      });
+      describe('with a final fallback to the template if no default host file found', () => {
+        it('should return the final fallback if no host file passed', async () => {
+          const actual = await current.getConfig(null, null, {
+            name: 'fallback',
+          });
+
+          expect(actual).toHaveProperty('name', 'fallback');
+        });
+        it('should return the final fallback if no host file found', async () => {
+          const actual = await current.getConfig(
+            null,
+            './does-not-exist.config.js',
+            {
+              name: 'fallback',
+            },
+          );
+
+          expect(actual).toHaveProperty('name', 'fallback');
+        });
       });
     });
   });

@@ -1,6 +1,14 @@
 import path from 'path';
 import Gilmore from 'gilmore';
-import { copy, error as firostError, isFile, move, read, write } from 'firost';
+import {
+  absolute,
+  copy,
+  error as firostError,
+  isFile,
+  move,
+  read,
+  write,
+} from 'firost';
 import { _ } from 'golgoth';
 import helper from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
@@ -28,12 +36,12 @@ export default {
 
   /**
    * Copy a config template to the host
-   * @param {string} source Path to source file, relative to aberlaas
+   * @param {string} source Path to source file, relative to ./templates folder
    * @param {string} destination Path to destination file, relative to the host
    * @returns {boolean} False if can't copy file, true otherwise
    */
-  async copyToHost(source, destination) {
-    const absoluteSource = helper.aberlaasPath(source);
+  async copyTemplateToHost(source, destination) {
+    const absoluteSource = absolute('../templates/', source);
     const absoluteDestination = helper.hostPath(destination);
 
     // Source file does not exist
@@ -68,7 +76,7 @@ export default {
    */
   async addLicenseFile(hostFilepath) {
     // Start by adding a template
-    await this.copyToHost('templates/LICENSE', hostFilepath);
+    await this.copyTemplateToHost('LICENSE', hostFilepath);
 
     // Replace placeholder with real value
     const licensePath = helper.hostPath(hostFilepath);
@@ -87,7 +95,7 @@ export default {
     const configFilepath = helper.hostPath('./.circleci/config.yml');
 
     // Start by adding a template
-    await this.copyToHost('templates/_circleci/config.yml', configFilepath);
+    await this.copyTemplateToHost('_circleci/config.yml', configFilepath);
 
     // Replace placeholder with real value
     const templateContent = await read(configFilepath);
@@ -105,25 +113,22 @@ export default {
    */
   async addScripts() {
     // Common
-    await this.copyToHost('templates/scripts/ci', 'scripts/ci');
-    await this.copyToHost('templates/scripts/compress', 'scripts/compress');
-    await this.copyToHost('templates/scripts/lint', 'scripts/lint');
-    await this.copyToHost('templates/scripts/lint-fix', 'scripts/lint-fix');
+    await this.copyTemplateToHost('scripts/ci', 'scripts/ci');
+    await this.copyTemplateToHost('scripts/compress', 'scripts/compress');
+    await this.copyTemplateToHost('scripts/lint', 'scripts/lint');
+    await this.copyTemplateToHost('scripts/lint-fix', 'scripts/lint-fix');
 
     // Hooks
-    await this.copyToHost(
-      './templates/scripts/hooks/pre-commit',
+    await this.copyTemplateToHost(
+      './scripts/hooks/pre-commit',
       './scripts/hooks/pre-commit',
     );
 
     // Lib
-    await this.copyToHost(
-      'templates/scripts/lib/release',
-      'scripts/lib/release',
-    );
-    await this.copyToHost('templates/scripts/lib/test', 'scripts/lib/test');
-    await this.copyToHost(
-      'templates/scripts/lib/test-watch',
+    await this.copyTemplateToHost('scripts/lib/release', 'scripts/lib/release');
+    await this.copyTemplateToHost('scripts/lib/test', 'scripts/lib/test');
+    await this.copyTemplateToHost(
+      'scripts/lib/test-watch',
       'scripts/lib/test-watch',
     );
   },
@@ -135,42 +140,39 @@ export default {
    */
   async addConfigFiles() {
     // Git
-    await this.copyToHost('./templates/_gitignore', './.gitignore');
-    await this.copyToHost('./templates/_gitattributes', './.gitattributes');
+    await this.copyTemplateToHost('./_gitignore', './.gitignore');
+    await this.copyTemplateToHost('./_gitattributes', './.gitattributes');
 
     // Yarn
-    await this.copyToHost('templates/_yarnrc.yml', '.yarnrc.yml');
+    await this.copyTemplateToHost('_yarnrc.yml', '.yarnrc.yml');
 
     // ESLint
-    await this.copyToHost('templates/eslint.config.js', 'eslint.config.js');
+    await this.copyTemplateToHost('eslint.config.js', 'eslint.config.js');
 
     // Lint-staged
-    await this.copyToHost(
-      'templates/lintstaged.config.js',
+    await this.copyTemplateToHost(
+      'lintstaged.config.js',
       'lintstaged.config.js',
     );
 
     // Vite
-    await this.copyToHost('templates/vite.config.js', 'vite.config.js');
+    await this.copyTemplateToHost('vite.config.js', 'vite.config.js');
 
     // Prettier
-    await this.copyToHost('templates/prettier.config.js', 'prettier.config.js');
+    await this.copyTemplateToHost('prettier.config.js', 'prettier.config.js');
 
     // Stylelint
-    await this.copyToHost(
-      'templates/stylelint.config.js',
-      'stylelint.config.js',
-    );
+    await this.copyTemplateToHost('stylelint.config.js', 'stylelint.config.js');
 
     // Renovate
-    await this.copyToHost(
-      'templates/_github/renovate.json',
+    await this.copyTemplateToHost(
+      '_github/renovate.json',
       '.github/renovate.json',
     );
 
     // CircleCI
-    await this.copyToHost(
-      'templates/_circleci/config.yml',
+    await this.copyTemplateToHost(
+      '_circleci/config.yml',
       '.circleci/config.yml',
     );
   },
@@ -179,9 +181,9 @@ export default {
    * Add default files required to have the minimum lib module
    */
   async addLibFiles() {
-    await this.copyToHost('templates/lib/main.js', 'lib/main.js');
-    await this.copyToHost(
-      'templates/lib/__tests__/main.js',
+    await this.copyTemplateToHost('lib/main.js', 'lib/main.js');
+    await this.copyTemplateToHost(
+      'lib/__tests__/main.js',
       'lib/__tests__/main.js',
     );
   },

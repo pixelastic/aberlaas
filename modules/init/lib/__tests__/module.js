@@ -1,11 +1,7 @@
 import { glob, readJson, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
-import { nodeVersion, yarnVersion } from 'aberlaas-versions';
+import { aberlaasVersion, nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../module.js';
-
-const currentAberlaasVersion = (
-  await readJson(helper.aberlaasPath('./package.json'))
-).version;
 
 describe('init > simple', () => {
   beforeEach(async () => {
@@ -62,7 +58,7 @@ describe('init > simple', () => {
         'should have the right dependencies',
         {
           devDependencies: {
-            aberlaas: currentAberlaasVersion,
+            aberlaas: aberlaasVersion,
           },
           dependencies: {},
         },

@@ -1,6 +1,6 @@
 import path from 'path';
 import { _, dedent, pMap } from 'golgoth';
-import { exists, glob, read, readJson, write } from 'firost';
+import { absolute, exists, glob, read, readJson, write } from 'firost';
 import frontMatter from 'front-matter';
 import helper from 'aberlaas-helper';
 
@@ -52,9 +52,7 @@ export default {
       return await read(hostDefaultTemplate);
     }
 
-    const aberlaasDefaultTemplate = helper.aberlaasPath(
-      'templates/_github/README.template.md',
-    );
+    const aberlaasDefaultTemplate = absolute('../templates/README.md');
     return await read(aberlaasDefaultTemplate);
   },
   /**

@@ -2,6 +2,9 @@ import { _, pMap } from 'golgoth';
 import { consoleError, firostError, firostImport } from 'firost';
 
 export default {
+  /**
+   * List of all available linters, along with the --flag name
+   **/
   linters: {
     circleci: './circleci.js',
     css: './css.js',
@@ -10,6 +13,11 @@ export default {
     yml: './yml.js',
   },
 
+  /**
+   * Returns a linter, based on its name
+   * @param {string} linterType Name of the linter
+   * @returns {object} Linter
+   **/
   async getLinter(linterType) {
     const linterPath = this.linters[linterType];
     if (!linterPath) {

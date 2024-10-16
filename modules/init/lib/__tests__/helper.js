@@ -1,14 +1,5 @@
 import path from 'path';
-import {
-  absolute,
-  emptyDir,
-  exists,
-  isFile,
-  read,
-  remove,
-  tmpDirectory,
-  write,
-} from 'firost';
+import { exists, isFile, read, remove, tmpDirectory, write } from 'firost';
 import helper from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../helper.js';
@@ -48,25 +39,22 @@ describe('init > helper', () => {
     });
   });
 
-  describe('copyToHost', () => {
-    beforeEach(async () => {
-      vi.spyOn(helper, 'aberlaasRoot').mockReturnValue(
-        absolute('<gitRoot>/tmp/aberlaas'),
+  describe('copyTemplateToHost', () => {
+    it('should copy file from templates folder to host', async () => {
+      const expected = await read('../../templates/_gitignore');
+      await current.copyTemplateToHost(
+        '_gitignore',
+        'subfolder/custom-file-name',
       );
-      await emptyDir(helper.aberlaasRoot());
-    });
-    it('should copy file from aberlaas to host', async () => {
-      await write('config: true', helper.aberlaasPath('config.yml'));
 
-      await current.copyToHost('config.yml', '.configrc');
-
-      const actual = await read(helper.hostPath('.configrc'));
-      expect(actual).toBe('config: true');
+      const actual = await read(helper.hostPath('subfolder/custom-file-name'));
+      expect(actual).toEqual(expected);
     });
     it('should return true if file copied', async () => {
-      await write('config: true', helper.aberlaasPath('config.yml'));
-
-      const actual = await current.copyToHost('config.yml', '.configrc');
+      const actual = await current.copyTemplateToHost(
+        '_gitignore',
+        'custom-file-name',
+      );
 
       expect(actual).toBe(true);
     });
@@ -74,7 +62,7 @@ describe('init > helper', () => {
       let actual = null;
 
       try {
-        await current.copyToHost('config.yml', '.configrc');
+        await current.copyTemplateToHost('_thisisnothere.yml', 'config.yml');
       } catch (error) {
         actual = error;
       }
@@ -82,27 +70,28 @@ describe('init > helper', () => {
       expect(actual).not.toBeNull();
     });
     it('should create a backup copy of destination if already exists', async () => {
-      await write('config: true', helper.aberlaasPath('config.yml'));
-      await write('config: 42', helper.hostPath('.configrc'));
+      const templateContent = await read('../../templates/_gitignore');
+      const existingFileContent = 'node_modules/*';
+      await write(existingFileContent, helper.hostPath('.gitignore'));
 
-      await current.copyToHost('config.yml', '.configrc');
+      await current.copyTemplateToHost('_gitignore', '.gitignore');
 
-      const configContent = await read(helper.hostPath('.configrc'));
-      expect(configContent).toBe('config: true');
+      const configContent = await read(helper.hostPath('.gitignore'));
+      expect(configContent).toBe(templateContent);
 
-      const backupContent = await read(helper.hostPath('.configrc.backup'));
-      expect(backupContent).toBe('config: 42');
+      const backupContent = await read(helper.hostPath('.gitignore.backup'));
+      expect(backupContent).toBe(existingFileContent);
     });
     it('should not create a backup if the source and destination have the same content', async () => {
-      await write('config: true', helper.aberlaasPath('config.yml'));
-      await write('config: true', helper.hostPath('.configrc'));
+      const templateContent = await read('../../templates/_gitignore');
+      await write(templateContent, helper.hostPath('.gitignore'));
 
-      await current.copyToHost('config.yml', '.configrc');
+      await current.copyTemplateToHost('_gitignore', '.gitignore');
 
-      const configExist = await isFile(helper.hostPath('.configrc'));
+      const configExist = await isFile(helper.hostPath('.gitignore'));
       expect(configExist).toBe(true);
 
-      const backupExist = await isFile(helper.hostPath('.configrc.backup'));
+      const backupExist = await isFile(helper.hostPath('.gitignore.backup'));
       expect(backupExist).toBe(false);
     });
   });

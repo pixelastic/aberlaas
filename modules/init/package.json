@@ -8,7 +8,8 @@
   "author": "Tim Carry (@pixelastic)",
   "license": "MIT",
   "files": [
-    "lib/*.js"
+    "lib/*.js",
+    "templates/"
   ],
   "exports": {
     ".": "./lib/main.js"

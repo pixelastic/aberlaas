@@ -6,49 +6,52 @@ describe('lint', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/root');
   beforeEach(async () => {
     vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(current, '__consoleError').mockReturnValue();
     await emptyDir(tmpDirectory);
   });
   describe('run', () => {
-    describe('with mocked linters', () => {
-      beforeEach(async () => {
-        vi.spyOn(current.linters.circleci, 'run').mockReturnValue();
-        vi.spyOn(current.linters.css, 'run').mockReturnValue();
-        vi.spyOn(current.linters.json, 'run').mockReturnValue();
-        vi.spyOn(current.linters.js, 'run').mockReturnValue();
-        vi.spyOn(current.linters.yml, 'run').mockReturnValue();
+    const mockedLinters = {
+      circleci: { run: vi.fn(), fix: vi.fn() },
+      css: { run: vi.fn(), fix: vi.fn() },
+      json: { run: vi.fn(), fix: vi.fn() },
+      js: { run: vi.fn(), fix: vi.fn() },
+      yml: { run: vi.fn(), fix: vi.fn() },
+    };
+    beforeEach(async () => {
+      vi.spyOn(current, 'getLinter').mockImplementation((linterName) => {
+        return mockedLinters[linterName];
       });
-      it('should run all linters by default', async () => {
-        const input = {};
+    });
 
-        await current.run(input);
+    it('should run all linters by default', async () => {
+      const input = {};
 
-        expect(current.linters.circleci.run).toHaveBeenCalled();
-        expect(current.linters.css.run).toHaveBeenCalled();
-        expect(current.linters.json.run).toHaveBeenCalled();
-        expect(current.linters.js.run).toHaveBeenCalled();
-        expect(current.linters.yml.run).toHaveBeenCalled();
-      });
-      it('should run only selected linters if cliArgs passed', async () => {
-        const input = { js: true, yml: true };
+      await current.run(input);
 
-        await current.run(input);
+      expect(mockedLinters.circleci.run).toHaveBeenCalled();
+      expect(mockedLinters.css.run).toHaveBeenCalled();
+      expect(mockedLinters.json.run).toHaveBeenCalled();
+      expect(mockedLinters.js.run).toHaveBeenCalled();
+      expect(mockedLinters.yml.run).toHaveBeenCalled();
+    });
+    it('should run only selected linters if cliArgs passed', async () => {
+      const input = { js: true, yml: true };
 
-        expect(current.linters.circleci.run).not.toHaveBeenCalled();
-        expect(current.linters.css.run).not.toHaveBeenCalled();
-        expect(current.linters.json.run).not.toHaveBeenCalled();
-        expect(current.linters.js.run).toHaveBeenCalled();
-        expect(current.linters.yml.run).toHaveBeenCalled();
-      });
-      it('should run fix instead of run if --fix passed', async () => {
-        vi.spyOn(current.linters.css, 'fix').mockReturnValue();
+      await current.run(input);
 
-        const input = { fix: true, css: true };
+      expect(mockedLinters.circleci.run).not.toHaveBeenCalled();
+      expect(mockedLinters.css.run).not.toHaveBeenCalled();
+      expect(mockedLinters.json.run).not.toHaveBeenCalled();
+      expect(mockedLinters.js.run).toHaveBeenCalled();
+      expect(mockedLinters.yml.run).toHaveBeenCalled();
+    });
+    it('should run fix instead of run if --fix passed', async () => {
+      const input = { fix: true, css: true };
 
-        await current.run(input);
+      await current.run(input);
 
-        expect(current.linters.css.run).not.toHaveBeenCalled();
-        expect(current.linters.css.fix).toHaveBeenCalled();
-      });
+      expect(mockedLinters.css.run).not.toHaveBeenCalled();
+      expect(mockedLinters.css.fix).toHaveBeenCalled();
     });
     it('should return true if all passes', async () => {
       const input = {};
@@ -57,15 +60,13 @@ describe('lint', () => {
 
       expect(actual).toBe(true);
     });
-    it('should throw if error in any linter', async () => {
-      vi.spyOn(current, '__consoleError').mockReturnValue();
-      vi.spyOn(current.linters.css, 'run').mockImplementation(() => {
-        throw new Error('errorCss');
+    it('should return false if at least one fails', async () => {
+      mockedLinters.yml.run.mockImplementation(() => {
+        throw new Error();
       });
-
       const input = {};
 
-      let actual;
+      let actual = null;
       try {
         await current.run(input);
       } catch (err) {
@@ -74,14 +75,13 @@ describe('lint', () => {
 
       expect(actual).toHaveProperty('code', 'ERROR_LINT');
     });
-    it('should display all errors of all linters', async () => {
-      vi.spyOn(current.linters.css, 'run').mockImplementation(() => {
-        throw new Error('errorCss');
+    it('should display all errors of all failed linters', async () => {
+      mockedLinters.yml.run.mockImplementation(() => {
+        throw new Error('ymlError');
       });
-      vi.spyOn(current.linters.js, 'run').mockImplementation(() => {
-        throw new Error('errorJs');
+      mockedLinters.js.run.mockImplementation(() => {
+        throw new Error('jsError');
       });
-      vi.spyOn(current, '__consoleError').mockReturnValue();
 
       const input = {};
 
@@ -91,28 +91,27 @@ describe('lint', () => {
         // Swallowing the error
       }
 
-      expect(current.__consoleError).toHaveBeenCalledWith('errorCss');
-      expect(current.__consoleError).toHaveBeenCalledWith('errorJs');
+      expect(current.__consoleError).toHaveBeenCalledWith('ymlError');
+      expect(current.__consoleError).toHaveBeenCalledWith('jsError');
     });
-    it('should pass list of files to linter', async () => {
-      vi.spyOn(current.linters.css, 'run').mockReturnValue();
-
-      const input = { _: ['foo.txt'], css: true };
+    it('should pass list of files to all linters and config to each linter', async () => {
+      const input = {
+        _: ['foo.css'],
+        config: { css: 'lintercss.config.js', yml: 'linteryml.config.js' },
+        css: true,
+        yml: true,
+      };
 
       await current.run(input);
 
-      expect(current.linters.css.run).toHaveBeenCalledWith(
-        ['foo.txt'],
-        undefined,
+      expect(mockedLinters.css.run).toHaveBeenCalledWith(
+        ['foo.css'],
+        'lintercss.config.js',
       );
-    });
-    it('should allow passing specific config to each linter', async () => {
-      vi.spyOn(current.linters.css, 'run').mockReturnValue();
-      const input = { css: true, 'config.css': 'foo' };
-
-      await current.run(input);
-
-      expect(current.linters.css.run).toHaveBeenCalledWith(undefined, 'foo');
+      expect(mockedLinters.yml.run).toHaveBeenCalledWith(
+        ['foo.css'],
+        'linteryml.config.js',
+      );
     });
   });
 });
