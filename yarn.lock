@@ -4808,6 +4808,8 @@ __metadata:
   resolution: "aberlaas-monorepo@workspace:."
   dependencies:
     aberlaas: "npm:^2.9.0"
+    firost: "npm:4.3.0"
+    golgoth: "npm:2.4.0"
     lerna: "npm:8.1.8"
   languageName: unknown
   linkType: soft
@@ -10190,6 +10192,35 @@ __metadata:
     untildify: "npm:5.0.0"
     which: "npm:5.0.0"
   checksum: 10c0/069a00af71c912d5c6c1d48a54da733f7f235202d8a3ef1195a2896a243369b06a213c7c03b60445ab21c933425ffa6c2cdb26e21149b938cef72636f19b1bd8
+  languageName: node
+  linkType: hard
+
+"firost@npm:4.3.0":
+  version: 4.3.0
+  resolution: "firost@npm:4.3.0"
+  dependencies:
+    "@inquirer/prompts": "npm:7.0.0"
+    callsites: "npm:4.2.0"
+    chokidar: "npm:4.0.1"
+    eventemitter2: "npm:6.4.9"
+    execa: "npm:5.1.1"
+    find-up: "npm:7.0.0"
+    fs-extra: "npm:11.2.0"
+    globby: "npm:14.0.2"
+    golgoth: "npm:2.4.0"
+    is-glob: "npm:4.0.3"
+    json-stable-stringify: "npm:1.1.1"
+    multimatch: "npm:7.0.0"
+    nanoid: "npm:5.0.7"
+    normalize-url: "npm:8.0.1"
+    ora: "npm:8.1.0"
+    rev-hash: "npm:4.1.0"
+    std-mocks: "npm:2.0.0"
+    strip-ansi: "npm:7.1.0"
+    temp-dir: "npm:3.0.0"
+    untildify: "npm:5.0.0"
+    which: "npm:5.0.0"
+  checksum: 10c0/d086b4f70ec67ad386c344ac59055f1269082e6d774289e3555975b1072f59406c50c511a53eaeca585a99d5892459e62ec1169b64f43569b583c0c9fd282c2a
   languageName: node
   linkType: hard
 
