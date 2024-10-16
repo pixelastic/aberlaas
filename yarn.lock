@@ -4734,7 +4734,7 @@ __metadata:
     aberlaas-lint: "npm:^2.9.0"
     aberlaas-test: "npm:^2.9.0"
     ci-info: "npm:4.0.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
   languageName: unknown
   linkType: soft
 
@@ -4743,7 +4743,7 @@ __metadata:
   resolution: "aberlaas-compress@workspace:modules/compress"
   dependencies:
     aberlaas-helper: "npm:^2.9.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     golgoth: "npm:2.4.0"
   languageName: unknown
   linkType: soft
@@ -4762,7 +4762,7 @@ __metadata:
   resolution: "aberlaas-helper@workspace:modules/helper"
   dependencies:
     find-up: "npm:7.0.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     golgoth: "npm:2.4.0"
   languageName: unknown
   linkType: soft
@@ -4773,7 +4773,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "npm:^2.9.0"
     aberlaas-versions: "npm:^2.9.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     gilmore: "npm:1.0.0"
   languageName: unknown
   linkType: soft
@@ -4794,7 +4794,7 @@ __metadata:
     eslint-plugin-jsdoc: "npm:50.3.1"
     eslint-plugin-n: "npm:17.11.1"
     eslint-plugin-prettier: "npm:5.2.1"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     golgoth: "npm:2.4.0"
     prettier: "npm:3.3.3"
     stylelint: "npm:16.9.0"
@@ -4819,7 +4819,7 @@ __metadata:
   resolution: "aberlaas-precommit@workspace:modules/precommit"
   dependencies:
     aberlaas-helper: "npm:^2.9.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     lint-staged: "npm:15.2.10"
   languageName: unknown
   linkType: soft
@@ -4829,7 +4829,7 @@ __metadata:
   resolution: "aberlaas-readme@workspace:modules/readme"
   dependencies:
     aberlaas-helper: "npm:^2.9.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     front-matter: "npm:4.0.2"
     golgoth: "npm:2.4.0"
   languageName: unknown
@@ -4841,7 +4841,7 @@ __metadata:
   dependencies:
     "@octokit/rest": "npm:21.0.2"
     aberlaas-helper: "npm:^2.9.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     golgoth: "npm:2.4.0"
     parse-github-repo-url: "npm:1.4.1"
   languageName: unknown
@@ -4852,7 +4852,7 @@ __metadata:
   resolution: "aberlaas-test@workspace:modules/test"
   dependencies:
     aberlaas-helper: "npm:^2.9.0"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     globals: "npm:15.11.0"
     golgoth: "npm:2.4.0"
     jest-extended: "npm:4.0.2"
@@ -4881,7 +4881,7 @@ __metadata:
     aberlaas-test: "npm:^2.9.0"
     aberlaas-versions: "npm:^2.9.0"
     dedent: "npm:1.5.3"
-    firost: "npm:4.2.0"
+    firost: "npm:4.3.0"
     gilmore: "npm:1.0.0"
     golgoth: "npm:2.4.0"
     minimist: "npm:1.2.8"
@@ -10163,35 +10163,6 @@ __metadata:
     untildify: "npm:4.0.0"
     which: "npm:2.0.2"
   checksum: 10c0/f9e5fbc359d3a0a3c65a76a2076847e263b8af4806909296efe5d2d9e82509352fa194a6325c572a1591ba6836fbe6aff86f0a30dbce11742d01c4a5ab8d46bc
-  languageName: node
-  linkType: hard
-
-"firost@npm:4.2.0":
-  version: 4.2.0
-  resolution: "firost@npm:4.2.0"
-  dependencies:
-    "@inquirer/prompts": "npm:7.0.0"
-    callsites: "npm:4.2.0"
-    chokidar: "npm:4.0.1"
-    eventemitter2: "npm:6.4.9"
-    execa: "npm:5.1.1"
-    find-up: "npm:7.0.0"
-    fs-extra: "npm:11.2.0"
-    globby: "npm:14.0.2"
-    golgoth: "npm:2.4.0"
-    is-glob: "npm:4.0.3"
-    json-stable-stringify: "npm:1.1.1"
-    multimatch: "npm:7.0.0"
-    nanoid: "npm:5.0.7"
-    normalize-url: "npm:8.0.1"
-    ora: "npm:8.1.0"
-    rev-hash: "npm:4.1.0"
-    std-mocks: "npm:2.0.0"
-    strip-ansi: "npm:7.1.0"
-    temp-dir: "npm:3.0.0"
-    untildify: "npm:5.0.0"
-    which: "npm:5.0.0"
-  checksum: 10c0/069a00af71c912d5c6c1d48a54da733f7f235202d8a3ef1195a2896a243369b06a213c7c03b60445ab21c933425ffa6c2cdb26e21149b938cef72636f19b1bd8
   languageName: node
   linkType: hard
 
