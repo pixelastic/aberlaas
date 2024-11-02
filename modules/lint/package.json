@@ -37,13 +37,13 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "@eslint/js": "9.13.0",
+    "@eslint/js": "9.14.0",
     "@typescript-eslint/utils": "8.12.2",
     "@vitest/eslint-plugin": "1.1.7",
     "aberlaas-helper": "^2.10.0",
     "aberlaas-versions": "^2.10.0",
     "ci-info": "4.0.0",
-    "eslint": "9.13.0",
+    "eslint": "9.14.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsdoc": "50.4.3",
