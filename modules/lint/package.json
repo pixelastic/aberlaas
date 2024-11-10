@@ -39,7 +39,7 @@
   "dependencies": {
     "@eslint/js": "9.14.0",
     "@typescript-eslint/utils": "8.13.0",
-    "@vitest/eslint-plugin": "1.1.7",
+    "@vitest/eslint-plugin": "1.1.8",
     "aberlaas-helper": "^2.10.0",
     "aberlaas-versions": "^2.10.0",
     "ci-info": "4.0.0",
