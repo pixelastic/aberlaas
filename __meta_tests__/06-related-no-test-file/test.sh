@@ -2,7 +2,7 @@
 
 source "$(dirname "$0")/../test_framework/index"
 
-test "should succeed even if --related file as no test associated"
+test "should succeed even if --related file has no test associated"
 
 actual() {
 	"${ROOT}"/modules/lib/bin/aberlaas.js test \
