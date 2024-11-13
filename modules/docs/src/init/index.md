@@ -59,7 +59,8 @@ all files located in `./lib`.
 ## Monorepo setup
 
 You can call `aberlaas init --monorepo` to initialize a slightly more complex
-repository layout.
+repository layout. This layout will create a monorepo, with distinct `./lib` and
+`./docs` workspaces.
 
 The main differences are:
 
@@ -75,4 +76,13 @@ documentation along with the code.
 
 If you don't plan to build a module, or want to keep it private, you might not
 need the `--monorepo` flag.
+
+// TODO:
+- I will need to change this option into a `--layout` option.
+- Default will be `module`: Only a simple layout for a single module
+- Other options would be `monorepo`: Something like what I have for `aberlaas`
+  and `norska`. A main core, that depends on various modules; helpful to keep
+  dependencies scoped to a specific submodule.
+- A third option that's an hybrid. Still need to find the right name. Something
+  that is technically a monorepo, but contains only `./lib` and `./docs`.
 
