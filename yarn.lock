@@ -4730,11 +4730,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aberlaas-ci@npm:^2.10.0, aberlaas-ci@workspace:modules/ci":
+"aberlaas-ci@npm:^2.11.0, aberlaas-ci@workspace:modules/ci":
   version: 0.0.0-use.local
   resolution: "aberlaas-ci@workspace:modules/ci"
   dependencies:
-    aberlaas-lint: "npm:^2.10.0"
+    aberlaas-lint: "npm:^2.11.0"
     aberlaas-test: "npm:^2.10.0"
     ci-info: "npm:4.1.0"
     firost: "npm:4.3.0"
@@ -4781,7 +4781,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-lint@npm:^2.10.0, aberlaas-lint@workspace:modules/lint":
+"aberlaas-lint@npm:^2.11.0, aberlaas-lint@workspace:modules/lint":
   version: 0.0.0-use.local
   resolution: "aberlaas-lint@workspace:modules/lint"
   dependencies:
@@ -4838,7 +4838,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-setup@npm:^2.10.0, aberlaas-setup@workspace:modules/setup":
+"aberlaas-setup@npm:^2.11.0, aberlaas-setup@workspace:modules/setup":
   version: 0.0.0-use.local
   resolution: "aberlaas-setup@workspace:modules/setup"
   dependencies:
@@ -4873,14 +4873,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas@workspace:modules/lib"
   dependencies:
-    aberlaas-ci: "npm:^2.10.0"
+    aberlaas-ci: "npm:^2.11.0"
     aberlaas-compress: "npm:^2.10.0"
     aberlaas-helper: "npm:^2.10.0"
     aberlaas-init: "npm:^2.10.0"
-    aberlaas-lint: "npm:^2.10.0"
+    aberlaas-lint: "npm:^2.11.0"
     aberlaas-precommit: "npm:^2.10.0"
     aberlaas-readme: "npm:^2.10.0"
-    aberlaas-setup: "npm:^2.10.0"
+    aberlaas-setup: "npm:^2.11.0"
     aberlaas-test: "npm:^2.10.0"
     aberlaas-versions: "npm:^2.10.0"
     dedent: "npm:1.5.3"

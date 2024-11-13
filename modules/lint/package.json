@@ -2,7 +2,7 @@
   "name": "aberlaas-lint",
   "type": "module",
   "description": "aberlaas lint command: Lint files",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
