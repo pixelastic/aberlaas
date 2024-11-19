@@ -149,6 +149,7 @@ export default {
 
       // Compatibility
       type: 'module',
+      sideEffects: false,
       license: sharedProjectData.license,
       engines,
 

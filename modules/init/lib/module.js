@@ -19,6 +19,7 @@ export default {
     const homepage = `https://projects.pixelastic.com/${name}`;
 
     const type = 'module';
+    const sideEffects = false;
     const license = 'MIT';
     const engines = {
       node: `>=${nodeVersion}`,
@@ -67,6 +68,7 @@ export default {
 
       // Compatibility
       type,
+      sideEffects,
       license,
       engines,
       packageManager,

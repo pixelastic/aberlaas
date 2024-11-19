@@ -126,6 +126,7 @@ describe('init > monorepo', () => {
         {
           private: false,
           type: 'module',
+          sideEffects: false,
           engines: {
             node: `>=${nodeVersion}`,
           },

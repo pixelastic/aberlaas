@@ -37,9 +37,15 @@ describe('init > simple', () => {
         },
       ],
       [
-        'should have language and yarn version',
+        'should have ESM information',
         {
           type: 'module',
+          sideEffects: false,
+        },
+      ],
+      [
+        'should have language and yarn version',
+        {
           engines: {
             node: `>=${nodeVersion}`,
           },
