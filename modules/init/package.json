@@ -36,7 +36,7 @@
   "dependencies": {
     "aberlaas-helper": "^2.10.0",
     "aberlaas-versions": "^2.10.0",
-    "firost": "4.3.0",
+    "firost": "4.5.0",
     "gilmore": "1.0.0"
   }
 }

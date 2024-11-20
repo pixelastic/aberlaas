@@ -10,7 +10,7 @@
   ],
   "devDependencies": {
     "aberlaas": "^2.9.0",
-    "firost": "4.3.0",
+    "firost": "4.5.0",
     "golgoth": "2.4.0",
     "lerna": "8.1.9"
   },
