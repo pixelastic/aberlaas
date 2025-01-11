@@ -4925,7 +4925,7 @@ __metadata:
     aberlaas-lint: "npm:^2.12.0"
     aberlaas-test: "npm:^2.10.0"
     ci-info: "npm:4.1.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
   languageName: unknown
   linkType: soft
 
@@ -4934,7 +4934,7 @@ __metadata:
   resolution: "aberlaas-compress@workspace:modules/compress"
   dependencies:
     aberlaas-helper: "npm:^2.10.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     golgoth: "npm:2.4.0"
   languageName: unknown
   linkType: soft
@@ -4953,7 +4953,7 @@ __metadata:
   resolution: "aberlaas-helper@workspace:modules/helper"
   dependencies:
     find-up: "npm:7.0.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     golgoth: "npm:2.4.0"
   languageName: unknown
   linkType: soft
@@ -4964,7 +4964,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "npm:^2.10.0"
     aberlaas-versions: "npm:^2.10.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     gilmore: "npm:1.0.0"
   languageName: unknown
   linkType: soft
@@ -4985,7 +4985,7 @@ __metadata:
     eslint-plugin-jsdoc: "npm:50.5.0"
     eslint-plugin-n: "npm:17.14.0"
     eslint-plugin-prettier: "npm:5.2.1"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     golgoth: "npm:2.4.0"
     prettier: "npm:3.3.3"
     stylelint: "npm:16.10.0"
@@ -4999,7 +4999,7 @@ __metadata:
   resolution: "aberlaas-monorepo@workspace:."
   dependencies:
     aberlaas: "npm:^2.9.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     golgoth: "npm:2.4.0"
     lerna: "npm:8.1.9"
   languageName: unknown
@@ -5010,7 +5010,7 @@ __metadata:
   resolution: "aberlaas-precommit@workspace:modules/precommit"
   dependencies:
     aberlaas-helper: "npm:^2.10.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     lint-staged: "npm:15.2.10"
   languageName: unknown
   linkType: soft
@@ -5020,7 +5020,7 @@ __metadata:
   resolution: "aberlaas-readme@workspace:modules/readme"
   dependencies:
     aberlaas-helper: "npm:^2.10.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     front-matter: "npm:4.0.2"
     golgoth: "npm:2.4.0"
   languageName: unknown
@@ -5032,7 +5032,7 @@ __metadata:
   dependencies:
     "@octokit/rest": "npm:21.0.2"
     aberlaas-helper: "npm:^2.10.0"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     golgoth: "npm:2.4.0"
     parse-github-repo-url: "npm:1.4.1"
   languageName: unknown
@@ -5072,7 +5072,7 @@ __metadata:
     aberlaas-test: "npm:^2.10.0"
     aberlaas-versions: "npm:^2.10.0"
     dedent: "npm:1.5.3"
-    firost: "npm:4.6.0"
+    firost: "npm:4.8.0"
     gilmore: "npm:1.0.0"
     golgoth: "npm:2.4.0"
     minimist: "npm:1.2.8"
@@ -10507,9 +10507,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firost@npm:4.6.0":
-  version: 4.6.0
-  resolution: "firost@npm:4.6.0"
+"firost@npm:4.8.0":
+  version: 4.8.0
+  resolution: "firost@npm:4.8.0"
   dependencies:
     "@inquirer/prompts": "npm:7.2.1"
     callsites: "npm:4.2.0"
@@ -10532,7 +10532,7 @@ __metadata:
     temp-dir: "npm:3.0.0"
     untildify: "npm:5.0.0"
     which: "npm:5.0.0"
-  checksum: 10c0/2a4fc3852f2c9ebc4edb04ac6da643caa68c2975cce251c3774c188e4aab883d79ee9ae3c661f5607474af4dfdde99365330480d5ba0631d79e1b83e6a312a6d
+  checksum: 10c0/2071fb8da973b369520718d3aecc0bf5423b646b69723be8f47900e0cb0b1a5b7814b3b8cc09f6b192f2cf97df2dbdaeb11ad267a7f543bcb254ffa2fe991916
   languageName: node
   linkType: hard
 
