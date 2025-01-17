@@ -9,6 +9,7 @@ describe('aberlaas', () => {
         const envs = { INIT_CWD: '/workspace/' };
         return envs[input];
       });
+      vi.spyOn(current, '__setEnv').mockReturnValue();
       vi.spyOn(current, '__exit').mockReturnValue();
       vi.spyOn(current, '__consoleError').mockReturnValue();
       vi.spyOn(current, '__consoleInfo').mockReturnValue();
@@ -100,7 +101,7 @@ describe('aberlaas', () => {
         const input = ['init'];
 
         await current.run(input);
-        expect(current.__env).toHaveBeenCalledWith(
+        expect(current.__setEnv).toHaveBeenCalledWith(
           'ABERLAAS_VERSION',
           expected,
         );

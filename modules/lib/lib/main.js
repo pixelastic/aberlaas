@@ -92,8 +92,7 @@ export default {
         const packagePath = absolute(packageRoot(), './package.json');
         const packageContent = await readJson(packagePath);
         const packageVersion = packageContent.version;
-
-        process.env.ABERLAAS_VERSION = packageVersion;
+        this.__setEnv('ABERLAAS_VERSION', packageVersion);
       }
 
       await command.run(args);
@@ -103,6 +102,9 @@ export default {
     }
   },
   __env: env,
+  __setEnv(key, value) {
+    process.env[key] = value;
+  },
   __consoleError: consoleError,
   __consoleInfo: consoleInfo,
   __exit: exit,
