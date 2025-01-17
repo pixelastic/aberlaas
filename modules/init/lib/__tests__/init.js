@@ -1,5 +1,5 @@
 import Gilmore from 'gilmore';
-import { glob, read, remove, tmpDirectory } from 'firost';
+import { read, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
 import current from '../main.js';
@@ -36,6 +36,8 @@ describe('init', () => {
   });
   describe('run', () => {
     beforeEach(async () => {
+      vi.spyOn(current, 'configureGit').mockReturnValue();
+      vi.spyOn(current, 'configureNode').mockReturnValue();
       vi.spyOn(current, 'yarnInstall').mockReturnValue();
       vi.spyOn(current, '__consoleInfo').mockReturnValue();
       vi.spyOn(current, '__spinner').mockReturnValue({
@@ -46,81 +48,49 @@ describe('init', () => {
       const repo = new Gilmore(helper.hostRoot());
       await repo.init();
     });
-    it('should build a default structure', async () => {
-      const actual = await glob(['**/*', '!.git/**'], {
-        context: helper.hostPath(),
-        absolutePaths: false,
-        directories: false,
+    describe('layouts', () => {
+      it('should build the module layout by default', async () => {
+        const mockedRun = vi.fn();
+        vi.spyOn(current, '__moduleLayout').mockReturnValue({
+          run: mockedRun,
+        });
+
+        await current.run({});
+
+        expect(mockedRun).toHaveBeenCalled();
       });
+      it('should build the libdocs layout with --libdocs', async () => {
+        const mockedRun = vi.fn();
+        vi.spyOn(current, '__libdocsLayout').mockReturnValue({
+          run: mockedRun,
+        });
 
-      expect(actual).toEqual([
-        '.circleci/config.yml',
-        '.gitattributes',
-        '.github/renovate.json',
-        '.gitignore',
-        '.nvmrc',
-        '.yarnrc.yml',
-        'eslint.config.js',
-        'lib/__tests__/main.js',
-        'lib/main.js',
-        'LICENSE',
-        'lintstaged.config.js',
-        'package.json',
-        'prettier.config.js',
-        'scripts/ci',
-        'scripts/compress',
-        'scripts/hooks/pre-commit',
-        'scripts/lib/release',
-        'scripts/lib/test',
-        'scripts/lib/test-watch',
-        'scripts/lint',
-        'scripts/lint-fix',
-        'stylelint.config.js',
-        'vite.config.js',
-      ]);
-    });
-    it('should build a monorepo structure', async () => {
-      await current.run({ monorepo: true });
+        await current.run({ libdocs: true });
 
-      const actual = await glob(['**/*', '!.git/**'], {
-        context: helper.hostPath(),
-        absolutePaths: false,
-        directories: false,
+        expect(mockedRun).toHaveBeenCalled();
       });
+      it('should build the monorepo layout with --monorepo', async () => {
+        const mockedRun = vi.fn();
+        vi.spyOn(current, '__monorepoLayout').mockReturnValue({
+          run: mockedRun,
+        });
 
-      expect(actual).toEqual([
-        '.circleci/config.yml',
-        '.gitattributes',
-        '.github/renovate.json',
-        '.gitignore',
-        '.nvmrc',
-        '.yarnrc.yml',
-        'docs/package.json',
-        'eslint.config.js',
-        'lerna.json',
-        'lib/__tests__/main.js',
-        'lib/LICENSE',
-        'lib/main.js',
-        'lib/package.json',
-        'LICENSE',
-        'lintstaged.config.js',
-        'package.json',
-        'prettier.config.js',
-        'scripts/ci',
-        'scripts/compress',
-        'scripts/docs/build',
-        'scripts/docs/build-prod',
-        'scripts/docs/cms',
-        'scripts/docs/serve',
-        'scripts/hooks/pre-commit',
-        'scripts/lib/release',
-        'scripts/lib/test',
-        'scripts/lib/test-watch',
-        'scripts/lint',
-        'scripts/lint-fix',
-        'stylelint.config.js',
-        'vite.config.js',
-      ]);
+        await current.run({ monorepo: true });
+
+        expect(mockedRun).toHaveBeenCalled();
+      });
+      it('should throw an error if both --libdocs and --monorepo are passed', async () => {
+        let actual = null;
+        try {
+          await current.run({ monorepo: true, libdocs: true });
+        } catch (err) {
+          actual = err;
+        }
+        expect(actual).toHaveProperty(
+          'code',
+          'ABERLAAS_INIT_LAYOUT_INCOMPATIBLE',
+        );
+      });
     });
   });
 });

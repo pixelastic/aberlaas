@@ -42,12 +42,12 @@ export default {
     }
 
     if (args.monorepo) {
-      return this.__monorepoLayout;
+      return this.__monorepoLayout();
     }
     if (args.libdocs) {
-      return this.__libdocsLayout;
+      return this.__libdocsLayout();
     }
-    return this.__moduleLayout;
+    return this.__moduleLayout();
   },
   /**
    * Copy all config files and configure the scripts
@@ -77,7 +77,14 @@ export default {
   },
   __consoleInfo: consoleInfo,
   __spinner: spinner,
-  __moduleLayout: moduleLayout,
-  __libdocsLayout: libdocsLayout,
-  __monorepoLayout: monorepoLayout,
+  // Why the old-school getters? So we can mock which layout is returned
+  __moduleLayout() {
+    return moduleLayout;
+  },
+  __libdocsLayout() {
+    return libdocsLayout;
+  },
+  __monorepoLayout() {
+    return monorepoLayout;
+  },
 };
