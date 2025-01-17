@@ -31,9 +31,9 @@ describe('aberlaas', () => {
 
       await current.run(input);
 
-      expect(current.__consoleInfo).toHaveBeenCalledWith(`- setup`);
-      expect(current.__consoleInfo).toHaveBeenCalledWith(`- lint`);
-      expect(current.__consoleInfo).toHaveBeenCalledWith(`- test`);
+      expect(current.__consoleInfo).toHaveBeenCalledWith('- setup');
+      expect(current.__consoleInfo).toHaveBeenCalledWith('- lint');
+      expect(current.__consoleInfo).toHaveBeenCalledWith('- test');
     });
     it('should call the run method on the specified command', async () => {
       const mockRun = vi.fn();

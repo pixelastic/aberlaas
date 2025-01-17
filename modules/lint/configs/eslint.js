@@ -81,7 +81,6 @@ export default [
       'no-shadow': ['error'],
       'object-shorthand': ['error', 'always'],
       'quote-props': ['error', 'consistent-as-needed'],
-      quotes: ['error', 'single', { avoidEscape: true }],
       'sort-imports': ['error', { ignoreDeclarationSort: true }],
       // Node
       'n/no-unsupported-features/es-syntax': [
@@ -118,6 +117,10 @@ export default [
       'jsdoc/valid-types': ['warn'],
       // Prettier
       ...pluginPrettierRecommended.rules,
+      // Prettier overwrites
+      // quotes: We want `hello world` to be converted into 'hello world', but
+      // Prettier doesn't do that, so we need to make eslint do it
+      quotes: ['error', 'single', { avoidEscape: true }],
     },
     settings: {
       // eslint-plugin-import doesn't currently support the "exports" syntax in
