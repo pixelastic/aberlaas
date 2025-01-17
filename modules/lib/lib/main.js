@@ -28,7 +28,6 @@ export default {
     if (!commandModuleName) {
       return false;
     }
-
     return await firostImport(commandModuleName);
   },
   /**
@@ -90,10 +89,11 @@ export default {
       // hardcode the currently used aberlaas version in the package.json and
       // there is no reliable way to get it from the init command
       if (commandName == 'init') {
-        this.__env(
-          'ABERLAAS_VERSION',
-          (await readJson(absolute(packageRoot(), './package.json'))).version,
-        );
+        const packagePath = absolute(packageRoot(), './package.json');
+        const packageContent = await readJson(packagePath);
+        const packageVersion = packageContent.version;
+
+        process.env.ABERLAAS_VERSION = packageVersion;
       }
 
       await command.run(args);

@@ -121,7 +121,7 @@ export default {
   /**
    * Add default script files
    */
-  async addScripts() {
+  async addCommonScripts() {
     // Common
     await this.copyTemplateToHost('scripts/ci', 'scripts/ci');
     await this.copyTemplateToHost('scripts/compress', 'scripts/compress');
@@ -135,7 +135,6 @@ export default {
     );
 
     // Lib
-    await this.copyTemplateToHost('scripts/lib/release', 'scripts/lib/release');
     await this.copyTemplateToHost('scripts/lib/test', 'scripts/lib/test');
     await this.copyTemplateToHost(
       'scripts/lib/test-watch',

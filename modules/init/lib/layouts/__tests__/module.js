@@ -7,7 +7,9 @@ describe('init > module', () => {
   beforeEach(async () => {
     // We need to make the tmp directory outside of this git repo tree, for all
     // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory('aberlaas/init'));
+    vi.spyOn(helper, 'hostRoot').mockReturnValue(
+      tmpDirectory('aberlaas/init/module'),
+    );
 
     vi.spyOn(current, '__getProjectName').mockReturnValue('my-project');
     vi.spyOn(current, '__getProjectAuthor').mockReturnValue('my-name');

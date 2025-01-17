@@ -5,7 +5,7 @@ import initHelper from '../helper.js';
 
 export default {
   /**
-   * Create the top-level package.json
+   * Create the package.json
    */
   async createPackageJson() {
     const aberlaasVersion = this.__getAberlaasVersion();
@@ -43,10 +43,12 @@ export default {
       'build:prod': './scripts/docs/build-prod',
       cms: './scripts/docs/cms',
       serve: './scripts/docs/serve',
+
       // Lib
       release: './scripts/lib/release',
       test: './scripts/lib/test',
       'test:watch': './scripts/lib/test-watch',
+
       // Common
       ci: './scripts/ci',
       compress: './scripts/compress',
@@ -90,6 +92,19 @@ export default {
       sort: false,
     });
   },
+  /**
+   * Add scripts to the repo
+   */
+  async addScripts() {
+    // Common scripts
+    await initHelper.addCommonScripts();
+
+    // Lib scripts
+    await initHelper.copyTemplateToHost(
+      'scripts/lib/release-module',
+      'scripts/lib/release',
+    );
+  },
 
   /**
    * Scaffold a repo:
@@ -103,7 +118,7 @@ export default {
     await initHelper.addScripts();
     await initHelper.addLibFiles();
   },
-  __getProjectName: initHelper.getProjectName.bind(initHelper),
+  __getProjectName: initHelper.getProjectName,
   __getProjectAuthor: initHelper.getProjectAuthor.bind(initHelper),
-  __getAberlaasVersion: initHelper.getAberlaasVersion.bind(initHelper),
+  __getAberlaasVersion: initHelper.getAberlaasVersion,
 };
