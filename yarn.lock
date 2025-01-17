@@ -4918,22 +4918,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aberlaas-ci@npm:^2.12.0, aberlaas-ci@workspace:modules/ci":
+"aberlaas-ci@npm:^2.13.0, aberlaas-ci@workspace:modules/ci":
   version: 0.0.0-use.local
   resolution: "aberlaas-ci@workspace:modules/ci"
   dependencies:
-    aberlaas-lint: "npm:^2.12.0"
-    aberlaas-test: "npm:^2.10.0"
+    aberlaas-lint: "npm:^2.13.0"
+    aberlaas-test: "npm:^2.13.0"
     ci-info: "npm:4.1.0"
     firost: "npm:4.8.0"
   languageName: unknown
   linkType: soft
 
-"aberlaas-compress@npm:^2.10.0, aberlaas-compress@workspace:modules/compress":
+"aberlaas-compress@npm:^2.13.0, aberlaas-compress@workspace:modules/compress":
   version: 0.0.0-use.local
   resolution: "aberlaas-compress@workspace:modules/compress"
   dependencies:
-    aberlaas-helper: "npm:^2.10.0"
+    aberlaas-helper: "npm:^2.13.0"
     firost: "npm:4.8.0"
     golgoth: "npm:2.4.0"
   languageName: unknown
@@ -4948,7 +4948,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-helper@npm:^2.10.0, aberlaas-helper@workspace:modules/helper":
+"aberlaas-helper@npm:^2.13.0, aberlaas-helper@workspace:modules/helper":
   version: 0.0.0-use.local
   resolution: "aberlaas-helper@workspace:modules/helper"
   dependencies:
@@ -4958,26 +4958,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-init@npm:^2.12.0, aberlaas-init@workspace:modules/init":
+"aberlaas-init@npm:^2.13.0, aberlaas-init@workspace:modules/init":
   version: 0.0.0-use.local
   resolution: "aberlaas-init@workspace:modules/init"
   dependencies:
-    aberlaas-helper: "npm:^2.10.0"
-    aberlaas-versions: "npm:^2.10.0"
+    aberlaas-helper: "npm:^2.13.0"
+    aberlaas-versions: "npm:^2.13.0"
     firost: "npm:4.8.0"
     gilmore: "npm:1.0.0"
   languageName: unknown
   linkType: soft
 
-"aberlaas-lint@npm:^2.12.0, aberlaas-lint@workspace:modules/lint":
+"aberlaas-lint@npm:^2.13.0, aberlaas-lint@workspace:modules/lint":
   version: 0.0.0-use.local
   resolution: "aberlaas-lint@workspace:modules/lint"
   dependencies:
     "@eslint/js": "npm:9.15.0"
     "@typescript-eslint/utils": "npm:8.15.0"
     "@vitest/eslint-plugin": "npm:1.1.10"
-    aberlaas-helper: "npm:^2.10.0"
-    aberlaas-versions: "npm:^2.10.0"
+    aberlaas-helper: "npm:^2.13.0"
+    aberlaas-versions: "npm:^2.13.0"
     ci-info: "npm:4.1.0"
     eslint: "npm:9.15.0"
     eslint-config-prettier: "npm:9.1.0"
@@ -5005,44 +5005,44 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-precommit@npm:^2.10.0, aberlaas-precommit@workspace:modules/precommit":
+"aberlaas-precommit@npm:^2.13.0, aberlaas-precommit@workspace:modules/precommit":
   version: 0.0.0-use.local
   resolution: "aberlaas-precommit@workspace:modules/precommit"
   dependencies:
-    aberlaas-helper: "npm:^2.10.0"
+    aberlaas-helper: "npm:^2.13.0"
     firost: "npm:4.8.0"
     lint-staged: "npm:15.2.10"
   languageName: unknown
   linkType: soft
 
-"aberlaas-readme@npm:^2.10.0, aberlaas-readme@workspace:modules/readme":
+"aberlaas-readme@npm:^2.13.0, aberlaas-readme@workspace:modules/readme":
   version: 0.0.0-use.local
   resolution: "aberlaas-readme@workspace:modules/readme"
   dependencies:
-    aberlaas-helper: "npm:^2.10.0"
+    aberlaas-helper: "npm:^2.13.0"
     firost: "npm:4.8.0"
     front-matter: "npm:4.0.2"
     golgoth: "npm:2.4.0"
   languageName: unknown
   linkType: soft
 
-"aberlaas-setup@npm:^2.11.0, aberlaas-setup@workspace:modules/setup":
+"aberlaas-setup@npm:^2.13.0, aberlaas-setup@workspace:modules/setup":
   version: 0.0.0-use.local
   resolution: "aberlaas-setup@workspace:modules/setup"
   dependencies:
     "@octokit/rest": "npm:21.0.2"
-    aberlaas-helper: "npm:^2.10.0"
+    aberlaas-helper: "npm:^2.13.0"
     firost: "npm:4.8.0"
     golgoth: "npm:2.4.0"
     parse-github-repo-url: "npm:1.4.1"
   languageName: unknown
   linkType: soft
 
-"aberlaas-test@npm:^2.10.0, aberlaas-test@workspace:modules/test":
+"aberlaas-test@npm:^2.13.0, aberlaas-test@workspace:modules/test":
   version: 0.0.0-use.local
   resolution: "aberlaas-test@workspace:modules/test"
   dependencies:
-    aberlaas-helper: "npm:^2.10.0"
+    aberlaas-helper: "npm:^2.13.0"
     firost: "npm:4.3.0"
     globals: "npm:15.11.0"
     golgoth: "npm:2.4.0"
@@ -5051,7 +5051,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-versions@npm:^2.10.0, aberlaas-versions@workspace:modules/versions":
+"aberlaas-versions@npm:^2.13.0, aberlaas-versions@workspace:modules/versions":
   version: 0.0.0-use.local
   resolution: "aberlaas-versions@workspace:modules/versions"
   languageName: unknown
@@ -5061,16 +5061,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas@workspace:modules/lib"
   dependencies:
-    aberlaas-ci: "npm:^2.12.0"
-    aberlaas-compress: "npm:^2.10.0"
-    aberlaas-helper: "npm:^2.10.0"
-    aberlaas-init: "npm:^2.12.0"
-    aberlaas-lint: "npm:^2.12.0"
-    aberlaas-precommit: "npm:^2.10.0"
-    aberlaas-readme: "npm:^2.10.0"
-    aberlaas-setup: "npm:^2.11.0"
-    aberlaas-test: "npm:^2.10.0"
-    aberlaas-versions: "npm:^2.10.0"
+    aberlaas-ci: "npm:^2.13.0"
+    aberlaas-compress: "npm:^2.13.0"
+    aberlaas-helper: "npm:^2.13.0"
+    aberlaas-init: "npm:^2.13.0"
+    aberlaas-lint: "npm:^2.13.0"
+    aberlaas-precommit: "npm:^2.13.0"
+    aberlaas-readme: "npm:^2.13.0"
+    aberlaas-setup: "npm:^2.13.0"
+    aberlaas-test: "npm:^2.13.0"
+    aberlaas-versions: "npm:^2.13.0"
     dedent: "npm:1.5.3"
     firost: "npm:4.8.0"
     gilmore: "npm:1.0.0"
