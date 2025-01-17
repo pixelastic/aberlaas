@@ -1,21 +1,28 @@
 import path from 'path';
 import minimist from 'minimist';
-import { absolute, consoleError, env, exit, firostImport } from 'firost';
+import {
+  absolute,
+  consoleError,
+  consoleInfo,
+  env,
+  exit,
+  firostImport,
+} from 'firost';
 import { _ } from 'golgoth';
 
 export default {
+  availableCommands: {
+    ci: 'aberlaas-ci',
+    compress: 'aberlaas-compress',
+    init: 'aberlaas-init',
+    lint: 'aberlaas-lint',
+    precommit: 'aberlaas-precommit',
+    readme: 'aberlaas-readme',
+    setup: 'aberlaas-setup',
+    test: 'aberlaas-test',
+  },
   async getCommand(commandName) {
-    const mapping = {
-      ci: 'aberlaas-ci',
-      compress: 'aberlaas-compress',
-      init: 'aberlaas-init',
-      lint: 'aberlaas-lint',
-      precommit: 'aberlaas-precommit',
-      readme: 'aberlaas-readme',
-      setup: 'aberlaas-setup',
-      test: 'aberlaas-test',
-    };
-    const commandModuleName = mapping[commandName];
+    const commandModuleName = this.availableCommands[commandName];
     if (!commandModuleName) {
       return false;
     }
@@ -62,6 +69,10 @@ export default {
 
     if (!command) {
       this.__consoleError(`Unknown command ${commandName}`);
+      this.__consoleInfo(`Available commands:`);
+      _.each(this.availableCommands, (value, key) => {
+        this.__consoleInfo(`- ${key}`);
+      });
       this.__exit(1);
       return;
     }
@@ -81,5 +92,6 @@ export default {
   },
   __env: env,
   __consoleError: consoleError,
+  __consoleInfo: consoleInfo,
   __exit: exit,
 };

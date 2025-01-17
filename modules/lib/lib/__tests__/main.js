@@ -10,6 +10,7 @@ describe('aberlaas', () => {
       });
       vi.spyOn(current, '__exit').mockReturnValue();
       vi.spyOn(current, '__consoleError').mockReturnValue();
+      vi.spyOn(current, '__consoleInfo').mockReturnValue();
     });
     it('should error when calling a command that does not exist', async () => {
       vi.spyOn(current, 'getCommand').mockReturnValue(false);
@@ -22,6 +23,17 @@ describe('aberlaas', () => {
       expect(current.__consoleError).toHaveBeenCalledWith(
         expect.stringContaining('foo'),
       );
+    });
+    it('should display the existing command when calling an unknown command', async () => {
+      vi.spyOn(current, 'getCommand').mockReturnValue(false);
+
+      const input = ['foo'];
+
+      await current.run(input);
+
+      expect(current.__consoleInfo).toHaveBeenCalledWith(`- setup`);
+      expect(current.__consoleInfo).toHaveBeenCalledWith(`- lint`);
+      expect(current.__consoleInfo).toHaveBeenCalledWith(`- test`);
     });
     it('should call the run method on the specified command', async () => {
       const mockRun = vi.fn();
