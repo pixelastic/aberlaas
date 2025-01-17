@@ -64,7 +64,7 @@ export default {
       boolean: true,
     });
 
-    const commandName = args._[0];
+    const commandName = args._[0] || '';
     const command = await this.getCommand(commandName);
 
     if (!command) {
