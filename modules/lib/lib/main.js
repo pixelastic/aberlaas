@@ -69,7 +69,7 @@ export default {
 
     if (!command) {
       this.__consoleError(`Unknown command ${commandName}`);
-      this.__consoleInfo(`Available commands:`);
+      this.__consoleInfo('Available commands:');
       _.each(this.availableCommands, (value, key) => {
         this.__consoleInfo(`- ${key}`);
       });
