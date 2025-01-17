@@ -1,13 +1,16 @@
 {
   "private": true,
-  "name": "aberlaas-monorepo",
-  "type": "module",
-  "description": "aberlaas monorepo",
-  "homepage": "https://projects.pixelastic.com/aberlaas/",
-  "keywords": [],
   "workspaces": [
     "modules/*"
   ],
+  "name": "aberlaas-monorepo",
+  "author": "pixelastic",
+  "description": "aberlaas monorepo",
+  "repository": "pixelastic/aberlaas",
+  "homepage": "https://projects.pixelastic.com/aberlaas/",
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "yarn@4.5.2",
   "devDependencies": {
     "aberlaas": "^2.9.0",
     "firost": "4.8.0",
@@ -29,6 +32,5 @@
     "lint": "./scripts/meta/lint",
     "lint:fix": "./scripts/meta/lint-fix",
     "learn": "lerna"
-  },
-  "packageManager": "yarn@4.5.2"
+  }
 }

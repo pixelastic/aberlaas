@@ -76,8 +76,8 @@ describe('init > module', () => {
         'should have scripts',
         {
           scripts: {
-            build: './scripts/docs/build',
-            release: './scripts/lib/release',
+            release: './scripts/release',
+            test: './scripts/test',
             lint: './scripts/lint',
           },
         },
@@ -117,11 +117,11 @@ describe('init > module', () => {
         'scripts/ci',
         'scripts/compress',
         'scripts/hooks/pre-commit',
-        'scripts/lib/release',
-        'scripts/lib/test',
-        'scripts/lib/test-watch',
         'scripts/lint',
         'scripts/lint-fix',
+        'scripts/release',
+        'scripts/test',
+        'scripts/test-watch',
         'stylelint.config.js',
         'vite.config.js',
       ]);

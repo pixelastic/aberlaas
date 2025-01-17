@@ -32,7 +32,6 @@ describe('init > libdocs', () => {
         'should have correct metadata',
         {
           name: 'my-project-root',
-          version: '0.0.1',
           author: 'my-name',
           description: 'my-project root workspace',
           repository: 'my-name/my-project',
@@ -53,12 +52,10 @@ describe('init > libdocs', () => {
             lerna: lernaVersion,
           },
           scripts: {
-            build: './scripts/docs/build',
-            release: './scripts/lib/release',
-            lint: './scripts/lint',
-            'g:build': './scripts/docs/build',
-            'g:release': './scripts/lib/release',
-            'g:lint': './scripts/lint',
+            build: './scripts/meta/build',
+            release: './scripts/meta/release',
+            lint: './scripts/meta/lint',
+            learn: 'lerna',
           },
         },
       ],
@@ -94,9 +91,9 @@ describe('init > libdocs', () => {
             'norska-theme-docs': norskaThemeDocsVersion,
           },
           scripts: {
-            build: 'ABERLAAS_CWD=$INIT_CWD yarn g:build',
-            release: 'ABERLAAS_CWD=$INIT_CWD yarn g:release',
-            lint: 'ABERLAAS_CWD=$INIT_CWD yarn g:lint',
+            build: '../scripts/local/build',
+            release: '../scripts/local/release',
+            lint: '../scripts/local/lint',
           },
         },
       ],
@@ -142,13 +139,10 @@ describe('init > libdocs', () => {
           devDependencies: {},
           dependencies: {},
 
-          // Yarn script ran from a workspace lose the value of the INIT_CWD
-          // variable before they call the workspace script, so we need to save it
-          // in ABERLAAS_CWD beforehand.
           scripts: {
-            build: 'ABERLAAS_CWD=$INIT_CWD yarn g:build',
-            release: 'ABERLAAS_CWD=$INIT_CWD yarn g:release',
-            lint: 'ABERLAAS_CWD=$INIT_CWD yarn g:lint',
+            build: '../scripts/local/build',
+            release: '../scripts/local/release',
+            lint: '../scripts/local/lint',
           },
         },
       ],
@@ -167,23 +161,6 @@ describe('init > libdocs', () => {
 
       expect(await exists(helper.hostPath('LICENSE'))).toBe(true);
       expect(await exists(helper.hostPath('lib/LICENSE'))).toBe(true);
-    });
-  });
-
-  describe('addScripts', () => {
-    it('creates docs scripts', async () => {
-      await current.addScripts();
-
-      const actual = await glob('./scripts/**', {
-        context: helper.hostPath(),
-        absolutePaths: false,
-      });
-
-      expect(actual).toInclude('./scripts/docs/build');
-      expect(actual).toInclude('./scripts/docs/build-prod');
-      expect(actual).toInclude('./scripts/docs/cms');
-      expect(actual).toInclude('./scripts/docs/serve');
-      expect(actual).toInclude('./scripts/lib/release');
     });
   });
 
@@ -214,18 +191,29 @@ describe('init > libdocs', () => {
         'lintstaged.config.js',
         'package.json',
         'prettier.config.js',
-        'scripts/ci',
-        'scripts/compress',
-        'scripts/docs/build',
-        'scripts/docs/build-prod',
-        'scripts/docs/cms',
-        'scripts/docs/serve',
         'scripts/hooks/pre-commit',
-        'scripts/lib/release',
-        'scripts/lib/test',
-        'scripts/lib/test-watch',
-        'scripts/lint',
-        'scripts/lint-fix',
+        'scripts/local/build',
+        'scripts/local/build-prod',
+        'scripts/local/ci',
+        'scripts/local/cms',
+        'scripts/local/compress',
+        'scripts/local/lint',
+        'scripts/local/lint-fix',
+        'scripts/local/release',
+        'scripts/local/serve',
+        'scripts/local/test',
+        'scripts/local/test-watch',
+        'scripts/meta/build',
+        'scripts/meta/build-prod',
+        'scripts/meta/ci',
+        'scripts/meta/cms',
+        'scripts/meta/compress',
+        'scripts/meta/lint',
+        'scripts/meta/lint-fix',
+        'scripts/meta/release',
+        'scripts/meta/serve',
+        'scripts/meta/test',
+        'scripts/meta/test-watch',
         'stylelint.config.js',
         'vite.config.js',
       ]);

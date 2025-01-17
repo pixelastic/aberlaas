@@ -5,12 +5,13 @@ import {
   copy,
   env,
   error as firostError,
+  glob,
   isFile,
   move,
   read,
   write,
 } from 'firost';
-import { _ } from 'golgoth';
+import { _, pMap } from 'golgoth';
 import helper from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 
@@ -119,27 +120,23 @@ export default {
   },
 
   /**
-   * Add default script files
+   * Add script files
+   * @param {string} layoutPrefixPath Path to the subfolder in
+   * ./templates/scripts that hold the script files to copy
    */
-  async addCommonScripts() {
-    // Common
-    await this.copyTemplateToHost('scripts/ci', 'scripts/ci');
-    await this.copyTemplateToHost('scripts/compress', 'scripts/compress');
-    await this.copyTemplateToHost('scripts/lint', 'scripts/lint');
-    await this.copyTemplateToHost('scripts/lint-fix', 'scripts/lint-fix');
+  async addScripts(layoutPrefixPath) {
+    const templateFolder = absolute('../templates/scripts/', layoutPrefixPath);
+    const templateScripts = await glob('**/*', {
+      directories: false,
+      context: templateFolder,
+      absolutePaths: false,
+    });
 
-    // Hooks
-    await this.copyTemplateToHost(
-      './scripts/hooks/pre-commit',
-      './scripts/hooks/pre-commit',
-    );
-
-    // Lib
-    await this.copyTemplateToHost('scripts/lib/test', 'scripts/lib/test');
-    await this.copyTemplateToHost(
-      'scripts/lib/test-watch',
-      'scripts/lib/test-watch',
-    );
+    await pMap(templateScripts, async (templatePath) => {
+      const sourcePath = `scripts/${layoutPrefixPath}/${templatePath}`;
+      const destinationPath = `scripts/${templatePath}`;
+      await this.copyTemplateToHost(sourcePath, destinationPath);
+    });
   },
 
   /**
@@ -188,12 +185,13 @@ export default {
 
   /**
    * Add default files required to have the minimum lib module
+   * @param {string} libPrefixPath Path to the lib files, ./lib by default
    */
-  async addLibFiles() {
-    await this.copyTemplateToHost('lib/main.js', 'lib/main.js');
+  async addLibFiles(libPrefixPath = 'lib') {
+    await this.copyTemplateToHost('lib/main.js', `${libPrefixPath}/main.js`);
     await this.copyTemplateToHost(
       'lib/__tests__/main.js',
-      'lib/__tests__/main.js',
+      `${libPrefixPath}/__tests__/main.js`,
     );
   },
   __getRepo() {

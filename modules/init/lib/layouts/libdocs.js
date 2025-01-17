@@ -25,7 +25,6 @@ export default {
 
       // Name and version
       name: `${sharedProjectData.name}-root`,
-      version: '0.0.1',
 
       // Metadata
       author: sharedProjectData.author,
@@ -38,8 +37,6 @@ export default {
       license: sharedProjectData.license,
       packageManager: `yarn@${yarnVersion}`,
 
-      // Exports
-
       // Dependencies
       dependencies: {},
       devDependencies: {
@@ -49,37 +46,23 @@ export default {
 
       // Scripts
       scripts: {
-        // ==> Docs-specific
-        build: './scripts/docs/build',
-        'build:prod': './scripts/docs/build-prod',
-        cms: './scripts/docs/cms',
-        serve: './scripts/docs/serve',
+        // Docs
+        build: './scripts/meta/build',
+        'build:prod': './scripts/meta/build-prod',
+        cms: './scripts/meta/cms',
+        serve: './scripts/meta/serve',
 
-        // ==> Lib-specific
-        release: './scripts/lib/release',
-        test: './scripts/lib/test',
-        'test:watch': './scripts/lib/test-watch',
+        // Lib
+        release: './scripts/meta/release',
+        test: './scripts/meta/test',
+        'test:watch': './scripts/meta/test-watch',
+        ci: './scripts/meta/ci',
+        compress: './scripts/meta/compress',
+        lint: './scripts/meta/lint',
+        'lint:fix': './scripts/meta/lint-fix',
 
-        // Common
-        ci: './scripts/ci',
-        compress: './scripts/compress',
-        lint: './scripts/lint',
-        'lint:fix': './scripts/lint-fix',
-
-        // Global (called as aliases from any workspace)
-        // ==> Docs-specific
-        'g:build': './scripts/docs/build',
-        'g:build:prod': './scripts/docs/build-prod',
-        'g:cms': './scripts/docs/cms',
-        'g:serve': './scripts/docs/serve',
-        // ==> Lib-specific
-        'g:release': './scripts/lib/release',
-        'g:test': './scripts/lib/test',
-        'g:test:watch': './scripts/lib/test-watch',
-        // Common
-        'g:compress': './scripts/compress',
-        'g:lint': './scripts/lint',
-        'g:lint:fix': './scripts/lint-fix',
+        // Typo
+        learn: 'lerna',
       },
     };
     await writeJson(packageContent, helper.hostPath('./package.json'), {
@@ -108,8 +91,6 @@ export default {
 
       // Compatibility
       license: sharedProjectData.license,
-
-      // Exports
 
       // Dependencies
       dependencies: {
@@ -192,34 +173,6 @@ export default {
     await initHelper.copyTemplateToHost('lerna.json', 'lerna.json');
   },
   /**
-   * Add scripts to the repo
-   */
-  async addScripts() {
-    // Common scripts
-    await initHelper.addCommonScripts();
-
-    // Docs scripts
-    await initHelper.copyTemplateToHost(
-      'scripts/docs/build',
-      'scripts/docs/build',
-    );
-    await initHelper.copyTemplateToHost(
-      'scripts/docs/build-prod',
-      'scripts/docs/build-prod',
-    );
-    await initHelper.copyTemplateToHost('scripts/docs/cms', 'scripts/docs/cms');
-    await initHelper.copyTemplateToHost(
-      'scripts/docs/serve',
-      'scripts/docs/serve',
-    );
-
-    // Lib scripts
-    await initHelper.copyTemplateToHost(
-      'scripts/lib/release-lerna',
-      'scripts/lib/release',
-    );
-  },
-  /**
    * Returns shared project data, like name, author, scripts, etc
    * @returns {object} Object of common keys
    */
@@ -230,21 +183,17 @@ export default {
     const repository = `${author}/${name}`;
     const license = 'MIT';
     const scripts = {
-      // Docs
-      build: 'ABERLAAS_CWD=$INIT_CWD yarn g:build',
-      'build:prod': 'ABERLAAS_CWD=$INIT_CWD yarn g:build:prod',
-      cms: 'ABERLAAS_CWD=$INIT_CWD yarn g:cms',
-      serve: 'ABERLAAS_CWD=$INIT_CWD yarn g:serve',
-
-      // Lib
-      release: 'ABERLAAS_CWD=$INIT_CWD yarn g:release',
-      test: 'ABERLAAS_CWD=$INIT_CWD yarn g:test',
-      'test:watch': 'ABERLAAS_CWD=$INIT_CWD yarn g:test:watch',
-
-      // Common
-      compress: 'ABERLAAS_CWD=$INIT_CWD yarn g:compress',
-      lint: 'ABERLAAS_CWD=$INIT_CWD yarn g:lint',
-      'lint:fix': 'ABERLAAS_CWD=$INIT_CWD yarn g:lint:fix',
+      build: '../scripts/local/build',
+      'build:prod': '../scripts/local/build-prod',
+      cms: '../scripts/local/cms',
+      serve: '../scripts/local/serve',
+      ci: '../scripts/local/ci',
+      release: '../scripts/local/release',
+      test: '../scripts/local/test',
+      'test:watch': '../scripts/local/test-watch',
+      compress: '../scripts/local/compress',
+      lint: '../scripts/local/lint',
+      'lint:fix': '../scripts/local/lint-fix',
     };
     return {
       author,
@@ -266,8 +215,8 @@ export default {
     await this.createLibWorkspace();
 
     await this.addLicenseFiles();
-    await this.addScripts();
     await this.addConfigFiles();
+    await initHelper.addScripts('__libdocs');
     await initHelper.addLibFiles();
   },
   __getProjectName: initHelper.getProjectName,

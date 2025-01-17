@@ -1,12 +1,17 @@
 {
   "name": "aberlaas",
-  "type": "module",
-  "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
   "version": "2.12.0",
+  "author": "Tim Carry (@pixelastic)",
+  "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
+  "keywords": [],
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
-  "author": "Tim Carry (@pixelastic)",
+  "type": "module",
+  "sideEffects": false,
   "license": "MIT",
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "files": [
     "bin/",
     "commands/ci/*.js",
@@ -51,9 +56,6 @@
     "golgoth": "2.4.0",
     "minimist": "1.2.8",
     "std-mocks": "2.0.0"
-  },
-  "engines": {
-    "node": ">=18.18.0"
   },
   "scripts": {
     "build": "../../scripts/local/build",

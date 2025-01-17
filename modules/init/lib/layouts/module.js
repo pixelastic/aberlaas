@@ -38,22 +38,13 @@ export default {
     };
 
     const scripts = {
-      // Docs
-      build: './scripts/docs/build',
-      'build:prod': './scripts/docs/build-prod',
-      cms: './scripts/docs/cms',
-      serve: './scripts/docs/serve',
-
-      // Lib
-      release: './scripts/lib/release',
-      test: './scripts/lib/test',
-      'test:watch': './scripts/lib/test-watch',
-
-      // Common
       ci: './scripts/ci',
       compress: './scripts/compress',
       lint: './scripts/lint',
       'lint:fix': './scripts/lint-fix',
+      test: './scripts/test',
+      'test:watch': './scripts/test-watch',
+      release: './scripts/release',
     };
 
     const packageContent = {
@@ -92,19 +83,6 @@ export default {
       sort: false,
     });
   },
-  /**
-   * Add scripts to the repo
-   */
-  async addScripts() {
-    // Common scripts
-    await initHelper.addCommonScripts();
-
-    // Lib scripts
-    await initHelper.copyTemplateToHost(
-      'scripts/lib/release-module',
-      'scripts/lib/release',
-    );
-  },
 
   /**
    * Scaffold a repo:
@@ -115,7 +93,7 @@ export default {
 
     await initHelper.addLicenseFile('LICENSE');
     await initHelper.addConfigFiles();
-    await initHelper.addScripts();
+    await initHelper.addScripts('__module');
     await initHelper.addLibFiles();
   },
   __getProjectName: initHelper.getProjectName,

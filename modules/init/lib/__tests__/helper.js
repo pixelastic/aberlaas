@@ -1,5 +1,13 @@
 import path from 'path';
-import { exists, isFile, read, remove, tmpDirectory, write } from 'firost';
+import {
+  exists,
+  glob,
+  isFile,
+  read,
+  remove,
+  tmpDirectory,
+  write,
+} from 'firost';
 import helper from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../helper.js';
@@ -144,22 +152,27 @@ describe('init > helper', () => {
       expect(actual).toInclude(`yarn set version ${yarnVersion}`);
     });
   });
+
   describe('addScripts', () => {
-    it.each([
-      ['pre-commit', 'hooks/pre-commit'],
-      ['release', 'lib/release'],
-      ['test', 'lib/test'],
-      ['test:watch', 'lib/test-watch'],
-      ['ci', 'ci'],
-      ['compress', 'compress'],
-      ['lint', 'lint'],
-      ['lint:fix', 'lint-fix'],
-    ])('%s', async (_title, filepath) => {
-      await current.addScripts();
-      const actual = await isFile(helper.hostPath(`scripts/${filepath}`));
-      expect(actual).toBe(true);
+    it('copies files from the matching template folder', async () => {
+      await current.addScripts('__module');
+
+      const actual = await glob('./scripts/**', {
+        context: helper.hostPath(),
+        absolutePaths: false,
+      });
+
+      expect(actual).toInclude('./scripts/ci');
+      expect(actual).toInclude('./scripts/compress');
+      expect(actual).toInclude('./scripts/hooks/pre-commit');
+      expect(actual).toInclude('./scripts/lint');
+      expect(actual).toInclude('./scripts/lint-fix');
+      expect(actual).toInclude('./scripts/release');
+      expect(actual).toInclude('./scripts/test');
+      expect(actual).toInclude('./scripts/test-watch');
     });
   });
+
   describe('addConfigFiles', () => {
     it.each([
       ['CircleCI config', '.circleci/config.yml'],
