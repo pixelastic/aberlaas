@@ -1,21 +1,21 @@
-import { writeJson } from 'firost';
+import { env, writeJson } from 'firost';
 
 import helper from 'aberlaas-helper';
 import {
-  aberlaasVersion,
   lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
   norskaVersion,
   yarnVersion,
 } from 'aberlaas-versions';
-import initHelper from './helper.js';
+import initHelper from '../helper.js';
 
 export default {
   /**
-   * Create the top-level monorepo root workspace
+   * Create the top-level
    */
   async createRootWorkspace() {
+    const aberlaasVersion = env('ABERLAAS_VERSION');
     const sharedProjectData = await this.getSharedProjectData();
 
     const packageContent = {
@@ -248,7 +248,9 @@ export default {
     };
   },
   /**
-   * Scaffold a repo for use in a monorepo module contexte
+   * Scaffold a repo:
+   * - As a monorepo
+   * - With ./modules holding all modules
    */
   async run() {
     await this.createRootWorkspace();

@@ -1,14 +1,14 @@
 import { writeJson } from 'firost';
-
-import { aberlaasVersion, nodeVersion, yarnVersion } from 'aberlaas-versions';
+import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import helper from 'aberlaas-helper';
-import initHelper from './helper.js';
+import initHelper from '../helper.js';
 
 export default {
   /**
    * Create the top-level package.json
    */
   async createPackageJson() {
+    const aberlaasVersion = this.__getAberlaasVersion();
     const name = await this.__getProjectName();
     const version = '0.0.1';
 
@@ -16,7 +16,7 @@ export default {
     const description = '';
     const keywords = [];
     const repository = `${author}/${name}`;
-    const homepage = `https://projects.pixelastic.com/${name}`;
+    const homepage = `https://github.com/${repository}`;
 
     const type = 'module';
     const sideEffects = false;
@@ -26,11 +26,11 @@ export default {
     };
     const packageManager = `yarn@${yarnVersion}`;
 
-    const files = ['*.js'];
+    const files = ['lib/*.js'];
     const exports = {
-      '.': './main.js',
+      '.': './lib/main.js',
     };
-    const main = './main.js';
+    const main = './lib/main.js';
 
     const dependencies = {};
     const devDependencies = {
@@ -92,7 +92,8 @@ export default {
   },
 
   /**
-   * Scaffold a repo for use in a simple module contexte
+   * Scaffold a repo:
+   * - With ./lib holding the code
    */
   async run() {
     await this.createPackageJson();
@@ -104,4 +105,5 @@ export default {
   },
   __getProjectName: initHelper.getProjectName.bind(initHelper),
   __getProjectAuthor: initHelper.getProjectAuthor.bind(initHelper),
+  __getAberlaasVersion: initHelper.getAberlaasVersion.bind(initHelper),
 };

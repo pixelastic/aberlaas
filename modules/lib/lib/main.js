@@ -7,6 +7,8 @@ import {
   env,
   exit,
   firostImport,
+  packageRoot,
+  readJson,
 } from 'firost';
 import { _ } from 'golgoth';
 
@@ -84,6 +86,17 @@ export default {
     args._ = this.convertFilepathsToAbsolute(args._);
 
     try {
+      // We need to set ABERLAAS_VERSION for "aberlaas init" as we need to
+      // hardcode the currently used aberlaas version in the package.json and
+      // there is no reliable way to get it from the init command
+      // TODO: Test that the variable is set when using the init command
+      if (commandName == 'init') {
+        this.__env(
+          'ABERLAAS_VERSION',
+          (await readJson(absolute(packageRoot(), './package.json'))).version,
+        );
+      }
+
       await command.run(args);
     } catch (err) {
       this.__consoleError(err.message);

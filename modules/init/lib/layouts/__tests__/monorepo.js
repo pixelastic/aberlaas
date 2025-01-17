@@ -1,7 +1,6 @@
 import { exists, glob, readJson, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
 import {
-  aberlaasVersion,
   lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
@@ -47,7 +46,7 @@ describe('init > monorepo', () => {
           packageManager: `yarn@${yarnVersion}`,
           dependencies: {},
           devDependencies: {
-            aberlaas: aberlaasVersion,
+            aberlaas: 'TODO',
             lerna: lernaVersion,
           },
           scripts: {

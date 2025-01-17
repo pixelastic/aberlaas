@@ -1,9 +1,9 @@
 import { glob, readJson, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
-import { aberlaasVersion, nodeVersion, yarnVersion } from 'aberlaas-versions';
+import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../module.js';
 
-describe('init > simple', () => {
+describe('init > module', () => {
   beforeEach(async () => {
     // We need to make the tmp directory outside of this git repo tree, for all
     // git/yarn related command to work so we put it in a /tmp directory
@@ -11,6 +11,7 @@ describe('init > simple', () => {
 
     vi.spyOn(current, '__getProjectName').mockReturnValue('my-project');
     vi.spyOn(current, '__getProjectAuthor').mockReturnValue('my-name');
+    vi.spyOn(current, '__getAberlaasVersion').mockReturnValue('1.2.3');
   });
   afterEach(async () => {
     await remove(helper.hostRoot());
@@ -27,7 +28,7 @@ describe('init > simple', () => {
           description: '',
           keywords: [],
           repository: 'my-name/my-project',
-          homepage: 'https://projects.pixelastic.com/my-project',
+          homepage: 'https://github.com/my-name/my-project',
         },
       ],
       [
@@ -55,16 +56,16 @@ describe('init > simple', () => {
       [
         'should export the right files',
         {
-          files: ['*.js'],
-          exports: { '.': './main.js' },
-          main: './main.js',
+          files: ['lib/*.js'],
+          exports: { '.': './lib/main.js' },
+          main: './lib/main.js',
         },
       ],
       [
         'should have the right dependencies',
         {
           devDependencies: {
-            aberlaas: aberlaasVersion,
+            aberlaas: '1.2.3',
           },
           dependencies: {},
         },

@@ -3,6 +3,7 @@ import Gilmore from 'gilmore';
 import {
   absolute,
   copy,
+  env,
   error as firostError,
   isFile,
   move,
@@ -32,6 +33,15 @@ export default {
   async getProjectAuthor() {
     const repo = this.__getRepo();
     return (await repo.githubRepoOwner()) || '__placeholder__';
+  },
+
+  /**
+   * Return the version of aberlaas used on the CLI
+   * This should have been set by the top-level entrypoint
+   * @returns {string} Version number
+   **/
+  getAberlaasVersion() {
+    return env('ABERLAAS_VERSION');
   },
 
   /**

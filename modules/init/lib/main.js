@@ -1,10 +1,11 @@
-import { consoleInfo, run, spinner, write } from 'firost';
+import { consoleInfo, error as firostError, run, spinner, write } from 'firost';
 
 import Gilmore from 'gilmore';
 import helper from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
-import initMonorepo from './monorepo.js';
-import initModule from './module.js';
+import moduleLayout from './layouts/module.js';
+import libdocsLayout from './layouts/libdocs.js';
+import monorepoLayout from './layouts/monorepo.js';
 
 export default {
   /**
@@ -28,12 +29,31 @@ export default {
     await run('yarn install');
   },
   /**
+   * Returns the correct layout object, based on args
+   * @param {object} args Arguments, as passed by minimist
+   * @returns {object} Object with a .run() method
+   **/
+  getLayout(args) {
+    if (args.monorepo && args.libdocs) {
+      throw firostError(
+        'ABERLAAS_INIT_LAYOUT_INCOMPATIBLE',
+        "You can't specific both --monorepo and --libdocs",
+      );
+    }
+
+    if (args.monorepo) {
+      return this.__monorepoLayout;
+    }
+    if (args.libdocs) {
+      return this.__libdocsLayout;
+    }
+    return this.__moduleLayout;
+  },
+  /**
    * Copy all config files and configure the scripts
    * @param {object} args Argument object, as passed by minimist
    */
   async run(args = {}) {
-    const isMonorepo = args.monorepo;
-
     const progress = this.__spinner();
 
     progress.tick('Configuring Git & Node');
@@ -43,7 +63,8 @@ export default {
     progress.tick('Adding default files ');
 
     // Create a different scaffolding based on if creating a monorepo or not
-    isMonorepo ? await initMonorepo.run() : await initModule.run();
+    const layout = this.getLayout(args);
+    await layout.run();
 
     progress.success('aberlaas project initialized');
 
@@ -56,4 +77,7 @@ export default {
   },
   __consoleInfo: consoleInfo,
   __spinner: spinner,
+  __moduleLayout: moduleLayout,
+  __libdocsLayout: libdocsLayout,
+  __monorepoLayout: monorepoLayout,
 };

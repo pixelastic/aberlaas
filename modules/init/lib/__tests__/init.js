@@ -47,8 +47,6 @@ describe('init', () => {
       await repo.init();
     });
     it('should build a default structure', async () => {
-      await current.run();
-
       const actual = await glob(['**/*', '!.git/**'], {
         context: helper.hostPath(),
         absolutePaths: false,

@@ -9,6 +9,7 @@
   "license": "MIT",
   "files": [
     "lib/*.js",
+    "lib/layouts/",
     "templates/"
   ],
   "exports": {
