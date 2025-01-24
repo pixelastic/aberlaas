@@ -88,6 +88,7 @@ export default [
         { version: `>=${nodeVersion}` },
       ],
       'n/no-unpublished-import': ['error'],
+      'n/prefer-node-protocol': ['error'],
       // Import
       'import/first': ['error'],
       'import/no-cycle': ['error', { ignoreExternal: true, disableScc: true }],
