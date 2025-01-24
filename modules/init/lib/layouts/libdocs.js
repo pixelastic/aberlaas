@@ -19,12 +19,12 @@ export default {
     const sharedProjectData = await this.getSharedProjectData();
 
     const packageContent = {
+      // Name and version
+      name: `${sharedProjectData.name}-root`,
+
       // Visibility
       private: true,
       workspaces: ['docs', 'lib'],
-
-      // Name and version
-      name: `${sharedProjectData.name}-root`,
 
       // Metadata
       author: sharedProjectData.author,
@@ -76,12 +76,12 @@ export default {
     const sharedProjectData = await this.getSharedProjectData();
 
     const packageContent = {
-      // Visibility
-      private: true,
-
       // Name & Version
       name: `${sharedProjectData.name}-docs`,
       version: '0.0.1',
+
+      // Visibility
+      private: true,
 
       // Metadata
       author: sharedProjectData.author,
@@ -116,12 +116,12 @@ export default {
     };
 
     const packageContent = {
-      // Visibility
-      private: false,
-
       // Name and version
       name: sharedProjectData.name,
       version: '0.0.1',
+
+      // Visibility
+      private: false,
 
       // Metadata
       author: sharedProjectData.author,
