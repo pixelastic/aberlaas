@@ -17,6 +17,9 @@ export default {
   async createRootWorkspace() {
     const aberlaasVersion = this.__getAberlaasVersion();
     const sharedProjectData = await this.getSharedProjectData();
+    const engines = {
+      node: `>=${nodeVersion}`,
+    };
 
     const packageContent = {
       // Name and version
@@ -35,6 +38,7 @@ export default {
       // Compatibility
       type: 'module',
       license: sharedProjectData.license,
+      engines,
       packageManager: `yarn@${yarnVersion}`,
 
       // Dependencies
