@@ -69,6 +69,11 @@ export default [
           property: 'contains',
           message: 'Typo: Use _.includes instead',
         },
+        {
+          object: '_',
+          property: 'padLeft',
+          message: 'Typo: Use _.padStart instead',
+        },
       ],
       'no-unused-vars': [
         'error',
