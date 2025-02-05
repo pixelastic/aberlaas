@@ -51,6 +51,7 @@
     "eslint-plugin-n": "17.14.0",
     "eslint-plugin-prettier": "5.2.1",
     "firost": "4.9.0",
+    "globals": "15.14.0",
     "golgoth": "2.4.0",
     "prettier": "3.3.3",
     "stylelint": "16.10.0",

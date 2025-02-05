@@ -92,6 +92,7 @@ export default [
         'error',
         { version: `>=${nodeVersion}` },
       ],
+      'n/no-extraneous-import': ['error'],
       'n/no-unpublished-import': ['error'],
       'n/prefer-node-protocol': ['error'],
       // Import
