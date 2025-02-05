@@ -1,9 +1,9 @@
 {
+  "name": "aberlaas-monorepo",
   "private": true,
   "workspaces": [
     "modules/*"
   ],
-  "name": "aberlaas-monorepo",
   "author": "pixelastic",
   "description": "aberlaas monorepo",
   "repository": "pixelastic/aberlaas",
