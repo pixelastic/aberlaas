@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "aberlaas-helper": "^2.13.0",
-    "firost": "4.8.0",
+    "firost": "4.9.0",
     "front-matter": "4.0.2",
     "golgoth": "2.4.0"
   }
