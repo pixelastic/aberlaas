@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import {
   exists,
   glob,
@@ -158,7 +158,7 @@ describe('init > helper', () => {
       await current.addScripts('__module');
 
       const actual = await glob('./scripts/**', {
-        context: helper.hostPath(),
+        cwd: helper.hostPath(),
         absolutePaths: false,
       });
 

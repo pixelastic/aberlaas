@@ -4840,6 +4840,7 @@ __metadata:
     aberlaas-versions: "npm:^2.13.0"
     firost: "npm:5.0.0"
     gilmore: "npm:1.0.0"
+    golgoth: "npm:3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -4918,6 +4919,7 @@ __metadata:
   resolution: "aberlaas-test@workspace:modules/test"
   dependencies:
     aberlaas-helper: "npm:^2.13.0"
+    dedent: "npm:1.5.3"
     firost: "npm:5.0.0"
     globals: "npm:15.11.0"
     golgoth: "npm:2.4.0"

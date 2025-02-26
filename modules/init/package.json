@@ -38,6 +38,7 @@
     "aberlaas-helper": "^2.13.0",
     "aberlaas-versions": "^2.13.0",
     "firost": "5.0.0",
-    "gilmore": "1.0.0"
+    "gilmore": "1.0.0",
+    "golgoth": "3.0.0"
   }
 }

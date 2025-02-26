@@ -1,4 +1,4 @@
-import { consoleInfo, error as firostError, run, spinner, write } from 'firost';
+import { consoleInfo, firostError, run, spinner, write } from 'firost';
 
 import Gilmore from 'gilmore';
 import helper from 'aberlaas-helper';

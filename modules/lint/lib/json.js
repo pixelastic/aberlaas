@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { _, pMap } from 'golgoth';
 import { firostError, read } from 'firost';
 import helper from 'aberlaas-helper';

@@ -173,7 +173,7 @@ describe('init > monorepo', () => {
       await current.run();
 
       const actual = await glob('**/*', {
-        context: helper.hostPath(),
+        cwd: helper.hostPath(),
         absolutePaths: false,
         directories: false,
       });

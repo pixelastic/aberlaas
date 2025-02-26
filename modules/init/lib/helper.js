@@ -1,10 +1,10 @@
-import path from 'path';
+import path from 'node:path';
 import Gilmore from 'gilmore';
 import {
   absolute,
   copy,
   env,
-  error as firostError,
+  firostError,
   glob,
   isFile,
   move,
@@ -128,7 +128,7 @@ export default {
     const templateFolder = absolute('../templates/scripts/', layoutPrefixPath);
     const templateScripts = await glob('**/*', {
       directories: false,
-      context: templateFolder,
+      cwd: templateFolder,
       absolutePaths: false,
     });
 

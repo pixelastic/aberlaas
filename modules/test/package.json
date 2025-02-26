@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "aberlaas-helper": "^2.13.0",
+    "dedent": "1.5.3",
     "firost": "5.0.0",
     "globals": "15.11.0",
     "golgoth": "2.4.0",

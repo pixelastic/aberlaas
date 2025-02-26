@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { _, dedent, pMap } from 'golgoth';
 import { absolute, exists, glob, read, readJson, write } from 'firost';
 import frontMatter from 'front-matter';

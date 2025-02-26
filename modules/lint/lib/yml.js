@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { firostError, read } from 'firost';
 import { _, pMap } from 'golgoth';
 import yamlLint from 'yaml-lint';

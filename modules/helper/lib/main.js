@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { _ } from 'golgoth';
 import { exists, firostImport, glob } from 'firost';
 
