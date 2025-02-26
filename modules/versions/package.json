@@ -2,7 +2,7 @@
   "name": "aberlaas-versions",
   "type": "module",
   "description": "aberlaas version config: Contains list of latest versions to use for tools we depend on",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",

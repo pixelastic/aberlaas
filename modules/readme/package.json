@@ -2,7 +2,7 @@
   "name": "aberlaas-readme",
   "type": "module",
   "description": "aberlaas readme helper: Write and synchronize README",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
@@ -34,7 +34,7 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "aberlaas-helper": "^2.13.0",
+    "aberlaas-helper": "^2.14.0",
     "firost": "5.0.0",
     "front-matter": "4.0.2",
     "golgoth": "2.4.0"
