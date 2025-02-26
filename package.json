@@ -13,7 +13,7 @@
   "packageManager": "yarn@4.5.2",
   "devDependencies": {
     "aberlaas": "^2.9.0",
-    "firost": "4.9.0",
+    "firost": "5.0.0",
     "golgoth": "2.4.0",
     "lerna": "8.1.9"
   },
@@ -23,7 +23,7 @@
     "cms": "./scripts/meta/cms",
     "serve": "./scripts/meta/serve",
     "release": "./scripts/meta/release",
-    "update": "node ./scripts/meta/update.js",
+    "update-dependencies": "node ./scripts/meta/update-dependencies.js",
     "test": "./scripts/meta/test",
     "test:watch": "./scripts/meta/test-watch",
     "test:meta": "./scripts/meta/test-meta",

@@ -24,7 +24,7 @@
     "serve": "../../scripts/local/serve",
     "ci": "../../scripts/local/ci",
     "release": "../../scripts/local/release",
-    "update": "node ../../scripts/meta/update.js",
+    "update-dependencies": "node ../../scripts/meta/update-dependencies.js",
     "test:meta": "../../scripts/local/test-meta",
     "test": "../../scripts/local/test",
     "test:watch": "../../scripts/local/test-watch",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "aberlaas-helper": "^2.13.0",
-    "firost": "4.9.0",
+    "firost": "5.0.0",
     "golgoth": "2.4.0"
   }
 }
