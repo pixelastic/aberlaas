@@ -37,7 +37,7 @@
     "@octokit/rest": "21.0.2",
     "aberlaas-helper": "^2.14.0",
     "firost": "5.1.0",
-    "golgoth": "2.4.0",
+    "golgoth": "3.0.0",
     "parse-github-repo-url": "1.4.1"
   }
 }
