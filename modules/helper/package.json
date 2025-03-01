@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "find-up": "7.0.0",
-    "firost": "5.0.0",
+    "firost": "5.1.0",
     "golgoth": "2.4.0"
   }
 }

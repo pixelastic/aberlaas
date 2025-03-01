@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "aberlaas-helper": "^2.14.0",
-    "firost": "5.0.0",
+    "firost": "5.1.0",
     "lint-staged": "15.2.10"
   }
 }
