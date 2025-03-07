@@ -5061,13 +5061,13 @@ __metadata:
     aberlaas-versions: "npm:^2.14.0"
     ci-info: "npm:4.1.0"
     eslint: "npm:9.15.0"
-    eslint-config-prettier: "npm:9.1.0"
+    eslint-config-prettier: "npm:10.1.1"
     eslint-plugin-import: "npm:2.31.0"
     eslint-plugin-jsdoc: "npm:50.5.0"
     eslint-plugin-n: "npm:17.14.0"
     eslint-plugin-prettier: "npm:5.2.1"
     firost: "npm:5.1.0"
-    globals: "npm:15.14.0"
+    globals: "npm:16.0.0"
     golgoth: "npm:2.4.0"
     prettier: "npm:3.3.3"
     stylelint: "npm:16.10.0"
@@ -9431,14 +9431,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:9.1.0":
-  version: 9.1.0
-  resolution: "eslint-config-prettier@npm:9.1.0"
+"eslint-config-prettier@npm:10.1.1":
+  version: 10.1.1
+  resolution: "eslint-config-prettier@npm:10.1.1"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: 10c0/6d332694b36bc9ac6fdb18d3ca2f6ac42afa2ad61f0493e89226950a7091e38981b66bac2b47ba39d15b73fff2cd32c78b850a9cf9eed9ca9a96bfb2f3a2f10d
+  checksum: 10c0/3dbfdf6495dd62e2e1644ea9e8e978100dabcd8740fd264df1222d130001a1e8de05d6ed6c67d3a60727386a07507f067d1ca79af6d546910414beab19e7966e
   languageName: node
   linkType: hard
 
@@ -11488,10 +11488,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:15.14.0":
-  version: 15.14.0
-  resolution: "globals@npm:15.14.0"
-  checksum: 10c0/039deb8648bd373b7940c15df9f96ab7508fe92b31bbd39cbd1c1a740bd26db12457aa3e5d211553b234f30e9b1db2fee3683012f543a01a6942c9062857facb
+"globals@npm:16.0.0":
+  version: 16.0.0
+  resolution: "globals@npm:16.0.0"
+  checksum: 10c0/8906d5f01838df64a81d6c2a7b7214312e2216cf65c5ed1546dc9a7d0febddf55ffa906cf04efd5b01eec2534d6f14859a89535d1a68241832810e41ef3fd5bb
   languageName: node
   linkType: hard
 
