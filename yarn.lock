@@ -5015,7 +5015,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "npm:^2.14.0"
     firost: "npm:5.1.0"
-    golgoth: "npm:2.4.0"
+    golgoth: "npm:3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5034,7 +5034,7 @@ __metadata:
   dependencies:
     find-up: "npm:7.0.0"
     firost: "npm:5.1.0"
-    golgoth: "npm:2.4.0"
+    golgoth: "npm:3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5068,7 +5068,7 @@ __metadata:
     eslint-plugin-prettier: "npm:5.2.1"
     firost: "npm:5.1.0"
     globals: "npm:15.14.0"
-    golgoth: "npm:2.4.0"
+    golgoth: "npm:3.0.0"
     prettier: "npm:3.3.3"
     stylelint: "npm:16.10.0"
     typescript: "npm:5.6.3"
@@ -5082,7 +5082,7 @@ __metadata:
   dependencies:
     aberlaas: "npm:^2.9.0"
     firost: "npm:5.1.0"
-    golgoth: "npm:2.4.0"
+    golgoth: "npm:3.0.0"
     lerna: "npm:8.1.9"
   languageName: unknown
   linkType: soft
@@ -5104,7 +5104,7 @@ __metadata:
     aberlaas-helper: "npm:^2.14.0"
     firost: "npm:5.1.0"
     front-matter: "npm:4.0.2"
-    golgoth: "npm:2.4.0"
+    golgoth: "npm:3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5115,7 +5115,7 @@ __metadata:
     "@octokit/rest": "npm:21.0.2"
     aberlaas-helper: "npm:^2.14.0"
     firost: "npm:5.1.0"
-    golgoth: "npm:2.4.0"
+    golgoth: "npm:3.0.0"
     parse-github-repo-url: "npm:1.4.1"
   languageName: unknown
   linkType: soft
@@ -5157,7 +5157,7 @@ __metadata:
     dedent: "npm:1.5.3"
     firost: "npm:5.1.0"
     gilmore: "npm:1.0.0"
-    golgoth: "npm:2.4.0"
+    golgoth: "npm:3.0.0"
     minimist: "npm:1.2.8"
     std-mocks: "npm:2.0.0"
   bin:

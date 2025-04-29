@@ -52,7 +52,7 @@
     "eslint-plugin-prettier": "5.2.1",
     "firost": "5.1.0",
     "globals": "15.14.0",
-    "golgoth": "2.4.0",
+    "golgoth": "3.0.0",
     "prettier": "3.3.3",
     "stylelint": "16.10.0",
     "typescript": "5.6.3",
