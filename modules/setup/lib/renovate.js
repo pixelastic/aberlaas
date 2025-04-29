@@ -28,7 +28,7 @@ export default {
     // Fail early if no token available
     if (!githubHelper.hasToken()) {
       this.__consoleError(
-        `[renovate]: No GITHUB_TOKEN found, please visit ${manualUrl} to enable manually.`,
+        `[renovate]: No ABERLAAS_GITHUB_TOKEN found, please visit ${manualUrl} to enable manually.`,
       );
       return false;
     }

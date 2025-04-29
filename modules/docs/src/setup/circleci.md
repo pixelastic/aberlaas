@@ -8,7 +8,7 @@ a run of `aberlaas ci`.
 
 See the [aberlaas ci](/ci/) command for more details.
 
-You will need a `CIRCLECI_TOKEN` environment variable for this command to
+You will need a `ABERLAAS_CIRCLECI_TOKEN` environment variable for this command to
 correctly follow your repository. If no such token is available, the URL to
 manually follow the project will be displayed.
 
@@ -25,7 +25,7 @@ as well as running arbitrary code in a sandbox.
 When `aberlaas setup` is called with the `--auto-release` flag, it configures
 CircleCI so your jobs can now automatically deploy a new version of your module.
 
-You will need a `NPM_TOKEN` token in addition to the `CIRCLECI_TOKEN` for this
+You will need a `ABERLAAS_NPM_TOKEN` token in addition to the `ABERLAAS_CIRCLECI_TOKEN` for this
 flag to work. The token will be saved as an environment variable on your
 CircleCI project, allowing it to release your module on your behalf.
 

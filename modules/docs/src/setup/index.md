@@ -8,7 +8,7 @@ The `aberlaas setup` command will configure remote third party services like
 **Note that you need to have pushed your code to GitHub for this command to
 work.**
 
-You will need to have `GITHUB_TOKEN` and `CIRCLECI_TOKEN` environment variables
+You will need to have `ABERLAAS_GITHUB_TOKEN` and `ABERLAAS_CIRCLECI_TOKEN` environment variables
 configured for this command to work. If you don't, the services won't be
 activated, but you will be prompted with the URLs to active them manually.
 

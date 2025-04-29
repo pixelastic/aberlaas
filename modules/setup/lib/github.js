@@ -16,7 +16,7 @@ export default {
     // Fail early if no token available
     if (!githubHelper.hasToken()) {
       this.__consoleError(
-        `[github]: No GITHUB_TOKEN found, please visit ${manualUrl} to configure manually.`,
+        `[github]: No ABERLAAS_GITHUB_TOKEN found, please visit ${manualUrl} to configure manually.`,
       );
       return false;
     }

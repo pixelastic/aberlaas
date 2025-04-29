@@ -6,7 +6,7 @@ The `aberlaas setup` will enable [Renovate][1] on your GitHub repository.
 Renovate will automatically update your dependencies when a new version is
 released, or submit a Pull Request to do so.
 
-You will need a `GITHUB_TOKEN` environment variable for this command to work. If
+You will need a `ABERLAAS_GITHUB_TOKEN` environment variable for this command to work. If
 no such token is available, the URL to the Renovate settings page will be
 displayed, so you can enable it manually.
 

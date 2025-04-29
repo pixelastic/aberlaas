@@ -17,7 +17,7 @@ export default {
     // Fail early if no token available
     if (!circleCiHelper.hasToken()) {
       this.__consoleError(
-        `[circleci]: No CIRCLECI_TOKEN found, please visit ${followUrl} to enable manually.`,
+        `[circleci]: No ABERLAAS_CIRCLECI_TOKEN found, please visit ${followUrl} to enable manually.`,
       );
       return false;
     }

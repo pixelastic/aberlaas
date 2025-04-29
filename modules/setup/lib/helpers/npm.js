@@ -4,7 +4,7 @@ export default {
    * @returns {string} The npm token
    */
   token() {
-    return process.env.NPM_TOKEN;
+    return process.env.ABERLAAS_NPM_TOKEN;
   },
   /**
    * Check if a npm token is available

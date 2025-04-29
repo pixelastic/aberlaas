@@ -9,7 +9,7 @@ export default {
    * @returns {string} The GitHub token
    */
   token() {
-    return process.env.GITHUB_TOKEN;
+    return process.env.ABERLAAS_GITHUB_TOKEN;
   },
   /**
    * Check if a GitHub token is available

@@ -7,7 +7,7 @@ export default {
    * @returns {string} The CircleCI token
    */
   token() {
-    return process.env.CIRCLECI_TOKEN;
+    return process.env.ABERLAAS_CIRCLECI_TOKEN;
   },
   /**
    * Check if a CircleCI token is available
@@ -35,7 +35,7 @@ export default {
     } catch (_error) {
       throw firostError(
         'ERROR_CIRCLECI',
-        "Can't connect to CircleCI API. Check that you have a valid CIRCLECI_TOKEN",
+        "Can't connect to CircleCI API. Check that you have a valid ABERLAAS_CIRCLECI_TOKEN",
       );
     }
   },
