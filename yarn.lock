@@ -4795,11 +4795,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aberlaas-ci@npm:^2.14.1, aberlaas-ci@workspace:modules/ci":
+"aberlaas-ci@npm:^2.15.0, aberlaas-ci@workspace:modules/ci":
   version: 0.0.0-use.local
   resolution: "aberlaas-ci@workspace:modules/ci"
   dependencies:
-    aberlaas-lint: "npm:^2.14.1"
+    aberlaas-lint: "npm:^2.15.0"
     aberlaas-test: "npm:^2.14.1"
     ci-info: "npm:4.1.0"
     firost: "npm:5.1.0"
@@ -4835,19 +4835,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-init@npm:^2.14.2, aberlaas-init@workspace:modules/init":
+"aberlaas-init@npm:^2.15.0, aberlaas-init@workspace:modules/init":
   version: 0.0.0-use.local
   resolution: "aberlaas-init@workspace:modules/init"
   dependencies:
     aberlaas-helper: "npm:^2.14.1"
-    aberlaas-versions: "npm:^2.14.0"
+    aberlaas-versions: "npm:^2.15.0"
     firost: "npm:5.1.0"
     gilmore: "npm:1.0.0"
     golgoth: "npm:3.0.0"
   languageName: unknown
   linkType: soft
 
-"aberlaas-lint@npm:^2.14.1, aberlaas-lint@workspace:modules/lint":
+"aberlaas-lint@npm:^2.15.0, aberlaas-lint@workspace:modules/lint":
   version: 0.0.0-use.local
   resolution: "aberlaas-lint@workspace:modules/lint"
   dependencies:
@@ -4855,7 +4855,7 @@ __metadata:
     "@typescript-eslint/utils": "npm:8.15.0"
     "@vitest/eslint-plugin": "npm:1.1.10"
     aberlaas-helper: "npm:^2.14.1"
-    aberlaas-versions: "npm:^2.14.0"
+    aberlaas-versions: "npm:^2.15.0"
     ci-info: "npm:4.1.0"
     eslint: "npm:9.15.0"
     eslint-config-prettier: "npm:9.1.0"
@@ -4932,7 +4932,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-versions@npm:^2.14.0, aberlaas-versions@workspace:modules/versions":
+"aberlaas-versions@npm:^2.15.0, aberlaas-versions@workspace:modules/versions":
   version: 0.0.0-use.local
   resolution: "aberlaas-versions@workspace:modules/versions"
   languageName: unknown
@@ -4942,16 +4942,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas@workspace:modules/lib"
   dependencies:
-    aberlaas-ci: "npm:^2.14.1"
+    aberlaas-ci: "npm:^2.15.0"
     aberlaas-compress: "npm:^2.14.1"
     aberlaas-helper: "npm:^2.14.1"
-    aberlaas-init: "npm:^2.14.2"
-    aberlaas-lint: "npm:^2.14.1"
+    aberlaas-init: "npm:^2.15.0"
+    aberlaas-lint: "npm:^2.15.0"
     aberlaas-precommit: "npm:^2.14.1"
     aberlaas-readme: "npm:^2.14.1"
     aberlaas-setup: "npm:^2.14.1"
     aberlaas-test: "npm:^2.14.1"
-    aberlaas-versions: "npm:^2.14.0"
+    aberlaas-versions: "npm:^2.15.0"
     dedent: "npm:1.5.3"
     firost: "npm:5.1.0"
     gilmore: "npm:1.0.0"

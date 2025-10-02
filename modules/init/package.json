@@ -2,7 +2,7 @@
   "name": "aberlaas-init",
   "type": "module",
   "description": "aberlaas init command: Setup the repository with all needed config",
-  "version": "2.14.2",
+  "version": "2.15.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "aberlaas-helper": "^2.14.1",
-    "aberlaas-versions": "^2.14.0",
+    "aberlaas-versions": "^2.15.0",
     "firost": "5.1.0",
     "gilmore": "1.0.0",
     "golgoth": "3.0.0"
