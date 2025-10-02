@@ -1,4 +1,4 @@
-import { glob, readJson, remove, tmpDirectory } from 'firost';
+import { glob, read, readJson, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../module.js';
@@ -125,6 +125,22 @@ describe('init > module', () => {
         'stylelint.config.js',
         'vite.config.js',
       ]);
+    });
+
+    it('should write a correct circleCI file', async () => {
+      await current.run();
+
+      const circleciConfig = await read(
+        helper.hostPath('.circleci/config.yml'),
+      );
+
+      // Should not contain literal template placeholders
+      expect(circleciConfig).not.toContain('{nodeVersion}');
+      expect(circleciConfig).not.toContain('{yarnVersion}');
+
+      // Should contain actual versions
+      expect(circleciConfig).toContain(`cimg/node:${nodeVersion}`);
+      expect(circleciConfig).toContain(`yarn set version ${yarnVersion}`);
     });
   });
 });

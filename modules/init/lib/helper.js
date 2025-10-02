@@ -177,10 +177,7 @@ export default {
     );
 
     // CircleCI
-    await this.copyTemplateToHost(
-      '_circleci/config.yml',
-      '.circleci/config.yml',
-    );
+    await this.addCircleCIConfigFile();
   },
 
   /**
