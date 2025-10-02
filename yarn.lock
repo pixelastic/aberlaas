@@ -4906,7 +4906,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-setup@npm:^2.14.1, aberlaas-setup@workspace:modules/setup":
+"aberlaas-setup@npm:^2.16.0, aberlaas-setup@workspace:modules/setup":
   version: 0.0.0-use.local
   resolution: "aberlaas-setup@workspace:modules/setup"
   dependencies:
@@ -4949,7 +4949,7 @@ __metadata:
     aberlaas-lint: "npm:^2.15.0"
     aberlaas-precommit: "npm:^2.14.1"
     aberlaas-readme: "npm:^2.14.1"
-    aberlaas-setup: "npm:^2.14.1"
+    aberlaas-setup: "npm:^2.16.0"
     aberlaas-test: "npm:^2.14.1"
     aberlaas-versions: "npm:^2.15.0"
     dedent: "npm:1.5.3"
