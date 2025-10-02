@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { _, dedent, pMap } from 'golgoth';
+import { _, pMap } from 'golgoth';
+import dedent from 'dedent';
 import { absolute, exists, glob, read, readJson, write } from 'firost';
 import frontMatter from 'front-matter';
 import helper from 'aberlaas-helper';

@@ -37,9 +37,9 @@
   "dependencies": {
     "aberlaas-helper": "^2.14.0",
     "dedent": "1.5.3",
-    "firost": "5.0.0",
+    "firost": "5.1.0",
     "globals": "15.11.0",
-    "golgoth": "2.4.0",
+    "golgoth": "3.0.0",
     "jest-extended": "4.0.2",
     "vitest": "2.1.2"
   }
