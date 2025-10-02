@@ -4835,7 +4835,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-init@npm:^2.14.1, aberlaas-init@workspace:modules/init":
+"aberlaas-init@npm:^2.14.2, aberlaas-init@workspace:modules/init":
   version: 0.0.0-use.local
   resolution: "aberlaas-init@workspace:modules/init"
   dependencies:
@@ -4945,7 +4945,7 @@ __metadata:
     aberlaas-ci: "npm:^2.14.1"
     aberlaas-compress: "npm:^2.14.1"
     aberlaas-helper: "npm:^2.14.1"
-    aberlaas-init: "npm:^2.14.1"
+    aberlaas-init: "npm:^2.14.2"
     aberlaas-lint: "npm:^2.14.1"
     aberlaas-precommit: "npm:^2.14.1"
     aberlaas-readme: "npm:^2.14.1"

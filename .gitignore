@@ -28,6 +28,10 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 
-
 # Netlify
 .netlify
+
+# Vibe coding
+.claude/settings.local.json
+.cursor/
+.taskmaster/
