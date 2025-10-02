@@ -1,5 +1,13 @@
-import { consoleError, consoleSuccess } from 'firost';
+import { consoleError, consoleInfo, consoleSuccess } from 'firost';
+import { _ } from 'golgoth';
 import githubHelper from './helpers/github.js';
+
+const gitHubSettings = {
+  allow_merge_commit: false,
+  allow_rebase_merge: true,
+  allow_squash_merge: true,
+  delete_branch_on_merge: true,
+};
 
 export default {
   /**
@@ -10,33 +18,57 @@ export default {
    */
   async enable() {
     const { username, repo } = await githubHelper.repoData();
-    const repoUrl = `https://github.com/${username}/${repo}`;
-    const manualUrl = `${repoUrl}/settings`;
+    const settingsUrl = `https://github.com/${username}/${repo}/settings`;
 
     // Fail early if no token available
     if (!githubHelper.hasToken()) {
-      this.__consoleError(
-        `[github]: No ABERLAAS_GITHUB_TOKEN found, please visit ${manualUrl} to configure manually.`,
-      );
+      this.__consoleError(`GitHub: ABERLAAS_GITHUB_TOKEN environment variable must be set`);
+      this.__consoleInfo(`  Create a Classic token with 'repo' scope`);
+      this.__consoleInfo(`  https://github.com/settings/tokens\n`);
       return false;
     }
 
-    const settings = {
-      allow_merge_commit: false,
-      allow_rebase_merge: true,
-      allow_squash_merge: true,
-      delete_branch_on_merge: true,
-    };
+    // Check if already configured
+    try {
+      if (await this.isAlreadyConfigured()) {
+        this.__consoleSuccess(`GitHub: Already configured`);
+        this.__consoleInfo(`  ${settingsUrl}\n`);
+        return true;
+      }
+    } catch (error) {
+      if (error.status === 401) {
+        this.__consoleError(`GitHub: ABERLAAS_GITHUB_TOKEN is invalid`);
+        this.__consoleInfo(`  Create a Classic token with 'repo' scope`);
+        this.__consoleInfo(`  https://github.com/settings/tokens\n`);
+        return false;
+      }
+      throw error;
+    }
 
     await githubHelper.octokit('repos.update', {
       owner: username,
       repo,
-      ...settings,
+      ...gitHubSettings,
     });
 
-    this.__consoleSuccess(`GitHub repo configured: ${repoUrl}`);
+    this.__consoleSuccess(`GitHub: Repository configured`);
+    this.__consoleInfo(`  ${settingsUrl}\n`);
     return true;
   },
+  /**
+   * Check if GitHub repo is already configured with desired settings
+   * @returns {boolean} True if already configured, false otherwise
+   */
+  async isAlreadyConfigured() {
+    const { username, repo } = await githubHelper.repoData();
+    const repoData = await githubHelper.octokit('repos.get', {
+      owner: username,
+      repo,
+    });
+
+    return _.isMatch(repoData, gitHubSettings);
+  },
   __consoleSuccess: consoleSuccess,
+  __consoleInfo: consoleInfo,
   __consoleError: consoleError,
 };

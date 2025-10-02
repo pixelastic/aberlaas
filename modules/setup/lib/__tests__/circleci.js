@@ -5,8 +5,8 @@ import circleciHelper from '../helpers/circleci.js';
 describe('setup > circleci', () => {
   describe('enable', () => {
     beforeEach(async () => {
-      vi.spyOn(current, '__consoleInfo').mockReturnValue();
       vi.spyOn(current, '__consoleSuccess').mockReturnValue();
+      vi.spyOn(current, '__consoleInfo').mockReturnValue();
       vi.spyOn(current, '__consoleError').mockReturnValue();
       vi.spyOn(githubHelper, 'repoData').mockReturnValue({});
       vi.spyOn(current, 'followRepo').mockReturnValue();
@@ -15,7 +15,6 @@ describe('setup > circleci', () => {
       vi.spyOn(circleciHelper, 'hasToken').mockReturnValue(false);
       const actual = await current.enable();
       expect(actual).toBe(false);
-      expect(current.__consoleInfo).not.toHaveBeenCalled();
       expect(current.__consoleError).toHaveBeenCalled();
       expect(current.__consoleSuccess).not.toHaveBeenCalled();
     });
@@ -24,16 +23,14 @@ describe('setup > circleci', () => {
       vi.spyOn(current, 'isEnabled').mockReturnValue(true);
       const actual = await current.enable();
       expect(actual).toBe(true);
-      expect(current.__consoleInfo).toHaveBeenCalled();
       expect(current.__consoleError).not.toHaveBeenCalled();
-      expect(current.__consoleSuccess).not.toHaveBeenCalled();
+      expect(current.__consoleSuccess).toHaveBeenCalled();
     });
     it('with a token', async () => {
       vi.spyOn(current, 'isEnabled').mockReturnValue(false);
       vi.spyOn(circleciHelper, 'hasToken').mockReturnValue(true);
       const actual = await current.enable();
       expect(actual).toBe(true);
-      expect(current.__consoleInfo).not.toHaveBeenCalled();
       expect(current.__consoleError).not.toHaveBeenCalled();
       expect(current.__consoleSuccess).toHaveBeenCalled();
       expect(current.followRepo).toHaveBeenCalled();

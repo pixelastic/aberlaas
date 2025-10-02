@@ -3,6 +3,9 @@ import githubHelper from '../helpers/github.js';
 
 describe('setup > renovate', () => {
   beforeEach(async () => {
+    vi.spyOn(current, '__consoleSuccess').mockReturnValue();
+    vi.spyOn(current, '__consoleInfo').mockReturnValue();
+    vi.spyOn(current, '__consoleError').mockReturnValue();
     vi.spyOn(githubHelper, 'repoData').mockReturnValue({
       username: 'pixelastic',
       repo: 'aberlaas',

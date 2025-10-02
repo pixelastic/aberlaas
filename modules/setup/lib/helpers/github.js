@@ -58,6 +58,12 @@ export default {
       const githubToken = this.token();
       this.__cache.octokit = new this.__Octokit({
         auth: githubToken,
+        log: {
+          debug: this.__noOp,
+          info: this.__noOp,
+          warn: this.__noOp,
+          error: this.__noOp
+        }
       });
     }
 
@@ -69,4 +75,5 @@ export default {
   __run: run,
   __Octokit: Octokit,
   __cache: {},
+  __noOp: () => {},
 };

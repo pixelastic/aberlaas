@@ -42,7 +42,34 @@ describe('setup > helpers > github', () => {
 
       expect(current.__cache.octokit).toEqual(mockOctokit);
       expect(current.__Octokit).toHaveBeenCalledTimes(1);
-      expect(current.__Octokit).toHaveBeenCalledWith({ auth: 'TOKEN' });
+    });
+    it('should pass the correct auth token', async () => {
+      const mockOctokit = {
+        methodName: vi.fn().mockReturnValue({}),
+      };
+      vi.spyOn(current, 'token').mockReturnValue('TOKEN');
+      current.__Octokit = vi.fn().mockReturnValue(mockOctokit);
+
+      await current.octokit('methodName', {});
+
+      expect(current.__Octokit).toHaveBeenCalledWith(
+        expect.objectContaining({ auth: 'TOKEN' })
+      );
+    });
+    it('should disable octokit logging', async () => {
+      const mockOctokit = {
+        methodName: vi.fn().mockReturnValue({}),
+      };
+      vi.spyOn(current, 'token').mockReturnValue('TOKEN');
+      current.__Octokit = vi.fn().mockReturnValue(mockOctokit);
+
+      await current.octokit('methodName', {});
+
+      const callArgs = current.__Octokit.mock.calls[0][0];
+      expect(callArgs.log.debug).toBe(current.__noOp);
+      expect(callArgs.log.info).toBe(current.__noOp);
+      expect(callArgs.log.warn).toBe(current.__noOp);
+      expect(callArgs.log.error).toBe(current.__noOp);
     });
     it('should call the Octokit method with passed options', async () => {
       const mockOctokit = {

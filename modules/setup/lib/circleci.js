@@ -16,21 +16,23 @@ export default {
 
     // Fail early if no token available
     if (!circleCiHelper.hasToken()) {
-      this.__consoleError(
-        `[circleci]: No ABERLAAS_CIRCLECI_TOKEN found, please visit ${followUrl} to enable manually.`,
-      );
+      this.__consoleError(`CircleCI: ABERLAAS_CIRCLECI_TOKEN environment variable must be set`);
+      this.__consoleInfo(`  Create a token at CircleCI account settings`);
+      this.__consoleInfo(`  https://circleci.com/account/api\n`);
       return false;
     }
 
     // Do nothing if already enabled
     if (await this.isEnabled()) {
-      this.__consoleInfo(`CircleCI already enabled: ${projectUrl}`);
+      this.__consoleSuccess(`CircleCI: Already configured`);
+      this.__consoleInfo(`  ${projectUrl}\n`);
       return true;
     }
 
     // Follow the repo
     await this.followRepo();
-    this.__consoleSuccess(`CircleCI enabled: ${projectUrl}`);
+    this.__consoleSuccess(`CircleCI: Repository configured`);
+    this.__consoleInfo(`  ${projectUrl}\n`);
     return true;
   },
   /**

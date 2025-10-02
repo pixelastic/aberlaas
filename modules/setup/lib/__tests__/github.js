@@ -5,6 +5,7 @@ describe('setup > github', () => {
   describe('enable', () => {
     beforeEach(async () => {
       vi.spyOn(current, '__consoleSuccess').mockReturnValue();
+      vi.spyOn(current, '__consoleInfo').mockReturnValue();
       vi.spyOn(current, '__consoleError').mockReturnValue();
       vi.spyOn(githubHelper, 'repoData').mockReturnValue({
         username: 'username',
