@@ -34,7 +34,7 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "@octokit/rest": "21.0.2",
+    "@octokit/rest": "22.0.0",
     "aberlaas-helper": "^2.14.1",
     "firost": "5.1.0",
     "golgoth": "3.0.0",
