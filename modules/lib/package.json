@@ -50,7 +50,7 @@
     "aberlaas-setup": "^2.16.0",
     "aberlaas-test": "^2.14.1",
     "aberlaas-versions": "^2.15.0",
-    "dedent": "1.5.3",
+    "dedent": "1.7.0",
     "firost": "5.1.0",
     "gilmore": "1.0.0",
     "golgoth": "3.0.0",
