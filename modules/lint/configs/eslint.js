@@ -128,6 +128,7 @@ export default [
       // quotes: We want `hello world` to be converted into 'hello world', but
       // Prettier doesn't do that, so we need to make eslint do it
       quotes: ['error', 'single', { avoidEscape: true }],
+      'prettier/prettier': ['error', { singleQuote: true }],
     },
     settings: {
       // eslint-plugin-import doesn't currently support the "exports" syntax in
