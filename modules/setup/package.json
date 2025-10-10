@@ -2,7 +2,7 @@
   "name": "aberlaas-setup",
   "type": "module",
   "description": "aberlaas setup helper: Setup third parties like GitHub, Netlify or CircleCI",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@octokit/rest": "21.0.2",
-    "aberlaas-helper": "^2.14.1",
+    "aberlaas-helper": "^2.17.0",
     "firost": "5.1.0",
     "golgoth": "3.0.0",
     "parse-github-repo-url": "1.4.1"
