@@ -53,7 +53,7 @@ describe('setup > helpers > github', () => {
       await current.octokit('methodName', {});
 
       expect(current.__Octokit).toHaveBeenCalledWith(
-        expect.objectContaining({ auth: 'TOKEN' })
+        expect.objectContaining({ auth: 'TOKEN' }),
       );
     });
     it('should disable octokit logging', async () => {

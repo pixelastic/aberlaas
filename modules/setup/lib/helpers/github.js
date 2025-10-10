@@ -62,8 +62,8 @@ export default {
           debug: this.__noOp,
           info: this.__noOp,
           warn: this.__noOp,
-          error: this.__noOp
-        }
+          error: this.__noOp,
+        },
       });
     }
 

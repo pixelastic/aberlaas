@@ -27,15 +27,17 @@ export default {
 
     // Fail early if no token available
     if (!githubHelper.hasToken()) {
-      this.__consoleError(`Renovate: ABERLAAS_GITHUB_TOKEN environment variable must be set`);
-      this.__consoleInfo(`  Create a Classic token with 'repo' scope`);
-      this.__consoleInfo(`  https://github.com/settings/tokens\n`);
+      this.__consoleError(
+        'Renovate: ABERLAAS_GITHUB_TOKEN environment variable must be set',
+      );
+      this.__consoleInfo("  Create a Classic token with 'repo' scope");
+      this.__consoleInfo('  https://github.com/settings/tokens\n');
       return false;
     }
 
     // Check if already enabled
     if (await this.isAlreadyEnabled()) {
-      this.__consoleSuccess(`Renovate: Already configured`);
+      this.__consoleSuccess('Renovate: Already configured');
       this.__consoleInfo(`  ${renovateDashboardUrl}\n`);
       return true;
     }
@@ -47,13 +49,15 @@ export default {
         repository_id: repositoryId,
       });
     } catch (_err) {
-      this.__consoleError(`Renovate is not installed with this GitHub account`);
-      this.__consoleInfo(`  Please visit the installation page to install it first`);
+      this.__consoleError('Renovate is not installed with this GitHub account');
+      this.__consoleInfo(
+        '  Please visit the installation page to install it first',
+      );
       this.__consoleInfo(`  ${manualUrl}\n`);
       return false;
     }
 
-    this.__consoleSuccess(`Renovate: Repository configured`);
+    this.__consoleSuccess('Renovate: Repository configured');
     this.__consoleInfo(`  ${renovateDashboardUrl}\n`);
     return true;
   },
@@ -64,12 +68,16 @@ export default {
   async isAlreadyEnabled() {
     try {
       const { username, repo } = await githubHelper.repoData();
-      const installations = await githubHelper.octokit('apps.listReposAccessibleToInstallation', {
-        installation_id: this.renovateId,
-      });
-      
+      const installations = await githubHelper.octokit(
+        'apps.listReposAccessibleToInstallation',
+        {
+          installation_id: this.renovateId,
+        },
+      );
+
       return installations.repositories.some(
-        repoData => repoData.owner.login === username && repoData.name === repo
+        (repoData) =>
+          repoData.owner.login === username && repoData.name === repo,
       );
     } catch {
       // API call fails if Renovate app is not installed - treat as not enabled

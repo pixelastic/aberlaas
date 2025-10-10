@@ -12,26 +12,27 @@ export default {
   async enable() {
     const { username, repo } = await githubHelper.repoData();
     const projectUrl = `https://app.circleci.com/pipelines/github/${username}/${repo}`;
-    const followUrl = `https://app.circleci.com/projects/project-setup/github/${username}/${repo}`;
 
     // Fail early if no token available
     if (!circleCiHelper.hasToken()) {
-      this.__consoleError(`CircleCI: ABERLAAS_CIRCLECI_TOKEN environment variable must be set`);
-      this.__consoleInfo(`  Create a token at CircleCI account settings`);
-      this.__consoleInfo(`  https://circleci.com/account/api\n`);
+      this.__consoleError(
+        'CircleCI: ABERLAAS_CIRCLECI_TOKEN environment variable must be set',
+      );
+      this.__consoleInfo('  Create a token at CircleCI account settings');
+      this.__consoleInfo('  https://circleci.com/account/api\n');
       return false;
     }
 
     // Do nothing if already enabled
     if (await this.isEnabled()) {
-      this.__consoleSuccess(`CircleCI: Already configured`);
+      this.__consoleSuccess('CircleCI: Already configured');
       this.__consoleInfo(`  ${projectUrl}\n`);
       return true;
     }
 
     // Follow the repo
     await this.followRepo();
-    this.__consoleSuccess(`CircleCI: Repository configured`);
+    this.__consoleSuccess('CircleCI: Repository configured');
     this.__consoleInfo(`  ${projectUrl}\n`);
     return true;
   },

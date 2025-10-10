@@ -22,24 +22,26 @@ export default {
 
     // Fail early if no token available
     if (!githubHelper.hasToken()) {
-      this.__consoleError(`GitHub: ABERLAAS_GITHUB_TOKEN environment variable must be set`);
-      this.__consoleInfo(`  Create a Classic token with 'repo' scope`);
-      this.__consoleInfo(`  https://github.com/settings/tokens\n`);
+      this.__consoleError(
+        'GitHub: ABERLAAS_GITHUB_TOKEN environment variable must be set',
+      );
+      this.__consoleInfo("  Create a Classic token with 'repo' scope");
+      this.__consoleInfo('  https://github.com/settings/tokens\n');
       return false;
     }
 
     // Check if already configured
     try {
       if (await this.isAlreadyConfigured()) {
-        this.__consoleSuccess(`GitHub: Already configured`);
+        this.__consoleSuccess('GitHub: Already configured');
         this.__consoleInfo(`  ${settingsUrl}\n`);
         return true;
       }
     } catch (error) {
       if (error.status === 401) {
-        this.__consoleError(`GitHub: ABERLAAS_GITHUB_TOKEN is invalid`);
-        this.__consoleInfo(`  Create a Classic token with 'repo' scope`);
-        this.__consoleInfo(`  https://github.com/settings/tokens\n`);
+        this.__consoleError('GitHub: ABERLAAS_GITHUB_TOKEN is invalid');
+        this.__consoleInfo("  Create a Classic token with 'repo' scope");
+        this.__consoleInfo('  https://github.com/settings/tokens\n');
         return false;
       }
       throw error;
@@ -51,7 +53,7 @@ export default {
       ...gitHubSettings,
     });
 
-    this.__consoleSuccess(`GitHub: Repository configured`);
+    this.__consoleSuccess('GitHub: Repository configured');
     this.__consoleInfo(`  ${settingsUrl}\n`);
     return true;
   },
