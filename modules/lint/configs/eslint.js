@@ -14,7 +14,7 @@ import { nodeVersion } from 'aberlaas-versions';
 export default [
   {
     name: 'aberlaas/base',
-    files: ['**/*.js'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: ['node_modules/*', '.yarn/*'],
     languageOptions: {
       ecmaVersion: 'latest',
@@ -148,7 +148,7 @@ export default [
   },
   {
     name: 'aberlaas/vitest',
-    files: ['**/__tests__/**/*.js'],
+    files: ['**/__tests__/**/*.{js,ts}'],
     languageOptions: {
       globals: {
         afterAll: true,
@@ -197,7 +197,7 @@ export default [
   },
   {
     name: 'aberlaas/scripts',
-    files: ['**/scripts/**/*.js'],
+    files: ['**/scripts/**/*.{js,ts}'],
     rules: { 'no-process-exit': ['off'] },
   },
   {

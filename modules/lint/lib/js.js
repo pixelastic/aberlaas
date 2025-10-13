@@ -13,7 +13,7 @@ export default {
   async getInputFiles(userPatterns) {
     const filePatterns = _.isEmpty(userPatterns) ? ['./**/*.js'] : userPatterns;
 
-    return await helper.findHostFiles(filePatterns, ['.js']);
+    return await helper.findHostFiles(filePatterns, ['.js', '.jsx', '.ts', '.tsx']);
   },
   /**
    * Lint all files and display results.
