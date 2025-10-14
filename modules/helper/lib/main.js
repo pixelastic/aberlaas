@@ -44,6 +44,7 @@ export default {
       '.git',
       '.yarn',
       '.claude',
+      '.next',
     ];
     _.each(blockedFolders, (blockedFolder) => {
       const deepFolder = `**/${blockedFolder}/**`;

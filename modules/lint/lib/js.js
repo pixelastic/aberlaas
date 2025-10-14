@@ -13,7 +13,12 @@ export default {
   async getInputFiles(userPatterns) {
     const filePatterns = _.isEmpty(userPatterns) ? ['./**/*.js'] : userPatterns;
 
-    return await helper.findHostFiles(filePatterns, ['.js', '.jsx', '.ts', '.tsx']);
+    return await helper.findHostFiles(filePatterns, [
+      '.js',
+      '.jsx',
+      '.ts',
+      '.tsx',
+    ]);
   },
   /**
    * Lint all files and display results.
@@ -24,7 +29,7 @@ export default {
    */
   async run(userPatterns, userConfigFile, userOptions = {}) {
     // Options
-    const options = { fix: false, ...userOptions };
+    const options = { fix: false, warnIgnored: false, ...userOptions };
 
     // Files to lint
     const files = await this.getInputFiles(userPatterns);
