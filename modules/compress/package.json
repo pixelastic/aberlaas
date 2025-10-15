@@ -2,7 +2,7 @@
   "name": "aberlaas-compress",
   "type": "module",
   "description": "aberlaas compress command: Reduce image filesize",
-  "version": "2.18.0",
+  "version": "2.18.1",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
@@ -33,7 +33,7 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "aberlaas-helper": "^2.18.0",
+    "aberlaas-helper": "^2.18.1",
     "firost": "5.2.1",
     "golgoth": "3.0.0"
   }
