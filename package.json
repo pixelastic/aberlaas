@@ -15,7 +15,7 @@
     "aberlaas": "^2.9.0",
     "firost": "5.2.1",
     "golgoth": "3.0.0",
-    "lerna": "8.1.9"
+    "lerna": "9.0.0"
   },
   "scripts": {
     "build": "./scripts/meta/build",
