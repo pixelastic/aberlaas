@@ -35,7 +35,7 @@
   "dependencies": {
     "aberlaas-lint": "^2.18.1",
     "aberlaas-test": "^2.18.1",
-    "ci-info": "4.1.0",
+    "ci-info": "4.3.1",
     "firost": "5.2.1"
   }
 }
