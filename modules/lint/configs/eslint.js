@@ -140,9 +140,11 @@ export default [
       //
       // Until this is fixed (see
       // https://github.com/import-js/eslint-plugin-import/issues/2430)
-      // we manually define the most common extensions
+      // we manually define all common extensions including React/TypeScript
       'import/resolver': {
-        node: { extensions: ['.js', '.cjs', '.mjs', '.d.ts'] },
+        node: {
+          extensions: ['.js', '.cjs', '.mjs', '.d.ts', '.jsx', '.ts', '.tsx'],
+        },
       },
     },
   },
