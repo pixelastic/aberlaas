@@ -1,9 +1,10 @@
-import js from '@eslint/js';
 import globals from 'globals';
-import pluginN from 'eslint-plugin-n';
+import js from '@eslint/js';
 import pluginImport from 'eslint-plugin-import';
 import pluginJsdoc from 'eslint-plugin-jsdoc';
+import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import pluginReact from 'eslint-plugin-react';
 // Note:
 // It is currently required to manually add typescript and
 // @typescript-eslint/utils to aberlaas for the plugin to work
@@ -75,6 +76,7 @@ export default [
           message: 'Typo: Use _.padStart instead',
         },
       ],
+      'no-shadow': ['error'],
       'no-unused-vars': [
         'error',
         {
@@ -83,10 +85,17 @@ export default [
           caughtErrorsIgnorePattern: '^_.',
         },
       ],
-      'no-shadow': ['error'],
+      'no-use-before-define': [
+        'error',
+        {
+          variables: true,
+          functions: false,
+        },
+      ],
       'object-shorthand': ['error', 'always'],
       'quote-props': ['error', 'consistent-as-needed'],
       'sort-imports': ['error', { ignoreDeclarationSort: true }],
+
       // Node
       'n/no-unsupported-features/es-syntax': [
         'error',
@@ -95,6 +104,7 @@ export default [
       'n/no-extraneous-import': ['error'],
       'n/no-unpublished-import': ['error'],
       'n/prefer-node-protocol': ['error'],
+
       // Import
       'import/first': ['error'],
       'import/no-cycle': ['error', { ignoreExternal: true, disableScc: true }],
@@ -104,6 +114,7 @@ export default [
       // field in its package.json
       // See: https://github.com/lint-staged/lint-staged/issues/1474
       'import/no-unresolved': ['error', { ignore: ['lint-staged'] }],
+
       // JSDoc
       'jsdoc/check-param-names': ['warn'],
       'jsdoc/check-types': ['warn'],
@@ -122,6 +133,7 @@ export default [
       'jsdoc/require-returns-description': ['warn'],
       'jsdoc/require-returns-type': ['warn'],
       'jsdoc/valid-types': ['warn'],
+
       // Prettier
       ...pluginPrettierRecommended.rules,
       // Prettier overwrites
@@ -195,6 +207,25 @@ export default [
       // See: https://github.com/veritem/eslint-plugin-vitest/issues/310
       'vitest/no-identical-title': ['off'],
       'vitest/prefer-to-contain': ['error'],
+    },
+  },
+  {
+    name: 'aberlaas/react',
+    files: ['**/*.{jsx,tsx}'],
+    plugins: {
+      react: pluginReact,
+    },
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    rules: {
+      'react/jsx-uses-react': ['error'],
+      'react/jsx-uses-vars': ['error'],
+      'import/extensions': ['error', 'always', { ignorePackages: true }],
     },
   },
   {
