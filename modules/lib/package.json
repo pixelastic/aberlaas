@@ -1,6 +1,6 @@
 {
   "name": "aberlaas",
-  "version": "2.18.1",
+  "version": "2.19.0",
   "author": "Tim Carry (@pixelastic)",
   "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
   "keywords": [],
@@ -40,11 +40,11 @@
   "main": "./lib/main.js",
   "bin": "bin/aberlaas.js",
   "dependencies": {
-    "aberlaas-ci": "^2.18.1",
+    "aberlaas-ci": "^2.19.0",
     "aberlaas-compress": "^2.18.1",
     "aberlaas-helper": "^2.18.1",
     "aberlaas-init": "^2.18.1",
-    "aberlaas-lint": "^2.18.1",
+    "aberlaas-lint": "^2.19.0",
     "aberlaas-precommit": "^2.18.1",
     "aberlaas-readme": "^2.18.1",
     "aberlaas-setup": "^2.18.1",

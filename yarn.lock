@@ -5042,11 +5042,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aberlaas-ci@npm:^2.18.1, aberlaas-ci@workspace:modules/ci":
+"aberlaas-ci@npm:^2.19.0, aberlaas-ci@workspace:modules/ci":
   version: 0.0.0-use.local
   resolution: "aberlaas-ci@workspace:modules/ci"
   dependencies:
-    aberlaas-lint: "npm:^2.18.1"
+    aberlaas-lint: "npm:^2.19.0"
     aberlaas-test: "npm:^2.18.1"
     ci-info: "npm:4.1.0"
     firost: "npm:5.2.1"
@@ -5094,7 +5094,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-lint@npm:^2.18.1, aberlaas-lint@workspace:modules/lint":
+"aberlaas-lint@npm:^2.19.0, aberlaas-lint@workspace:modules/lint":
   version: 0.0.0-use.local
   resolution: "aberlaas-lint@workspace:modules/lint"
   dependencies:
@@ -5190,11 +5190,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas@workspace:modules/lib"
   dependencies:
-    aberlaas-ci: "npm:^2.18.1"
+    aberlaas-ci: "npm:^2.19.0"
     aberlaas-compress: "npm:^2.18.1"
     aberlaas-helper: "npm:^2.18.1"
     aberlaas-init: "npm:^2.18.1"
-    aberlaas-lint: "npm:^2.18.1"
+    aberlaas-lint: "npm:^2.19.0"
     aberlaas-precommit: "npm:^2.18.1"
     aberlaas-readme: "npm:^2.18.1"
     aberlaas-setup: "npm:^2.18.1"

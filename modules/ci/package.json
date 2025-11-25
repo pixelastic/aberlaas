@@ -2,7 +2,7 @@
   "name": "aberlaas-ci",
   "type": "module",
   "description": "aberlaas ci command: Run tests and lint on each commit on the CI",
-  "version": "2.18.1",
+  "version": "2.19.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
@@ -33,7 +33,7 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "aberlaas-lint": "^2.18.1",
+    "aberlaas-lint": "^2.19.0",
     "aberlaas-test": "^2.18.1",
     "ci-info": "4.1.0",
     "firost": "5.2.1"
