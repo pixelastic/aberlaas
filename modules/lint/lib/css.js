@@ -15,7 +15,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.css']
       : userPatterns;
-    return await helper.findHostFiles(filePatterns, ['.css']);
+    return await helper.findHostPackageFiles(filePatterns, ['.css']);
   },
   /**
    * Lint all files and display results.
