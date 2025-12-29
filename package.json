@@ -15,7 +15,7 @@
     "aberlaas": "^2.9.0",
     "firost": "5.3.0",
     "golgoth": "3.0.0",
-    "lerna": "8.1.9"
+    "turbo": "2.7.2"
   },
   "scripts": {
     "build": "./scripts/meta/build",
@@ -30,7 +30,6 @@
     "ci": "./scripts/meta/ci",
     "compress": "./scripts/meta/compress",
     "lint": "./scripts/meta/lint",
-    "lint:fix": "./scripts/meta/lint-fix",
-    "learn": "lerna"
+    "lint:fix": "./scripts/meta/lint-fix"
   }
 }

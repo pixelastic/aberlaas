@@ -110,10 +110,14 @@ export default [
       'import/no-cycle': ['error', { ignoreExternal: true, disableScc: true }],
       'import/order': ['error'],
       'import/newline-after-import': ['error'],
-      // Ignoring this rule for lint-staged, as it seem to have a missing .main
-      // field in its package.json
-      // See: https://github.com/lint-staged/lint-staged/issues/1474
-      'import/no-unresolved': ['error', { ignore: ['lint-staged'] }],
+      // import/no-unresolved can only check for .main fields, not the more
+      // modern .exports fields.
+      // We keep here a list of exceptions for packages we use that don't have a .main field.
+      // See: https://github.com/import-js/eslint-plugin-import/issues/2132
+      'import/no-unresolved': [
+        'error',
+        { ignore: ['lint-staged', '@octokit/rest'] },
+      ],
 
       // JSDoc
       'jsdoc/check-param-names': ['warn'],

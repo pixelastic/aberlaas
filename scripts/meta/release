@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-yarn run test
-yarn run test:meta
-lerna publish --yes "$@"
+# Release script disabled - no longer using Lerna
+echo "Release script is currently disabled"
+exit 0
