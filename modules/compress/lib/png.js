@@ -12,7 +12,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.png']
       : userPatterns;
-    return await helper.findHostFiles(filePatterns, ['.png']);
+    return await helper.findHostPackageFiles(filePatterns, ['.png']);
   },
 
   /**
@@ -36,6 +36,9 @@ export default {
 
     try {
       const files = await this.getInputFiles(userPatterns);
+      if (_.isEmpty(files)) {
+        return true;
+      }
       const command = `${binaryPath} ${files.join(' ')}`;
       await run(command, { stdout: false });
     } catch (error) {
