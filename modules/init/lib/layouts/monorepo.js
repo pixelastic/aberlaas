@@ -2,7 +2,6 @@ import { writeJson } from 'firost';
 
 import helper from 'aberlaas-helper';
 import {
-  lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
   norskaVersion,
@@ -47,7 +46,6 @@ export default {
       dependencies: {},
       devDependencies: {
         aberlaas: aberlaasVersion,
-        lerna: lernaVersion,
       },
 
       // Scripts
@@ -66,9 +64,6 @@ export default {
         compress: './scripts/meta/compress',
         lint: './scripts/meta/lint',
         'lint:fix': './scripts/meta/lint-fix',
-
-        // Typo
-        learn: 'lerna',
       },
     };
     await writeJson(packageContent, helper.hostPath('./package.json'), {
@@ -183,9 +178,6 @@ export default {
    */
   async addConfigFiles() {
     await initHelper.addConfigFiles();
-
-    // Lerna
-    await initHelper.copyTemplateToHost('lerna.json', 'lerna.json');
   },
   /**
    * Returns shared project data, like name, author, scripts, etc

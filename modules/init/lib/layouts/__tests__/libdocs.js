@@ -1,7 +1,6 @@
 import { exists, glob, readJson, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
 import {
-  lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
   norskaVersion,
@@ -49,13 +48,11 @@ describe('init > libdocs', () => {
           dependencies: {},
           devDependencies: {
             aberlaas: '1.2.3',
-            lerna: lernaVersion,
           },
           scripts: {
             build: './scripts/meta/build',
             release: './scripts/meta/release',
             lint: './scripts/meta/lint',
-            learn: 'lerna',
           },
         },
       ],
@@ -182,7 +179,6 @@ describe('init > libdocs', () => {
         '.yarnrc.yml',
         'docs/package.json',
         'eslint.config.js',
-        'lerna.json',
         'lib/__tests__/main.js',
         'lib/LICENSE',
         'lib/main.js',

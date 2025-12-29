@@ -1,7 +1,6 @@
 import { exists, glob, readJson, remove, tmpDirectory } from 'firost';
 import helper from 'aberlaas-helper';
 import {
-  lernaVersion,
   nodeVersion,
   norskaThemeDocsVersion,
   norskaVersion,
@@ -49,13 +48,11 @@ describe('init > monorepo', () => {
           dependencies: {},
           devDependencies: {
             aberlaas: '1.2.3',
-            lerna: lernaVersion,
           },
           scripts: {
             build: './scripts/meta/build',
             release: './scripts/meta/release',
             lint: './scripts/meta/lint',
-            learn: 'lerna',
           },
         },
       ],
@@ -185,7 +182,6 @@ describe('init > monorepo', () => {
         '.gitignore',
         '.yarnrc.yml',
         'eslint.config.js',
-        'lerna.json',
         'LICENSE',
         'lintstaged.config.js',
         'modules/docs/package.json',
