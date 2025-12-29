@@ -5,9 +5,15 @@ import current from '../main.js';
 describe('lint', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/root');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    vi.spyOn(current, '__consoleError').mockReturnValue();
     await emptyDir(tmpDirectory);
+    vi.spyOn(current, '__consoleError').mockReturnValue();
+
+    // We mock them all so a bug doesn't just wipe our real aberlaas repo
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
+    vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
+      `${tmpDirectory}/lib/src`,
+    );
   });
   describe('run', () => {
     const mockedLinters = {
