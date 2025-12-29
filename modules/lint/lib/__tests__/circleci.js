@@ -6,9 +6,15 @@ import current from '../circleci.js';
 describe('lint-circleci', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/circleci');
   beforeEach(async () => {
-    vi.spyOn(current, 'isRunningOnCircleCi').mockReturnValue(false);
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
+    vi.spyOn(current, 'isRunningOnCircleCi').mockReturnValue(false);
+
+    // We mock them all so a bug doesn't just wipe our real aberlaas repo
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
+    vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
+      `${tmpDirectory}/lib/src`,
+    );
   });
 
   describe('getInputFiles', () => {
@@ -17,7 +23,8 @@ describe('lint-circleci', () => {
         '.circleci/config.yml': true,
         '.circleci/something-else.yml': false,
         'circleci.yml': false,
-        'src/.circleci/config.yml': false,
+        'lib/.circleci/config.yml': false,
+        'lib/src/.circleci/config.yml': false,
       };
 
       await pMap(_.keys(files), async (filepath) => {
@@ -28,9 +35,9 @@ describe('lint-circleci', () => {
 
       _.each(files, (value, filepath) => {
         if (value) {
-          expect(actual).toContain(helper.hostGitPath(filepath));
+          expect(actual).toContain(helper.hostPackagePath(filepath));
         } else {
-          expect(actual).not.toContain(helper.hostGitPath(filepath));
+          expect(actual).not.toContain(helper.hostPackagePath(filepath));
         }
       });
     });

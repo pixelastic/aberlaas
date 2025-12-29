@@ -10,7 +10,7 @@ export default {
    * @returns {Array} Array of files
    */
   async getInputFiles() {
-    return await helper.findHostFiles([this.configPath]);
+    return await helper.findHostPackageFiles([this.configPath]);
   },
   /**
    * Check if the code is currently running on CircleCI
