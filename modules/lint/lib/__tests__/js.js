@@ -1,5 +1,4 @@
-import { absolute, emptyDir, read, write, writeJson } from 'firost';
-import { _, pMap } from 'golgoth';
+import { absolute, emptyDir, newFile, read, write, writeJson } from 'firost';
 import helper from 'aberlaas-helper';
 import current from '../js.js';
 
@@ -8,56 +7,49 @@ describe('lint-js', () => {
   // as ESLint will refuse to lint files outside of its base directory
   const tmpDirectory = absolute('<gitRoot>/modules/lib/tmp/lint/js');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
-    await writeJson({}, helper.hostGitPath('package.json'));
+
+    // We mock them all so a bug doesn't just wipe our real aberlaas repo
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
+    vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
+      `${tmpDirectory}/lib/src`,
+    );
   });
   describe('getInputFiles', () => {
-    it('should get js files', async () => {
-      const files = {
-        'src/script.js': true,
-        'src/theme/script.js': true,
-        'dist/script.js': false,
-        'src-backup/script.js': false,
-        'src/script.txt': false,
-      };
+    describe('demo/**/*', () => {
+      it.each([
+        ['script.js', false],
+        ['lib/script.js', false],
+        ['lib/src/script.js', false],
 
-      await pMap(_.keys(files), async (filepath) => {
-        await write('console.log("something");', helper.hostGitPath(filepath));
-      });
+        ['lib/demo/script.js', true],
+        ['lib/demo/subdir/script.js', true],
 
-      const actual = await current.getInputFiles('./src/**/*');
+        ['lib/demo/script.txt', false],
+        ['lib/demo-backup/script.js', false],
+        ['lib/demo/dist/script.js', false],
+      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+        const absolutePath = helper.hostGitPath(filepath);
+        await newFile(absolutePath);
 
-      _.each(files, (value, filepath) => {
-        if (value) {
-          expect(actual).toContain(helper.hostGitPath(filepath));
+        const actual = await current.getInputFiles('demo/**/*');
+
+        if (shouldBeIncluded) {
+          expect(actual).toContain(absolutePath);
         } else {
-          expect(actual).not.toContain(helper.hostGitPath(filepath));
+          expect(actual).not.toContain(absolutePath);
         }
       });
     });
   });
   describe('run', () => {
-    it('should test all .js files and return true if all passes', async () => {
-      await write(
-        "const foo = 'bar';\nalert(foo);\n",
-        helper.hostGitPath('foo.js'),
-      );
-
-      const actual = await current.run();
-
-      expect(actual).toBe(true);
-    });
-    it('stop early if no file found', async () => {
-      const actual = await current.run();
-      expect(actual).toBe(true);
-    });
     it('should throw if a file errors', async () => {
       await write(
         "const foo = 'bar';\nalert(foo);\n",
-        helper.hostGitPath('good.js'),
+        helper.hostPackagePath('good.js'),
       );
-      await write('  const foo = "bar"', helper.hostGitPath('bad.js'));
+      await write('  const foo = "bar"', helper.hostPackagePath('bad.js'));
 
       let actual = null;
       try {
@@ -69,13 +61,27 @@ describe('lint-js', () => {
       expect(actual.code).toBe('JavaScriptLintError');
       expect(actual).toHaveProperty('message');
     });
+    it('should test all .js files and return true if all passes', async () => {
+      await write(
+        "const foo = 'bar';\nalert(foo);\n",
+        helper.hostPackagePath('foo.js'),
+      );
+
+      const actual = await current.run();
+
+      expect(actual).toBe(true);
+    });
+    it('stop early if no file found', async () => {
+      const actual = await current.run();
+      expect(actual).toBe(true);
+    });
     it('should throw all error messages of all failed files', async () => {
       await write(
         "const foo = 'bar';\nalert(foo);\n",
-        helper.hostGitPath('good.js'),
+        helper.hostPackagePath('good.js'),
       );
-      await write('  const foo = "bar"', helper.hostGitPath('foo.js'));
-      await write('  const foo = "bar"', helper.hostGitPath('deep/bar.js'));
+      await write('  const foo = "bar"', helper.hostPackagePath('foo.js'));
+      await write('  const foo = "bar"', helper.hostPackagePath('deep/bar.js'));
 
       let actual = null;
       try {
@@ -94,8 +100,8 @@ describe('lint-js', () => {
       );
     });
     it('should lint files defined in .bin key in package.json', async () => {
-      const packageFilepath = helper.hostGitPath('package.json');
-      const binFilepath = helper.hostGitPath('./bin/foo.js');
+      const packageFilepath = helper.hostPackagePath('package.json');
+      const binFilepath = helper.hostPackagePath('./bin/foo.js');
 
       await writeJson(
         {
@@ -122,12 +128,12 @@ describe('lint-js', () => {
     it('should fix files', async () => {
       await write(
         '  const foo = "bar"; alert(foo)',
-        helper.hostGitPath('foo.js'),
+        helper.hostPackagePath('foo.js'),
       );
 
       await current.fix();
 
-      const actual = await read(helper.hostGitPath('foo.js'));
+      const actual = await read(helper.hostPackagePath('foo.js'));
 
       expect(actual).toBe("const foo = 'bar';\nalert(foo);");
     });

@@ -12,13 +12,9 @@ export default {
    */
   async getInputFiles(userPatterns) {
     const filePatterns = _.isEmpty(userPatterns) ? ['./**/*.js'] : userPatterns;
+    const allowedExtensions = ['.js', '.jsx', '.ts', '.tsx'];
 
-    return await helper.findHostFiles(filePatterns, [
-      '.js',
-      '.jsx',
-      '.ts',
-      '.tsx',
-    ]);
+    return await helper.findHostPackageFiles(filePatterns, allowedExtensions);
   },
   /**
    * Lint all files and display results.
