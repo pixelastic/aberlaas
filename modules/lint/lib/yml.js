@@ -15,7 +15,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.yml', './**/*.yaml']
       : userPatterns;
-    return await helper.findHostFiles(filePatterns, ['.yml', '.yaml']);
+    return await helper.findHostPackageFiles(filePatterns, ['.yml', '.yaml']);
   },
   /**
    * Lint all files and display results.
