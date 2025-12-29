@@ -1,14 +1,31 @@
 import path from 'node:path';
 import { _ } from 'golgoth';
-import { exists, firostImport, glob } from 'firost';
+import { env, exists, firostImport, gitRoot, glob, packageRoot } from 'firost';
 
 export default {
+  /**
+   * Absolute path of where the user was when running the initial "yarn run"
+   * command that triggered aberlaas
+   * @returns {string} Absolute path to working directory
+   */
+  hostWorkingDirectory() {
+    // INIT_CWD is set by yarn as the directory where the yarn command is being
+    // called
+    return env('INIT_CWD') || process.cwd();
+  },
+  /**
+   * Absolute path to the closest package root
+   * @returns {string} Absolute path to closest package root
+   */
+  hostPackageRoot() {
+    return packageRoot(this.hostWorkingDirectory());
+  },
   /**
    * Return absolute path to the host dir
    * @returns {string} Absolute path to host dir
    */
   hostGitRoot() {
-    return process.cwd();
+    return gitRoot(this.hostWorkingDirectory());
   },
   /**
    * Return an absolute path to a file in the host
