@@ -59,7 +59,7 @@ describe('init > monorepo', () => {
     ])('%s', async (_title, expected) => {
       await current.createRootWorkspace();
 
-      const actual = await readJson(helper.hostPath('package.json'));
+      const actual = await readJson(helper.hostGitPath('package.json'));
 
       expect(actual).toMatchObject(expected);
     });
@@ -98,7 +98,7 @@ describe('init > monorepo', () => {
       await current.createDocsWorkspace();
 
       const actual = await readJson(
-        helper.hostPath('modules/docs/package.json'),
+        helper.hostGitPath('modules/docs/package.json'),
       );
 
       expect(actual).toMatchObject(expected);
@@ -149,7 +149,7 @@ describe('init > monorepo', () => {
       await current.createLibWorkspace();
 
       const actual = await readJson(
-        helper.hostPath('modules/lib/package.json'),
+        helper.hostGitPath('modules/lib/package.json'),
       );
 
       expect(actual).toMatchObject(expected);
@@ -160,8 +160,10 @@ describe('init > monorepo', () => {
     it('creates license file in root and ./lib', async () => {
       await current.addLicenseFiles();
 
-      expect(await exists(helper.hostPath('LICENSE'))).toBe(true);
-      expect(await exists(helper.hostPath('modules/lib/LICENSE'))).toBe(true);
+      expect(await exists(helper.hostGitPath('LICENSE'))).toBe(true);
+      expect(await exists(helper.hostGitPath('modules/lib/LICENSE'))).toBe(
+        true,
+      );
     });
   });
 
@@ -170,7 +172,7 @@ describe('init > monorepo', () => {
       await current.run();
 
       const actual = await glob('**/*', {
-        cwd: helper.hostPath(),
+        cwd: helper.hostGitPath(),
         absolutePaths: false,
         directories: false,
       });

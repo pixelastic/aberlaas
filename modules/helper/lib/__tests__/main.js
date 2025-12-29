@@ -27,10 +27,10 @@ describe('current', () => {
       await remove(current.hostGitRoot());
     });
 
-    describe('hostPath', () => {
+    describe('hostGitPath', () => {
       it('should return path relative to working directory', () => {
         vi.spyOn(current, 'hostGitRoot').mockReturnValue('/basedir/');
-        const actual = current.hostPath('foo/bar/baz.js');
+        const actual = current.hostGitPath('foo/bar/baz.js');
 
         expect(actual).toBe('/basedir/foo/bar/baz.js');
       });
@@ -45,9 +45,9 @@ describe('current', () => {
           ['lib/__tests__/.config.js', '.'],
           ['.config/release.js', '.'],
         ])('%s found with %s', async (filepath, pattern) => {
-          await write('', current.hostPath(filepath));
+          await write('', current.hostGitPath(filepath));
           const actual = await current.findHostFiles(pattern);
-          expect(actual).toContain(current.hostPath(filepath));
+          expect(actual).toContain(current.hostGitPath(filepath));
         });
       });
       describe('Blocklist', () => {
@@ -61,9 +61,9 @@ describe('current', () => {
           ['.git/hooks/pre-commit.sh'],
           ['.yarn/releases/index.js'],
         ])('%s not found', async (filepath) => {
-          await write('', current.hostPath(filepath));
+          await write('', current.hostGitPath(filepath));
           const actual = await current.findHostFiles('.');
-          expect(actual).not.toContain(current.hostPath(filepath));
+          expect(actual).not.toContain(current.hostGitPath(filepath));
         });
       });
       describe('Safelist by extension', () => {
@@ -98,15 +98,15 @@ describe('current', () => {
           ],
         ])('%s', async (_name, files, extensions, allow, block) => {
           await pMap(files, async (filepath) => {
-            await write('', current.hostPath(filepath));
+            await write('', current.hostGitPath(filepath));
           });
 
           const actual = await current.findHostFiles('.', extensions);
           _.each(allow, (expected) => {
-            expect(actual).toContain(current.hostPath(expected));
+            expect(actual).toContain(current.hostGitPath(expected));
           });
           _.each(block, (expected) => {
-            expect(actual).not.toContain(current.hostPath(expected));
+            expect(actual).not.toContain(current.hostGitPath(expected));
           });
         });
       });
@@ -115,14 +115,17 @@ describe('current', () => {
       beforeEach(async () => {
         // The package.json with type: module is required so I can import with
         // the export default syntax
-        await writeJson({ type: 'module' }, current.hostPath('package.json'));
+        await writeJson(
+          { type: 'module' },
+          current.hostGitPath('package.json'),
+        );
         await write(
           "export default { name: 'custom' }",
-          current.hostPath('./custom.js'),
+          current.hostGitPath('./custom.js'),
         );
         await write(
           "export default { name: 'tool' }",
-          current.hostPath('./tool.config.js'),
+          current.hostGitPath('./tool.config.js'),
         );
       });
       describe('with a specific path given', () => {
@@ -149,7 +152,7 @@ describe('current', () => {
         });
         it('should allow passing absolute paths', async () => {
           const actual = await current.getConfig(
-            current.hostPath('custom.js'),
+            current.hostGitPath('custom.js'),
             './tool.config.js',
             { name: 'fallback' },
           );
@@ -168,7 +171,7 @@ describe('current', () => {
         it('should allow passing absolute path to the file in the root', async () => {
           const actual = await current.getConfig(
             null,
-            current.hostPath('tool.config.js'),
+            current.hostGitPath('tool.config.js'),
             {
               name: 'fallback',
             },

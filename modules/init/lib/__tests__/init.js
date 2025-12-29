@@ -31,7 +31,7 @@ describe('init', () => {
     it('should set a .nvmrc file', async () => {
       await current.configureNode();
 
-      const actual = await read(helper.hostPath('.nvmrc'));
+      const actual = await read(helper.hostGitPath('.nvmrc'));
 
       expect(actual).toEqual(nodeVersion);
     });

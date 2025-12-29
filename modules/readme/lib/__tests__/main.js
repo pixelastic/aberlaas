@@ -76,13 +76,13 @@ describe('readme', () => {
     ])('%s', async (_title, sourceTree, cliArgs, destinationTree) => {
       await pProps(sourceTree, async (filecontent, filepath) => {
         const writeMethod = _.isObject(filecontent) ? writeJson : write;
-        await writeMethod(filecontent, helper.hostPath(filepath));
+        await writeMethod(filecontent, helper.hostGitPath(filepath));
       });
 
       await current.run(cliArgs);
 
       await pProps(destinationTree, async (expected, filepath) => {
-        const actual = await read(helper.hostPath(filepath));
+        const actual = await read(helper.hostGitPath(filepath));
         expect(actual).toContain(expected);
       });
     });
@@ -177,7 +177,7 @@ describe('readme', () => {
       ],
     ])('%s', async (_title, sourceTree, cliArgs, expected) => {
       await pProps(sourceTree, async (filecontent, filepath) => {
-        await writeJson(filecontent, helper.hostPath(filepath));
+        await writeJson(filecontent, helper.hostGitPath(filepath));
       });
 
       const actual = await current.getPackageData(cliArgs);
@@ -227,7 +227,7 @@ describe('readme', () => {
       ],
     ])('%s', async (_title, sourceTree, cliArgs, expected) => {
       await pProps(sourceTree, async (filecontent, filepath) => {
-        await write(filecontent, helper.hostPath(filepath));
+        await write(filecontent, helper.hostGitPath(filepath));
       });
 
       const actual = await current.getDocsData(cliArgs);
@@ -262,13 +262,13 @@ describe('readme', () => {
       ],
     ])('%s', async (_title, sourceTree, cliArgs, relativeExpected) => {
       await pProps(sourceTree, async (filecontent, filepath) => {
-        await write(filecontent, helper.hostPath(filepath));
+        await write(filecontent, helper.hostGitPath(filepath));
       });
 
       const actual = await current.getReadmes(cliArgs);
 
       const expected = _.map(relativeExpected, (filepath) => {
-        return helper.hostPath(filepath);
+        return helper.hostGitPath(filepath);
       });
 
       expect(actual).toEqual(expected);

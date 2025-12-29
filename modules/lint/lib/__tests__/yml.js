@@ -17,7 +17,7 @@ describe('lint-yml', () => {
         ['src-backup/config.yml', false],
         ['src/config.txt', false],
       ])('%s : %s', async (filepath, shouldBeIncluded) => {
-        const absolutePath = helper.hostPath(filepath);
+        const absolutePath = helper.hostGitPath(filepath);
         await write('something', absolutePath);
 
         const actual = await current.getInputFiles('src/**/*');
@@ -33,8 +33,8 @@ describe('lint-yml', () => {
 
   describe('run', () => {
     it('should run on all yml files and return true if all passes', async () => {
-      await write('foo: bar', helper.hostPath('foo.yml'));
-      await write('foo: bar', helper.hostPath('foo.yaml'));
+      await write('foo: bar', helper.hostGitPath('foo.yml'));
+      await write('foo: bar', helper.hostGitPath('foo.yaml'));
 
       const actual = await current.run();
 
@@ -46,8 +46,8 @@ describe('lint-yml', () => {
       expect(actual).toBe(true);
     });
     it('should throw if a file errors', async () => {
-      await write('foo: bar', helper.hostPath('good.yml'));
-      await write('foo: ****', helper.hostPath('bad.yml'));
+      await write('foo: bar', helper.hostGitPath('good.yml'));
+      await write('foo: ****', helper.hostGitPath('bad.yml'));
 
       let actual = null;
       try {
@@ -60,9 +60,9 @@ describe('lint-yml', () => {
       expect(actual).toHaveProperty('message');
     });
     it('should throw all error message if a file fails', async () => {
-      await write('foo: bar', helper.hostPath('good.yml'));
-      await write('foo: ****', helper.hostPath('foo.yml'));
-      await write('foo: ****', helper.hostPath('deep/bar.yaml'));
+      await write('foo: bar', helper.hostGitPath('good.yml'));
+      await write('foo: ****', helper.hostGitPath('foo.yml'));
+      await write('foo: ****', helper.hostGitPath('deep/bar.yaml'));
 
       let actual = null;
       try {
@@ -83,11 +83,11 @@ describe('lint-yml', () => {
   });
   describe('fix', () => {
     it('should fix files', async () => {
-      await write('    foo: "bar"', helper.hostPath('foo.yml'));
+      await write('    foo: "bar"', helper.hostGitPath('foo.yml'));
 
       await current.fix();
 
-      const actual = await read(helper.hostPath('foo.yml'));
+      const actual = await read(helper.hostGitPath('foo.yml'));
 
       expect(actual).toBe("foo: 'bar'");
     });

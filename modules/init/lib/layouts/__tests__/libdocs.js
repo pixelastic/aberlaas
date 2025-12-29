@@ -59,7 +59,7 @@ describe('init > libdocs', () => {
     ])('%s', async (_title, expected) => {
       await current.createRootWorkspace();
 
-      const actual = await readJson(helper.hostPath('package.json'));
+      const actual = await readJson(helper.hostGitPath('package.json'));
 
       expect(actual).toMatchObject(expected);
     });
@@ -97,7 +97,7 @@ describe('init > libdocs', () => {
     ])('%s', async (_title, expected) => {
       await current.createDocsWorkspace();
 
-      const actual = await readJson(helper.hostPath('docs/package.json'));
+      const actual = await readJson(helper.hostGitPath('docs/package.json'));
 
       expect(actual).toMatchObject(expected);
     });
@@ -146,7 +146,7 @@ describe('init > libdocs', () => {
     ])('%s', async (_title, expected) => {
       await current.createLibWorkspace();
 
-      const actual = await readJson(helper.hostPath('lib/package.json'));
+      const actual = await readJson(helper.hostGitPath('lib/package.json'));
 
       expect(actual).toMatchObject(expected);
     });
@@ -156,8 +156,8 @@ describe('init > libdocs', () => {
     it('creates license file in root and ./lib', async () => {
       await current.addLicenseFiles();
 
-      expect(await exists(helper.hostPath('LICENSE'))).toBe(true);
-      expect(await exists(helper.hostPath('lib/LICENSE'))).toBe(true);
+      expect(await exists(helper.hostGitPath('LICENSE'))).toBe(true);
+      expect(await exists(helper.hostGitPath('lib/LICENSE'))).toBe(true);
     });
   });
 
@@ -166,7 +166,7 @@ describe('init > libdocs', () => {
       await current.run();
 
       const actual = await glob('**/*', {
-        cwd: helper.hostPath(),
+        cwd: helper.hostGitPath(),
         absolutePaths: false,
         directories: false,
       });

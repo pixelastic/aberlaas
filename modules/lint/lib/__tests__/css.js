@@ -20,23 +20,23 @@ describe('lint-css', () => {
       };
 
       await pMap(_.keys(files), async (filepath) => {
-        await write('foo: bar', helper.hostPath(filepath));
+        await write('foo: bar', helper.hostGitPath(filepath));
       });
 
       const actual = await current.getInputFiles('./src/**/*');
 
       _.each(files, (value, filepath) => {
         if (value) {
-          expect(actual).toContain(helper.hostPath(filepath));
+          expect(actual).toContain(helper.hostGitPath(filepath));
         } else {
-          expect(actual).not.toContain(helper.hostPath(filepath));
+          expect(actual).not.toContain(helper.hostGitPath(filepath));
         }
       });
     });
   });
   describe('run', () => {
     it('should run on all .css files by default and return true if all passes', async () => {
-      await write('body { color: red; }', helper.hostPath('foo.css'));
+      await write('body { color: red; }', helper.hostGitPath('foo.css'));
 
       const actual = await current.run();
 
@@ -47,8 +47,8 @@ describe('lint-css', () => {
       expect(actual).toBe(true);
     });
     it('should be able to pass specific files', async () => {
-      const goodFilePath = helper.hostPath('good.css');
-      const badFilePath = helper.hostPath('bad.css');
+      const goodFilePath = helper.hostGitPath('good.css');
+      const badFilePath = helper.hostGitPath('bad.css');
       await write('body { color: red; }', goodFilePath);
       await write('body{color:       left;}', badFilePath);
 
@@ -57,8 +57,8 @@ describe('lint-css', () => {
       expect(actual).toBe(true);
     });
     it('should throw if a file errors', async () => {
-      await write('body { color: red; }', helper.hostPath('good.css'));
-      await write('body{color:       left;}', helper.hostPath('bad.css'));
+      await write('body { color: red; }', helper.hostGitPath('good.css'));
+      await write('body{color:       left;}', helper.hostGitPath('bad.css'));
 
       let actual = null;
       try {
@@ -71,9 +71,12 @@ describe('lint-css', () => {
       expect(actual).toHaveProperty('message');
     });
     it('should throw all error message if a file fails', async () => {
-      await write('body { color: red; }', helper.hostPath('good.css'));
-      await write('body{color:       red;}', helper.hostPath('bad.css'));
-      await write('   body{color:   left;}', helper.hostPath('deep/bad.css'));
+      await write('body { color: red; }', helper.hostGitPath('good.css'));
+      await write('body{color:       red;}', helper.hostGitPath('bad.css'));
+      await write(
+        '   body{color:   left;}',
+        helper.hostGitPath('deep/bad.css'),
+      );
 
       let actual = null;
       try {
@@ -98,10 +101,13 @@ describe('lint-css', () => {
         rules: {},
       };
       `;
-      const configFilepath = helper.hostPath('stylelint.config.js');
+      const configFilepath = helper.hostGitPath('stylelint.config.js');
       await write(configContent, configFilepath);
 
-      await write('   body{color:   left;}', helper.hostPath('deep/bad.css'));
+      await write(
+        '   body{color:   left;}',
+        helper.hostGitPath('deep/bad.css'),
+      );
 
       const actual = await current.run(null, configFilepath);
 
@@ -110,11 +116,11 @@ describe('lint-css', () => {
   });
   describe('fix', () => {
     it('should fix files', async () => {
-      await write('body{color:       red;}', helper.hostPath('style.css'));
+      await write('body{color:       red;}', helper.hostGitPath('style.css'));
 
       await current.fix();
 
-      const actual = await read(helper.hostPath('style.css'));
+      const actual = await read(helper.hostGitPath('style.css'));
 
       expect(actual).toBe('body {\n  color: red;\n}');
     });
@@ -124,7 +130,7 @@ describe('lint-css', () => {
       expect(actual).toBe(true);
     });
     it('should throw if fix works but linting fails', async () => {
-      const filepath = helper.hostPath('foo.css');
+      const filepath = helper.hostGitPath('foo.css');
       await write('body{}', filepath);
       let actual;
       try {

@@ -66,7 +66,7 @@ export default {
         'lint:fix': './scripts/meta/lint-fix',
       },
     };
-    await writeJson(packageContent, helper.hostPath('./package.json'), {
+    await writeJson(packageContent, helper.hostGitPath('./package.json'), {
       sort: false,
     });
   },
@@ -106,7 +106,7 @@ export default {
     };
     await writeJson(
       packageContent,
-      helper.hostPath('./modules/docs/package.json'),
+      helper.hostGitPath('./modules/docs/package.json'),
       {
         sort: false,
       },
@@ -158,7 +158,7 @@ export default {
     };
     await writeJson(
       packageContent,
-      helper.hostPath('./modules/lib/package.json'),
+      helper.hostGitPath('./modules/lib/package.json'),
       {
         sort: false,
       },

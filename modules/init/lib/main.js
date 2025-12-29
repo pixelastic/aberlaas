@@ -19,7 +19,7 @@ export default {
    * Pin the node version through nvm
    */
   async configureNode() {
-    const nvmrcPath = helper.hostPath('.nvmrc');
+    const nvmrcPath = helper.hostGitPath('.nvmrc');
     await write(nodeVersion, nvmrcPath);
   },
   /**

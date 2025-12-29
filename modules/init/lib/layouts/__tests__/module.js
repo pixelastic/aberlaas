@@ -85,7 +85,7 @@ describe('init > module', () => {
     ])('%s', async (_title, expected) => {
       await current.createPackageJson();
 
-      const actual = await readJson(helper.hostPath('package.json'));
+      const actual = await readJson(helper.hostGitPath('package.json'));
 
       expect(actual).toMatchObject(expected);
     });
@@ -96,7 +96,7 @@ describe('init > module', () => {
       await current.run();
 
       const actual = await glob('**/*', {
-        cwd: helper.hostPath(),
+        cwd: helper.hostGitPath(),
         absolutePaths: false,
         directories: false,
       });
@@ -131,7 +131,7 @@ describe('init > module', () => {
       await current.run();
 
       const circleciConfig = await read(
-        helper.hostPath('.circleci/config.yml'),
+        helper.hostGitPath('.circleci/config.yml'),
       );
 
       // Should not contain literal template placeholders

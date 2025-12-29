@@ -64,7 +64,7 @@ export default {
         'lint:fix': './scripts/meta/lint-fix',
       },
     };
-    await writeJson(packageContent, helper.hostPath('./package.json'), {
+    await writeJson(packageContent, helper.hostGitPath('./package.json'), {
       sort: false,
     });
   },
@@ -101,7 +101,7 @@ export default {
       // Scripts
       scripts: sharedProjectData.scripts,
     };
-    await writeJson(packageContent, helper.hostPath('./docs/package.json'), {
+    await writeJson(packageContent, helper.hostGitPath('./docs/package.json'), {
       sort: false,
     });
   },
@@ -149,7 +149,7 @@ export default {
       // Scripts
       scripts: sharedProjectData.scripts,
     };
-    await writeJson(packageContent, helper.hostPath('./lib/package.json'), {
+    await writeJson(packageContent, helper.hostGitPath('./lib/package.json'), {
       sort: false,
     });
   },

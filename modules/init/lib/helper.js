@@ -53,7 +53,7 @@ export default {
    */
   async copyTemplateToHost(source, destination) {
     const absoluteSource = absolute('../templates/', source);
-    const absoluteDestination = helper.hostPath(destination);
+    const absoluteDestination = helper.hostGitPath(destination);
 
     // Source file does not exist
     if (!(await isFile(absoluteSource))) {
@@ -90,7 +90,7 @@ export default {
     await this.copyTemplateToHost('LICENSE', hostFilepath);
 
     // Replace placeholder with real value
-    const licensePath = helper.hostPath(hostFilepath);
+    const licensePath = helper.hostGitPath(hostFilepath);
     const author = await this.getProjectAuthor();
     const templateContent = await read(licensePath);
     const actualContent = _.replace(templateContent, '{author}', author);
@@ -103,7 +103,7 @@ export default {
    * Add CircleCI Config file
    */
   async addCircleCIConfigFile() {
-    const configFilepath = helper.hostPath('./.circleci/config.yml');
+    const configFilepath = helper.hostGitPath('./.circleci/config.yml');
 
     // Start by adding a template
     await this.copyTemplateToHost('_circleci/config.yml', configFilepath);

@@ -89,7 +89,7 @@ describe('test', () => {
             newOption: true
           }
         }`,
-          helper.hostPath('vite.config.js'),
+          helper.hostGitPath('vite.config.js'),
         );
         const input = {};
         const actual = await current.vitestOptions(input);
@@ -103,7 +103,7 @@ describe('test', () => {
             newOption: true
           }
         }`,
-          helper.hostPath('custom.vite.config.js'),
+          helper.hostGitPath('custom.vite.config.js'),
         );
         const input = { config: 'custom.vite.config.js' };
         const actual = await current.vitestOptions(input);

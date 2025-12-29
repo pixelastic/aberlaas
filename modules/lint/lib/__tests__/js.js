@@ -10,7 +10,7 @@ describe('lint-js', () => {
   beforeEach(async () => {
     vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
-    await writeJson({}, helper.hostPath('package.json'));
+    await writeJson({}, helper.hostGitPath('package.json'));
   });
   describe('getInputFiles', () => {
     it('should get js files', async () => {
@@ -23,16 +23,16 @@ describe('lint-js', () => {
       };
 
       await pMap(_.keys(files), async (filepath) => {
-        await write('console.log("something");', helper.hostPath(filepath));
+        await write('console.log("something");', helper.hostGitPath(filepath));
       });
 
       const actual = await current.getInputFiles('./src/**/*');
 
       _.each(files, (value, filepath) => {
         if (value) {
-          expect(actual).toContain(helper.hostPath(filepath));
+          expect(actual).toContain(helper.hostGitPath(filepath));
         } else {
-          expect(actual).not.toContain(helper.hostPath(filepath));
+          expect(actual).not.toContain(helper.hostGitPath(filepath));
         }
       });
     });
@@ -41,7 +41,7 @@ describe('lint-js', () => {
     it('should test all .js files and return true if all passes', async () => {
       await write(
         "const foo = 'bar';\nalert(foo);\n",
-        helper.hostPath('foo.js'),
+        helper.hostGitPath('foo.js'),
       );
 
       const actual = await current.run();
@@ -55,9 +55,9 @@ describe('lint-js', () => {
     it('should throw if a file errors', async () => {
       await write(
         "const foo = 'bar';\nalert(foo);\n",
-        helper.hostPath('good.js'),
+        helper.hostGitPath('good.js'),
       );
-      await write('  const foo = "bar"', helper.hostPath('bad.js'));
+      await write('  const foo = "bar"', helper.hostGitPath('bad.js'));
 
       let actual = null;
       try {
@@ -72,10 +72,10 @@ describe('lint-js', () => {
     it('should throw all error messages of all failed files', async () => {
       await write(
         "const foo = 'bar';\nalert(foo);\n",
-        helper.hostPath('good.js'),
+        helper.hostGitPath('good.js'),
       );
-      await write('  const foo = "bar"', helper.hostPath('foo.js'));
-      await write('  const foo = "bar"', helper.hostPath('deep/bar.js'));
+      await write('  const foo = "bar"', helper.hostGitPath('foo.js'));
+      await write('  const foo = "bar"', helper.hostGitPath('deep/bar.js'));
 
       let actual = null;
       try {
@@ -94,8 +94,8 @@ describe('lint-js', () => {
       );
     });
     it('should lint files defined in .bin key in package.json', async () => {
-      const packageFilepath = helper.hostPath('package.json');
-      const binFilepath = helper.hostPath('./bin/foo.js');
+      const packageFilepath = helper.hostGitPath('package.json');
+      const binFilepath = helper.hostGitPath('./bin/foo.js');
 
       await writeJson(
         {
@@ -120,11 +120,14 @@ describe('lint-js', () => {
   });
   describe('fix', () => {
     it('should fix files', async () => {
-      await write('  const foo = "bar"; alert(foo)', helper.hostPath('foo.js'));
+      await write(
+        '  const foo = "bar"; alert(foo)',
+        helper.hostGitPath('foo.js'),
+      );
 
       await current.fix();
 
-      const actual = await read(helper.hostPath('foo.js'));
+      const actual = await read(helper.hostGitPath('foo.js'));
 
       expect(actual).toBe("const foo = 'bar';\nalert(foo);");
     });

@@ -42,13 +42,15 @@ export default {
    */
   async getTemplate(cliArgs = {}) {
     if (cliArgs.template) {
-      const customTemplate = helper.hostPath(cliArgs.template);
+      const customTemplate = helper.hostGitPath(cliArgs.template);
       if (await exists(customTemplate)) {
         return await read(customTemplate);
       }
     }
 
-    const hostDefaultTemplate = helper.hostPath('.github/README.template.md');
+    const hostDefaultTemplate = helper.hostGitPath(
+      '.github/README.template.md',
+    );
     if (await exists(hostDefaultTemplate)) {
       return await read(hostDefaultTemplate);
     }
@@ -73,14 +75,14 @@ export default {
    * @returns {object} package.json content
    */
   async getPackagePath(cliArgs = {}) {
-    const libFolder = helper.hostPath(cliArgs.lib || './lib');
+    const libFolder = helper.hostGitPath(cliArgs.lib || './lib');
     let packagePath = path.resolve(libFolder, 'package.json');
 
     if (await exists(packagePath)) {
       return packagePath;
     }
 
-    return helper.hostPath('package.json');
+    return helper.hostGitPath('package.json');
   },
   /**
    * Returns all documentation as an object
@@ -90,7 +92,7 @@ export default {
    * @returns {object} Documentation content
    */
   async getDocsData(cliArgs = {}) {
-    const docsPath = helper.hostPath(cliArgs.docs || './docs/src');
+    const docsPath = helper.hostGitPath(cliArgs.docs || './docs/src');
     const mdFiles = await glob(`${docsPath}/**/*.md`);
     const docsData = {};
     await pMap(mdFiles, async (filepath) => {
@@ -121,14 +123,14 @@ export default {
       return _.chain(cliArgs.output)
         .split(',')
         .map((filepath) => {
-          return helper.hostPath(filepath);
+          return helper.hostGitPath(filepath);
         })
         .sort()
         .value();
     }
 
     // README.md at the git root for GitHub
-    const hostReadmePath = helper.hostPath('README.md');
+    const hostReadmePath = helper.hostGitPath('README.md');
 
     // README.md in the module folder for npm/yarn
     const packagePath = await this.getPackagePath(cliArgs);

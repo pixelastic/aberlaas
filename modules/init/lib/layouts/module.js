@@ -79,7 +79,7 @@ export default {
       scripts,
     };
 
-    await writeJson(packageContent, helper.hostPath('./package.json'), {
+    await writeJson(packageContent, helper.hostGitPath('./package.json'), {
       sort: false,
     });
   },

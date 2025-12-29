@@ -11,8 +11,8 @@ describe('compress > png', () => {
 
   describe('getInputFiles', () => {
     it('should return all .png files by default', async () => {
-      const goodPath = helper.hostPath('cat.png');
-      const badPath = helper.hostPath('png.txt');
+      const goodPath = helper.hostGitPath('cat.png');
+      const badPath = helper.hostGitPath('png.txt');
       await write('good', goodPath);
       await write('bad', badPath);
 
@@ -29,7 +29,7 @@ describe('compress > png', () => {
         ['src-backup/cat.png', false],
         ['src/cat.txt', false],
       ])('%s : %s', async (filepath, shouldBeIncluded) => {
-        const absolutePath = helper.hostPath(filepath);
+        const absolutePath = helper.hostGitPath(filepath);
         await write('something', absolutePath);
 
         const actual = await current.getInputFiles('src/**/*');
@@ -74,7 +74,7 @@ describe('compress > png', () => {
       it('should run the binary on all files', async () => {
         vi.spyOn(current, 'getBinaryPath').mockReturnValue('rm');
 
-        const filepath = helper.hostPath('cat.png');
+        const filepath = helper.hostGitPath('cat.png');
         await newFile(filepath);
 
         const actualBefore = await exists(filepath);
@@ -88,7 +88,7 @@ describe('compress > png', () => {
       it('should return true on success', async () => {
         vi.spyOn(current, 'getBinaryPath').mockReturnValue('echo');
 
-        const filepath = helper.hostPath('cat.png');
+        const filepath = helper.hostGitPath('cat.png');
         await newFile(filepath);
 
         const actual = await current.run([filepath]);
@@ -97,7 +97,7 @@ describe('compress > png', () => {
       it('should throw an error if the binary returns an error code', async () => {
         vi.spyOn(current, 'getBinaryPath').mockReturnValue('false');
 
-        const filepath = helper.hostPath('cat.png');
+        const filepath = helper.hostGitPath('cat.png');
         await newFile(filepath);
 
         let actual;

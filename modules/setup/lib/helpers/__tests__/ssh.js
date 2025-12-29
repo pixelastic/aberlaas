@@ -61,8 +61,8 @@ describe('setup > helpers > ssh', () => {
       vi.spyOn(current, 'getFingerprint').mockReturnValue();
     });
     it('should return the public, private and fingerprint of the keys', async () => {
-      await write('public_key', helper.hostPath('./tmp/ssh/key.pub'));
-      await write('private_key', helper.hostPath('./tmp/ssh/key'));
+      await write('public_key', helper.hostGitPath('./tmp/ssh/key.pub'));
+      await write('private_key', helper.hostGitPath('./tmp/ssh/key'));
       current.getFingerprint.mockReturnValue('fi:ng:er:pr:in:t');
 
       const actual = await current.getKeys();
@@ -72,8 +72,8 @@ describe('setup > helpers > ssh', () => {
     });
     it('should generate the keys first if not yet there', async () => {
       vi.spyOn(current, 'generateKeys').mockImplementation(async () => {
-        await write('new_public_key', helper.hostPath('./tmp/ssh/key.pub'));
-        await write('new_private_key', helper.hostPath('./tmp/ssh/key'));
+        await write('new_public_key', helper.hostGitPath('./tmp/ssh/key.pub'));
+        await write('new_private_key', helper.hostGitPath('./tmp/ssh/key'));
       });
       const actual = await current.getKeys();
       expect(current.generateKeys).toHaveBeenCalled();

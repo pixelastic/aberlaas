@@ -18,7 +18,7 @@ export default {
    * @returns {object} Object with .public, .private and .privateFingerprint
    */
   async getKeys() {
-    const keyPath = helper.hostPath('./tmp/ssh/key');
+    const keyPath = helper.hostGitPath('./tmp/ssh/key');
 
     // Generating keys if do not exist
     const keyExists = await exists(keyPath);

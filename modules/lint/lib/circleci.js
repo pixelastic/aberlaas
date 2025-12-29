@@ -39,7 +39,7 @@ export default {
    * @returns {boolean} True on success
    */
   async run() {
-    const absoluteConfigPath = helper.hostPath(this.configPath);
+    const absoluteConfigPath = helper.hostGitPath(this.configPath);
     const hasConfigFile = await exists(absoluteConfigPath);
     const isRunningOnCircleCi = this.isRunningOnCircleCi();
 
@@ -71,7 +71,7 @@ export default {
    * @returns {boolean} True on success
    */
   async fix() {
-    const absoluteConfigPath = helper.hostPath(this.configPath);
+    const absoluteConfigPath = helper.hostGitPath(this.configPath);
     // Fix yml issues
     await lintYml.fix([absoluteConfigPath]);
 

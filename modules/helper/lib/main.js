@@ -32,7 +32,7 @@ export default {
    * @param {string} relativePath Relative path from the host root
    * @returns {string} Absolute path to the host file
    */
-  hostPath(relativePath = '') {
+  hostGitPath(relativePath = '') {
     return path.resolve(this.hostGitRoot(), relativePath);
   },
   /**
@@ -47,7 +47,7 @@ export default {
     const patterns = _.castArray(userPattern);
     // Making all path relative to the host
     const globs = _.map(patterns, (pattern) => {
-      return this.hostPath(pattern);
+      return this.hostGitPath(pattern);
     });
 
     // Exclude folders that shouldn't be included
@@ -65,7 +65,7 @@ export default {
     ];
     _.each(blockedFolders, (blockedFolder) => {
       const deepFolder = `**/${blockedFolder}/**`;
-      globs.push(`!${this.hostPath(deepFolder)}`);
+      globs.push(`!${this.hostGitPath(deepFolder)}`);
     });
 
     // Expanding globs
@@ -100,12 +100,12 @@ export default {
   async getConfig(userConfigPath, hostConfigPath, baseConfig = {}) {
     // Taking value from --config in CLI in priority
     if (userConfigPath) {
-      return await firostImport(this.hostPath(userConfigPath));
+      return await firostImport(this.hostGitPath(userConfigPath));
     }
 
     // Checking for custom config in the host
     if (hostConfigPath) {
-      const hostConfigFullPath = this.hostPath(hostConfigPath);
+      const hostConfigFullPath = this.hostGitPath(hostConfigPath);
       if (await exists(hostConfigFullPath)) {
         return await firostImport(hostConfigFullPath);
       }
