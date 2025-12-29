@@ -14,7 +14,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.json']
       : userPatterns;
-    return await helper.findHostFiles(filePatterns, ['.json']);
+    return await helper.findHostPackageFiles(filePatterns, ['.json']);
   },
   /**
    * Lint all files and display results.
