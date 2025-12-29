@@ -36,7 +36,7 @@ export default {
         await yamlLint.lint(input);
       } catch (error) {
         hasErrors = true;
-        const relativePath = path.relative(helper.hostRoot(), filepath);
+        const relativePath = path.relative(helper.hostGitRoot(), filepath);
         errorMessages.push(`Invalid YAML: ${relativePath}`);
         errorMessages.push(error.message);
       }

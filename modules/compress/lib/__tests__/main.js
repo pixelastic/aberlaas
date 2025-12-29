@@ -5,7 +5,7 @@ import current from '../main.js';
 describe('compress', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/compress/root');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
   });
   describe('run', () => {

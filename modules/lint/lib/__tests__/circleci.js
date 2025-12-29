@@ -7,7 +7,7 @@ describe('lint-circleci', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/circleci');
   beforeEach(async () => {
     vi.spyOn(current, 'isRunningOnCircleCi').mockReturnValue(false);
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
   });
 

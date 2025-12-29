@@ -8,15 +8,17 @@ describe('init', () => {
   beforeEach(async () => {
     // We need to make the tmp directory outside of this git repo tree, for all
     // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory('aberlaas/init'));
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(
+      tmpDirectory('aberlaas/init'),
+    );
   });
   afterEach(async () => {
-    await remove(helper.hostRoot());
+    await remove(helper.hostGitRoot());
   });
   // CONFIGURE
   describe('configureGit', () => {
     it('should change the default git hooksPath', async () => {
-      const repo = new Gilmore(helper.hostRoot());
+      const repo = new Gilmore(helper.hostGitRoot());
       await repo.init();
 
       await current.configureGit();
@@ -45,7 +47,7 @@ describe('init', () => {
         success: vi.fn(),
       });
 
-      const repo = new Gilmore(helper.hostRoot());
+      const repo = new Gilmore(helper.hostGitRoot());
       await repo.init();
     });
     describe('layouts', () => {

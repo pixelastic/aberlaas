@@ -57,7 +57,7 @@ describe('setup > helpers > ssh', () => {
   describe('getKey', () => {
     beforeEach(async () => {
       vi.spyOn(current, 'generateKeys').mockReturnValue();
-      vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDir);
+      vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDir);
       vi.spyOn(current, 'getFingerprint').mockReturnValue();
     });
     it('should return the public, private and fingerprint of the keys', async () => {

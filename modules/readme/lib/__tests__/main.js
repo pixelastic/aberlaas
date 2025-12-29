@@ -6,7 +6,7 @@ import current from '../main.js';
 describe('readme', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/readme');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(`${tmpDirectory}/host`);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(`${tmpDirectory}/host`);
     await emptyDir(tmpDirectory);
   });
   describe('run', () => {
@@ -129,7 +129,7 @@ describe('readme', () => {
       await pProps(sourceTree, async (filecontent, filepath) => {
         const completeFilepath = _.chain(filepath)
           .replace('aberlaas:', absolute('../../templates'))
-          .replace('host:', helper.hostRoot())
+          .replace('host:', helper.hostGitRoot())
           .value();
         await write(filecontent, completeFilepath);
       });

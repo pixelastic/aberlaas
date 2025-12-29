@@ -7,7 +7,7 @@ export default {
    * Return absolute path to the host dir
    * @returns {string} Absolute path to host dir
    */
-  hostRoot() {
+  hostGitRoot() {
     return process.cwd();
   },
   /**
@@ -16,7 +16,7 @@ export default {
    * @returns {string} Absolute path to the host file
    */
   hostPath(relativePath = '') {
-    return path.resolve(this.hostRoot(), relativePath);
+    return path.resolve(this.hostGitRoot(), relativePath);
   },
   /**
    * Find files in host directory following glob patterns. Will exclude some

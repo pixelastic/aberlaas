@@ -5,7 +5,7 @@ import current from '../yml.js';
 describe('lint-yml', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/yml');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
   });
   describe('getInputFiles', () => {

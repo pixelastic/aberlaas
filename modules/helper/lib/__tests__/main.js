@@ -8,28 +8,28 @@ import { _, pMap } from 'golgoth';
 import current from '../main.js';
 
 describe('current', () => {
-  describe('hostRoot', () => {
+  describe('hostGitRoot', () => {
     it('should return the current working directory', () => {
       const cwd = process.cwd();
-      const actual = current.hostRoot();
+      const actual = current.hostGitRoot();
 
       expect(actual).toEqual(cwd);
     });
   });
 
-  describe('with hostRoot mocked', () => {
+  describe('with hostGitRoot mocked', () => {
     beforeEach(async () => {
-      vi.spyOn(current, 'hostRoot').mockReturnValue(
+      vi.spyOn(current, 'hostGitRoot').mockReturnValue(
         generateTmpDirectory('aberlaas/helper'),
       );
     });
     afterEach(async () => {
-      await remove(current.hostRoot());
+      await remove(current.hostGitRoot());
     });
 
     describe('hostPath', () => {
       it('should return path relative to working directory', () => {
-        vi.spyOn(current, 'hostRoot').mockReturnValue('/basedir/');
+        vi.spyOn(current, 'hostGitRoot').mockReturnValue('/basedir/');
         const actual = current.hostPath('foo/bar/baz.js');
 
         expect(actual).toBe('/basedir/foo/bar/baz.js');

@@ -34,7 +34,7 @@ export default {
         JSON.parse(await read(filepath));
       } catch (error) {
         hasErrors = true;
-        const relativePath = path.relative(helper.hostRoot(), filepath);
+        const relativePath = path.relative(helper.hostGitRoot(), filepath);
         errorMessages.push(`Invalid JSON: ${relativePath}`);
         errorMessages.push(error.message);
       }

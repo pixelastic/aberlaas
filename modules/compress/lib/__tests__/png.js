@@ -5,7 +5,7 @@ import current from '../png.js';
 describe('compress > png', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/compress/png');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
   });
 

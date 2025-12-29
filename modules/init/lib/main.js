@@ -12,7 +12,7 @@ export default {
    * Configure git hooks to use scripts/hooks instead of .git/hooks
    */
   async configureGit() {
-    const repo = new Gilmore(helper.hostRoot());
+    const repo = new Gilmore(helper.hostGitRoot());
     await repo.setConfig('core.hooksPath', 'scripts/hooks');
   },
   /**

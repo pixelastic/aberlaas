@@ -5,7 +5,7 @@ import current from '../json.js';
 describe('lint-json', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/json');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
   });
   describe('getInputFiles', () => {

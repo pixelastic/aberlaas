@@ -24,7 +24,7 @@ export default {
    * @returns {string} Name of the project
    */
   getProjectName() {
-    return path.basename(helper.hostRoot());
+    return path.basename(helper.hostGitRoot());
   },
 
   /**
@@ -192,6 +192,6 @@ export default {
     );
   },
   __getRepo() {
-    return new Gilmore(helper.hostRoot());
+    return new Gilmore(helper.hostGitRoot());
   },
 };

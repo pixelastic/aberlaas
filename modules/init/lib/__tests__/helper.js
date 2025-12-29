@@ -16,15 +16,17 @@ describe('init > helper', () => {
   beforeEach(async () => {
     // We need to make the tmp directory outside of this git repo tree, for all
     // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory('aberlaas/init'));
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(
+      tmpDirectory('aberlaas/init'),
+    );
   });
   afterEach(async () => {
-    await remove(helper.hostRoot());
+    await remove(helper.hostGitRoot());
   });
 
   describe('getProjectName', () => {
     it('should return the name of the current directory', async () => {
-      const expected = path.basename(helper.hostRoot());
+      const expected = path.basename(helper.hostGitRoot());
       const actual = current.getProjectName();
 
       expect(actual).toEqual(expected);

@@ -12,7 +12,7 @@ describe('init > libdocs', () => {
   beforeEach(async () => {
     // We need to make the tmp directory outside of this git repo tree, for all
     // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(
       tmpDirectory('aberlaas/init/libdocs'),
     );
 
@@ -21,7 +21,7 @@ describe('init > libdocs', () => {
     vi.spyOn(current, '__getAberlaasVersion').mockReturnValue('1.2.3');
   });
   afterEach(async () => {
-    await remove(helper.hostRoot());
+    await remove(helper.hostGitRoot());
   });
 
   // WORKSPACES

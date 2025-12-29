@@ -6,7 +6,7 @@ import current from '../css.js';
 describe('lint-css', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/css');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
   });
   describe('getInputFiles', () => {

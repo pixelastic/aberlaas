@@ -23,7 +23,7 @@ export default {
     const isRelatedMode = options.related?.length > 0;
 
     // If no files are passed, we assume we want to test the current project
-    // We'll NOT use helper.hostRoot() as this will force going to high in the
+    // We'll NOT use helper.hostGitRoot() as this will force going to high in the
     // parent tree, where aberlaas is installed. Instead, we need to stop at the
     // first level where a package.json is defined
     const closestHostRoot = await packageRoot(env('INIT_CWD'));

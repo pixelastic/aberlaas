@@ -5,7 +5,7 @@ import current from '../main.js';
 describe('lint', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/root');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     vi.spyOn(current, '__consoleError').mockReturnValue();
     await emptyDir(tmpDirectory);
   });

@@ -8,7 +8,7 @@ describe('lint-js', () => {
   // as ESLint will refuse to lint files outside of its base directory
   const tmpDirectory = absolute('<gitRoot>/modules/lib/tmp/lint/js');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
     await emptyDir(tmpDirectory);
     await writeJson({}, helper.hostPath('package.json'));
   });

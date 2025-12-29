@@ -6,8 +6,8 @@ import current from '../main.js';
 describe('test', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/test');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostRoot').mockReturnValue(tmpDirectory);
-    await emptyDir(helper.hostRoot());
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
+    await emptyDir(helper.hostGitRoot());
   });
   describe('vitestOptions', () => {
     describe('--related', () => {
