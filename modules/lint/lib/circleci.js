@@ -1,16 +1,17 @@
 import ciInfo from 'ci-info';
-import { exists, firostError, run, which } from 'firost';
+import { firostError, run, which } from 'firost';
 import helper from 'aberlaas-helper';
 import lintYml from './yml.js';
 
 export default {
   configPath: '.circleci/config.yml',
   /**
-   * Find all relevant files
+   * Find the CircleCI config file
    * @returns {Array} Array of files
    */
-  async getInputFiles() {
-    return await helper.findHostPackageFiles([this.configPath]);
+  async getInputFile() {
+    const files = await helper.findHostPackageFiles([this.configPath]);
+    return files[0] || false;
   },
   /**
    * Check if the code is currently running on CircleCI
@@ -39,12 +40,11 @@ export default {
    * @returns {boolean} True on success
    */
   async run() {
-    const absoluteConfigPath = helper.hostGitPath(this.configPath);
-    const hasConfigFile = await exists(absoluteConfigPath);
+    const absoluteConfigPath = await this.getInputFile();
     const isRunningOnCircleCi = this.isRunningOnCircleCi();
 
     // Stop early if no config file, or if running on CircleCI
-    if (!hasConfigFile || isRunningOnCircleCi) {
+    if (!absoluteConfigPath || isRunningOnCircleCi) {
       return true;
     }
 

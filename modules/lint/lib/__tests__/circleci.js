@@ -1,5 +1,4 @@
-import { absolute, emptyDir, read, write } from 'firost';
-import { _, pMap } from 'golgoth';
+import { absolute, emptyDir, newFile, read, write } from 'firost';
 import helper from 'aberlaas-helper';
 import current from '../circleci.js';
 
@@ -17,35 +16,81 @@ describe('lint-circleci', () => {
     );
   });
 
-  describe('getInputFiles', () => {
-    it('should only get .circleci/config.yml', async () => {
-      const files = {
-        '.circleci/config.yml': true,
-        '.circleci/something-else.yml': false,
-        'circleci.yml': false,
-        'lib/.circleci/config.yml': false,
-        'lib/src/.circleci/config.yml': false,
-      };
+  describe('getInputFile', () => {
+    describe('from git root', () => {
+      beforeEach(() => {
+        vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(tmpDirectory);
+      });
+      it.each([
+        ['.circleci/config.yml', true],
+        ['.circleci/config.yaml', false],
+        ['.circleci/something-else.yml', false],
+        ['circleci.yml', false],
+        ['circleci/config.yml', false],
+      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+        const absolutePath = helper.hostGitPath(filepath);
+        await newFile(absolutePath);
 
-      await pMap(_.keys(files), async (filepath) => {
-        await write('foo: bar', helper.hostGitPath(filepath));
+        const actual = await current.getInputFile();
+
+        if (shouldBeIncluded) {
+          expect(actual).not.toBeFalse();
+        } else {
+          expect(actual).toBeFalse();
+        }
+      });
+    });
+    describe('from inside package', () => {
+      beforeEach(() => {
+        vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(
+          `${tmpDirectory}/lib`,
+        );
       });
 
-      const actual = await current.getInputFiles();
+      it.each([
+        ['.circleci/config.yml', false],
+        ['.circleci/config.yaml', false],
+        ['.circleci/something-else.yml', false],
+        ['circleci.yml', false],
+        ['circleci/config.yml', false],
+      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+        const absolutePath = helper.hostGitPath(filepath);
+        await newFile(absolutePath);
 
-      _.each(files, (value, filepath) => {
-        if (value) {
-          expect(actual).toContain(helper.hostPackagePath(filepath));
+        const actual = await current.getInputFile();
+
+        if (shouldBeIncluded) {
+          expect(actual).not.toBeFalse();
         } else {
-          expect(actual).not.toContain(helper.hostPackagePath(filepath));
+          expect(actual).toBeFalse();
         }
       });
     });
   });
   describe('run', () => {
+    beforeEach(async () => {
+      vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(tmpDirectory);
+    });
+
     describe('without circleci in the path', () => {
       beforeEach(async () => {
         vi.spyOn(current, 'hasCircleCiBin').mockReturnValue(false);
+      });
+      it('should throw if yml is invalid', async () => {
+        await write(
+          'foo: bar\n bar: baz',
+          helper.hostGitPath('.circleci/config.yml'),
+        );
+
+        let actual = null;
+        try {
+          await current.run();
+        } catch (error) {
+          actual = error;
+        }
+
+        expect(actual.code).toBe('YamlLintError');
+        expect(actual).toHaveProperty('message');
       });
       it('should return true if file is valid yml', async () => {
         await write('foo: bar', helper.hostGitPath('.circleci/config.yml'));
@@ -59,32 +104,11 @@ describe('lint-circleci', () => {
 
         expect(actual).toBe(true);
       });
-      it('should throw if yml is invalid', async () => {
-        await write(
-          'foo: bar\n bar: baz',
-          helper.hostGitPath('.circleci/config.yml'),
-        );
-
-        let actual = null;
-        try {
-          await current.run();
-        } catch (error) {
-          actual = error;
-        }
-
-        expect(actual.code).toBe('YamlLintError');
-        expect(actual).toHaveProperty('message');
-      });
     });
     describe('with circleci in the path', () => {
       beforeEach(async () => {
         vi.spyOn(current, 'hasCircleCiBin').mockReturnValue(true);
       });
-      it('should stop early if no file found', async () => {
-        const actual = await current.run();
-
-        expect(actual).toBe(true);
-      });
       it('should throw if yml is invalid', async () => {
         await write(
           'foo: bar\n bar: baz',
@@ -100,6 +124,11 @@ describe('lint-circleci', () => {
 
         expect(actual.code).toBe('YamlLintError');
         expect(actual).toHaveProperty('message');
+      });
+      it('should stop early if no file found', async () => {
+        const actual = await current.run();
+
+        expect(actual).toBe(true);
       });
       it('should throw if config is invalid', async () => {
         vi.spyOn(current, 'validateConfig').mockImplementation(() => {
@@ -143,6 +172,9 @@ describe('lint-circleci', () => {
     });
   });
   describe('fix', () => {
+    beforeEach(() => {
+      vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(tmpDirectory);
+    });
     it('should fix yml issues', async () => {
       vi.spyOn(current, 'validateConfig').mockReturnValue(true);
       await write('    foo: "bar"', helper.hostGitPath('.circleci/config.yml'));
