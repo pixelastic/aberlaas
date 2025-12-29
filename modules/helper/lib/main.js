@@ -8,18 +8,85 @@ export default {
    * command that triggered aberlaas
    * @returns {string} Absolute path to working directory
    */
+  // TODO: Add tests
   hostWorkingDirectory() {
     // INIT_CWD is set by yarn as the directory where the yarn command is being
     // called
     return env('INIT_CWD') || process.cwd();
   },
+
   /**
    * Absolute path to the closest package root
    * @returns {string} Absolute path to closest package root
    */
+  // TODO: Add tests
   hostPackageRoot() {
     return packageRoot(this.hostWorkingDirectory());
   },
+  /**
+   * Return an absolute path to a file in the host package folder
+   * @param {string} relativePath Relative path from the host package root
+   * @returns {string} Absolute path to the host file
+   */
+  // TODO: Add tests
+  hostPackagePath(relativePath = '') {
+    return path.resolve(this.hostPackageRoot(), relativePath);
+  },
+  /**
+   * Find files in host package directory following glob patterns.
+   * Will exclude some directories by default, and allow specifying only
+   * specific file extensions
+   * @param {Array} userPattern Patterns to match
+   * @param {Array} safeExtensions Optional array of extensions to safelist. If
+   * set, only files of this extensions will be returned
+   * @returns {Array} Array of files matching the patterns
+   */
+  // TODO: Add tests
+  async findHostPackageFiles(userPattern, safeExtensions = []) {
+    const patterns = _.castArray(userPattern);
+    // Making all path relative to the host
+    const globs = _.map(patterns, (pattern) => {
+      return this.hostPackagePath(pattern);
+    });
+
+    // Exclude folders that shouldn't be included
+    const blockedFolders = [
+      'build',
+      'dist',
+      'fixtures',
+      'node_modules',
+      'tmp',
+      'vendors',
+      '.git',
+      '.yarn',
+      '.claude',
+      '.next',
+    ];
+    _.each(blockedFolders, (blockedFolder) => {
+      const deepFolder = `**/${blockedFolder}/**`;
+      globs.push(`!${this.hostGitPath(deepFolder)}`);
+    });
+
+    // Expanding globs
+    let allFiles = await glob(globs, { directories: false });
+
+    if (_.isEmpty(safeExtensions)) {
+      return allFiles;
+    }
+
+    // Keep only files of specified extensions
+    allFiles = _.filter(allFiles, (filepath) => {
+      const extension = path.extname(filepath);
+      const extensionWithoutDot = _.replace(extension, '.', '');
+      return (
+        _.includes(safeExtensions, extension) ||
+        _.includes(safeExtensions, extensionWithoutDot)
+      );
+    });
+
+    return allFiles;
+  },
+
   /**
    * Return absolute path to the host dir
    * @returns {string} Absolute path to host dir
@@ -43,6 +110,7 @@ export default {
    * set, only files of this extensions will be returned
    * @returns {Array} Array of files matching the patterns
    */
+  // TODO: Remove once we have tests for findHostPackageFiles
   async findHostFiles(userPattern, safeExtensions = []) {
     const patterns = _.castArray(userPattern);
     // Making all path relative to the host
