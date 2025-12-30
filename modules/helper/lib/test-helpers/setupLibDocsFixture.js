@@ -1,14 +1,14 @@
 import { absolute, mkdirp, run, write, writeJson } from 'firost';
+import { yarnVersion } from 'aberlaas-versions';
 
 // Git Root {{{
 const gitRootPackageJson = {
-  name: 'test-helper-monorepo',
   type: 'module',
   workspaces: ['lib', 'docs'],
   scripts: {
     'test-helper': 'node ./scripts/test-helper.js',
   },
-  packageManager: 'yarn@4.12.0',
+  packageManager: `yarn@${yarnVersion}`,
 };
 const scriptsTestHelperContent = `
 import helper from '${absolute('../main.js')}';
@@ -25,17 +25,11 @@ console.log(
   ),
 );`;
 const yarnRcYmlContent = `
-compressionLevel: 0
-defaultSemverRangePrefix: ''
-enableGlobalCache: true
 nodeLinker: node-modules
-nmMode: hardlinks-local
-nmHoistingLimits: workspaces
 `;
 // }}}
 // ./lib {{{
 const libPackageJson = {
-  name: 'test-helper-lib',
   scripts: {
     'test-helper': 'node ../scripts/test-helper.js',
   },
@@ -43,7 +37,6 @@ const libPackageJson = {
 // }}}
 // ./docs {{{
 const docsPackageJson = {
-  name: 'test-helper-docs',
   scripts: {
     'test-helper': 'node ../scripts/test-helper.js',
   },
