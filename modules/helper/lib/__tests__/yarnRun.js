@@ -1,18 +1,9 @@
-import {
-  absolute,
-  mkdirp,
-  remove,
-  run,
-  tmpDirectory,
-  write,
-  writeJson,
-} from 'firost';
+import { absolute, remove, run, tmpDirectory } from 'firost';
 import { _ } from 'golgoth';
+import { setupLibDocsFixture } from '../test-helpers/index.js';
 
 describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   const testDirectory = tmpDirectory('aberlaas/helper');
-  // const testDirectoryModule = absolute(testDirectory, 'module');
-  const testDirectoryLibDocs = absolute(testDirectory, 'libdocs');
   afterAll(async () => {
     await remove(testDirectory);
   });
@@ -20,83 +11,17 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
     beforeAll(async () => {
       // ./libdocs
       //   ./.git
+      //   ./scripts
+      //     ./test-helper.js
       //   ./lib
-      //     ./package.json
       //     ./helpers
-      //   ./docs
       //     ./package.json
+      //   ./docs
       //     ./assets
-
-      // Git root
-      await mkdirp(absolute(testDirectoryLibDocs, '.git'));
-      await writeJson(
-        {
-          name: 'test-helper-monorepo',
-          type: 'module',
-          workspaces: ['lib', 'docs'],
-          scripts: {
-            'test-helper': 'node ./scripts/test-helper.js',
-          },
-          packageManager: 'yarn@4.12.0',
-        },
-        absolute(testDirectoryLibDocs, 'package.json'),
-      );
-      await write(
-        dedent`
-          import helper from '${absolute('../main.js')}';
-
-          console.log(
-            JSON.stringify(
-              {
-                hostWorkingDirectory: helper.hostWorkingDirectory(),
-                hostPackageRoot: helper.hostPackageRoot(),
-                hostGitRoot: helper.hostGitRoot(),
-                processCwd: process.cwd(),
-              },
-              null,
-              2,
-            ),
-          );`,
-        absolute(testDirectoryLibDocs, 'scripts/test-helper.js'),
-      );
-      await write(
-        dedent`
-          compressionLevel: 0
-          defaultSemverRangePrefix: ''
-          enableGlobalCache: true
-          nodeLinker: node-modules
-          nmMode: hardlinks-local
-          nmHoistingLimits: workspaces
-        `,
-        absolute(testDirectoryLibDocs, '.yarnrc.yml'),
-      );
-
-      // ./lib
-      await writeJson(
-        {
-          name: 'test-helper-lib',
-          scripts: {
-            'test-helper': 'node ../scripts/test-helper.js',
-          },
-        },
-        absolute(testDirectoryLibDocs, 'lib/package.json'),
-      );
-      await mkdirp(absolute(testDirectoryLibDocs, 'lib/helpers'));
-
-      // ./docs
-      await writeJson(
-        {
-          name: 'test-helper-docs',
-          scripts: {
-            'test-helper': 'node ../scripts/test-helper.js',
-          },
-        },
-        absolute(testDirectoryLibDocs, 'docs/package.json'),
-      );
-      await mkdirp(absolute(testDirectoryLibDocs, 'docs/assets'));
-
-      // yarn install
-      await run('yarn install', { cwd: testDirectoryLibDocs, stdout: false });
+      //     ./package.json
+      //   ./.yarnrc.yml
+      //   ./package.json
+      await setupLibDocsFixture(absolute(testDirectory, 'libdocs'));
     });
 
     it.each([
