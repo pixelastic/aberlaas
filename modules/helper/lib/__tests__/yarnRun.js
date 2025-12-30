@@ -1,6 +1,9 @@
 import { absolute, remove, run, tmpDirectory } from 'firost';
 import { _ } from 'golgoth';
-import { setupLibDocsFixture } from '../test-helpers/index.js';
+import {
+  setupLibDocsFixture,
+  setupMonorepoFixture,
+} from '../test-helpers/index.js';
 
 describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   const testDirectory = tmpDirectory('aberlaas/helper');
@@ -63,6 +66,125 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
           hostWorkingDirectory: './libdocs/docs/assets',
           hostPackageRoot: './libdocs/docs',
           hostGitRoot: './libdocs',
+        },
+      ],
+    ])('%s', async (input, expected) => {
+      // run yarn test-helper
+      const { stdout } = await run('yarn test-helper', {
+        stdout: false,
+        cwd: absolute(testDirectory, input),
+      });
+
+      // Parse output
+      const actual = {};
+      _.each(JSON.parse(stdout), (value, key) => {
+        actual[key] = _.replace(value, testDirectory, '.');
+      });
+
+      expect(actual).toHaveProperty(
+        'hostWorkingDirectory',
+        expected.hostWorkingDirectory,
+      );
+      expect(actual).toHaveProperty(
+        'hostPackageRoot',
+        expected.hostPackageRoot,
+      );
+      expect(actual).toHaveProperty('hostGitRoot', expected.hostGitRoot);
+    });
+  });
+  describe('in a monorepo layout', () => {
+    beforeAll(async () => {
+      // ./monorepo
+      //   ./.git
+      //   ./config
+      //   ./scripts
+      //     ./test-helper.js
+      //   ./modules
+      //     ./alpha
+      //       ./package.json
+      //       ./helpers
+      //     ./beta
+      //       ./package.json
+      //       ./helpers
+      //     ./docs
+      //       ./package.json
+      //       ./assets
+      //   ./.yarnrc.yml
+      //   ./package.json
+      await setupMonorepoFixture(absolute(testDirectory, 'monorepo'));
+    });
+
+    it.each([
+      [
+        './monorepo',
+        {
+          hostWorkingDirectory: './monorepo',
+          hostPackageRoot: './monorepo',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/config',
+        {
+          hostWorkingDirectory: './monorepo/config',
+          hostPackageRoot: './monorepo',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/modules',
+        {
+          hostWorkingDirectory: './monorepo/modules',
+          hostPackageRoot: './monorepo',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/modules/alpha',
+        {
+          hostWorkingDirectory: './monorepo/modules/alpha',
+          hostPackageRoot: './monorepo/modules/alpha',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/modules/alpha/helpers',
+        {
+          hostWorkingDirectory: './monorepo/modules/alpha/helpers',
+          hostPackageRoot: './monorepo/modules/alpha',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/modules/beta',
+        {
+          hostWorkingDirectory: './monorepo/modules/beta',
+          hostPackageRoot: './monorepo/modules/beta',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/modules/beta/helpers',
+        {
+          hostWorkingDirectory: './monorepo/modules/beta/helpers',
+          hostPackageRoot: './monorepo/modules/beta',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/modules/docs',
+        {
+          hostWorkingDirectory: './monorepo/modules/docs',
+          hostPackageRoot: './monorepo/modules/docs',
+          hostGitRoot: './monorepo',
+        },
+      ],
+      [
+        './monorepo/modules/docs/assets',
+        {
+          hostWorkingDirectory: './monorepo/modules/docs/assets',
+          hostPackageRoot: './monorepo/modules/docs',
+          hostGitRoot: './monorepo',
         },
       ],
     ])('%s', async (input, expected) => {

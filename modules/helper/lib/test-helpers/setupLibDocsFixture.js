@@ -1,8 +1,9 @@
 import { absolute, mkdirp, run, write, writeJson } from 'firost';
 import { yarnVersion } from 'aberlaas-versions';
+import { scriptsTestHelperContent, yarnRcYmlContent } from './fixtures.js';
 
 // Git Root {{{
-const gitRootPackageJson = {
+const rootPackageJson = {
   type: 'module',
   workspaces: ['lib', 'docs'],
   scripts: {
@@ -10,42 +11,16 @@ const gitRootPackageJson = {
   },
   packageManager: `yarn@${yarnVersion}`,
 };
-const scriptsTestHelperContent = `
-import helper from '${absolute('../main.js')}';
-
-console.log(
-  JSON.stringify(
-    {
-      hostWorkingDirectory: helper.hostWorkingDirectory(),
-      hostPackageRoot: helper.hostPackageRoot(),
-      hostGitRoot: helper.hostGitRoot(),
-    },
-    null,
-    2,
-  ),
-);`;
-const yarnRcYmlContent = `
-nodeLinker: node-modules
-`;
-// }}}
-// ./lib {{{
-const libPackageJson = {
+const modulePackageJson = {
   scripts: {
     'test-helper': 'node ../scripts/test-helper.js',
   },
 };
-// }}}
-// ./docs {{{
-const docsPackageJson = {
-  scripts: {
-    'test-helper': 'node ../scripts/test-helper.js',
-  },
-};
-// }}}
 
 /**
  * Setup a libdocs fixture that looks like this:
  *
+ * ./libdocs
  *   ./.git
  *   ./scripts
  *     ./test-helper.js
@@ -62,20 +37,20 @@ const docsPackageJson = {
 export async function setupLibDocsFixture(rootPath) {
   // Git root
   await mkdirp(absolute(rootPath, '.git'));
-  await writeJson(gitRootPackageJson, absolute(rootPath, 'package.json'));
   await write(
     scriptsTestHelperContent,
     absolute(rootPath, 'scripts/test-helper.js'),
   );
   await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
+  await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
 
   // ./lib
-  await writeJson(libPackageJson, absolute(rootPath, 'lib/package.json'));
   await mkdirp(absolute(rootPath, 'lib/helpers'));
+  await writeJson(modulePackageJson, absolute(rootPath, 'lib/package.json'));
 
   // ./docs
-  await writeJson(docsPackageJson, absolute(rootPath, 'docs/package.json'));
   await mkdirp(absolute(rootPath, 'docs/assets'));
+  await writeJson(modulePackageJson, absolute(rootPath, 'docs/package.json'));
 
   // yarn install
   await run('yarn install', { cwd: rootPath, stdout: false });
