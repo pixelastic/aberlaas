@@ -1,11 +1,11 @@
-import { absolute, mkdirp, run, write, writeJson } from 'firost';
+import { absolute, mkdirp, run, symlink, write, writeJson } from 'firost';
 import { yarnVersion } from 'aberlaas-versions';
 import { scriptsTestHelperContent, yarnRcYmlContent } from './fixtures.js';
 
 const rootPackageJson = {
   type: 'module',
   scripts: {
-    'test-helper': 'node ./scripts/test-helper.js',
+    'test-helper': './scripts/test-helper',
   },
   packageManager: `yarn@${yarnVersion}`,
 };
@@ -16,6 +16,9 @@ const rootPackageJson = {
  * ./module
  *   ./.git
  *   ./config
+ *   ./node_modules
+ *     ./bin
+ *       ./aberlaas
  *   ./scripts
  *     ./test-helper.js
  *   ./lib
@@ -27,11 +30,16 @@ const rootPackageJson = {
 export async function setupModuleFixture(rootPath) {
   // Git root
   await mkdirp(absolute(rootPath, '.git'));
-  await mkdirp(absolute(rootPath, 'config'));
+  await symlink(
+    absolute(rootPath, 'node_modules/.bin/aberlaas'),
+    absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
+  );
   await write(
     scriptsTestHelperContent,
-    absolute(rootPath, 'scripts/test-helper.js'),
+    absolute(rootPath, 'scripts/test-helper'),
   );
+  await run('chmod +x scripts/test-helper', { cwd: rootPath });
+  await mkdirp(absolute(rootPath, 'config'));
   await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
   await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
 

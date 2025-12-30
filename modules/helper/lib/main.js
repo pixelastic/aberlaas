@@ -8,7 +8,6 @@ export default {
    * command that triggered aberlaas
    * @returns {string} Absolute path to working directory
    */
-  // TODO: Add tests
   hostWorkingDirectory() {
     // INIT_CWD is set by yarn as the directory where the yarn command is being
     // called
@@ -19,7 +18,6 @@ export default {
    * Absolute path to the closest package root
    * @returns {string} Absolute path to closest package root
    */
-  // TODO: Add tests
   hostPackageRoot() {
     return packageRoot(this.hostWorkingDirectory());
   },
@@ -28,7 +26,6 @@ export default {
    * @param {string} relativePath Relative path from the host package root
    * @returns {string} Absolute path to the host file
    */
-  // TODO: Add tests
   hostPackagePath(relativePath = '') {
     return path.resolve(this.hostPackageRoot(), relativePath);
   },
@@ -181,5 +178,23 @@ export default {
 
     // Fallback on default config in aberlaas
     return baseConfig;
+  },
+  /**
+   * Debug command, prints useful info about the host environment
+   * Used in tests, to double check in real conditions, what the various paths
+   * refer to
+   */
+  async run() {
+    console.log(
+      JSON.stringify(
+        {
+          hostWorkingDirectory: this.hostWorkingDirectory(),
+          hostPackageRoot: this.hostPackageRoot(),
+          hostGitRoot: this.hostGitRoot(),
+        },
+        null,
+        2,
+      ),
+    );
   },
 };

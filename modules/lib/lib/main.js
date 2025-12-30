@@ -22,6 +22,8 @@ export default {
     readme: 'aberlaas-readme',
     setup: 'aberlaas-setup',
     test: 'aberlaas-test',
+    // Only used internally, for tests
+    debug: 'aberlaas-helper',
   },
   async getCommand(commandName) {
     const commandModuleName = this.availableCommands[commandName];
