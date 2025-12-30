@@ -2,6 +2,7 @@ import { absolute, remove, run, tmpDirectory } from 'firost';
 import { _ } from 'golgoth';
 import {
   setupLibDocsFixture,
+  setupModuleFixture,
   setupMonorepoFixture,
 } from '../test-helpers/index.js';
 
@@ -9,6 +10,77 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   const testDirectory = tmpDirectory('aberlaas/helper');
   afterAll(async () => {
     await remove(testDirectory);
+  });
+  describe('in a module layout', () => {
+    beforeAll(async () => {
+      // ./module
+      //   ./.git
+      //   ./config
+      //   ./scripts
+      //     ./test-helper.js
+      //   ./lib
+      //     ./helpers
+      //   ./.yarnrc.yml
+      //   ./package.json
+      await setupModuleFixture(absolute(testDirectory, 'module'));
+    });
+
+    it.each([
+      [
+        './module',
+        {
+          hostWorkingDirectory: './module',
+          hostPackageRoot: './module',
+          hostGitRoot: './module',
+        },
+      ],
+      [
+        './module/config',
+        {
+          hostWorkingDirectory: './module/config',
+          hostPackageRoot: './module',
+          hostGitRoot: './module',
+        },
+      ],
+      [
+        './module/lib',
+        {
+          hostWorkingDirectory: './module/lib',
+          hostPackageRoot: './module',
+          hostGitRoot: './module',
+        },
+      ],
+      [
+        './module/lib/helpers',
+        {
+          hostWorkingDirectory: './module/lib/helpers',
+          hostPackageRoot: './module',
+          hostGitRoot: './module',
+        },
+      ],
+    ])('%s', async (input, expected) => {
+      // run yarn test-helper
+      const { stdout } = await run('yarn test-helper', {
+        stdout: false,
+        cwd: absolute(testDirectory, input),
+      });
+
+      // Parse output
+      const actual = {};
+      _.each(JSON.parse(stdout), (value, key) => {
+        actual[key] = _.replace(value, testDirectory, '.');
+      });
+
+      expect(actual).toHaveProperty(
+        'hostWorkingDirectory',
+        expected.hostWorkingDirectory,
+      );
+      expect(actual).toHaveProperty(
+        'hostPackageRoot',
+        expected.hostPackageRoot,
+      );
+      expect(actual).toHaveProperty('hostGitRoot', expected.hostGitRoot);
+    });
   });
   describe('in a libdocs layout', () => {
     beforeAll(async () => {
