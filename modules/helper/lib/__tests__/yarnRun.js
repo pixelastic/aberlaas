@@ -4,7 +4,7 @@ import {
   setupLibDocsFixture,
   setupModuleFixture,
   setupMonorepoFixture,
-} from '../test-helpers/index.js';
+} from '../test-helper.js';
 
 describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   const testDirectory = tmpDirectory('aberlaas/helper');

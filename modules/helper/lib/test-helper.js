@@ -1,0 +1,196 @@
+import { absolute, mkdirp, run, symlink, write, writeJson } from 'firost';
+import { yarnVersion } from 'aberlaas-versions';
+
+const scriptsTestHelperContent = `#!/usr/bin/env bash
+
+node_modules/.bin/aberlaas debug
+`;
+
+const yarnRcYmlContent = `
+nodeLinker: node-modules
+`;
+
+/**
+ * Setup a module fixture that looks like this:
+ *
+ * ./module
+ *   ./.git
+ *   ./config
+ *   ./node_modules
+ *     ./bin
+ *       ./aberlaas
+ *   ./scripts
+ *     ./test-helper.js
+ *   ./lib
+ *     ./helpers
+ *   ./.yarnrc.yml
+ *   ./package.json
+ * @param {string} rootPath Path where to set the fixture
+ */
+export async function setupModuleFixture(rootPath) {
+  const rootPackageJson = {
+    type: 'module',
+    scripts: {
+      'test-helper': './scripts/test-helper',
+    },
+    packageManager: `yarn@${yarnVersion}`,
+  };
+  // Git root
+  await mkdirp(absolute(rootPath, '.git'));
+  await symlink(
+    absolute(rootPath, 'node_modules/.bin/aberlaas'),
+    absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
+  );
+  await write(
+    scriptsTestHelperContent,
+    absolute(rootPath, 'scripts/test-helper'),
+  );
+  await run('chmod +x scripts/test-helper', { cwd: rootPath });
+  await mkdirp(absolute(rootPath, 'config'));
+  await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
+  await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
+
+  // ./lib
+  await mkdirp(absolute(rootPath, 'lib/helpers'));
+
+  // yarn install
+  await run('yarn install', { cwd: rootPath, stdout: false });
+}
+
+/**
+ * Setup a libdocs fixture that looks like this:
+ *
+ * ./libdocs
+ *   ./.git
+ *   ./node_modules
+ *     ./bin
+ *       ./aberlaas
+ *   ./scripts
+ *     ./test-helper.js
+ *   ./lib
+ *     ./helpers
+ *     ./package.json
+ *   ./docs
+ *     ./assets
+ *     ./package.json
+ *   ./.yarnrc.yml
+ *   ./package.json
+ * @param {string} rootPath Path where to set the fixture
+ */
+export async function setupLibDocsFixture(rootPath) {
+  const rootPackageJson = {
+    type: 'module',
+    workspaces: ['lib', 'docs'],
+    scripts: {
+      'test-helper': './scripts/test-helper',
+    },
+    packageManager: `yarn@${yarnVersion}`,
+  };
+  const modulePackageJson = {
+    scripts: {
+      'test-helper': 'cd .. && ./scripts/test-helper',
+    },
+  };
+  // Git root
+  await mkdirp(absolute(rootPath, '.git'));
+  await symlink(
+    absolute(rootPath, 'node_modules/.bin/aberlaas'),
+    absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
+  );
+  await write(
+    scriptsTestHelperContent,
+    absolute(rootPath, 'scripts/test-helper'),
+  );
+  await run('chmod +x scripts/test-helper', { cwd: rootPath });
+  await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
+  await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
+
+  // ./lib
+  await mkdirp(absolute(rootPath, 'lib/helpers'));
+  await writeJson(modulePackageJson, absolute(rootPath, 'lib/package.json'));
+
+  // ./docs
+  await mkdirp(absolute(rootPath, 'docs/assets'));
+  await writeJson(modulePackageJson, absolute(rootPath, 'docs/package.json'));
+
+  // yarn install
+  await run('yarn install', { cwd: rootPath, stdout: false });
+}
+
+/**
+ * Setup a monorepo fixture that looks like this:
+ *
+ * ./monorepo
+ *   ./.git
+ *   ./config
+ *   ./node_modules
+ *     ./bin
+ *       ./aberlaas
+ *   ./scripts
+ *     ./test-helper.js
+ *   ./modules
+ *     ./alpha
+ *       ./helpers
+ *       ./package.json
+ *     ./beta
+ *       ./helpers
+ *       ./package.json
+ *     ./docs
+ *       ./assets
+ *       ./package.json
+ *   ./.yarnrc.yml
+ *   ./package.json
+ * @param {string} rootPath Path where to set the fixture
+ */
+export async function setupMonorepoFixture(rootPath) {
+  const rootPackageJson = {
+    type: 'module',
+    workspaces: ['modules/*'],
+    scripts: {
+      'test-helper': './scripts/test-helper',
+    },
+    packageManager: `yarn@${yarnVersion}`,
+  };
+  const modulePackageJson = {
+    scripts: {
+      'test-helper': 'cd ../../ && ./scripts/test-helper',
+    },
+  };
+
+  // Git root
+  await mkdirp(absolute(rootPath, '.git'));
+  await symlink(
+    absolute(rootPath, 'node_modules/.bin/aberlaas'),
+    absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
+  );
+  await write(
+    scriptsTestHelperContent,
+    absolute(rootPath, 'scripts/test-helper'),
+  );
+  await run('chmod +x scripts/test-helper', { cwd: rootPath });
+  await mkdirp(absolute(rootPath, 'config'));
+  await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
+  await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
+
+  // ./modules
+  await mkdirp(absolute(rootPath, 'modules/alpha/helpers'));
+  await writeJson(
+    modulePackageJson,
+    absolute(rootPath, 'modules/alpha/package.json'),
+  );
+
+  await mkdirp(absolute(rootPath, 'modules/beta/helpers'));
+  await writeJson(
+    modulePackageJson,
+    absolute(rootPath, 'modules/beta/package.json'),
+  );
+
+  await mkdirp(absolute(rootPath, 'modules/docs/assets'));
+  await writeJson(
+    modulePackageJson,
+    absolute(rootPath, 'modules/docs/package.json'),
+  );
+
+  // yarn install
+  await run('yarn install', { cwd: rootPath, stdout: false });
+}
