@@ -1,71 +1,105 @@
-import {
-  tmpDirectory as generateTmpDirectory,
-  remove,
-  write,
-  writeJson,
-} from 'firost';
+import { newFile, remove, tmpDirectory, write, writeJson } from 'firost';
 import { _, pMap } from 'golgoth';
 import current from '../main.js';
 
 describe('current', () => {
-  describe('hostGitRoot', () => {
-    it('should return the current working directory', () => {
-      const cwd = process.cwd();
-      const actual = current.hostGitRoot();
+  const testDirectory = tmpDirectory('aberlaas/helper');
 
-      expect(actual).toEqual(cwd);
+  beforeEach(async () => {
+    // Those are tested in ./yarnRun.js, so we can just mock them here
+    vi.spyOn(current, 'hostGitRoot').mockReturnValue(testDirectory);
+    vi.spyOn(current, 'hostPackageRoot').mockReturnValue(
+      `${testDirectory}/lib`,
+    );
+    vi.spyOn(current, 'hostWorkingDirectory').mockReturnValue(
+      `${testDirectory}/lib/src`,
+    );
+  });
+
+  describe('hostGitPath', () => {
+    it.each([
+      ['', `${testDirectory}`],
+      ['package.json', `${testDirectory}/package.json`],
+      ['lib/src/main.js', `${testDirectory}/lib/src/main.js`],
+      ['lib/src/../../package.json', `${testDirectory}/package.json`],
+    ])('%s', async (input, expected) => {
+      const actual = current.hostGitPath(input);
+      expect(actual).toEqual(expected);
+    });
+  });
+  describe('hostPackagePath', () => {
+    it.each([
+      ['', `${testDirectory}/lib`],
+      ['package.json', `${testDirectory}/lib/package.json`],
+      ['src/main.js', `${testDirectory}/lib/src/main.js`],
+      ['src/../package.json', `${testDirectory}/lib/package.json`],
+      ['../package.json', `${testDirectory}/package.json`],
+    ])('%s', async (input, expected) => {
+      const actual = current.hostPackagePath(input);
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('findHostPackageFiles', () => {
+    beforeAll(async () => {
+      await newFile(`${testDirectory}/lib/__tests__/module.js`);
+      await newFile(`${testDirectory}/lib/.nvmrc`);
+      await newFile(`${testDirectory}/lib/.tool/config.yml`);
+
+      // Useless files that should be ignored
+      await newFile(`${testDirectory}/lib/build/main.js`);
+      await newFile(`${testDirectory}/lib/dist/index.html`);
+      await newFile(`${testDirectory}/lib/fixtures/test.js`);
+      await newFile(`${testDirectory}/lib/node_modules/firost/package.json`);
+      await newFile(`${testDirectory}/lib/tmp/debug.log`);
+      await newFile(`${testDirectory}/lib/vendors/jQuery.js`);
+      await newFile(`${testDirectory}/lib/.claude/settings.local.json`);
+      await newFile(`${testDirectory}/lib/.git/HEAD`);
+      await newFile(`${testDirectory}/lib/.next/build-manifest.json`);
+      await newFile(`${testDirectory}/lib/.turbo/preferences/tui.json`);
+      await newFile(`${testDirectory}/lib/.yarn/install-state.gz`);
+    });
+    afterAll(async () => {
+      await remove(testDirectory);
+    });
+    it.each([
+      [
+        'Specific path',
+        '__tests__/module.js',
+        [`${testDirectory}/lib/__tests__/module.js`],
+      ],
+      [
+        'Glob pattern',
+        '__tests__/**/*.js',
+        [`${testDirectory}/lib/__tests__/module.js`],
+      ],
+      ['One dir', '__tests__', [`${testDirectory}/lib/__tests__/module.js`]],
+      [
+        'All files (no arg)',
+        '',
+        [
+          `${testDirectory}/lib/__tests__/module.js`,
+          `${testDirectory}/lib/.nvmrc`,
+          `${testDirectory}/lib/.tool/config.yml`,
+        ],
+      ],
+      [
+        'All files (dot arg)',
+        '.',
+        [
+          `${testDirectory}/lib/__tests__/module.js`,
+          `${testDirectory}/lib/.nvmrc`,
+          `${testDirectory}/lib/.tool/config.yml`,
+        ],
+      ],
+    ])('%s: %s', async (_title, input, expected) => {
+      const actual = await current.findHostPackageFiles(input);
+      expect(actual).toEqual(expected);
     });
   });
 
   describe('with hostGitRoot mocked', () => {
-    beforeEach(async () => {
-      vi.spyOn(current, 'hostGitRoot').mockReturnValue(
-        generateTmpDirectory('aberlaas/helper'),
-      );
-    });
-    afterEach(async () => {
-      await remove(current.hostGitRoot());
-    });
-
-    describe('hostGitPath', () => {
-      it('should return path relative to working directory', () => {
-        vi.spyOn(current, 'hostGitRoot').mockReturnValue('/basedir/');
-        const actual = current.hostGitPath('foo/bar/baz.js');
-
-        expect(actual).toBe('/basedir/foo/bar/baz.js');
-      });
-    });
     describe('findHostFiles', () => {
-      describe('Finding files', () => {
-        it.each([
-          ['lib/__tests__/module.js', 'lib/__tests__/module.js'],
-          ['lib/__tests__/module.js', 'lib/**/*.js'],
-          ['lib/__tests__/module.js', 'lib'],
-          ['.nvmrc', '.'],
-          ['lib/__tests__/.config.js', '.'],
-          ['.config/release.js', '.'],
-        ])('%s found with %s', async (filepath, pattern) => {
-          await write('', current.hostGitPath(filepath));
-          const actual = await current.findHostFiles(pattern);
-          expect(actual).toContain(current.hostGitPath(filepath));
-        });
-      });
-      describe('Blocklist', () => {
-        it.each([
-          ['build/main.js'],
-          ['dist/index.html'],
-          ['fixtures/test.html'],
-          ['node_modules/firost/package.json'],
-          ['tmp/list.txt'],
-          ['vendors/jQuery.js'],
-          ['.git/hooks/pre-commit.sh'],
-          ['.yarn/releases/index.js'],
-        ])('%s not found', async (filepath) => {
-          await write('', current.hostGitPath(filepath));
-          const actual = await current.findHostFiles('.');
-          expect(actual).not.toContain(current.hostGitPath(filepath));
-        });
-      });
       describe('Safelist by extension', () => {
         it.each([
           [

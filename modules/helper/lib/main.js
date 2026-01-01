@@ -38,34 +38,28 @@ export default {
    * set, only files of this extensions will be returned
    * @returns {Array} Array of files matching the patterns
    */
-  // TODO: Add tests
   async findHostPackageFiles(userPattern, safeExtensions = []) {
-    const patterns = _.castArray(userPattern);
-    // Making all path relative to the host
-    const globs = _.map(patterns, (pattern) => {
-      return this.hostPackagePath(pattern);
-    });
-
-    // Exclude folders that shouldn't be included
-    const blockedFolders = [
-      'build',
-      'dist',
-      'fixtures',
-      'node_modules',
-      'tmp',
-      'vendors',
-      '.git',
-      '.yarn',
-      '.claude',
-      '.next',
+    const patterns = [
+      ..._.castArray(userPattern),
+      // Exclude folders that shouldn't be included
+      '!**/build/**',
+      '!**/dist/**',
+      '!**/fixtures/**',
+      '!**/node_modules/**',
+      '!**/tmp/**',
+      '!**/vendors/**',
+      '!**/.claude/**',
+      '!**/.git/**',
+      '!**/.next/**',
+      '!**/.turbo/**',
+      '!**/.yarn/**',
     ];
-    _.each(blockedFolders, (blockedFolder) => {
-      const deepFolder = `**/${blockedFolder}/**`;
-      globs.push(`!${this.hostGitPath(deepFolder)}`);
-    });
 
     // Expanding globs
-    let allFiles = await glob(globs, { directories: false });
+    let allFiles = await glob(patterns, {
+      directories: false,
+      cwd: this.hostPackageRoot(),
+    });
 
     if (_.isEmpty(safeExtensions)) {
       return allFiles;
