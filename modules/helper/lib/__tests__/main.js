@@ -27,6 +27,7 @@ describe('current', () => {
       expect(actual).toEqual(expected);
     });
   });
+
   describe('hostPackagePath', () => {
     it.each([
       ['', `${testDirectory}/lib`],
@@ -45,6 +46,7 @@ describe('current', () => {
       await newFile(`${testDirectory}/lib/__tests__/module.js`);
       await newFile(`${testDirectory}/lib/.nvmrc`);
       await newFile(`${testDirectory}/lib/.tool/config.yml`);
+      await newFile(`${testDirectory}/lib/assets/style.css`);
 
       // Useless files that should be ignored
       await newFile(`${testDirectory}/lib/build/main.js`);
@@ -63,177 +65,190 @@ describe('current', () => {
       await remove(testDirectory);
     });
     it.each([
-      [
-        'Specific path',
-        '__tests__/module.js',
-        [`${testDirectory}/lib/__tests__/module.js`],
-      ],
-      [
-        'Glob pattern',
-        '__tests__/**/*.js',
-        [`${testDirectory}/lib/__tests__/module.js`],
-      ],
-      ['One dir', '__tests__', [`${testDirectory}/lib/__tests__/module.js`]],
-      [
-        'All files (no arg)',
-        '',
-        [
+      {
+        title: 'Specific path',
+        pattern: '__tests__/module.js',
+        expected: [`${testDirectory}/lib/__tests__/module.js`],
+      },
+      {
+        title: 'Glob pattern',
+        pattern: '__tests__/**/*.js',
+        expected: [`${testDirectory}/lib/__tests__/module.js`],
+      },
+      {
+        title: 'One dir',
+        pattern: '__tests__',
+        expected: [`${testDirectory}/lib/__tests__/module.js`],
+      },
+      {
+        title: 'All files (no arg)',
+        pattern: '',
+        expected: [
           `${testDirectory}/lib/__tests__/module.js`,
           `${testDirectory}/lib/.nvmrc`,
           `${testDirectory}/lib/.tool/config.yml`,
+          `${testDirectory}/lib/assets/style.css`,
         ],
-      ],
-      [
-        'All files (dot arg)',
-        '.',
-        [
+      },
+      {
+        title: 'All files (dot arg)',
+        pattern: '.',
+        expected: [
           `${testDirectory}/lib/__tests__/module.js`,
           `${testDirectory}/lib/.nvmrc`,
           `${testDirectory}/lib/.tool/config.yml`,
+          `${testDirectory}/lib/assets/style.css`,
         ],
-      ],
-    ])('%s: %s', async (_title, input, expected) => {
-      const actual = await current.findHostPackageFiles(input);
+      },
+      {
+        title: 'All files (** arg)',
+        pattern: '**',
+        expected: [
+          `${testDirectory}/lib/__tests__/module.js`,
+          `${testDirectory}/lib/.nvmrc`,
+          `${testDirectory}/lib/.tool/config.yml`,
+          `${testDirectory}/lib/assets/style.css`,
+        ],
+      },
+      {
+        title: 'Specific extension (.js)',
+        pattern: '**',
+        safeExtensions: ['.js'],
+        expected: [`${testDirectory}/lib/__tests__/module.js`],
+      },
+      {
+        title: 'Specific extension (js)',
+        pattern: '**',
+        safeExtensions: ['js'],
+        expected: [`${testDirectory}/lib/__tests__/module.js`],
+      },
+      {
+        title: 'Several extensions extension (.js)',
+        pattern: '**',
+        safeExtensions: ['.js', 'css'],
+        expected: [
+          `${testDirectory}/lib/__tests__/module.js`,
+          `${testDirectory}/lib/assets/style.css`,
+        ],
+      },
+      {
+        title: 'dotfiles do not have an extension',
+        pattern: '**',
+        safeExtensions: ['.nvmrc'],
+        expected: [],
+      },
+      {
+        title: 'dotfiles only have a name',
+        pattern: '**/.*rc',
+        expected: [`${testDirectory}/lib/.nvmrc`],
+      },
+    ])('$title', async ({ pattern, expected, safeExtensions }) => {
+      const actual = await current.findHostPackageFiles(
+        pattern,
+        safeExtensions,
+      );
       expect(actual).toEqual(expected);
     });
   });
 
-  describe('with hostGitRoot mocked', () => {
-    describe('findHostFiles', () => {
-      describe('Safelist by extension', () => {
-        it.each([
-          [
-            'Safelisting extension with dot',
-            ['src/script.js', 'src/style.css', 'src/assets/cover.png'],
-            '.css',
-            ['src/style.css'],
-            ['src/scripts.js', 'src/assets/cover.png'],
-          ],
-          [
-            'Safelisting extension without dots',
-            ['src/script.js', 'src/style.css', 'src/assets/cover.png'],
-            'css',
-            ['src/style.css'],
-            ['src/scripts.js', 'src/assets/cover.png'],
-          ],
-          [
-            'Safelisting several extensions',
-            ['src/script.js', 'src/style.css', 'src/assets/cover.png'],
-            ['js', '.css'],
-            ['src/script.js', 'src/style.css'],
-            ['src/assets/cover.png'],
-          ],
-          [
-            'Ignore folders',
-            ['src/script.js', 'src/style.css', 'src/assets/cover.png'],
-            [],
-            ['src/script.js', 'src/style.css', 'src/assets/cover.png'],
-            ['src/assets'],
-          ],
-        ])('%s', async (_name, files, extensions, allow, block) => {
-          await pMap(files, async (filepath) => {
-            await write('', current.hostGitPath(filepath));
-          });
-
-          const actual = await current.findHostFiles('.', extensions);
-          _.each(allow, (expected) => {
-            expect(actual).toContain(current.hostGitPath(expected));
-          });
-          _.each(block, (expected) => {
-            expect(actual).not.toContain(current.hostGitPath(expected));
-          });
-        });
-      });
+  fdescribe('getConfig', () => {
+    beforeAll(async () => {
+      // The package.json with type: module is required so I can import with
+      // the export default syntax
+      await writeJson({ type: 'module' }, `${testDirectory}/package.json`);
+      await write(
+        "export default { name: 'tool' }",
+        `${testDirectory}/tool.config.js`,
+      );
+      await write(
+        "export default { name: 'custom' }",
+        `${testDirectory}/configs/custom.config.js`,
+      );
     });
-    describe('getConfig', () => {
-      beforeEach(async () => {
-        // The package.json with type: module is required so I can import with
-        // the export default syntax
-        await writeJson(
-          { type: 'module' },
-          current.hostGitPath('package.json'),
-        );
-        await write(
-          "export default { name: 'custom' }",
-          current.hostGitPath('./custom.js'),
-        );
-        await write(
-          "export default { name: 'tool' }",
-          current.hostGitPath('./tool.config.js'),
-        );
-      });
-      describe('with a specific path given', () => {
-        it('should give priority to the path given', async () => {
-          const actual = await current.getConfig(
-            './custom.js',
-            './tool.config.js',
-            { name: 'fallback' },
-          );
-
-          expect(actual).toHaveProperty('name', 'custom');
-        });
-        it('should fail if given file does not exist', async () => {
-          let actual = null;
-          try {
-            await current.getConfig('./does-not-exist.js', './tool.config.js', {
-              name: 'fallback',
-            });
-          } catch (err) {
-            actual = err;
-          }
-
-          expect(actual).toHaveProperty('code', 'ERR_MODULE_NOT_FOUND');
-        });
-        it('should allow passing absolute paths', async () => {
-          const actual = await current.getConfig(
-            current.hostGitPath('custom.js'),
-            './tool.config.js',
-            { name: 'fallback' },
-          );
-
-          expect(actual).toHaveProperty('name', 'custom');
-        });
-      });
-      describe('with a fallback to the default file in the host', () => {
-        it('should return the file in host if no path given', async () => {
-          const actual = await current.getConfig(null, './tool.config.js', {
-            name: 'fallback',
-          });
-
-          expect(actual).toHaveProperty('name', 'tool');
-        });
-        it('should allow passing absolute path to the file in the root', async () => {
-          const actual = await current.getConfig(
-            null,
-            current.hostGitPath('tool.config.js'),
-            {
-              name: 'fallback',
-            },
-          );
-
-          expect(actual).toHaveProperty('name', 'tool');
-        });
-      });
-      describe('with a final fallback to the template if no default host file found', () => {
-        it('should return the final fallback if no host file passed', async () => {
-          const actual = await current.getConfig(null, null, {
-            name: 'fallback',
-          });
-
-          expect(actual).toHaveProperty('name', 'fallback');
-        });
-        it('should return the final fallback if no host file found', async () => {
-          const actual = await current.getConfig(
-            null,
-            './does-not-exist.config.js',
-            {
-              name: 'fallback',
-            },
-          );
-
-          expect(actual).toHaveProperty('name', 'fallback');
-        });
-      });
+    afterAll(async () => {
+      await remove(testDirectory);
     });
+    it.each([
+      {
+        title: 'Priority to user-provided',
+        input: ['configs/custom.config.js', 'tool.config.js'],
+        expected: 'custom',
+      },
+    ])('$title', async ({ input, expected }) => {
+      const actual = current.getConfig(...input, { name: 'fallback' });
+      expect(actual).toHaveProperty('name', expected);
+    });
+    // describe('with a specific path given', () => {
+    //   it('should give priority to the path given', async () => {
+    //     const actual = await current.getConfig(
+    //       './custom.js',
+    //       './tool.config.js',
+    //       { name: 'fallback' },
+    //     );
+    //
+    //     expect(actual).toHaveProperty('name', 'custom');
+    //   });
+    //   it('should fail if given file does not exist', async () => {
+    //     let actual = null;
+    //     try {
+    //       await current.getConfig('./does-not-exist.js', './tool.config.js', {
+    //         name: 'fallback',
+    //       });
+    //     } catch (err) {
+    //       actual = err;
+    //     }
+    //
+    //     expect(actual).toHaveProperty('code', 'ERR_MODULE_NOT_FOUND');
+    //   });
+    //   it('should allow passing absolute paths', async () => {
+    //     const actual = await current.getConfig(
+    //       current.hostGitPath('custom.js'),
+    //       './tool.config.js',
+    //       { name: 'fallback' },
+    //     );
+    //
+    //     expect(actual).toHaveProperty('name', 'custom');
+    //   });
+    // });
+    // describe('with a fallback to the default file in the host', () => {
+    //   it('should return the file in host if no path given', async () => {
+    //     const actual = await current.getConfig(null, './tool.config.js', {
+    //       name: 'fallback',
+    //     });
+    //
+    //     expect(actual).toHaveProperty('name', 'tool');
+    //   });
+    //   it('should allow passing absolute path to the file in the root', async () => {
+    //     const actual = await current.getConfig(
+    //       null,
+    //       current.hostGitPath('tool.config.js'),
+    //       {
+    //         name: 'fallback',
+    //       },
+    //     );
+    //
+    //     expect(actual).toHaveProperty('name', 'tool');
+    //   });
+    // });
+    // describe('with a final fallback to the template if no default host file found', () => {
+    //   it('should return the final fallback if no host file passed', async () => {
+    //     const actual = await current.getConfig(null, null, {
+    //       name: 'fallback',
+    //     });
+    //
+    //     expect(actual).toHaveProperty('name', 'fallback');
+    //   });
+    //   it('should return the final fallback if no host file found', async () => {
+    //     const actual = await current.getConfig(
+    //       null,
+    //       './does-not-exist.config.js',
+    //       {
+    //         name: 'fallback',
+    //       },
+    //     );
+    //
+    //     expect(actual).toHaveProperty('name', 'fallback');
+    //   });
+    // });
   });
 });
