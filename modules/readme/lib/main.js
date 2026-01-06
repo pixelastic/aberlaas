@@ -48,9 +48,7 @@ export default {
       }
     }
 
-    const hostDefaultTemplate = hostGitPath(
-      '.github/README.template.md',
-    );
+    const hostDefaultTemplate = hostGitPath('.github/README.template.md');
     if (await exists(hostDefaultTemplate)) {
       return await read(hostDefaultTemplate);
     }

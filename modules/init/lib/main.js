@@ -1,7 +1,7 @@
 import { consoleInfo, firostError, run, spinner, write } from 'firost';
 
 import Gilmore from 'gilmore';
-import { hostGitRoot, hostGitPath } from 'aberlaas-helper';
+import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
 import moduleLayout from './layouts/module.js';
 import libdocsLayout from './layouts/libdocs.js';

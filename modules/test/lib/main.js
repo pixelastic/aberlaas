@@ -1,7 +1,7 @@
 import { createVitest, registerConsoleShortcuts } from 'vitest/node';
 import { firostError } from 'firost';
 import { _ } from 'golgoth';
-import { hostPackageRoot, getConfig } from 'aberlaas-helper';
+import { getConfig, hostPackageRoot } from 'aberlaas-helper';
 import viteConfig from '../configs/vite.js';
 
 export default {

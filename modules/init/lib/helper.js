@@ -12,7 +12,7 @@ import {
   write,
 } from 'firost';
 import { _, pMap } from 'golgoth';
-import { hostGitRoot, hostGitPath } from 'aberlaas-helper';
+import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 
 /**

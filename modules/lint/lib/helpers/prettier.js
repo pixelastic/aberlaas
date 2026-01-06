@@ -10,11 +10,7 @@ import prettierConfig from '../../configs/prettier.js';
  */
 export async function fix(inputFiles) {
   // Config file
-  const config = await getConfig(
-    null,
-    'prettier.config.js',
-    prettierConfig,
-  );
+  const config = await getConfig(null, 'prettier.config.js', prettierConfig);
 
   const errors = [];
 
