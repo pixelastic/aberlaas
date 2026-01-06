@@ -1,12 +1,11 @@
-import { absolute, emptyDir } from 'firost';
-import * as helper from 'aberlaas-helper';
+import { absolute } from 'firost';
+import { __ as helper } from 'aberlaas-helper';
 import current from '../main.js';
 
 describe('compress', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/compress/root');
   beforeEach(async () => {
     vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    await emptyDir(tmpDirectory);
   });
   describe('run', () => {
     beforeEach(async () => {

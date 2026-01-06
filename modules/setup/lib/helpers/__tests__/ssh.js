@@ -1,5 +1,5 @@
 import { absolute, emptyDir, exists, write } from 'firost';
-import * as helper from 'aberlaas-helper';
+import { __ as helper } from 'aberlaas-helper';
 import current from '../ssh.js';
 import githubHelper from '../github.js';
 

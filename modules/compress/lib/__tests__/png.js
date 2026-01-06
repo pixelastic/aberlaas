@@ -1,5 +1,5 @@
 import { absolute, emptyDir, exists, newFile } from 'firost';
-import * as helper from 'aberlaas-helper';
+import { __ as helper } from 'aberlaas-helper';
 import current from '../png.js';
 
 describe('compress > png', () => {

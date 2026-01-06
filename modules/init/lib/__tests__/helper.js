@@ -8,7 +8,7 @@ import {
   tmpDirectory,
   write,
 } from 'firost';
-import * as helper from 'aberlaas-helper';
+import { __ as helper } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../helper.js';
 

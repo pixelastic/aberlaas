@@ -1,6 +1,6 @@
 import { absolute, emptyDir, write } from 'firost';
 import { _ } from 'golgoth';
-import * as helper from 'aberlaas-helper';
+import { __ as helper } from 'aberlaas-helper';
 import current from '../main.js';
 
 describe('test', () => {

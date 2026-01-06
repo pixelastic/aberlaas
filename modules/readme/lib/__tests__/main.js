@@ -1,6 +1,6 @@
 import { _, pProps } from 'golgoth';
 import { absolute, emptyDir, read, write, writeJson } from 'firost';
-import * as helper from 'aberlaas-helper';
+import { __ as helper } from 'aberlaas-helper';
 import current from '../main.js';
 
 describe('readme', () => {
