@@ -72,6 +72,16 @@ export default [
         },
         {
           object: '_',
+          property: 'contain',
+          message: 'Typo: Use _.includes instead',
+        },
+        {
+          object: '_',
+          property: 'include',
+          message: 'Typo: Use _.includes instead',
+        },
+        {
+          object: '_',
           property: 'padLeft',
           message: 'Typo: Use _.padStart instead',
         },

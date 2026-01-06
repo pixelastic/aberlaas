@@ -1,6 +1,6 @@
+/* eslint-disable vitest/no-disabled-tests,no-restricted-globals */
 describe('test > skip', () => {
   describe('xdescribe', () => {
-    // eslint-disable-next-line no-restricted-globals
     xdescribe('[describe]', () => {
       it('should not run', async () => {
         expect(true).toBe(false);
@@ -14,7 +14,6 @@ describe('test > skip', () => {
   });
 
   describe('xit', () => {
-    // eslint-disable-next-line no-restricted-globals
     xit('should not run', async () => {
       expect(true).toBe(false);
     });

@@ -1,5 +1,6 @@
 import { absolute, emptyDir, newFile, read, write, writeJson } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
+import { _ } from 'golgoth';
 import current from '../js.js';
 
 describe('lint-js', () => {
@@ -29,17 +30,13 @@ describe('lint-js', () => {
         ['lib/demo/script.txt', false],
         ['lib/demo-backup/script.js', false],
         ['lib/demo/dist/script.js', false],
-      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+      ])('%s : %s', async (filepath, expected) => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await current.getInputFiles('demo/**/*');
-
-        if (shouldBeIncluded) {
-          expect(actual).toContain(absolutePath);
-        } else {
-          expect(actual).not.toContain(absolutePath);
-        }
+        const hasFile = _.includes(actual, absolutePath);
+        expect(hasFile).toEqual(expected);
       });
     });
   });

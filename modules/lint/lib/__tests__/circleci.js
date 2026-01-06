@@ -1,5 +1,6 @@
 import { absolute, emptyDir, newFile, read, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
+import { _ } from 'golgoth';
 import current from '../circleci.js';
 
 describe('lint-circleci', () => {
@@ -27,17 +28,13 @@ describe('lint-circleci', () => {
         ['.circleci/something-else.yml', false],
         ['circleci.yml', false],
         ['circleci/config.yml', false],
-      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+      ])('%s : %s', async (filepath, expected) => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await current.getInputFile();
-
-        if (shouldBeIncluded) {
-          expect(actual).not.toBeFalse();
-        } else {
-          expect(actual).toBeFalse();
-        }
+        const hasFile = _.includes(actual, absolutePath);
+        expect(hasFile).toEqual(expected);
       });
     });
     describe('from inside package', () => {
@@ -53,17 +50,13 @@ describe('lint-circleci', () => {
         ['.circleci/something-else.yml', false],
         ['circleci.yml', false],
         ['circleci/config.yml', false],
-      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+      ])('%s : %s', async (filepath, expected) => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await current.getInputFile();
-
-        if (shouldBeIncluded) {
-          expect(actual).not.toBeFalse();
-        } else {
-          expect(actual).toBeFalse();
-        }
+        const hasFile = _.includes(actual, absolutePath);
+        expect(hasFile).toEqual(expected);
       });
     });
   });

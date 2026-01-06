@@ -1,5 +1,6 @@
 import { absolute, emptyDir, newFile, read, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
+import { _ } from 'golgoth';
 import current from '../yml.js';
 
 describe('lint-yml', () => {
@@ -29,17 +30,13 @@ describe('lint-yml', () => {
         ['lib/tools/config.txt', false],
         ['lib/tools-backup/config.yml', false],
         ['lib/tools/dist/config.yml', false],
-      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+      ])('%s : %s', async (filepath, expected) => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await current.getInputFiles('tools/**/*');
-
-        if (shouldBeIncluded) {
-          expect(actual).toContain(absolutePath);
-        } else {
-          expect(actual).not.toContain(absolutePath);
-        }
+        const hasFile = _.includes(actual, absolutePath);
+        expect(hasFile).toEqual(expected);
       });
     });
   });

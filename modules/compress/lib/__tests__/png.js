@@ -1,6 +1,9 @@
 import { absolute, emptyDir, exists, newFile } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
+import { _ } from 'golgoth';
 import current from '../png.js';
+// TODO: Update vim auto-save, so if there is a _ is not defined or a method
+// from firost, it automatically adds it at the top
 
 describe('compress > png', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/compress/png');
@@ -39,17 +42,13 @@ describe('compress > png', () => {
         ['lib/assets/image.gif', false],
         ['lib/assets-backup/image.png', false],
         ['lib/assets/dist/image.png', false],
-      ])('%s : %s', async (filepath, shouldBeIncluded) => {
+      ])('%s : %s', async (filepath, expected) => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await current.getInputFiles('assets/**/*');
-
-        if (shouldBeIncluded) {
-          expect(actual).toContain(absolutePath);
-        } else {
-          expect(actual).not.toContain(absolutePath);
-        }
+        const hasFile = _.includes(actual, absolutePath);
+        expect(hasFile).toEqual(expected);
       });
     });
   });
