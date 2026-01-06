@@ -1,5 +1,4 @@
 import { newFile, remove, tmpDirectory, write, writeJson } from 'firost';
-import { _, pMap } from 'golgoth';
 import current from '../main.js';
 
 describe('current', () => {
@@ -18,11 +17,23 @@ describe('current', () => {
 
   describe('hostGitPath', () => {
     it.each([
-      ['', `${testDirectory}`],
-      ['package.json', `${testDirectory}/package.json`],
-      ['lib/src/main.js', `${testDirectory}/lib/src/main.js`],
-      ['lib/src/../../package.json', `${testDirectory}/package.json`],
-    ])('%s', async (input, expected) => {
+      { title: 'Empty input', input: '', expected: `${testDirectory}` },
+      {
+        title: 'Direct child',
+        input: 'package.json',
+        expected: `${testDirectory}/package.json`,
+      },
+      {
+        title: 'Deep child',
+        input: 'lib/src/main.js',
+        expected: `${testDirectory}/lib/src/main.js`,
+      },
+      {
+        title: 'Deep and using ../..',
+        input: 'lib/src/../../package.json',
+        expected: `${testDirectory}/package.json`,
+      },
+    ])('$title', async ({ input, expected }) => {
       const actual = current.hostGitPath(input);
       expect(actual).toEqual(expected);
     });
@@ -30,12 +41,28 @@ describe('current', () => {
 
   describe('hostPackagePath', () => {
     it.each([
-      ['', `${testDirectory}/lib`],
-      ['package.json', `${testDirectory}/lib/package.json`],
-      ['src/main.js', `${testDirectory}/lib/src/main.js`],
-      ['src/../package.json', `${testDirectory}/lib/package.json`],
-      ['../package.json', `${testDirectory}/package.json`],
-    ])('%s', async (input, expected) => {
+      { title: 'Empty input', input: '', expected: `${testDirectory}/lib` },
+      {
+        title: 'Direct child',
+        input: 'package.json',
+        expected: `${testDirectory}/lib/package.json`,
+      },
+      {
+        title: 'Deep child',
+        input: 'src/main.js',
+        expected: `${testDirectory}/lib/src/main.js`,
+      },
+      {
+        title: 'Deep and using ../',
+        input: 'src/../package.json',
+        expected: `${testDirectory}/lib/package.json`,
+      },
+      {
+        title: 'Going to parent',
+        input: '../package.json',
+        expected: `${testDirectory}/package.json`,
+      },
+    ])('$title', async ({ input, expected }) => {
       const actual = current.hostPackagePath(input);
       expect(actual).toEqual(expected);
     });
@@ -151,7 +178,7 @@ describe('current', () => {
     });
   });
 
-  fdescribe('getConfig', () => {
+  describe('getConfig', () => {
     beforeAll(async () => {
       // The package.json with type: module is required so I can import with
       // the export default syntax
@@ -169,86 +196,56 @@ describe('current', () => {
       await remove(testDirectory);
     });
     it.each([
+      // User-provided
       {
         title: 'Priority to user-provided',
         input: ['configs/custom.config.js', 'tool.config.js'],
         expected: 'custom',
       },
+      {
+        title: 'Works with absolute paths',
+        input: [`${testDirectory}/configs/custom.config.js`, 'tool.config.js'],
+        expected: 'custom',
+      },
+      // Host default
+      {
+        title: 'Fallback to host default if no user-provided',
+        input: [null, 'tool.config.js'],
+        expected: 'tool',
+      },
+      {
+        title: 'Fallback to absolute host default if no user-provided',
+        input: [null, `${testDirectory}/tool.config.js`],
+        expected: 'tool',
+      },
+      // Aberlaas fallback
+      {
+        title: 'Final fallback to aberlaas if none are passed',
+        input: [null, null],
+        expected: 'aberlaas',
+      },
+      {
+        title: 'Final fallback to aberlaas if host file is missing',
+        input: [null, 'missing.config.js'],
+        expected: 'aberlaas',
+      },
     ])('$title', async ({ input, expected }) => {
-      const actual = current.getConfig(...input, { name: 'fallback' });
+      const actual = await current.getConfig(...input, { name: 'aberlaas' });
       expect(actual).toHaveProperty('name', expected);
     });
-    // describe('with a specific path given', () => {
-    //   it('should give priority to the path given', async () => {
-    //     const actual = await current.getConfig(
-    //       './custom.js',
-    //       './tool.config.js',
-    //       { name: 'fallback' },
-    //     );
-    //
-    //     expect(actual).toHaveProperty('name', 'custom');
-    //   });
-    //   it('should fail if given file does not exist', async () => {
-    //     let actual = null;
-    //     try {
-    //       await current.getConfig('./does-not-exist.js', './tool.config.js', {
-    //         name: 'fallback',
-    //       });
-    //     } catch (err) {
-    //       actual = err;
-    //     }
-    //
-    //     expect(actual).toHaveProperty('code', 'ERR_MODULE_NOT_FOUND');
-    //   });
-    //   it('should allow passing absolute paths', async () => {
-    //     const actual = await current.getConfig(
-    //       current.hostGitPath('custom.js'),
-    //       './tool.config.js',
-    //       { name: 'fallback' },
-    //     );
-    //
-    //     expect(actual).toHaveProperty('name', 'custom');
-    //   });
-    // });
-    // describe('with a fallback to the default file in the host', () => {
-    //   it('should return the file in host if no path given', async () => {
-    //     const actual = await current.getConfig(null, './tool.config.js', {
-    //       name: 'fallback',
-    //     });
-    //
-    //     expect(actual).toHaveProperty('name', 'tool');
-    //   });
-    //   it('should allow passing absolute path to the file in the root', async () => {
-    //     const actual = await current.getConfig(
-    //       null,
-    //       current.hostGitPath('tool.config.js'),
-    //       {
-    //         name: 'fallback',
-    //       },
-    //     );
-    //
-    //     expect(actual).toHaveProperty('name', 'tool');
-    //   });
-    // });
-    // describe('with a final fallback to the template if no default host file found', () => {
-    //   it('should return the final fallback if no host file passed', async () => {
-    //     const actual = await current.getConfig(null, null, {
-    //       name: 'fallback',
-    //     });
-    //
-    //     expect(actual).toHaveProperty('name', 'fallback');
-    //   });
-    //   it('should return the final fallback if no host file found', async () => {
-    //     const actual = await current.getConfig(
-    //       null,
-    //       './does-not-exist.config.js',
-    //       {
-    //         name: 'fallback',
-    //       },
-    //     );
-    //
-    //     expect(actual).toHaveProperty('name', 'fallback');
-    //   });
-    // });
+    it('should throw an error if user config does not exist', async () => {
+      let actual = null;
+      try {
+        await current.getConfig('config/missing.config.js', 'tool.config.js', {
+          name: 'aberlaas',
+        });
+      } catch (err) {
+        actual = err;
+      }
+      expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_HELPER_GET_CONFIG_USER_PROVIDED_NOT_FOUND',
+      );
+    });
   });
 });

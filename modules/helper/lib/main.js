@@ -1,6 +1,14 @@
 import path from 'node:path';
 import { _ } from 'golgoth';
-import { env, exists, firostImport, gitRoot, glob, packageRoot } from 'firost';
+import {
+  env,
+  exists,
+  firostError,
+  firostImport,
+  gitRoot,
+  glob,
+  packageRoot,
+} from 'firost';
 
 export default {
   /**
@@ -159,7 +167,15 @@ export default {
   async getConfig(userConfigPath, hostConfigPath, baseConfig = {}) {
     // Taking value from --config in CLI in priority
     if (userConfigPath) {
-      return await firostImport(this.hostGitPath(userConfigPath));
+      const configPath = this.hostGitPath(userConfigPath);
+      if (!(await exists(configPath))) {
+        throw firostError(
+          'ABERLAAS_HELPER_GET_CONFIG_USER_PROVIDED_NOT_FOUND',
+          `Provided config file (${userConfigPath}) not found`,
+        );
+      }
+
+      return await firostImport(configPath);
     }
 
     // Checking for custom config in the host
