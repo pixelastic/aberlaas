@@ -1,7 +1,7 @@
 import { createVitest, registerConsoleShortcuts } from 'vitest/node';
 import { firostError } from 'firost';
 import { _ } from 'golgoth';
-import helper from 'aberlaas-helper';
+import { hostPackageRoot, getConfig } from 'aberlaas-helper';
 import viteConfig from '../configs/vite.js';
 
 export default {
@@ -23,7 +23,7 @@ export default {
     const isRelatedMode = options.related?.length > 0;
 
     // If no files are passed, we assume we want to test the current project
-    const packageRoot = await helper.hostPackageRoot();
+    const packageRoot = await hostPackageRoot();
     let files = _.isEmpty(cliArgs._) ? [packageRoot] : cliArgs._;
 
     // If --related is passed, the list of files will already by in the .related
@@ -84,7 +84,7 @@ export default {
     ];
 
     // Reading base options from the config file
-    const config = await helper.getConfig(
+    const config = await getConfig(
       cliArgs.config,
       'vite.config.js',
       viteConfig,

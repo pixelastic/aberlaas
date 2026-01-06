@@ -1,16 +1,20 @@
 import { newFile, remove, tmpDirectory, write, writeJson } from 'firost';
-import current from '../main.js';
+import {
+  __,
+  findHostPackageFiles,
+  getConfig,
+  hostGitPath,
+  hostPackagePath,
+} from '../main.js';
 
-describe('current', () => {
+describe('helper', () => {
   const testDirectory = tmpDirectory('aberlaas/helper');
 
   beforeEach(async () => {
     // Those are tested in ./yarnRun.js, so we can just mock them here
-    vi.spyOn(current, 'hostGitRoot').mockReturnValue(testDirectory);
-    vi.spyOn(current, 'hostPackageRoot').mockReturnValue(
-      `${testDirectory}/lib`,
-    );
-    vi.spyOn(current, 'hostWorkingDirectory').mockReturnValue(
+    vi.spyOn(__, 'hostGitRoot').mockReturnValue(testDirectory);
+    vi.spyOn(__, 'hostPackageRoot').mockReturnValue(`${testDirectory}/lib`);
+    vi.spyOn(__, 'hostWorkingDirectory').mockReturnValue(
       `${testDirectory}/lib/src`,
     );
   });
@@ -34,7 +38,7 @@ describe('current', () => {
         expected: `${testDirectory}/package.json`,
       },
     ])('$title', async ({ input, expected }) => {
-      const actual = current.hostGitPath(input);
+      const actual = hostGitPath(input);
       expect(actual).toEqual(expected);
     });
   });
@@ -63,7 +67,7 @@ describe('current', () => {
         expected: `${testDirectory}/package.json`,
       },
     ])('$title', async ({ input, expected }) => {
-      const actual = current.hostPackagePath(input);
+      const actual = hostPackagePath(input);
       expect(actual).toEqual(expected);
     });
   });
@@ -170,10 +174,7 @@ describe('current', () => {
         expected: [`${testDirectory}/lib/.nvmrc`],
       },
     ])('$title', async ({ pattern, expected, safeExtensions }) => {
-      const actual = await current.findHostPackageFiles(
-        pattern,
-        safeExtensions,
-      );
+      const actual = await findHostPackageFiles(pattern, safeExtensions);
       expect(actual).toEqual(expected);
     });
   });
@@ -230,13 +231,13 @@ describe('current', () => {
         expected: 'aberlaas',
       },
     ])('$title', async ({ input, expected }) => {
-      const actual = await current.getConfig(...input, { name: 'aberlaas' });
+      const actual = await getConfig(...input, { name: 'aberlaas' });
       expect(actual).toHaveProperty('name', expected);
     });
     it('should throw an error if user config does not exist', async () => {
       let actual = null;
       try {
-        await current.getConfig('config/missing.config.js', 'tool.config.js', {
+        await getConfig('config/missing.config.js', 'tool.config.js', {
           name: 'aberlaas',
         });
       } catch (err) {

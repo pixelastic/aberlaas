@@ -1,7 +1,7 @@
 import { consoleInfo, firostError, run, spinner, write } from 'firost';
 
 import Gilmore from 'gilmore';
-import helper from 'aberlaas-helper';
+import { hostGitRoot, hostGitPath } from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
 import moduleLayout from './layouts/module.js';
 import libdocsLayout from './layouts/libdocs.js';
@@ -12,14 +12,14 @@ export default {
    * Configure git hooks to use scripts/hooks instead of .git/hooks
    */
   async configureGit() {
-    const repo = new Gilmore(helper.hostGitRoot());
+    const repo = new Gilmore(hostGitRoot());
     await repo.setConfig('core.hooksPath', 'scripts/hooks');
   },
   /**
    * Pin the node version through nvm
    */
   async configureNode() {
-    const nvmrcPath = helper.hostGitPath('.nvmrc');
+    const nvmrcPath = hostGitPath('.nvmrc');
     await write(nodeVersion, nvmrcPath);
   },
   /**

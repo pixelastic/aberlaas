@@ -1,6 +1,6 @@
 import ciInfo from 'ci-info';
 import { firostError, run, which } from 'firost';
-import helper from 'aberlaas-helper';
+import { findHostPackageFiles, hostGitPath } from 'aberlaas-helper';
 import lintYml from './yml.js';
 
 export default {
@@ -10,7 +10,7 @@ export default {
    * @returns {Array} Array of files
    */
   async getInputFile() {
-    const files = await helper.findHostPackageFiles([this.configPath]);
+    const files = await findHostPackageFiles([this.configPath]);
     return files[0] || false;
   },
   /**
@@ -71,7 +71,7 @@ export default {
    * @returns {boolean} True on success
    */
   async fix() {
-    const absoluteConfigPath = helper.hostGitPath(this.configPath);
+    const absoluteConfigPath = hostGitPath(this.configPath);
     // Fix yml issues
     await lintYml.fix([absoluteConfigPath]);
 

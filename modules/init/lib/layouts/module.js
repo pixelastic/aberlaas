@@ -1,6 +1,6 @@
 import { writeJson } from 'firost';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
-import helper from 'aberlaas-helper';
+import { hostGitPath } from 'aberlaas-helper';
 import initHelper from '../helper.js';
 
 export default {
@@ -79,7 +79,7 @@ export default {
       scripts,
     };
 
-    await writeJson(packageContent, helper.hostGitPath('./package.json'), {
+    await writeJson(packageContent, hostGitPath('./package.json'), {
       sort: false,
     });
   },

@@ -1,5 +1,5 @@
 import { absolute, emptyDir, newFile, read, write, writeJson } from 'firost';
-import helper from 'aberlaas-helper';
+import * as helper from 'aberlaas-helper';
 import current from '../json.js';
 
 describe('lint-json', () => {

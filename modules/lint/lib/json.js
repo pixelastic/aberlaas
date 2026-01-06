@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { _, pMap } from 'golgoth';
 import { firostError, read } from 'firost';
-import helper from 'aberlaas-helper';
+import { findHostPackageFiles, hostGitRoot } from 'aberlaas-helper';
 import { fix as prettierFix } from './helpers/prettier.js';
 
 export default {
@@ -14,7 +14,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.json']
       : userPatterns;
-    return await helper.findHostPackageFiles(filePatterns, ['.json']);
+    return await findHostPackageFiles(filePatterns, ['.json']);
   },
   /**
    * Lint all files and display results.
@@ -34,7 +34,7 @@ export default {
         JSON.parse(await read(filepath));
       } catch (error) {
         hasErrors = true;
-        const relativePath = path.relative(helper.hostGitRoot(), filepath);
+        const relativePath = path.relative(hostGitRoot(), filepath);
         errorMessages.push(`Invalid JSON: ${relativePath}`);
         errorMessages.push(error.message);
       }

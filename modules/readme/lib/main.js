@@ -3,7 +3,7 @@ import { _, pMap } from 'golgoth';
 import dedent from 'dedent';
 import { absolute, exists, glob, read, readJson, write } from 'firost';
 import frontMatter from 'front-matter';
-import helper from 'aberlaas-helper';
+import { hostGitPath } from 'aberlaas-helper';
 
 export default {
   /**
@@ -42,13 +42,13 @@ export default {
    */
   async getTemplate(cliArgs = {}) {
     if (cliArgs.template) {
-      const customTemplate = helper.hostGitPath(cliArgs.template);
+      const customTemplate = hostGitPath(cliArgs.template);
       if (await exists(customTemplate)) {
         return await read(customTemplate);
       }
     }
 
-    const hostDefaultTemplate = helper.hostGitPath(
+    const hostDefaultTemplate = hostGitPath(
       '.github/README.template.md',
     );
     if (await exists(hostDefaultTemplate)) {
@@ -75,14 +75,14 @@ export default {
    * @returns {object} package.json content
    */
   async getPackagePath(cliArgs = {}) {
-    const libFolder = helper.hostGitPath(cliArgs.lib || './lib');
+    const libFolder = hostGitPath(cliArgs.lib || './lib');
     let packagePath = path.resolve(libFolder, 'package.json');
 
     if (await exists(packagePath)) {
       return packagePath;
     }
 
-    return helper.hostGitPath('package.json');
+    return hostGitPath('package.json');
   },
   /**
    * Returns all documentation as an object
@@ -92,7 +92,7 @@ export default {
    * @returns {object} Documentation content
    */
   async getDocsData(cliArgs = {}) {
-    const docsPath = helper.hostGitPath(cliArgs.docs || './docs/src');
+    const docsPath = hostGitPath(cliArgs.docs || './docs/src');
     const mdFiles = await glob(`${docsPath}/**/*.md`);
     const docsData = {};
     await pMap(mdFiles, async (filepath) => {
@@ -123,14 +123,14 @@ export default {
       return _.chain(cliArgs.output)
         .split(',')
         .map((filepath) => {
-          return helper.hostGitPath(filepath);
+          return hostGitPath(filepath);
         })
         .sort()
         .value();
     }
 
     // README.md at the git root for GitHub
-    const hostReadmePath = helper.hostGitPath('README.md');
+    const hostReadmePath = hostGitPath('README.md');
 
     // README.md in the module folder for npm/yarn
     const packagePath = await this.getPackagePath(cliArgs);

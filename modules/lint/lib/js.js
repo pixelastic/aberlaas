@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { ESLint } from 'eslint';
-import helper from 'aberlaas-helper';
+import { findHostPackageFiles, getConfig } from 'aberlaas-helper';
 import eslintConfig from '../configs/eslint.js';
 
 export default {
@@ -14,7 +14,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns) ? ['./**/*.js'] : userPatterns;
     const allowedExtensions = ['.js', '.jsx', '.ts', '.tsx'];
 
-    return await helper.findHostPackageFiles(filePatterns, allowedExtensions);
+    return await findHostPackageFiles(filePatterns, allowedExtensions);
   },
   /**
    * Lint all files and display results.
@@ -34,7 +34,7 @@ export default {
     }
 
     // Config file
-    const config = await helper.getConfig(
+    const config = await getConfig(
       userConfigFile,
       'eslint.config.js',
       eslintConfig,

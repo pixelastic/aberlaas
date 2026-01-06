@@ -1,7 +1,7 @@
 import stylelint from 'stylelint';
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import helper from 'aberlaas-helper';
+import { findHostPackageFiles, getConfig } from 'aberlaas-helper';
 import stylelintConfig from '../configs/stylelint.js';
 import { fix as prettierFix } from './helpers/prettier.js';
 
@@ -15,7 +15,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.css']
       : userPatterns;
-    return await helper.findHostPackageFiles(filePatterns, ['.css']);
+    return await findHostPackageFiles(filePatterns, ['.css']);
   },
   /**
    * Lint all files and display results.
@@ -35,7 +35,7 @@ export default {
     }
 
     // Config
-    const config = await helper.getConfig(
+    const config = await getConfig(
       userConfigFile,
       'stylelint.config.js',
       stylelintConfig,

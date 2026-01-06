@@ -12,7 +12,7 @@ import {
   write,
 } from 'firost';
 import { _, pMap } from 'golgoth';
-import helper from 'aberlaas-helper';
+import { hostGitRoot, hostGitPath } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 
 /**
@@ -24,7 +24,7 @@ export default {
    * @returns {string} Name of the project
    */
   getProjectName() {
-    return path.basename(helper.hostGitRoot());
+    return path.basename(hostGitRoot());
   },
 
   /**
@@ -53,7 +53,7 @@ export default {
    */
   async copyTemplateToHost(source, destination) {
     const absoluteSource = absolute('../templates/', source);
-    const absoluteDestination = helper.hostGitPath(destination);
+    const absoluteDestination = hostGitPath(destination);
 
     // Source file does not exist
     if (!(await isFile(absoluteSource))) {
@@ -90,7 +90,7 @@ export default {
     await this.copyTemplateToHost('LICENSE', hostFilepath);
 
     // Replace placeholder with real value
-    const licensePath = helper.hostGitPath(hostFilepath);
+    const licensePath = hostGitPath(hostFilepath);
     const author = await this.getProjectAuthor();
     const templateContent = await read(licensePath);
     const actualContent = _.replace(templateContent, '{author}', author);
@@ -103,7 +103,7 @@ export default {
    * Add CircleCI Config file
    */
   async addCircleCIConfigFile() {
-    const configFilepath = helper.hostGitPath('./.circleci/config.yml');
+    const configFilepath = hostGitPath('./.circleci/config.yml');
 
     // Start by adding a template
     await this.copyTemplateToHost('_circleci/config.yml', configFilepath);
@@ -192,6 +192,6 @@ export default {
     );
   },
   __getRepo() {
-    return new Gilmore(helper.hostGitRoot());
+    return new Gilmore(hostGitRoot());
   },
 };

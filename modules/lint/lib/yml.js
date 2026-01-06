@@ -2,7 +2,7 @@ import path from 'node:path';
 import { firostError, read } from 'firost';
 import { _, pMap } from 'golgoth';
 import yamlLint from 'yaml-lint';
-import helper from 'aberlaas-helper';
+import { findHostPackageFiles, hostGitRoot } from 'aberlaas-helper';
 import { fix as prettierFix } from './helpers/prettier.js';
 
 export default {
@@ -15,7 +15,7 @@ export default {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.yml', './**/*.yaml']
       : userPatterns;
-    return await helper.findHostPackageFiles(filePatterns, ['.yml', '.yaml']);
+    return await findHostPackageFiles(filePatterns, ['.yml', '.yaml']);
   },
   /**
    * Lint all files and display results.
@@ -36,7 +36,7 @@ export default {
         await yamlLint.lint(input);
       } catch (error) {
         hasErrors = true;
-        const relativePath = path.relative(helper.hostGitRoot(), filepath);
+        const relativePath = path.relative(hostGitRoot(), filepath);
         errorMessages.push(`Invalid YAML: ${relativePath}`);
         errorMessages.push(error.message);
       }

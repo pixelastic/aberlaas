@@ -1,6 +1,6 @@
 import { writeJson } from 'firost';
 
-import helper from 'aberlaas-helper';
+import { hostGitPath } from 'aberlaas-helper';
 import {
   nodeVersion,
   norskaThemeDocsVersion,
@@ -64,7 +64,7 @@ export default {
         'lint:fix': './scripts/meta/lint-fix',
       },
     };
-    await writeJson(packageContent, helper.hostGitPath('./package.json'), {
+    await writeJson(packageContent, hostGitPath('./package.json'), {
       sort: false,
     });
   },

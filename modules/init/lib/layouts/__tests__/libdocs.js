@@ -1,5 +1,5 @@
 import { exists, glob, readJson, remove, tmpDirectory } from 'firost';
-import helper from 'aberlaas-helper';
+import * as helper from 'aberlaas-helper';
 import {
   nodeVersion,
   norskaThemeDocsVersion,

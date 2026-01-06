@@ -1,6 +1,6 @@
 import Gilmore from 'gilmore';
 import { read, remove, tmpDirectory } from 'firost';
-import helper from 'aberlaas-helper';
+import * as helper from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
 import current from '../main.js';
 

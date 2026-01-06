@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { _ } from 'golgoth';
 import { exists, mkdirp, read, run, which } from 'firost';
-import helper from 'aberlaas-helper';
+import { hostGitPath } from 'aberlaas-helper';
 import githubHelper from './github.js';
 
 export default {
@@ -18,7 +18,7 @@ export default {
    * @returns {object} Object with .public, .private and .privateFingerprint
    */
   async getKeys() {
-    const keyPath = helper.hostGitPath('./tmp/ssh/key');
+    const keyPath = hostGitPath('./tmp/ssh/key');
 
     // Generating keys if do not exist
     const keyExists = await exists(keyPath);

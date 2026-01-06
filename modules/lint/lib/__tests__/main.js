@@ -1,5 +1,5 @@
 import { absolute, emptyDir } from 'firost';
-import helper from 'aberlaas-helper';
+import * as helper from 'aberlaas-helper';
 import current from '../main.js';
 
 describe('lint', () => {

@@ -1,5 +1,5 @@
 import { glob, read, readJson, remove, tmpDirectory } from 'firost';
-import helper from 'aberlaas-helper';
+import * as helper from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../module.js';
 
