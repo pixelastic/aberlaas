@@ -106,7 +106,7 @@ export default {
     };
     await writeJson(
       packageContent,
-      helper.hostGitPath('./modules/docs/package.json'),
+      hostGitPath('./modules/docs/package.json'),
       {
         sort: false,
       },
@@ -156,13 +156,9 @@ export default {
       // Scripts
       scripts: sharedProjectData.scripts,
     };
-    await writeJson(
-      packageContent,
-      helper.hostGitPath('./modules/lib/package.json'),
-      {
-        sort: false,
-      },
-    );
+    await writeJson(packageContent, hostGitPath('./modules/lib/package.json'), {
+      sort: false,
+    });
   },
   /**
    * Add MIT license files to the repository

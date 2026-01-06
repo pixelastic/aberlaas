@@ -101,7 +101,7 @@ export default {
       // Scripts
       scripts: sharedProjectData.scripts,
     };
-    await writeJson(packageContent, helper.hostGitPath('./docs/package.json'), {
+    await writeJson(packageContent, hostGitPath('./docs/package.json'), {
       sort: false,
     });
   },
@@ -149,7 +149,7 @@ export default {
       // Scripts
       scripts: sharedProjectData.scripts,
     };
-    await writeJson(packageContent, helper.hostGitPath('./lib/package.json'), {
+    await writeJson(packageContent, hostGitPath('./lib/package.json'), {
       sort: false,
     });
   },

@@ -1,6 +1,6 @@
 import Gilmore from 'gilmore';
 import { read, remove, tmpDirectory } from 'firost';
-import { __ } from 'aberlaas-helper';
+import { __ as helper } from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
 import current from '../main.js';
 
@@ -9,13 +9,13 @@ describe('init', () => {
   beforeEach(async () => {
     // We need to make the tmp directory outside of this git repo tree, for all
     // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(__, 'hostGitRoot').mockReturnValue(testDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
   });
   afterEach(async () => {
     await remove(helper.hostGitRoot());
   });
   // CONFIGURE
-  fdescribe('configureGit', () => {
+  describe('configureGit', () => {
     it('should change the default git hooksPath', async () => {
       const repo = new Gilmore(helper.hostGitRoot());
       await repo.init();

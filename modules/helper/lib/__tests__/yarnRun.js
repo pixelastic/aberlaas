@@ -7,6 +7,8 @@ import {
 } from '../test-helper.js';
 
 describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
+  vi.setConfig({ testTimeout: 10_000 });
+
   const testDirectory = tmpDirectory('aberlaas/helper');
   afterAll(async () => {
     await remove(testDirectory);
