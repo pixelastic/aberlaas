@@ -20,6 +20,7 @@ export default {
     lint: 'aberlaas-lint',
     precommit: 'aberlaas-precommit',
     readme: 'aberlaas-readme',
+    release: 'aberlaas-release',
     setup: 'aberlaas-setup',
     test: 'aberlaas-test',
     // Only used internally, for tests

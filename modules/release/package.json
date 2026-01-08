@@ -1,19 +1,17 @@
 {
-  "name": "aberlaas-test",
+  "name": "aberlaas-release",
   "type": "module",
-  "description": "aberlaas test command: Run automated tests",
-  "version": "2.18.1",
+  "description": "aberlaas release command: Release and publish new versions",
+  "version": "2.19.0",
   "repository": "pixelastic/aberlaas",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
   "license": "MIT",
   "files": [
-    "lib/*.js",
-    "configs/**/*.js"
+    "lib/*.js"
   ],
   "exports": {
-    ".": "./lib/main.js",
-    "./configs/vite": "./configs/vite.js"
+    ".": "./lib/main.js"
   },
   "main": "./lib/main.js",
   "engines": {
@@ -36,11 +34,11 @@
   },
   "dependencies": {
     "aberlaas-helper": "^2.18.1",
-    "dedent": "1.5.3",
+    "conventional-changelog": "7.1.1",
+    "conventional-recommended-bump": "11.2.0",
     "firost": "5.3.0",
-    "globals": "17.0.0",
+    "gilmore": "1.0.0",
     "golgoth": "3.0.0",
-    "jest-extended": "4.0.2",
-    "vitest": "2.1.2"
+    "semver": "7.7.3"
   }
 }
