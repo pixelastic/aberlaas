@@ -34,7 +34,7 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "aberlaas-helper": "^2.18.1",
+    "aberlaas-helper": "workspace:*",
     "dedent": "1.5.3",
     "firost": "5.3.0",
     "front-matter": "4.0.2",

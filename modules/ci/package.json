@@ -33,8 +33,8 @@
     "lint:fix": "../../scripts/local/lint-fix"
   },
   "dependencies": {
-    "aberlaas-lint": "^2.19.0",
-    "aberlaas-test": "^2.18.1",
+    "aberlaas-lint": "workspace:*",
+    "aberlaas-test": "workspace:*",
     "ci-info": "4.1.0",
     "firost": "5.3.0"
   }
