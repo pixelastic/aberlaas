@@ -4273,7 +4273,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-helper@npm:^2.18.1, aberlaas-helper@workspace:modules/helper":
+"aberlaas-helper@npm:^2.18.1, aberlaas-helper@workspace:*, aberlaas-helper@workspace:modules/helper":
   version: 0.0.0-use.local
   resolution: "aberlaas-helper@workspace:modules/helper"
   dependencies:
@@ -4296,7 +4296,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-lint@npm:^2.19.0, aberlaas-lint@workspace:modules/lint":
+"aberlaas-lint@npm:^2.19.0, aberlaas-lint@workspace:*, aberlaas-lint@workspace:modules/lint":
   version: 0.0.0-use.local
   resolution: "aberlaas-lint@workspace:modules/lint"
   dependencies:
@@ -4359,7 +4359,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas-release@workspace:modules/release"
   dependencies:
-    aberlaas-helper: "npm:^2.18.1"
+    aberlaas-helper: "workspace:*"
+    aberlaas-lint: "workspace:*"
+    aberlaas-test: "workspace:*"
     conventional-changelog: "npm:7.1.1"
     conventional-recommended-bump: "npm:11.2.0"
     firost: "npm:5.3.0"
@@ -4381,7 +4383,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aberlaas-test@npm:^2.18.1, aberlaas-test@workspace:modules/test":
+"aberlaas-test@npm:^2.18.1, aberlaas-test@workspace:*, aberlaas-test@workspace:modules/test":
   version: 0.0.0-use.local
   resolution: "aberlaas-test@workspace:modules/test"
   dependencies:

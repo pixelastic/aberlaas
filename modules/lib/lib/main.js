@@ -1,4 +1,3 @@
-import path from 'node:path';
 import minimist from 'minimist';
 import {
   absolute,
@@ -23,6 +22,7 @@ export default {
     release: 'aberlaas-release',
     setup: 'aberlaas-setup',
     test: 'aberlaas-test',
+
     // Only used internally, for tests
     debug: 'aberlaas-helper',
   },
@@ -32,31 +32,6 @@ export default {
       return false;
     }
     return await firostImport(commandModuleName);
-  },
-  /**
-   * Converts a list of filepaths to absolute filepaths
-   * Note: We want to be able to call commands like "aberlaas lint" from the
-   * workspace root or any child workspace. We also want to be able to use
-   * relative or absolute filepaths as arguments.
-   * Yarn always sets INIT_CWD to the directory where the command was called,
-   * but because scripts in child workspaces are actually calling scripts in the
-   * root workspace, through the g: syntax, that value is overwritten. This is
-   * why we save the original calling directory in ABERLAAS_CWD, in our
-   * package.json script definitions and use that value if available.
-   * @param {Array} filepaths Array of filepaths
-   * @returns {Array} Array of absolute filepaths
-   */
-  convertFilepathsToAbsolute(filepaths) {
-    const callingDirectory =
-      this.__env('ABERLAAS_CWD') || this.__env('INIT_CWD');
-    return _.map(filepaths, (inputFilepath) => {
-      const filepath =
-        inputFilepath[0] == '/'
-          ? inputFilepath
-          : path.resolve(callingDirectory, inputFilepath);
-
-      return absolute(filepath);
-    });
   },
   /**
    * Run the command specified on the command-line, along with specific
@@ -83,9 +58,6 @@ export default {
 
     // Remove the initial method from args passed to the command
     args._ = _.drop(args._, 1);
-
-    // Make all filepaths absolute
-    args._ = this.convertFilepathsToAbsolute(args._);
 
     try {
       // We need to set ABERLAAS_VERSION for "aberlaas init" as we need to
