@@ -1,13 +1,10 @@
-import { firostError } from 'firost';
-import { _ } from 'golgoth';
+import path from 'node:path';
+import { consoleInfo, firostError, readJson, run, writeJson } from 'firost';
+import Gilmore from 'gilmore';
+import { _, pMap } from 'golgoth';
+import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
+import semver from 'semver';
 import { ensureValidRepository } from './ensureValidRepository.js';
-// import semver from 'semver';
-// import preChecks from './preChecks.js';
-// import detectPackages from './detectPackages.js';
-// import versionBump from './versionBump.js';
-// import changelog from './changelog.js';
-// import * as gitOps from './gitOps.js';
-// import publish from './publish.js';
 
 export default {
   /**
@@ -25,63 +22,100 @@ export default {
       );
     }
 
+    // Make sure we're in a valid state to release
     await ensureValidRepository(cliArgs);
 
-    // // 2. Detect publishable packages
-    // console.log('📦 Detecting packages...');
-    // const packages = await detectPackages();
-    // console.log(`Found ${packages.length} package(s) to publish:`);
-    // for (const pkg of packages) {
-    //   console.log(`  - ${pkg.name}@${pkg.version}`);
-    // }
-    // console.log('');
-    //
-    // // 3. Calculate new version
-    // const currentVersion = packages[0].version;
-    // const newVersion = semver.inc(currentVersion, bump);
-    // console.log(`📈 Version: ${currentVersion} → ${newVersion}\n`);
-    //
-    // // 4. Create temp branch
-    // console.log('🌿 Creating temporary branch...');
-    // await gitOps.createTempBranch(newVersion);
-    // console.log(`✓ Created branch: temp/release-v${newVersion}\n`);
-    //
-    // try {
-    //   // 5. Bump versions
-    //   console.log('🔢 Updating versions...');
-    //   await versionBump(packages, newVersion);
-    //   console.log('✓ Versions updated\n');
-    //
+    // Get all the packages to release and current version
+    const allPackagesToRelease = await this.getAllPackagesToRelease();
+    const currentVersion = allPackagesToRelease[0].content.version;
+    const newVersion = semver.inc(currentVersion, bumpType);
+
+    // We bump the version of all packages
+    await pMap(allPackagesToRelease, async ({ filepath, content }) => {
+      const packageName = content.name;
+      consoleInfo(`Updating ${packageName} to ${newVersion}`);
+      const newContent = { ...content, version: newVersion };
+      await writeJson(newContent, filepath, {
+        sort: false,
+      });
+    });
+
+    // TODO: Need to generate a changelog
     //   // 6. Generate changelog
     //   console.log('📝 Generating changelog...');
     //   await changelog(newVersion);
     //   console.log('✓ Changelog generated\n');
+
+    // Commit the changes
+    const gitRoot = hostGitRoot();
+    consoleInfo(`Creating new commit for version v${newVersion}`);
+    const repo = new Gilmore(gitRoot);
+    await repo.add(_.map(allPackagesToRelease, 'filepath'));
+    await repo.commit(`v${newVersion}`, { skipHook: true });
+
+    // Publish all the packages
+    await pMap(
+      allPackagesToRelease,
+      async ({ filepath, content }) => {
+        const packageName = content.name;
+        consoleInfo(`Publishing ${packageName} to npm`);
+
+        const packageDir = path.dirname(filepath);
+        await run('npm publish --access public', { cwd: packageDir });
+      },
+      { concurrency: 1 },
+    );
+
+    // We create a tag and push it all
+    // TODO: Need to add the tag methos to Gilmore
+    // // Create tag
+    // await repo.run(`tag v${version}`);
     //
-    //   // 7. Commit changes
-    //   console.log('💾 Committing changes...');
-    //   await gitOps.commitRelease(newVersion);
-    //   console.log('✓ Changes committed\n');
-    //
-    //   // 8. Publish to npm
-    //   console.log('📤 Publishing to npm...\n');
-    //   await publish(packages);
-    //   console.log('\n✓ All packages published\n');
-    //
-    //   // 9. SUCCESS: finalize
-    //   console.log('🎯 Finalizing release...');
-    //   await gitOps.finalize(newVersion);
-    //   console.log('✓ Release finalized\n');
-    //
-    //   console.log(`\n✨ Release v${newVersion} completed successfully!\n`);
-    // } catch (error) {
-    //   console.error(`\n❌ Release failed: ${error.message}\n`);
-    //
-    //   // 10. FAILURE: cleanup
-    //   console.log('🔄 Rolling back changes...');
-    //   await gitOps.cleanup(newVersion);
-    //   console.log('✓ Cleanup completed\n');
-    //
-    //   throw error;
-    // }
+    // // Push main and tags
+    // await repo.push();
+    // await repo.run('push --tags');
+    // TODO: Need to add tests for this process
+  },
+
+  async getAllPackagesToRelease() {
+    const rootPackagePath = hostGitPath('package.json');
+    const rootPackageContent = await readJson(rootPackagePath);
+    const workspaces = rootPackageContent.workspaces;
+
+    // If no workspaces, this is the package to publish
+    if (!workspaces) {
+      if (rootPackageContent.private) {
+        return [];
+      }
+      return [
+        {
+          filepath: rootPackagePath,
+          content: rootPackageContent,
+        },
+      ];
+    }
+
+    // If workspaces, we get the packages of all those workspaces
+    const rootPath = hostGitRoot();
+    const workspacePackagesPath = _.chain(workspaces)
+      .castArray()
+      .map((item) => {
+        return `${rootPath}/${item}/package.json`;
+      })
+      .value();
+
+    const rawList = await pMap(workspacePackagesPath, async (filepath) => {
+      const content = await readJson(filepath);
+      // We skip the private packages
+      if (content.private) {
+        return false;
+      }
+      return {
+        filepath,
+        content,
+      };
+    });
+
+    return _.compact(rawList);
   },
 };

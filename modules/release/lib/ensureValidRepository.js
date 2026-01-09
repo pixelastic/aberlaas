@@ -14,7 +14,7 @@ import { ensureNpmLogin } from './npm.js';
  * @returns {Promise<void>}
  */
 export async function ensureValidRepository(options = {}) {
-  const gitRoot = await hostGitRoot();
+  const gitRoot = hostGitRoot();
   const repo = new Gilmore(gitRoot);
 
   // Need to be on branch main
@@ -27,13 +27,13 @@ export async function ensureValidRepository(options = {}) {
   await ensureNpmLogin();
 
   // Check tests are passing
-  if (!options.skipTest) {
+  if (!options['skip-test']) {
     consoleInfo('Running tests...');
     await ensureTestsArePassing();
   }
 
   // Check lint is passing
-  if (!options.skipLint) {
+  if (!options['skip-lint']) {
     consoleInfo('Running lint...');
     await ensureLintIsPassing();
   }

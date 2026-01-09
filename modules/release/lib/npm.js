@@ -48,7 +48,7 @@ async function waitForNpmLogin() {
   const npmUsername = await getNpmUsername();
   const tokenUrl = `https://www.npmjs.com/settings/${npmUsername}/tokens/granular-access-tokens/new`;
 
-  const rootPackage = await readJson(await hostPackagePath('package.json'));
+  const rootPackage = await readJson(hostPackagePath('package.json'));
   const packageName = rootPackage.name;
   const tokenName = `ABERLAAS_RELEASE_${_.toUpper(packageName)}`;
 
@@ -73,7 +73,7 @@ async function waitForNpmLogin() {
   const npmToken = await prompt('Enter you new token here:');
 
   const npmrcContent = `//registry.npmjs.org/:_authToken=${npmToken}`;
-  const npmrcPath = await hostGitPath('.npmrc');
+  const npmrcPath = hostGitPath('.npmrc');
   await write(npmrcContent, npmrcPath);
 
   // Try again
