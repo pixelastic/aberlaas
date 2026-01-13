@@ -32,6 +32,6 @@ yarn-error.log
 .netlify
 
 # Vibe coding
-.claude/settings.local.json
+.claude/
 .cursor/
 .taskmaster/

@@ -66,14 +66,12 @@ export default {
       { concurrency: 1 },
     );
 
-    // We create a tag and push it all
-    // TODO: Need to add the tag methos to Gilmore
-    // // Create tag
-    // await repo.run(`tag v${version}`);
-    //
-    // // Push main and tags
-    // await repo.push();
-    // await repo.run('push --tags');
+    // We create a tag for this version
+    await repo.createTag(`v${newVersion}`);
+
+    // We push to the remote
+    consoleInfo(`Creating tag v${newVersion} and pushing to repo`);
+    await repo.push();
     // TODO: Need to add tests for this process
   },
 
