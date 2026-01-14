@@ -1,8 +1,3 @@
-const readmeCommands = [
-  'yarn run aberlaas readme',
-  'git add ./README.md ./lib/README.md',
-];
-
 export default {
   // Lint
   '*.css': ['yarn run lint:fix --css'],
@@ -18,8 +13,5 @@ export default {
   '*.png': ['yarn run compress --png'],
 
   // Documentation
-  // Update the README whenever the documentation, or the README template
-  // changes
-  'docs/src/**/*.md': readmeCommands,
-  '.github/README.template.md': readmeCommands,
+  '*.md': ['yarn run aberlaas readme'],
 };

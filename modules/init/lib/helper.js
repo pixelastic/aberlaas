@@ -149,6 +149,9 @@ export default {
     await this.copyTemplateToHost('./_gitignore', './.gitignore');
     await this.copyTemplateToHost('./_gitattributes', './.gitattributes');
 
+    // README template
+    await this.copyTemplateToHost('_README.template.md', '.README.template.md');
+
     // Yarn
     await this.copyTemplateToHost('_yarnrc.yml', '.yarnrc.yml');
 

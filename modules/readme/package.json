@@ -7,10 +7,7 @@
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "author": "Tim Carry (@pixelastic)",
   "license": "MIT",
-  "files": [
-    "lib/*.js",
-    "templates/"
-  ],
+  "files": ["lib/*.js"],
   "exports": {
     ".": "./lib/main.js"
   },
