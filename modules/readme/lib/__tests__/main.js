@@ -1,308 +1,319 @@
-import { _, pProps } from 'golgoth';
-import { absolute, emptyDir, read, write, writeJson } from 'firost';
+import { emptyDir, newFile, read, tmpDirectory, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import current from '../main.js';
+import dedent from 'dedent';
+import { __, default as current } from '../main.js';
 
 describe('readme', () => {
-  const tmpDirectory = absolute('<gitRoot>/tmp/readme');
+  const testDirectory = tmpDirectory('aberlaas/readme');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(`${tmpDirectory}/host`);
-    await emptyDir(tmpDirectory);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    await emptyDir(testDirectory);
   });
-  describe('run', () => {
-    it.each([
-      [
-        'Simple repo with docs',
-        {
-          'package.json': { name: 'aoinan-monorepo' },
-          'lib/package.json': { name: 'aoinan' },
-          '.github/README.template.md': '## {package.name}\n\n{index}',
-          'docs/src/index.md': 'Documentation content',
-        },
-        {},
-        {
-          'README.md': '## aoinan\n\nDocumentation content',
-          'lib/README.md': '## aoinan\n\nDocumentation content',
-        },
-      ],
-      [
-        'Complex monorepo',
-        {
-          'package.json': { name: 'norska-monorepo' },
-          'modules/lib/package.json': { name: 'norska' },
-          'modules/docs/src/index.md': 'Documentation content',
-          '.github/README.template.md': '## {package.name}\n\n{index}',
-        },
-        {
-          docs: 'modules/docs/src',
-          lib: 'modules/lib',
-        },
-        {
-          'README.md': '## norska\n\nDocumentation content',
-          'modules/lib/README.md': '## norska\n\nDocumentation content',
-        },
-      ],
-      [
-        'Custom output',
-        {
-          'lib/package.json': { name: 'aoinan' },
-          'docs/src/index.md': 'Documentation content',
-          '.github/README.template.md': '## {package.name}\n\n{index}',
-        },
-        {
-          output: 'README.mkd,dist/README.md',
-        },
-        {
-          'README.mkd': '## aoinan\n\nDocumentation content',
-          'dist/README.md': '## aoinan\n\nDocumentation content',
-        },
-      ],
-      [
-        'Custom template',
-        {
-          'lib/package.json': { name: 'aoinan', version: '1.42' },
-          'docs/src/examples.md': 'Some examples',
-          'README.template.md':
-            '## {package.name} v{package.version}\n\n{examples}',
-        },
-        {
-          template: 'README.template.md',
-        },
-        {
-          'README.md': '## aoinan v1.42\n\nSome examples',
-          'lib/README.md': '## aoinan v1.42\n\nSome examples',
-        },
-      ],
-    ])('%s', async (_title, sourceTree, cliArgs, destinationTree) => {
-      await pProps(sourceTree, async (filecontent, filepath) => {
-        const writeMethod = _.isObject(filecontent) ? writeJson : write;
-        await writeMethod(filecontent, helper.hostGitPath(filepath));
+
+  describe('warnIfDeprecatedTemplate', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'consoleWarn').mockReturnValue();
+    });
+    it('should warn if deprecated template location exists', async () => {
+      await newFile(`${testDirectory}/.github/README.template.md`);
+
+      await __.warnIfDeprecatedTemplate();
+
+      expect(__.consoleWarn).toHaveBeenCalled();
+    });
+
+    it('should not warn if deprecated template does not exist', async () => {
+      await __.warnIfDeprecatedTemplate();
+      expect(__.consoleWarn).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('ensureTemplateExists', () => {
+    it('should not throw if template exists', async () => {
+      await newFile(`${testDirectory}/.README.template.md`);
+
+      let actual = null;
+      try {
+        await __.ensureTemplateExists();
+      } catch (err) {
+        actual = err;
+      }
+
+      await expect(actual).toEqual(null);
+    });
+
+    it('should throw if template does not exist', async () => {
+      let actual = null;
+      try {
+        await __.ensureTemplateExists();
+      } catch (err) {
+        actual = err;
+      }
+
+      await expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_README_MISSING_TEMPLATE',
+      );
+    });
+  });
+
+  describe('getTemplateData', () => {
+    it('should parse template and extract inputs, outputs, and body', async () => {
+      await write('input content', `${testDirectory}/docs/intro.md`);
+      await write(
+        dedent`
+        ---
+        outputs:
+          - README.md
+          - lib/README.md
+        ---
+        # Title
+
+        {file:docs/intro.md}
+        `,
+        `${testDirectory}/.README.template.md`,
+      );
+
+      const actual = await __.getTemplateData();
+
+      expect(actual).toEqual({
+        inputs: [
+          {
+            match: 'docs/intro.md',
+            filepath: `${testDirectory}/docs/intro.md`,
+          },
+        ],
+        outputs: [
+          `${testDirectory}/README.md`,
+          `${testDirectory}/lib/README.md`,
+        ],
+        body: '# Title\n\n{file:docs/intro.md}',
       });
+    });
 
-      await current.run(cliArgs);
+    it('should throw if input file does not exist', async () => {
+      await write(
+        dedent`
+        ---
+        outputs:
+          - README.md
+        ---
+        {file:missing.md}
+        `,
+        `${testDirectory}/.README.template.md`,
+      );
 
-      await pProps(destinationTree, async (expected, filepath) => {
-        const actual = await read(helper.hostGitPath(filepath));
-        expect(actual).toContain(expected);
+      let actual = null;
+      try {
+        actual = await __.getTemplateData();
+      } catch (err) {
+        actual = err;
+      }
+
+      await expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_README_MISSING_INPUT',
+      );
+    });
+
+    it('should throw if outputs are empty', async () => {
+      await write(
+        dedent`
+        ---
+        ---
+        Content
+        `,
+        `${testDirectory}/.README.template.md`,
+      );
+
+      let actual = null;
+      try {
+        actual = await __.getTemplateData();
+      } catch (err) {
+        actual = err;
+      }
+
+      await expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_README_MISSING_OUTPUTS',
+      );
+    });
+
+    it('should handle template with no file placeholders', async () => {
+      await write(
+        dedent`
+        ---
+        outputs:
+          - README.md
+        ---
+        Just plain text
+        `,
+        `${testDirectory}/.README.template.md`,
+      );
+
+      const actual = await __.getTemplateData();
+
+      expect(actual).toEqual({
+        inputs: [],
+        outputs: [`${testDirectory}/README.md`],
+        body: 'Just plain text',
+      });
+    });
+
+    it('should handle multiple file placeholders', async () => {
+      await write('intro', `${testDirectory}/docs/intro.md`);
+      await write('install', `${testDirectory}/docs/install.md`);
+      await write(
+        dedent`
+        ---
+        outputs:
+          - README.md
+        ---
+        {file:docs/intro.md}
+        {file:docs/install.md}
+        `,
+        `${testDirectory}/.README.template.md`,
+      );
+
+      const actual = await __.getTemplateData();
+
+      expect(actual).toEqual({
+        inputs: [
+          {
+            match: 'docs/intro.md',
+            filepath: `${testDirectory}/docs/intro.md`,
+          },
+          {
+            match: 'docs/install.md',
+            filepath: `${testDirectory}/docs/install.md`,
+          },
+        ],
+        outputs: [`${testDirectory}/README.md`],
+        body: '{file:docs/intro.md}\n{file:docs/install.md}',
       });
     });
   });
-  describe('getTemplate', () => {
+
+  describe('shouldContinue', () => {
     it.each([
       [
-        'Aberlaas template',
         {
-          'aberlaas:/README.md': 'aberlaas template',
-        },
-        {},
-        'aberlaas template',
-      ],
-      [
-        'Host template',
-        {
-          'host:/.github/README.template.md': 'host template',
-          'aberlaas:/README.md': 'aberlaas template',
-        },
-        {},
-        'host template',
-      ],
-      [
-        'Custom template',
-        {
-          'host:/README.template.md': 'custom template',
-          'host:/.github/README.template.md': 'host template',
-          'aberlaas:/README.md': 'aberlaas template',
-        },
-        { template: 'README.template.md' },
-        'custom template',
-      ],
-      [
-        'Custom template but does not exist',
-        {
-          'host:/.github/README.template.md': 'host template',
-          'aberlaas:/README.md': 'aberlaas template',
-        },
-        { template: 'README.template.md' },
-        'host template',
-      ],
-    ])('%s', async (_title, sourceTree, cliArgs, expected) => {
-      await pProps(sourceTree, async (filecontent, filepath) => {
-        const completeFilepath = _.chain(filepath)
-          .replace('aberlaas:', absolute('../../templates'))
-          .replace('host:', helper.hostGitRoot())
-          .value();
-        await write(filecontent, completeFilepath);
-      });
-
-      const actual = await current.getTemplate(cliArgs);
-
-      expect(actual).toEqual(expected);
-    });
-  });
-  describe('getPackageData', () => {
-    it.each([
-      [
-        './lib/package.json is available',
-        {
-          'lib/package.json': { name: 'aoinan' },
-          'package.json': { name: 'aoinan-monorepo' },
-        },
-        {},
-        { name: 'aoinan' },
-      ],
-      [
-        './lib/package.json is not available, but ./package.json is',
-        {
-          'package.json': { name: 'aoinan' },
-        },
-        {},
-        { name: 'aoinan' },
-      ],
-      [
-        'Custom --lib',
-        {
-          'package.json': { name: 'aoinan-monorepo' },
-          'modules/lib/package.json': { name: 'aoinan' },
-        },
-        { lib: 'modules/lib' },
-        { name: 'aoinan' },
-      ],
-      [
-        'Custom package but does not exist',
-        {
-          'package.json': { name: 'aoinan-fallback' },
-        },
-        { lib: 'modules/lib' },
-        { name: 'aoinan-fallback' },
-      ],
-    ])('%s', async (_title, sourceTree, cliArgs, expected) => {
-      await pProps(sourceTree, async (filecontent, filepath) => {
-        await writeJson(filecontent, helper.hostGitPath(filepath));
-      });
-
-      const actual = await current.getPackageData(cliArgs);
-
-      expect(actual).toEqual(expected);
-    });
-  });
-  describe('getDocsData', () => {
-    it.each([
-      [
-        'All files in ./docs/src',
-        {
-          'docs/src/index.md': dedent(`
-          ---
-          title: My module
-          ---
-
-          Index content
-          `),
-          'docs/src/installation.md': 'Installation content',
-          'docs/src/commands/index.md': 'Commands content',
-          'docs/src/commands/init.md': 'Init command content',
-          'docs/src/commands/read/index.md': 'Read command content',
-        },
-        {},
-        {
-          index: 'Index content',
-          installation: 'Installation content',
-          commands: {
-            index: 'Commands content',
-            init: 'Init command content',
-            read: {
-              index: 'Read command content',
-            },
+          title: 'Should continue if no CLI files passed',
+          expected: true,
+          cliFiles: [],
+          templateData: {
+            outputs: [`${testDirectory}/lib/README.md`],
+            inputs: [{ filepath: `${testDirectory}/README.md` }],
           },
         },
       ],
       [
-        'Files in a custom dir',
         {
-          'documentation/source/index.md': 'Index content',
-        },
-        { docs: 'documentation/source' },
-        {
-          index: 'Index content',
+          title: 'Should continue if we change an input',
+          expected: true,
+          cliFiles: [`${testDirectory}/README.md`],
+          templateData: {
+            outputs: [`${testDirectory}/lib/README.md`],
+            inputs: [{ filepath: `${testDirectory}/README.md` }],
+          },
         },
       ],
-    ])('%s', async (_title, sourceTree, cliArgs, expected) => {
-      await pProps(sourceTree, async (filecontent, filepath) => {
-        await write(filecontent, helper.hostGitPath(filepath));
-      });
-
-      const actual = await current.getDocsData(cliArgs);
-
+      [
+        {
+          title: 'Should continue if we change the template',
+          expected: true,
+          cliFiles: [`${testDirectory}/.README.template.md`],
+          templateData: {
+            outputs: [`${testDirectory}/lib/README.md`],
+            inputs: [{ filepath: `${testDirectory}/README.md` }],
+          },
+        },
+      ],
+      [
+        {
+          title: 'Should stop if no changed files required for readme',
+          expected: false,
+          cliFiles: [`${testDirectory}/lib/main.js`],
+          templateData: {
+            outputs: [`${testDirectory}/lib/README.md`],
+            inputs: [{ filepath: `${testDirectory}/README.md` }],
+          },
+        },
+      ],
+      [
+        {
+          title: 'Should not continue if we change an output',
+          expected: false,
+          cliFiles: [`${testDirectory}/lib/README.md`],
+          templateData: {
+            outputs: [`${testDirectory}/lib/README.md`],
+            inputs: [{ filepath: `${testDirectory}/README.md` }],
+          },
+        },
+      ],
+    ])('$title', async ({ cliFiles, templateData, expected }) => {
+      const actual = __.shouldContinue(cliFiles, templateData);
       expect(actual).toEqual(expected);
     });
   });
-  describe('getReadmes', () => {
-    it.each([
-      [
-        './README.md and ./lib/README.md by default',
-        {
-          'lib/package.json': 'Module package',
-        },
-        {},
-        ['README.md', 'lib/README.md'],
-      ],
-      ['./README.md only if no ./lib/package.json', {}, {}, ['README.md']],
-      [
-        './README.md and ./src/README.md if custom --lib passed',
-        {
-          'src/package.json': 'Module package',
-        },
-        { lib: 'src' },
-        ['README.md', 'src/README.md'],
-      ],
-      [
-        'Custom outputs if --output given',
-        {},
-        { output: 'README.markdown,code/README.md' },
-        ['README.markdown', 'code/README.md'],
-      ],
-    ])('%s', async (_title, sourceTree, cliArgs, relativeExpected) => {
-      await pProps(sourceTree, async (filecontent, filepath) => {
-        await write(filecontent, helper.hostGitPath(filepath));
-      });
 
-      const actual = await current.getReadmes(cliArgs);
+  describe('generateAndWrite', () => {
+    it('should generate content and write to all outputs', async () => {
+      await write('README', `${testDirectory}/README.md`);
+      await write('Authors', `${testDirectory}/docs/authors.md`);
 
-      const expected = _.map(relativeExpected, (filepath) => {
-        return helper.hostGitPath(filepath);
-      });
+      const templateData = {
+        inputs: [
+          {
+            match: 'README.md',
+            filepath: `${testDirectory}/README.md`,
+          },
+          {
+            match: 'docs/authors.md',
+            filepath: `${testDirectory}/docs/authors.md`,
+          },
+        ],
+        outputs: [`${testDirectory}/lib/README.md`],
+        body: dedent`
+          # Project
 
-      expect(actual).toEqual(expected);
-    });
-  });
-  describe('convert', () => {
-    it.each([
-      [
-        'Reading from the package.json',
-        '# {package.name}',
-        { package: { name: 'aberlaas' } },
-        '# aberlaas',
-      ],
-      [
-        'Reading from documentation',
-        '## Installation\n\n{installation}',
-        { installation: 'Installation content' },
-        '## Installation\n\nInstallation content',
-      ],
-      [
-        'Reading nested documentation keys',
-        '## Init\n\n{commands.init}',
-        { commands: { init: 'Init content' } },
-        '## Init\n\nInit content',
-      ],
-      [
-        'Ignoring missing keys',
-        '# {package.name}{nope.nope}',
-        { package: { name: 'aberlaas' } },
-        '# aberlaas',
-      ],
-    ])('%s', async (_title, source, data, expected) => {
-      const actual = current.convert(source, data);
+          {file:README.md}
+
+          {file:docs/authors.md}`,
+      };
+
+      await __.generateAndWrite(templateData);
+
+      const expected = dedent`
+        # Project
+
+        README
+
+        Authors`;
+
+      const actual = await read(`${testDirectory}/lib/README.md`);
+      expect(actual).toContain('<!--\n  This file was automatically generated');
       expect(actual).toContain(expected);
+    });
+  });
+
+  describe('run', () => {
+    it('happy path', async () => {
+      await write('# firost', `${testDirectory}/README.md`);
+      await write(
+        dedent`
+        ---
+        outputs:
+          - lib/README.md
+        ---
+        {file:README.md}
+        `,
+        `${testDirectory}/.README.template.md`,
+      );
+      await current.run();
+
+      const actual = await read(`${testDirectory}/lib/README.md`);
+      expect(actual).toContain('# firost');
     });
   });
 });

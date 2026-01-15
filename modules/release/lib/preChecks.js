@@ -31,7 +31,7 @@ async function validate(options = {}) {
   // Check 3: npm authentication (check early!)
   try {
     await run('npm whoami');
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Not logged in to npm. Run: npm login');
   }
 

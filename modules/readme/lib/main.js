@@ -4,66 +4,152 @@ import dedent from 'dedent';
 import frontMatter from 'front-matter';
 import { hostGitPath } from 'aberlaas-helper';
 
-/**
- * Warns the user if they are using the deprecated README template location.
- * Checks for the old template path and displays warning messages if found.
- * @returns {Promise<void>} A promise that resolves when the check is complete
- */
-async function warnIfDeprecatedTemplate() {
-  const oldTemplate = hostGitPath('.github/README.template.md');
-  if (await exists(oldTemplate)) {
-    consoleWarn('aberlaas: Readme template location has changed.');
-    consoleWarn(
+const TEMPLATE_PATH = '.README.template.md';
+
+export const __ = {
+  /**
+   * Warns the user if they are using the deprecated README template location.
+   */
+  async warnIfDeprecatedTemplate() {
+    const oldTemplate = hostGitPath('.github/README.template.md');
+    if (!(await exists(oldTemplate))) {
+      return;
+    }
+
+    __.consoleWarn('aberlaas: Readme template location has changed.');
+    __.consoleWarn(
       'Please move ./.github/README.template.md to ./.README.template.md',
     );
-  }
-}
+  },
 
-/**
- * Extracts and processes template data including inputs, outputs, and body content
- * @param {string} templatePath - Path to the template file to process
- * @returns {object} Object containing processed inputs array, outputs array, and template body content
- */
-async function getTemplateData(templatePath) {
-  const rawContent = await read(templatePath);
-  const parsed = frontMatter(rawContent);
-
-  // Template content
-  const body = parsed.body;
-
-  // Inputs
-  const fileRegexp = /{file:(?<filepath>[^}]+)}/gm;
-  const matches = Array.from(body.matchAll(fileRegexp));
-  const inputs = _.chain(matches)
-    .map((match) => match.groups.filepath)
-    .map((filepath) => {
-      return {
-        match: filepath,
-        filepath: hostGitPath(filepath),
-      };
-    })
-    .value();
-
-  await pMap(inputs, async (input) => {
-    const { match, filepath } = input;
-    if (await exists(filepath)) {
+  /**
+   * Ensures that the template file exists at the expected location.
+   */
+  async ensureTemplateExists() {
+    const templatePath = hostGitPath(TEMPLATE_PATH);
+    if (await exists(templatePath)) {
       return;
     }
     throw firostError(
-      'ABERLAAS_README_MISSING_INPUT',
-      `Unable to find file to include for {file:${match}} in ${templatePath}`,
+      'ABERLAAS_README_MISSING_TEMPLATE',
+      `README template not found at ${TEMPLATE_PATH}`,
     );
-  });
+  },
 
-  // We parse the template to get all the included files
-  const outputs = _.map(parsed.attributes.outputs, hostGitPath);
+  /**
+   * Extracts and processes template data including inputs, outputs, and body content.
+   * Uses the static TEMPLATE_PATH constant.
+   * @returns {object} Object containing processed inputs array, outputs array, and template body content
+   */
+  async getTemplateData() {
+    const templatePath = hostGitPath(TEMPLATE_PATH);
+    const rawContent = await read(templatePath);
+    const parsed = frontMatter(rawContent);
 
-  return {
-    inputs,
-    outputs,
-    body,
-  };
-}
+    // Template content
+    const body = parsed.body;
+
+    // Outputs from frontmatter
+    const outputs = _.map(parsed.attributes.outputs, hostGitPath);
+
+    // Ensure outputs are defined
+    if (_.isEmpty(outputs)) {
+      throw firostError(
+        'ABERLAAS_README_MISSING_OUTPUTS',
+        `File ${TEMPLATE_PATH} is missing an outputs: key in its frontmatter`,
+      );
+    }
+
+    // Inputs
+    const fileRegexp = /{file:(?<filepath>[^}]+)}/gm;
+    const matches = Array.from(body.matchAll(fileRegexp));
+    const inputs = _.chain(matches)
+      .map((match) => match.groups.filepath)
+      .map((filepath) => {
+        return {
+          match: filepath,
+          filepath: hostGitPath(filepath),
+        };
+      })
+      .value();
+
+    // Ensure all inputs actually exist
+    await pMap(inputs, async (input) => {
+      const { match, filepath } = input;
+      if (await exists(filepath)) {
+        return;
+      }
+      throw firostError(
+        'ABERLAAS_README_MISSING_INPUT',
+        `Unable to find file to include for {file:${match}} in ${TEMPLATE_PATH}`,
+      );
+    });
+
+    return {
+      inputs,
+      outputs,
+      body,
+    };
+  },
+
+  /**
+   * Determines if the README generation should continue based on changed files.
+   * If none of the changed files are used as inputs, or outputs of the readme,
+   * we should stop
+   * @param {Array} cliFiles List of passed files
+   * @param {object} templateData Template data containing inputs, outputs, and body
+   * @returns {boolean} True if generation should continue, false otherwise
+   */
+  shouldContinue(cliFiles, templateData) {
+    // If no files passed, always continue
+    if (_.isEmpty(cliFiles)) {
+      return true;
+    }
+
+    // Build list of files that would trigger a README regeneration
+    const templatePath = hostGitPath(TEMPLATE_PATH);
+    const filesTriggeringChange = [
+      ..._.map(templateData.inputs, 'filepath'),
+      templatePath,
+    ];
+
+    const changedFiles = _.map(cliFiles, (filepath) => hostGitPath(filepath));
+
+    // Stop if no relevant files changed
+    const intersection = _.intersection(changedFiles, filesTriggeringChange);
+    return !_.isEmpty(intersection);
+  },
+
+  /**
+   * Generates the README content and writes it to all output files.
+   * @param {object} templateData Template data containing inputs, outputs, and body
+   */
+  async generateAndWrite(templateData) {
+    const { inputs, outputs, body } = templateData;
+    const templatePath = hostGitPath(TEMPLATE_PATH);
+
+    // Generate content by wrapping template and replacing placeholders
+    let content = dedent`
+    <!--
+      This file was automatically generated by 'aberlaas readme' from ${templatePath}
+      DO NOT EDIT MANUALLY
+    -->
+    ${body}
+    `;
+
+    await pMap(inputs, async (input) => {
+      const { match, filepath } = input;
+      const includedContent = await read(filepath);
+      content = _.replace(content, `{file:${match}}`, includedContent);
+    });
+
+    // Write to all output files
+    await pMap(outputs, async (outputPath) => {
+      await write(content, outputPath);
+    });
+  },
+  consoleWarn,
+};
 
 export default {
   /**
@@ -72,62 +158,19 @@ export default {
    * @param {string} cliArgs.template Path to the template (default to .README.template.md)
    * @param {Array} cliArgs._ List of files that changed (passed by lint-staged)
    */
-  async run(cliArgs) {
-    await warnIfDeprecatedTemplate();
+  async run(cliArgs = {}) {
+    await __.warnIfDeprecatedTemplate();
+    await __.ensureTemplateExists();
 
-    // Stop if no template defined
-    const templatePath = hostGitPath('.README.template.md');
-    if (!(await exists(templatePath))) {
-      throw firostError(
-        'ABERLAAS_README_MISSING_TEMPLATE',
-        'README template not found at .README.template.md',
-      );
+    // Get all template data (inputs, outputs, body)
+    const templateData = await __.getTemplateData();
+
+    // Stop if the passed args do not require a regeneration
+    if (!__.shouldContinue(cliArgs?._, templateData)) {
+      return;
     }
 
-    // Get the inputs, outputs, and template code
-    const { inputs, outputs, body } = await getTemplateData(templatePath);
-    if (_.isEmpty(outputs)) {
-      throw firostError(
-        'ABERLAAS_README_MISSING_OUTPUTS',
-        'File .README.template.md is missing an outputs: key in its frontmatter',
-      );
-    }
-
-    // Args are passed, so we need to stop if none require the README to be
-    // regenerated
-    const cliFiles = cliArgs._;
-    if (!_.isEmpty(cliFiles)) {
-      const filesTriggeringChange = [
-        ...outputs,
-        ..._.map(inputs, 'filepath'),
-        templatePath,
-      ];
-      const changedFiles = _.map(cliFiles, (filepath) => hostGitPath(filepath));
-
-      // Stop if no relevant files
-      const intersection = _.intersection(changedFiles, filesTriggeringChange);
-      if (_.isEmpty(intersection)) {
-        return;
-      }
-    }
-
-    // Convert the template into the final content
-    let content = dedent`
-    <!--
-      This file was automatically generated by 'aberlaas readme' from ${templatePath}
-      DO NOT EDIT MANUALLY
-    -->
-    ${body}
-    `;
-    await pMap(inputs, async (input) => {
-      const { match, filepath } = input;
-      const includedContent = await read(filepath);
-      content = _.replace(content, `{file:${match}}`, includedContent);
-    });
-
-    // Update all outputs
-    await pMap(outputs, async (outputPath) => {
-      await write(content, outputPath);
-    });
+    // Regenerate the READMEs
+    await __.generateAndWrite(templateData);
   },
 };

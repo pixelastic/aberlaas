@@ -3,10 +3,9 @@ import conventionalChangelog from 'conventional-changelog';
 
 /**
  * Generate and update CHANGELOG.md using conventional commits
- * @param {string} newVersion Version being released
  * @returns {Promise<void>}
  */
-async function generate(newVersion) {
+async function generate() {
   const changelogPath = './CHANGELOG.md';
 
   // Generate new changelog entry for this release

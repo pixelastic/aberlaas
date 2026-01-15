@@ -8,6 +8,7 @@ import {
   gitRoot,
   glob,
   packageRoot,
+  wrap,
 } from 'firost';
 
 // Exported wrapper object so we can mock indidividual methods in tests by
@@ -165,34 +166,11 @@ export const __ = {
   },
 };
 
-// Exported individual methods so they can be used by consumer easily
-/**
- * Creates a wrapper function that delegates method calls to a specified method on a wrapper object.
- * @param {object} wrapper - The wrapper object containing the method to be called
- * @param {string} methodName - The name of the method to call on the wrapper object
- * @returns {Function} A function that forwards all arguments to the specified method on the wrapper
- */
-function __export(wrapper, methodName) {
-  return function (...args) {
-    return wrapper[methodName](...args);
-  };
-}
-/**
- * Creates an async wrapper function that calls a method on the provided wrapper object.
- * @param {object} wrapper - The wrapper object containing the method to be called
- * @param {string} methodName - The name of the method to call on the wrapper object
- * @returns {Function} An async function that spreads arguments to the wrapper method and returns its result
- */
-function __exportAsync(wrapper, methodName) {
-  return async function (...args) {
-    return await wrapper[methodName](...args);
-  };
-}
-export const hostWorkingDirectory = __export(__, 'hostWorkingDirectory');
-export const hostPackageRoot = __export(__, 'hostPackageRoot');
-export const hostPackagePath = __export(__, 'hostPackagePath');
-export const findHostPackageFiles = __exportAsync(__, 'findHostPackageFiles');
-export const hostGitRoot = __export(__, 'hostGitRoot');
-export const hostGitPath = __export(__, 'hostGitPath');
-export const getConfig = __exportAsync(__, 'getConfig');
-export const run = __exportAsync(__, 'run');
+export const hostWorkingDirectory = wrap(__.hostWorkingDirectory);
+export const hostPackageRoot = wrap(__.hostPackageRoot);
+export const hostPackagePath = wrap(__.hostPackagePath);
+export const findHostPackageFiles = wrap(__.findHostPackageFiles);
+export const hostGitRoot = wrap(__.hostGitRoot);
+export const hostGitPath = wrap(__.hostGitPath);
+export const getConfig = wrap(__.getConfig);
+export const run = wrap(__.run);

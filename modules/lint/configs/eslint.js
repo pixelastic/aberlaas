@@ -126,7 +126,7 @@ export default [
       // See: https://github.com/import-js/eslint-plugin-import/issues/2132
       'import/no-unresolved': [
         'error',
-        { ignore: ['lint-staged', '@octokit/rest'] },
+        { ignore: ['lint-staged', 'conventional-changelog', '@octokit/rest'] },
       ],
 
       // JSDoc
