@@ -1,10 +1,10 @@
 import path from 'node:path';
-import { consoleInfo, firostError, readJson, run, writeJson } from 'firost';
+import { consoleInfo, readJson, run, writeJson } from 'firost';
 import Gilmore from 'gilmore';
 import { _, pMap } from 'golgoth';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import semver from 'semver';
-import { ensureValidRepository } from './ensureValidRepository.js';
+import { ensureValidSetup } from './ensureValidSetup.js';
 import { updateChangelog } from './changelog.js';
 
 export default {
@@ -14,17 +14,9 @@ export default {
    * @returns {boolean} True on success
    */
   async run(cliArgs = {}) {
+    await ensureValidSetup(cliArgs);
+
     const bumpType = cliArgs._[0]; // major/minor/patch
-
-    if (!_.includes(['patch', 'minor', 'major'], bumpType)) {
-      throw firostError(
-        'ABERLAAS_RELEASE_UNKNOWN_BUMP_TYPE',
-        'Bump type should be either major, minor or patch',
-      );
-    }
-
-    // Make sure we're in a valid state to release
-    await ensureValidRepository(cliArgs);
 
     // Get all the packages to release and current version
     const allPackagesToRelease = await this.getAllPackagesToRelease();
