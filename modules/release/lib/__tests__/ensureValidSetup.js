@@ -45,4 +45,35 @@ describe('ensureValidSetup', () => {
       });
     });
   });
+
+  describe('ensureCorrectBranch', () => {
+    it('should pass when on main branch', async () => {
+      const mockRepo = {
+        currentBranchName: vi.fn().mockReturnValue('main'),
+      };
+
+      const result = await __.ensureCorrectBranch(mockRepo);
+
+      expect(result).toEqual(true);
+    });
+
+    it('should throw error when not on main branch', async () => {
+      const mockRepo = {
+        currentBranchName: vi.fn().mockReturnValue('develop'),
+      };
+
+      let actual = null;
+      try {
+        await __.ensureCorrectBranch(mockRepo);
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_RELEASE_NOT_ON_MAIN_BRANCH',
+      );
+      expect(actual.message).toContain('branch main');
+    });
+  });
 });
