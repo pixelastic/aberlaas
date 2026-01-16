@@ -3,8 +3,10 @@ import {
   consoleWarn,
   env,
   firostError,
+  prompt,
   readJson,
   run,
+  sleep,
   write,
 } from 'firost';
 import { _ } from 'golgoth';
@@ -69,7 +71,11 @@ async function waitForNpmLogin() {
   consoleInfo('');
   await prompt('Press Enter to open the webpage');
 
-  await run(`$BROWSER ${tokenUrl}`, { shell: true, stderr: false });
+  // Note: We purposefuly do not use await before run() here because we don't
+  // want to wait until the browser is closed to display the next prompt
+  run(`$BROWSER ${tokenUrl}`, { shell: true, stderr: false });
+
+  await sleep(2000);
   const npmToken = await prompt('Enter you new token here:');
 
   const npmrcContent = `//registry.npmjs.org/:_authToken=${npmToken}`;

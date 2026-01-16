@@ -5,6 +5,7 @@ import { _, pMap } from 'golgoth';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import semver from 'semver';
 import { ensureValidRepository } from './ensureValidRepository.js';
+import { updateChangelog } from './changelog.js';
 
 export default {
   /**
@@ -30,6 +31,11 @@ export default {
     const currentVersion = allPackagesToRelease[0].content.version;
     const newVersion = semver.inc(currentVersion, bumpType);
 
+    // Update the changelog
+    if (!cliArgs['skip-changelog']) {
+      await updateChangelog(currentVersion, newVersion);
+    }
+
     // We bump the version of all packages
     await pMap(allPackagesToRelease, async ({ filepath, content }) => {
       const packageName = content.name;
@@ -40,18 +46,11 @@ export default {
       });
     });
 
-    // TODO: Need to generate a changelog
-    //   // 6. Generate changelog
-    //   console.log('📝 Generating changelog...');
-    //   await changelog(newVersion);
-    //   console.log('✓ Changelog generated\n');
-
     // Commit the changes
     const gitRoot = hostGitRoot();
     consoleInfo(`Creating new commit for version v${newVersion}`);
     const repo = new Gilmore(gitRoot);
-    await repo.add(_.map(allPackagesToRelease, 'filepath'));
-    await repo.commit(`v${newVersion}`, { skipHook: true });
+    await repo.commitAll(`v${newVersion}`, { skipHook: true });
 
     // Publish all the packages
     await pMap(
@@ -72,7 +71,6 @@ export default {
     // We push to the remote
     consoleInfo(`Creating tag v${newVersion} and pushing to repo`);
     await repo.push();
-    // TODO: Need to add tests for this process
   },
 
   async getAllPackagesToRelease() {
