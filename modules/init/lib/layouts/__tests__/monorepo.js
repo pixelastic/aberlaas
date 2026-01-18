@@ -182,6 +182,7 @@ describe('init > monorepo', () => {
         '.gitattributes',
         '.github/renovate.json',
         '.gitignore',
+        '.README.template.md',
         '.yarnrc.yml',
         'eslint.config.js',
         'LICENSE',

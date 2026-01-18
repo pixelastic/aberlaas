@@ -106,6 +106,7 @@ describe('init > module', () => {
         '.gitattributes',
         '.github/renovate.json',
         '.gitignore',
+        '.README.template.md',
         '.yarnrc.yml',
         'eslint.config.js',
         'lib/__tests__/main.js',

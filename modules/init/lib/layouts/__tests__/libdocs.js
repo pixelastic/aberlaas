@@ -177,6 +177,7 @@ describe('init > libdocs', () => {
         '.gitattributes',
         '.github/renovate.json',
         '.gitignore',
+        '.README.template.md',
         '.yarnrc.yml',
         'docs/package.json',
         'eslint.config.js',

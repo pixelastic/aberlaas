@@ -53,7 +53,7 @@ export default {
     });
 
     if (hasErrors) {
-      throw firostError('ERROR_LINT', 'Error while linting files');
+      throw firostError('ABERLAAS_LINT_FAIL', 'Fail to lint files');
     }
 
     return true;

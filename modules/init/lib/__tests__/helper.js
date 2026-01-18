@@ -8,25 +8,22 @@ import {
   tmpDirectory,
   write,
 } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { __ as helper, hostGitRoot } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import current from '../helper.js';
 
 describe('init > helper', () => {
+  const testDirectory = tmpDirectory('aberlaas/init/helper');
   beforeEach(async () => {
-    // We need to make the tmp directory outside of this git repo tree, for all
-    // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(
-      tmpDirectory('aberlaas/init'),
-    );
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
   });
   afterEach(async () => {
-    await remove(helper.hostGitRoot());
+    await remove(testDirectory);
   });
 
   describe('getProjectName', () => {
     it('should return the name of the current directory', async () => {
-      const expected = path.basename(helper.hostGitRoot());
+      const expected = path.basename(hostGitRoot());
       const actual = current.getProjectName();
 
       expect(actual).toEqual(expected);

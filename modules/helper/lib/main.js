@@ -166,11 +166,11 @@ export const __ = {
   },
 };
 
-export const hostWorkingDirectory = wrap(__.hostWorkingDirectory);
-export const hostPackageRoot = wrap(__.hostPackageRoot);
-export const hostPackagePath = wrap(__.hostPackagePath);
-export const findHostPackageFiles = wrap(__.findHostPackageFiles);
-export const hostGitRoot = wrap(__.hostGitRoot);
-export const hostGitPath = wrap(__.hostGitPath);
-export const getConfig = wrap(__.getConfig);
-export const run = wrap(__.run);
+export const hostWorkingDirectory = wrap(__, 'hostWorkingDirectory');
+export const hostPackageRoot = wrap(__, 'hostPackageRoot');
+export const hostPackagePath = wrap(__, 'hostPackagePath');
+export const findHostPackageFiles = wrap(__, 'findHostPackageFiles');
+export const hostGitRoot = wrap(__, 'hostGitRoot');
+export const hostGitPath = wrap(__, 'hostGitPath');
+export const getConfig = wrap(__, 'getConfig');
+export const run = wrap(__, 'run');

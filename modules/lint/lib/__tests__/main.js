@@ -79,7 +79,7 @@ describe('lint', () => {
         actual = err;
       }
 
-      expect(actual).toHaveProperty('code', 'ERROR_LINT');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_FAIL');
     });
     it('should display all errors of all failed linters', async () => {
       mockedLinters.yml.run.mockImplementation(() => {

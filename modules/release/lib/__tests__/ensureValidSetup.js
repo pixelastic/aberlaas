@@ -2,6 +2,7 @@ import { emptyDir, firostError, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import aberlaasTest from 'aberlaas-test';
+import aberlaasLint from 'aberlaas-lint';
 import { __ } from '../ensureValidSetup.js';
 
 describe('ensureValidSetup', () => {
@@ -146,6 +147,44 @@ describe('ensureValidSetup', () => {
 
       expect(__.consoleInfo).toHaveBeenCalled();
       expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_TESTS_FAILING');
+    });
+  });
+
+  describe('ensureLintIsPassing', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(aberlaasLint, 'run').mockReturnValue();
+    });
+
+    it('should return false when skip-lint is true', async () => {
+      const actual = await __.ensureLintIsPassing({ 'skip-lint': true });
+
+      expect(actual).toEqual(false);
+      expect(aberlaasLint.run).not.toHaveBeenCalled();
+    });
+
+    it('should pass when lint succeeds', async () => {
+      const actual = await __.ensureLintIsPassing();
+
+      expect(actual).toEqual(true);
+      expect(__.consoleInfo).toHaveBeenCalled();
+      expect(aberlaasLint.run).toHaveBeenCalled();
+    });
+
+    it('should throw error when lint fails', async () => {
+      vi.spyOn(aberlaasLint, 'run').mockImplementation(() => {
+        throw firostError('ABERLAAS_LINT_FAIL', 'Lint is failing');
+      });
+
+      let actual = null;
+      try {
+        await __.ensureLintIsPassing();
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(__.consoleInfo).toHaveBeenCalled();
+      expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_LINT_FAILING');
     });
   });
 });

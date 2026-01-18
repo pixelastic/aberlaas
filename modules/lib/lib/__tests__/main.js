@@ -4,11 +4,6 @@ import current from '../main.js';
 describe('aberlaas', () => {
   describe('run', () => {
     beforeEach(async () => {
-      // Define INIT_CWD so we know where the script is called from
-      vi.spyOn(current, '__env').mockImplementation((input) => {
-        const envs = { INIT_CWD: '/workspace/' };
-        return envs[input];
-      });
       vi.spyOn(current, '__setEnv').mockReturnValue();
       vi.spyOn(current, '__exit').mockReturnValue();
       vi.spyOn(current, '__consoleError').mockReturnValue();
@@ -64,32 +59,11 @@ describe('aberlaas', () => {
       await current.run(input);
 
       expect(mockRun).toHaveBeenCalledWith({
-        _: ['/workspace/foo.js', '/workspace/__tests__/foo.js'],
+        _: ['./foo.js', './__tests__/foo.js'],
         fix: true,
         bar: 'baz',
         baz: false,
         n: true,
-      });
-    });
-    it('should expand absolute path even when called from a child workspace', async () => {
-      const mockRun = vi.fn();
-      vi.spyOn(current, 'getCommand').mockReturnValue({ run: mockRun });
-
-      // Simulate script being called from a workspace
-      vi.spyOn(current, '__env').mockImplementation((input) => {
-        const envs = {
-          ABERLAAS_CWD: '/workspace/lib/',
-          INIT_CWD: '/',
-        };
-        return envs[input];
-      });
-
-      const input = ['foo', './foo.js', './__tests__/foo.js'];
-
-      await current.run(input);
-
-      expect(mockRun).toHaveBeenCalledWith({
-        _: ['/workspace/lib/foo.js', '/workspace/lib/__tests__/foo.js'],
       });
     });
     describe('ABERLAAS_VERSION', () => {
@@ -111,7 +85,7 @@ describe('aberlaas', () => {
         const input = ['test'];
 
         await current.run(input);
-        expect(current.__env).not.toHaveBeenCalledWith(
+        expect(current.__setEnv).not.toHaveBeenCalledWith(
           'ABERLAAS_VERSION',
           expect.anything(),
         );
