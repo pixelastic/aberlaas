@@ -16,7 +16,7 @@ export const __ = {
   ensureCorrectBumpType(cliArgs) {
     const bumpType = cliArgs._[0];
     if (_.includes(['patch', 'minor', 'major'], bumpType)) {
-      return;
+      return true;
     }
     throw firostError(
       'ABERLAAS_RELEASE_UNKNOWN_BUMP_TYPE',

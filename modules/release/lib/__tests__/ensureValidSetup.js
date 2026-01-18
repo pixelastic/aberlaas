@@ -1,6 +1,12 @@
+import { emptyDir, tmpDirectory } from 'firost';
+import { __ as helper } from 'aberlaas-helper';
+import Gilmore from 'gilmore';
 import { __ } from '../ensureValidSetup.js';
 
 describe('ensureValidSetup', () => {
+  const testDirectory = tmpDirectory('aberlaas/release/ensureValidSetup');
+  let repo;
+
   describe('ensureCorrectBumpType', () => {
     describe('valid bumpTypes', () => {
       it.each([
@@ -9,14 +15,9 @@ describe('ensureValidSetup', () => {
         { title: 'major', input: 'major' },
       ])('$title', ({ input }) => {
         const cliArgs = { _: [input] };
-        let actual = null;
-        try {
-          __.ensureCorrectBumpType(cliArgs);
-        } catch (err) {
-          actual = err;
-        }
+        const actual = __.ensureCorrectBumpType(cliArgs);
 
-        expect(actual).toEqual(null);
+        expect(actual).toEqual(true);
       });
     });
     describe('invalid bumptypes', () => {
@@ -47,24 +48,29 @@ describe('ensureValidSetup', () => {
   });
 
   describe('ensureCorrectBranch', () => {
+    beforeEach(async () => {
+      vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+      await emptyDir(testDirectory);
+      repo = new Gilmore(testDirectory);
+      await repo.init();
+      await repo.newFile('README.md');
+      await repo.commitAll('Initial commit');
+    });
     it('should pass when on main branch', async () => {
-      const mockRepo = {
-        currentBranchName: vi.fn().mockReturnValue('main'),
-      };
+      const currentBranch = await repo.currentBranchName();
 
-      const result = await __.ensureCorrectBranch(mockRepo);
+      const actual = await __.ensureCorrectBranch(repo);
 
-      expect(result).toEqual(true);
+      expect(currentBranch).toEqual('main');
+      expect(actual).toEqual(true);
     });
 
     it('should throw error when not on main branch', async () => {
-      const mockRepo = {
-        currentBranchName: vi.fn().mockReturnValue('develop'),
-      };
+      await repo.switchBranch('develop');
 
       let actual = null;
       try {
-        await __.ensureCorrectBranch(mockRepo);
+        await __.ensureCorrectBranch(repo);
       } catch (err) {
         actual = err;
       }
