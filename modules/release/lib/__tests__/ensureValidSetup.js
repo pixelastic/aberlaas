@@ -47,39 +47,66 @@ describe('ensureValidSetup', () => {
     });
   });
 
-  describe('ensureCorrectBranch', () => {
+  describe('with real git repo', () => {
     beforeEach(async () => {
       vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
       await emptyDir(testDirectory);
+
       repo = new Gilmore(testDirectory);
       await repo.init();
       await repo.newFile('README.md');
       await repo.commitAll('Initial commit');
     });
-    it('should pass when on main branch', async () => {
-      const currentBranch = await repo.currentBranchName();
+    describe('ensureCorrectBranch', () => {
+      it('should pass when on main branch', async () => {
+        const currentBranch = await repo.currentBranchName();
 
-      const actual = await __.ensureCorrectBranch(repo);
+        const actual = await __.ensureCorrectBranch(repo);
 
-      expect(currentBranch).toEqual('main');
-      expect(actual).toEqual(true);
+        expect(currentBranch).toEqual('main');
+        expect(actual).toEqual(true);
+      });
+
+      it('should throw error when not on main branch', async () => {
+        await repo.switchBranch('develop');
+
+        let actual = null;
+        try {
+          await __.ensureCorrectBranch(repo);
+        } catch (err) {
+          actual = err;
+        }
+
+        expect(actual).toHaveProperty(
+          'code',
+          'ABERLAAS_RELEASE_NOT_ON_MAIN_BRANCH',
+        );
+        expect(actual.message).toContain('branch main');
+      });
     });
 
-    it('should throw error when not on main branch', async () => {
-      await repo.switchBranch('develop');
+    describe('ensureCleanRepository', () => {
+      it('should pass when repository is clean', async () => {
+        const result = await __.ensureCleanRepository(repo);
 
-      let actual = null;
-      try {
-        await __.ensureCorrectBranch(repo);
-      } catch (err) {
-        actual = err;
-      }
+        expect(result).toEqual(true);
+      });
 
-      expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_RELEASE_NOT_ON_MAIN_BRANCH',
-      );
-      expect(actual.message).toContain('branch main');
+      it('should throw error when repository has uncommitted changes', async () => {
+        await repo.newFile('docs/index.md');
+
+        let actual = null;
+        try {
+          await __.ensureCleanRepository(repo);
+        } catch (err) {
+          actual = err;
+        }
+
+        expect(actual).toHaveProperty(
+          'code',
+          'ABERLAAS_RELEASE_NOT_CLEAN_DIRECTORY',
+        );
+      });
     });
   });
 });
