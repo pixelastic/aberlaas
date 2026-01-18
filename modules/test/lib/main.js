@@ -61,7 +61,7 @@ export default {
     await vitest.close();
 
     if (testsAreFailing) {
-      throw firostError('ERROR_TEST_FAIL', 'Tests are failing');
+      throw firostError('ABERLAAS_TEST_FAIL', 'Tests are failing');
     }
 
     return true;

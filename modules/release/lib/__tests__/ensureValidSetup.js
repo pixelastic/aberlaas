@@ -1,6 +1,7 @@
-import { emptyDir, tmpDirectory } from 'firost';
+import { emptyDir, firostError, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
+import aberlaasTest from 'aberlaas-test';
 import { __ } from '../ensureValidSetup.js';
 
 describe('ensureValidSetup', () => {
@@ -107,6 +108,44 @@ describe('ensureValidSetup', () => {
           'ABERLAAS_RELEASE_NOT_CLEAN_DIRECTORY',
         );
       });
+    });
+  });
+
+  describe('ensureTestsArePassing', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(aberlaasTest, 'run').mockReturnValue();
+    });
+
+    it('should return false when skip-test is true', async () => {
+      const actual = await __.ensureTestsArePassing({ 'skip-test': true });
+
+      expect(actual).toEqual(false);
+      expect(aberlaasTest.run).not.toHaveBeenCalled();
+    });
+
+    it('should pass when tests succeed', async () => {
+      const actual = await __.ensureTestsArePassing();
+
+      expect(actual).toEqual(true);
+      expect(__.consoleInfo).toHaveBeenCalled();
+      expect(aberlaasTest.run).toHaveBeenCalledWith({ failFast: true });
+    });
+
+    it('should throw error when tests fail', async () => {
+      vi.spyOn(aberlaasTest, 'run').mockImplementation(() => {
+        throw firostError('ABERLAAS_TEST_FAIL', 'Tests are failing');
+      });
+
+      let actual = null;
+      try {
+        await __.ensureTestsArePassing();
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(__.consoleInfo).toHaveBeenCalled();
+      expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_TESTS_FAILING');
     });
   });
 });

@@ -7,6 +7,7 @@ import aberlaasLint from 'aberlaas-lint';
 import { ensureNpmLogin } from './npm.js';
 
 export const __ = {
+  consoleInfo,
   /**
    * Validates that the provided bump type is one of the accepted semantic versioning types.
    * @param {object} cliArgs Release options
@@ -60,11 +61,17 @@ export const __ = {
 
   /**
    * Ensures that all tests are passing before proceeding with a release
+   * @param {object} cliArgs Release options
    * @returns {Promise<void>} A promise that resolves if tests pass, rejects with ABERLAAS_RELEASE_TESTS_FAILING error if tests fail
    */
-  async ensureTestsArePassing() {
+  async ensureTestsArePassing(cliArgs = {}) {
+    if (cliArgs['skip-test']) {
+      return false;
+    }
+    __.consoleInfo('Running tests...');
     try {
       await aberlaasTest.run({ failFast: true });
+      return true;
     } catch (err) {
       throw firostError('ABERLAAS_RELEASE_TESTS_FAILING', err.message);
     }
@@ -72,12 +79,18 @@ export const __ = {
 
   /**
    * Ensures that linting passes by running the lint process and throwing an error if it fails
+   * @param {object} cliArgs Release options
    * @returns {Promise<void>} A promise that resolves if linting passes
    * @throws {Error} Throws ABERLAAS_RELEASE_LINT_FAILING error if linting fails
    */
-  async ensureLintIsPassing() {
+  async ensureLintIsPassing(cliArgs = {}) {
+    if (cliArgs['skip-lint']) {
+      return false;
+    }
+    __.consoleInfo('Running lint...');
     try {
       await aberlaasLint.run();
+      return true;
     } catch (err) {
       throw firostError('ABERLAAS_RELEASE_LINT_FAILING', err.message);
     }
@@ -106,14 +119,8 @@ export async function ensureValidSetup(cliArgs = {}) {
   await ensureNpmLogin();
 
   // Check tests are passing
-  if (!cliArgs['skip-test']) {
-    consoleInfo('Running tests...');
-    await __.ensureTestsArePassing();
-  }
+  await __.ensureTestsArePassing(cliArgs);
 
   // Check lint is passing
-  if (!cliArgs['skip-lint']) {
-    consoleInfo('Running lint...');
-    await __.ensureLintIsPassing();
-  }
+  await __.ensureLintIsPassing(cliArgs);
 }
