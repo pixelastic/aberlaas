@@ -12,6 +12,41 @@ import {
 import { _ } from 'golgoth';
 import { hostGitPath, hostPackagePath } from 'aberlaas-helper';
 
+export const __ = {
+  run,
+
+  /**
+   * Executes an npm command and returns its output
+   * @param {string} command - The npm command to execute (without 'npm' prefix)
+   * @returns {Promise<string>} The stdout output from the npm command
+   * @throws {Error} Throws a formatted error if the npm command fails
+   */
+  async npmRun(command) {
+    try {
+      const { stdout } = await __.run(`npm ${command}`, {
+        stdout: false,
+        stderr: false,
+      });
+      return stdout;
+    } catch ({ stderr }) {
+      const errorLines = _.split(stderr, '\n');
+
+      // Identify known npm errors
+      if (_.startsWith(errorLines[0], 'npm error code')) {
+        const npmErrorCode = _.replace(errorLines[0], 'npm error code ', '');
+        const npmErrorMessage = _.chain(errorLines).slice(1).join('\n').value();
+        throw firostError(
+          `ABERLAAS_RELEASE_NPM_ERROR_${npmErrorCode}`,
+          npmErrorMessage,
+        );
+      }
+
+      // Throw unknown errors up
+      throw firostError('ABERLAAS_RELEASE_NPM_UNKNOWN_ERROR', stderr);
+    }
+  },
+};
+
 /**
  * Ensures the user is logged in to npm by checking authentication status and prompting for login if needed.
  * @returns {Promise<boolean|undefined>} Returns true if already logged in, undefined if login was required and completed
@@ -19,7 +54,7 @@ import { hostGitPath, hostPackagePath } from 'aberlaas-helper';
  */
 export async function ensureNpmLogin() {
   try {
-    await npmRun('whoami');
+    await __.npmRun('whoami');
     return true;
   } catch (err) {
     if (err.code == 'ABERLAAS_RELEASE_NPM_ERROR_E401') {
@@ -84,31 +119,4 @@ async function waitForNpmLogin() {
 
   // Try again
   await ensureNpmLogin();
-}
-
-/**
- * Executes an npm command and returns its output
- * @param {string} command - The npm command to execute (without 'npm' prefix)
- * @returns {Promise<string>} The stdout output from the npm command
- * @throws {Error} Throws a formatted error if the npm command fails
- */
-async function npmRun(command) {
-  try {
-    const { stdout } = await run(`npm ${command}`, {
-      stdout: false,
-      stderr: false,
-    });
-    return stdout;
-  } catch ({ stderr }) {
-    const errorLines = _.split(stderr, '\n');
-
-    if (_.startsWith(errorLines[0], 'npm error code')) {
-      const npmErrorCode = _.replace(errorLines[0], 'npm error code ', '');
-      const npmErrorMessage = _.chain(errorLines).slice(1).join('\n').value();
-      throw firostError(
-        `ABERLAAS_RELEASE_NPM_ERROR_${npmErrorCode}`,
-        npmErrorMessage,
-      );
-    }
-  }
 }

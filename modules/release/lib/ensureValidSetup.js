@@ -4,7 +4,7 @@ import Gilmore from 'gilmore';
 import { hostGitRoot } from 'aberlaas-helper';
 import aberlaasTest from 'aberlaas-test';
 import aberlaasLint from 'aberlaas-lint';
-import { ensureNpmLogin } from './npm.js';
+import { ensureNpmLogin } from './ensureNpmLogin.js';
 
 export const __ = {
   consoleInfo,
