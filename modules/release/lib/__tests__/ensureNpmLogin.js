@@ -51,4 +51,37 @@ describe('ensureNpmLogin', () => {
       expect(actual.message).toContain('Some other error message');
     });
   });
+
+  describe('getNpmUsername', () => {
+    let mockedEnvs = {};
+    beforeEach(async () => {
+      vi.spyOn(__, 'env').mockImplementation((key) => {
+        return mockedEnvs[key];
+      });
+    });
+    it('should return env variable when set', async () => {
+      mockedEnvs = { ABERLAAS_NPM_USERNAME: 'pixelastic' };
+      const actual = await __.getNpmUsername();
+
+      expect(actual).toEqual('pixelastic');
+    });
+
+    it('should prompt user when env variable is undefined', async () => {
+      mockedEnvs = {};
+      vi.spyOn(__, 'prompt').mockReturnValue('my-user');
+
+      const actual = await __.getNpmUsername();
+
+      expect(actual).toEqual('my-user');
+    });
+
+    it('should prompt user when env variable is null', async () => {
+      mockedEnvs = { ABERLAAS_NPM_USERNAME: '' };
+      vi.spyOn(__, 'prompt').mockReturnValue('my-user');
+
+      const actual = await __.getNpmUsername();
+
+      expect(actual).toEqual('my-user');
+    });
+  });
 });

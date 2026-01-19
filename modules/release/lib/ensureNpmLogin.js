@@ -14,6 +14,8 @@ import { hostGitPath, hostPackagePath } from 'aberlaas-helper';
 
 export const __ = {
   run,
+  env,
+  prompt,
 
   /**
    * Executes an npm command and returns its output
@@ -45,6 +47,16 @@ export const __ = {
       throw firostError('ABERLAAS_RELEASE_NPM_UNKNOWN_ERROR', stderr);
     }
   },
+
+  /**
+   * Gets the NPM username from environment variable or prompts user for input
+   * @returns {Promise<string>} The NPM username
+   */
+  async getNpmUsername() {
+    return (
+      __.env('ABERLAAS_NPM_USERNAME') || (await __.prompt('NPM Username: '))
+    );
+  },
 };
 
 /**
@@ -66,14 +78,6 @@ export async function ensureNpmLogin() {
 }
 
 /**
- * Gets the NPM username from environment variable or prompts user for input
- * @returns {Promise<string>} The NPM username
- */
-async function getNpmUsername() {
-  return env('ABERLAAS_NPM_USERNAME') || (await prompt('NPM Username: '));
-}
-
-/**
  * Prompts the user to create and configure an npm authentication token when not logged in.
  * Opens the npm token creation page in browser, guides user through token setup,
  * collects the token, and saves it to .npmrc file.
@@ -82,7 +86,7 @@ async function getNpmUsername() {
 async function waitForNpmLogin() {
   consoleWarn('You are not currently authentified to npm.');
 
-  const npmUsername = await getNpmUsername();
+  const npmUsername = await __.getNpmUsername();
   const tokenUrl = `https://www.npmjs.com/settings/${npmUsername}/tokens/granular-access-tokens/new`;
 
   const rootPackage = await readJson(hostPackagePath('package.json'));
