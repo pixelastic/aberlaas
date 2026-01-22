@@ -78,4 +78,52 @@ describe('main', () => {
       });
     });
   });
+
+  describe('getReleaseData', () => {
+    it('happy (complex) path', async () => {
+      await writeJson(
+        {
+          name: 'monorepo-root',
+          version: '1.5.9',
+          private: true,
+          workspaces: ['packages/*'],
+        },
+        `${testDirectory}/package.json`,
+      );
+
+      await writeJson(
+        { name: 'package-a', version: '1.5.9' },
+        `${testDirectory}/packages/a/package.json`,
+      );
+      await writeJson(
+        { name: 'package-b', version: '1.5.9' },
+        `${testDirectory}/packages/b/package.json`,
+      );
+      await writeJson(
+        { name: 'package-private', version: '1.5.9', private: true },
+        `${testDirectory}/packages/private/package.json`,
+      );
+
+      const cliArgs = { _: ['major'], 'skip-changelog': true };
+
+      const actual = await __.getReleaseData(cliArgs);
+
+      expect(actual).toEqual({
+        bumpType: 'major',
+        allPackages: [
+          {
+            filepath: `${testDirectory}/packages/a/package.json`,
+            content: { name: 'package-a', version: '1.5.9' },
+          },
+          {
+            filepath: `${testDirectory}/packages/b/package.json`,
+            content: { name: 'package-b', version: '1.5.9' },
+          },
+        ],
+        currentVersion: '1.5.9',
+        newVersion: '2.0.0',
+        skipChangelog: true,
+      });
+    });
+  });
 });

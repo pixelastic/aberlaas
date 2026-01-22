@@ -9,6 +9,27 @@ import { updateChangelog } from './changelog.js';
 
 export const __ = {
   /**
+   * Gathers all release information from CLI arguments
+   * @param {object} cliArgs - CLI arguments from minimist
+   * @returns {object} Release data containing bumpType, allPackages, currentVersion, newVersion, skipChangelog
+   */
+  async getReleaseData(cliArgs) {
+    const bumpType = cliArgs._[0];
+    const allPackages = await __.getAllPackagesToRelease();
+    const currentVersion = allPackages[0].content.version;
+    const newVersion = semver.inc(currentVersion, bumpType);
+    const skipChangelog = !!cliArgs['skip-changelog'];
+
+    return {
+      bumpType,
+      allPackages,
+      currentVersion,
+      newVersion,
+      skipChangelog,
+    };
+  },
+
+  /**
    * Gets all packages that need to be released
    * @returns {Array<{filepath: string, content: object}>} Array of packages with their filepath and content
    */
