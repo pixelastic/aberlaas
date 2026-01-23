@@ -88,7 +88,26 @@ export const __ = {
     });
   },
 
+  /**
+   * Publishes all packages to npm
+   * @param {object} releaseData - Release data containing allPackages
+   */
+  async publishAllPackagesToNpm(releaseData) {
+    await pMap(
+      releaseData.allPackages,
+      async ({ filepath, content }) => {
+        const packageName = content.name;
+        __.consoleInfo(`Publishing ${packageName} to npm`);
+
+        const packageDir = path.dirname(filepath);
+        await __.run('npm publish --access public', { cwd: packageDir });
+      },
+      { concurrency: 1 },
+    );
+  },
+
   consoleInfo,
+  run,
 };
 
 export default {
@@ -112,18 +131,7 @@ export default {
     const repo = new Gilmore(gitRoot);
     await repo.commitAll(`v${releaseData.newVersion}`, { skipHook: true });
 
-    // Publish all the packages
-    await pMap(
-      releaseData.allPackages,
-      async ({ filepath, content }) => {
-        const packageName = content.name;
-        consoleInfo(`Publishing ${packageName} to npm`);
-
-        const packageDir = path.dirname(filepath);
-        await run('npm publish --access public', { cwd: packageDir });
-      },
-      { concurrency: 1 },
-    );
+    await __.publishAllPackagesToNpm(releaseData);
 
     // We create a tag for this version
     await repo.createTag(`v${releaseData.newVersion}`);

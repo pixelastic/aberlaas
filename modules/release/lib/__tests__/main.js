@@ -176,4 +176,41 @@ describe('main', () => {
       });
     });
   });
+
+  describe('publishAllPackagesToNpm', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'run').mockReturnValue();
+    });
+    it('should publish all packages to npm', async () => {
+      const releaseData = {
+        allPackages: [
+          {
+            filepath: `${testDirectory}/packages/a/package.json`,
+            content: { name: 'package-a' },
+          },
+          {
+            filepath: `${testDirectory}/packages/b/package.json`,
+            content: { name: 'package-b' },
+          },
+        ],
+      };
+
+      await __.publishAllPackagesToNpm(releaseData);
+
+      expect(__.run).toHaveBeenCalledWith('npm publish --access public', {
+        cwd: `${testDirectory}/packages/a`,
+      });
+      expect(__.run).toHaveBeenCalledWith('npm publish --access public', {
+        cwd: `${testDirectory}/packages/b`,
+      });
+
+      expect(__.consoleInfo).toHaveBeenCalledWith(
+        'Publishing package-a to npm',
+      );
+      expect(__.consoleInfo).toHaveBeenCalledWith(
+        'Publishing package-b to npm',
+      );
+    });
+  });
 });
