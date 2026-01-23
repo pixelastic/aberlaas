@@ -5,7 +5,7 @@ import { _, pMap } from 'golgoth';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import semver from 'semver';
 import { ensureValidSetup } from './ensureValidSetup.js';
-import { updateChangelog } from './changelog.js';
+import { updateChangelog } from './updateChangelog.js';
 
 export const __ = {
   /**
@@ -83,23 +83,16 @@ export default {
   async run(cliArgs = {}) {
     await ensureValidSetup(cliArgs);
 
-    const bumpType = cliArgs._[0]; // major/minor/patch
-
-    // Get all the packages to release and current version
-    const allPackagesToRelease = await __.getAllPackagesToRelease();
-    const currentVersion = allPackagesToRelease[0].content.version;
-    const newVersion = semver.inc(currentVersion, bumpType);
+    const releaseData = await __.getReleaseData(cliArgs);
 
     // Update the changelog
-    if (!cliArgs['skip-changelog']) {
-      await updateChangelog(currentVersion, newVersion);
-    }
+    await updateChangelog(releaseData);
 
     // We bump the version of all packages
-    await pMap(allPackagesToRelease, async ({ filepath, content }) => {
+    await pMap(releaseData.allPackages, async ({ filepath, content }) => {
       const packageName = content.name;
-      consoleInfo(`Updating ${packageName} to ${newVersion}`);
-      const newContent = { ...content, version: newVersion };
+      consoleInfo(`Updating ${packageName} to ${releaseData.newVersion}`);
+      const newContent = { ...content, version: releaseData.newVersion };
       await writeJson(newContent, filepath, {
         sort: false,
       });
@@ -107,13 +100,13 @@ export default {
 
     // Commit the changes
     const gitRoot = hostGitRoot();
-    consoleInfo(`Creating new commit for version v${newVersion}`);
+    consoleInfo(`Creating new commit for version v${releaseData.newVersion}`);
     const repo = new Gilmore(gitRoot);
-    await repo.commitAll(`v${newVersion}`, { skipHook: true });
+    await repo.commitAll(`v${releaseData.newVersion}`, { skipHook: true });
 
     // Publish all the packages
     await pMap(
-      allPackagesToRelease,
+      releaseData.allPackages,
       async ({ filepath, content }) => {
         const packageName = content.name;
         consoleInfo(`Publishing ${packageName} to npm`);
@@ -125,10 +118,10 @@ export default {
     );
 
     // We create a tag for this version
-    await repo.createTag(`v${newVersion}`);
+    await repo.createTag(`v${releaseData.newVersion}`);
 
     // We push to the remote
-    consoleInfo(`Creating tag v${newVersion} and pushing to repo`);
+    consoleInfo(`Creating tag v${releaseData.newVersion} and pushing to repo`);
     await repo.push();
   },
 };
