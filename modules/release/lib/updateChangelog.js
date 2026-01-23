@@ -18,25 +18,13 @@ import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import cliMarkdown from 'cli-markdown';
 
 export const __ = {
-  consoleInfo,
-  consoleLog(input) {
-    console.log(input);
-  },
-  select,
-  cliMarkdown,
-  // firostError,
-  // write,
-  // read,
-  run,
-  // hostGitPath,
-
   /**
    * Generate changelog markdown from git commits between two versions
-   * @param {string} currentVersion Starting version (e.g., 'v2.19.0')
-   * @param {string} newVersion New version to release (e.g., '2.20.0')
+   * @param {object} releaseData - Release data containing currentVersion, newVersion, and skipChangelog
    * @returns {string} Generated changelog markdown
    */
-  async generateChangelogFromGit(currentVersion, newVersion) {
+  async generateChangelogFromGit(releaseData) {
+    const { currentVersion, newVersion } = releaseData;
     const gitRoot = hostGitRoot();
     const currentVersionTag = `v${currentVersion}`;
 
@@ -124,6 +112,13 @@ export const __ = {
     const newChangelog = await read(changelogFilepath);
     return await __.confirmOrEditChangelog(newChangelog, selectOptions);
   },
+  consoleInfo,
+  consoleLog(input) {
+    console.log(input);
+  },
+  select,
+  cliMarkdown,
+  run,
 };
 
 /**
@@ -131,16 +126,11 @@ export const __ = {
  * @param {object} releaseData - Release data containing currentVersion, newVersion, and skipChangelog
  */
 export async function updateChangelog(releaseData) {
-  const { skipChangelog, currentVersion, newVersion } = releaseData;
-
-  if (skipChangelog) {
+  if (releaseData.skipChangelog) {
     return;
   }
 
-  const suggestedChangelog = await __.generateChangelogFromGit(
-    currentVersion,
-    newVersion,
-  );
+  const suggestedChangelog = await __.generateChangelogFromGit(releaseData);
   const approvedChangelog = await __.confirmOrEditChangelog(suggestedChangelog);
 
   const changelogPath = hostGitPath('CHANGELOG.md');

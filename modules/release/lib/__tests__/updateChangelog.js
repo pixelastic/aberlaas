@@ -39,7 +39,10 @@ describe('updateChangelog', () => {
       await repo.commitAll('chore: update dependencies');
 
       // Generate changelog
-      const rawChangelog = await __.generateChangelogFromGit('1.0.0', '1.1.0');
+      const rawChangelog = await __.generateChangelogFromGit({
+        currentVersion: '1.0.0',
+        newVersion: '1.1.0',
+      });
 
       // Normalize: replace commit SHAs with placeholder
       const actual = _.replace(rawChangelog, /\([0-9a-f]{7}\)/g, '(SHA)');
