@@ -72,6 +72,23 @@ export const __ = {
 
     return _.flatten(rawList);
   },
+
+  /**
+   * Bumps the version of all packages to the new version
+   * @param {object} releaseData - Release data containing allPackages and newVersion
+   */
+  async bumpAllPackageVersions(releaseData) {
+    await pMap(releaseData.allPackages, async ({ filepath, content }) => {
+      const packageName = content.name;
+      __.consoleInfo(`Updating ${packageName} to ${releaseData.newVersion}`);
+      const newContent = { ...content, version: releaseData.newVersion };
+      await writeJson(newContent, filepath, {
+        sort: false,
+      });
+    });
+  },
+
+  consoleInfo,
 };
 
 export default {
@@ -85,18 +102,9 @@ export default {
 
     const releaseData = await __.getReleaseData(cliArgs);
 
-    // Update the changelog
     await updateChangelog(releaseData);
 
-    // We bump the version of all packages
-    await pMap(releaseData.allPackages, async ({ filepath, content }) => {
-      const packageName = content.name;
-      consoleInfo(`Updating ${packageName} to ${releaseData.newVersion}`);
-      const newContent = { ...content, version: releaseData.newVersion };
-      await writeJson(newContent, filepath, {
-        sort: false,
-      });
-    });
+    await __.bumpAllPackageVersions(releaseData);
 
     // Commit the changes
     const gitRoot = hostGitRoot();

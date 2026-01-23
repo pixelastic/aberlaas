@@ -1,4 +1,4 @@
-import { emptyDir, tmpDirectory, writeJson } from 'firost';
+import { emptyDir, readJson, tmpDirectory, writeJson } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { __ } from '../main.js';
 
@@ -123,6 +123,56 @@ describe('main', () => {
         currentVersion: '1.5.9',
         newVersion: '2.0.0',
         skipChangelog: true,
+      });
+    });
+  });
+
+  describe('bumpAllPackageVersions', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+    });
+    it('should update only the package.json files passed in releaseData', async () => {
+      const releaseData = {
+        newVersion: '2.0.0',
+        allPackages: [
+          {
+            filepath: `${testDirectory}/packages/a/package.json`,
+            content: { name: 'package-a', version: '1.5.9', author: 'me' },
+          },
+          {
+            filepath: `${testDirectory}/packages/b/package.json`,
+            content: {
+              name: 'package-b',
+              version: '1.5.9',
+              description: 'my package',
+            },
+          },
+        ],
+      };
+
+      await writeJson(
+        releaseData.allPackages[0].content,
+        releaseData.allPackages[0].filepath,
+      );
+      await writeJson(
+        releaseData.allPackages[1].content,
+        releaseData.allPackages[1].filepath,
+      );
+
+      await __.bumpAllPackageVersions(releaseData);
+
+      const packageA = await readJson(releaseData.allPackages[0].filepath);
+      const packageB = await readJson(releaseData.allPackages[1].filepath);
+
+      expect(packageA).toEqual({
+        name: 'package-a',
+        version: '2.0.0',
+        author: 'me',
+      });
+      expect(packageB).toEqual({
+        name: 'package-b',
+        version: '2.0.0',
+        description: 'my package',
       });
     });
   });
