@@ -1,4 +1,5 @@
-import { emptyDir, tmpDirectory, write } from 'firost';
+import { Readable } from 'node:stream';
+import { captureOutput, emptyDir, read, tmpDirectory, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
 import Gilmore from 'gilmore';
@@ -60,6 +61,118 @@ describe('updateChangelog', () => {
           - Improve performance (SHA)`;
 
       expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('confirmOrEditChangelog', () => {
+    let mockStdin;
+
+    beforeEach(() => {
+      mockStdin = new Readable({ read() {} });
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'consoleLog').mockReturnValue();
+      vi.spyOn(__, 'cliMarkdown').mockImplementation((input) => {
+        return `Markdown: ${input}`;
+      });
+    });
+
+    it('should display changelog with markdown formatting and separators', async () => {
+      const changelog = 'Changelog';
+
+      await captureOutput(async () => {
+        vi.spyOn(__, 'select').mockReturnValue('approve');
+
+        await __.confirmOrEditChangelog(changelog);
+
+        expect(__.consoleInfo).toHaveBeenCalledWith('CHANGELOG:');
+        expect(__.consoleLog).toHaveBeenCalledWith('━'.repeat(60));
+        expect(__.consoleLog).toHaveBeenCalledWith(`Markdown: ${changelog}`);
+      });
+    });
+
+    it('should return changelog when user approves', async () => {
+      const changelog = 'Changelog';
+
+      await captureOutput(async () => {
+        const promise = __.confirmOrEditChangelog(changelog, {
+          input: mockStdin,
+        });
+
+        mockStdin.push('\n'); // Enter
+        const actual = await promise;
+
+        await expect(actual).toEqual(changelog);
+      });
+    });
+
+    it('should handle the edit action', async () => {
+      vi.spyOn(__, 'select')
+        .mockReturnValueOnce('edit') // First we edit,
+        .mockReturnValueOnce('approve'); // then we approve
+      const expectedChangelogFile = `${testDirectory}/tmp/CHANGELOG.md`;
+
+      // We make the "run" command save the content of the tmp changelog, and
+      // write a new one to the file
+      let changelogFileContentBefore = null;
+      vi.spyOn(__, 'run').mockImplementation(async () => {
+        changelogFileContentBefore = await read(expectedChangelogFile);
+        await write('Edited changelog', expectedChangelogFile);
+      });
+
+      await captureOutput(async () => {
+        // Appel de la fonction
+        const actual = await __.confirmOrEditChangelog('Original changelog');
+
+        expect(actual).toEqual('Edited changelog');
+        expect(changelogFileContentBefore).toEqual('Original changelog');
+        expect(__.run).toHaveBeenCalledWith(
+          `$EDITOR ${expectedChangelogFile}`,
+          {
+            stdin: true,
+            shell: true,
+          },
+        );
+      });
+    });
+
+    it('should throw error when user cancels', async () => {
+      const changelog = 'Changelog';
+      vi.spyOn(__, 'select').mockReturnValue('cancel');
+
+      await captureOutput(async () => {
+        let actual = null;
+        try {
+          await __.confirmOrEditChangelog(changelog);
+        } catch (err) {
+          actual = err;
+        }
+
+        expect(actual).toHaveProperty(
+          'code',
+          'ABERLAAS_RELEASE_CHANGELOG_CANCELLED',
+        );
+      });
+    });
+
+    it('should throw error on Ctrl-C', async () => {
+      const changelog = 'Changelog';
+
+      await captureOutput(async () => {
+        let actual = null;
+        try {
+          const promise = __.confirmOrEditChangelog(changelog, {
+            input: mockStdin,
+          });
+
+          mockStdin.push(''); // Ctrl-C
+
+          await promise;
+        } catch (err) {
+          actual = err;
+        }
+
+        expect(actual).toHaveProperty('code', 'FIROST_SELECT_CTRL_C');
+      });
     });
   });
 });

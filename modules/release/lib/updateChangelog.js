@@ -18,6 +18,18 @@ import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import cliMarkdown from 'cli-markdown';
 
 export const __ = {
+  consoleInfo,
+  consoleLog(input) {
+    console.log(input);
+  },
+  select,
+  cliMarkdown,
+  // firostError,
+  // write,
+  // read,
+  run,
+  // hostGitPath,
+
   /**
    * Generate changelog markdown from git commits between two versions
    * @param {string} currentVersion Starting version (e.g., 'v2.19.0')
@@ -65,6 +77,53 @@ export const __ = {
     // Generate markdown
     return await generateMarkDown(filteredCommits, config);
   },
+
+  /**
+   * Display the changelog and ask the user to accept/edit/cancel.
+   * @param {string} changelog - The changelog content to display and confirm
+   * @param {object} selectOptions - Options object with input stream for testing
+   * @returns {string} The approved (and possibly edited) changelog content
+   */
+  async confirmOrEditChangelog(changelog, selectOptions = {}) {
+    __.consoleInfo('CHANGELOG:');
+
+    __.consoleLog(_.repeat('━', 60));
+    __.consoleLog(__.cliMarkdown(changelog));
+    __.consoleLog(_.repeat('━', 60));
+
+    const nextStep = await __.select(
+      'What to do?',
+      [
+        { name: '✅ Approve', value: 'approve' },
+        { name: '📝 Edit', value: 'edit' },
+        { name: '⛔️ Cancel', value: 'cancel' },
+      ],
+      selectOptions,
+    );
+
+    if (nextStep == 'cancel') {
+      throw firostError(
+        'ABERLAAS_RELEASE_CHANGELOG_CANCELLED',
+        'Release cancelled by user',
+      );
+    }
+
+    if (nextStep === 'approve') {
+      return changelog;
+    }
+
+    // Save the changelog in temp file and edit it
+    const changelogFilepath = hostGitPath('./tmp/CHANGELOG.md');
+    await write(changelog, changelogFilepath);
+
+    await __.run(`$EDITOR ${changelogFilepath}`, {
+      stdin: true,
+      shell: true,
+    });
+
+    const newChangelog = await read(changelogFilepath);
+    return await __.confirmOrEditChangelog(newChangelog, selectOptions);
+  },
 };
 
 /**
@@ -82,7 +141,7 @@ export async function updateChangelog(releaseData) {
     currentVersion,
     newVersion,
   );
-  const approvedChangelog = await confirmOrEditChangelog(suggestedChangelog);
+  const approvedChangelog = await __.confirmOrEditChangelog(suggestedChangelog);
 
   const changelogPath = hostGitPath('CHANGELOG.md');
   let existingChangelog = '';
@@ -91,46 +150,4 @@ export async function updateChangelog(releaseData) {
   }
   const newChangelog = `${approvedChangelog}\n\n${existingChangelog}`;
   await write(newChangelog, changelogPath);
-}
-
-/**
- * Display the changelog and ask the user to accept/edit/cancel.
- * @param {string} changelog - The changelog content to display and confirm
- * @returns {string} The approved (and possibly edited) changelog content
- */
-async function confirmOrEditChangelog(changelog) {
-  consoleInfo('CHANGELOG:');
-
-  console.log(_.repeat('━', 60));
-  console.log(cliMarkdown(changelog));
-  console.log(_.repeat('━', 60));
-
-  const nextStep = await select('What to do?', [
-    { name: '✅ Approve', value: 'approve' },
-    { name: '📝 Edit', value: 'edit' },
-    { name: '⛔️ Cancel', value: 'cancel' },
-  ]);
-
-  if (nextStep == 'cancel') {
-    throw firostError(
-      'ABERLAAS_RELEASE_CHANGELOG_CANCELLED',
-      'Release cancelled by user',
-    );
-  }
-
-  if (nextStep === 'approve') {
-    return changelog;
-  }
-
-  // Save the changelog in temp file and edit it
-  const changelogFilepath = hostGitPath('./tmp/CHANGELOG.md');
-  await write(changelog, changelogFilepath);
-
-  await run(`$EDITOR ${changelogFilepath}`, {
-    stdin: true,
-    shell: true,
-  });
-
-  const newChangelog = await read(changelogFilepath);
-  return await confirmOrEditChangelog(newChangelog);
 }
