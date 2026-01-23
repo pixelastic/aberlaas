@@ -3,7 +3,7 @@ import { captureOutput, emptyDir, read, tmpDirectory, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
 import Gilmore from 'gilmore';
-import { __ } from '../updateChangelog.js';
+import { __, updateChangelog } from '../updateChangelog.js';
 
 describe('updateChangelog', () => {
   const testDirectory = tmpDirectory('aberlaas/release/updateChangelog');
@@ -15,6 +15,45 @@ describe('updateChangelog', () => {
 
     repo = new Gilmore(testDirectory);
     await repo.init();
+  });
+
+  describe('updateChangelog', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'generateChangelogFromGit');
+      vi.spyOn(__, 'confirmOrEditChangelog');
+      vi.spyOn(__, 'addToExistingChangelogFile');
+    });
+
+    it('should do nothing when skipChangelog is true', async () => {
+      const releaseData = { skipChangelog: true };
+
+      await updateChangelog(releaseData);
+
+      expect(__.generateChangelogFromGit).not.toHaveBeenCalled();
+      expect(__.confirmOrEditChangelog).not.toHaveBeenCalled();
+      expect(__.addToExistingChangelogFile).not.toHaveBeenCalled();
+    });
+
+    it('should orchestrate changelog generation, confirmation, and saving', async () => {
+      const releaseData = {
+        skipChangelog: false,
+        currentVersion: '1.0.0',
+        newVersion: '2.0.0',
+      };
+
+      __.generateChangelogFromGit.mockReturnValue('Generated changelog');
+      __.confirmOrEditChangelog.mockReturnValue('Edited changelog');
+
+      await updateChangelog(releaseData);
+
+      expect(__.generateChangelogFromGit).toHaveBeenCalledWith(releaseData);
+      expect(__.confirmOrEditChangelog).toHaveBeenCalledWith(
+        'Generated changelog',
+      );
+      expect(__.addToExistingChangelogFile).toHaveBeenCalledWith(
+        'Edited changelog',
+      );
+    });
   });
 
   describe('generateChangelogFromGit', () => {
