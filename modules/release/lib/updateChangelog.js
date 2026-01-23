@@ -112,6 +112,24 @@ export const __ = {
     const newChangelog = await read(changelogFilepath);
     return await __.confirmOrEditChangelog(newChangelog, selectOptions);
   },
+
+  /**
+   * Prepends new changelog content to existing CHANGELOG.md file
+   * @param {string} newChangelog - The new changelog content to prepend
+   */
+  async addToExistingChangelogFile(newChangelog) {
+    const changelogPath = hostGitPath('CHANGELOG.md');
+
+    if (!(await exists(changelogPath))) {
+      await write(newChangelog, changelogPath);
+      return;
+    }
+
+    const existingChangelog = await read(changelogPath);
+    const updatedChangelog = `${newChangelog}\n\n${existingChangelog}`;
+    await write(updatedChangelog, changelogPath);
+  },
+
   consoleInfo,
   consoleLog(input) {
     console.log(input);
@@ -133,11 +151,5 @@ export async function updateChangelog(releaseData) {
   const suggestedChangelog = await __.generateChangelogFromGit(releaseData);
   const approvedChangelog = await __.confirmOrEditChangelog(suggestedChangelog);
 
-  const changelogPath = hostGitPath('CHANGELOG.md');
-  let existingChangelog = '';
-  if (await exists(changelogPath)) {
-    existingChangelog = await read(changelogPath);
-  }
-  const newChangelog = `${approvedChangelog}\n\n${existingChangelog}`;
-  await write(newChangelog, changelogPath);
+  await __.addToExistingChangelogFile(approvedChangelog);
 }

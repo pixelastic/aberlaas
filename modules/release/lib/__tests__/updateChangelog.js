@@ -178,4 +178,22 @@ describe('updateChangelog', () => {
       });
     });
   });
+
+  describe('addToExistingChangelogFile', () => {
+    it('should create CHANGELOG.md with new content when file does not exist', async () => {
+      await __.addToExistingChangelogFile('New changelog');
+
+      const actual = await read(`${testDirectory}/CHANGELOG.md`);
+      expect(actual).toEqual('New changelog');
+    });
+
+    it('should prepend new content to existing CHANGELOG.md', async () => {
+      await write('Existing changelog', `${testDirectory}/CHANGELOG.md`);
+
+      await __.addToExistingChangelogFile('New changelog');
+
+      const actual = await read(`${testDirectory}/CHANGELOG.md`);
+      expect(actual).toEqual('New changelog\n\nExisting changelog');
+    });
+  });
 });
