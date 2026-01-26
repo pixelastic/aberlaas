@@ -123,7 +123,7 @@ describe('compress > png', () => {
           actual = err;
         }
 
-        expect(actual).toHaveProperty('code', 'PngCompressError');
+        expect(actual).toHaveProperty('code', 'ABERLAAS_COMPRESS_PNG');
       });
     });
   });

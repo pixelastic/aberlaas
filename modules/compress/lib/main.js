@@ -32,7 +32,7 @@ export default {
     });
 
     if (hasErrors) {
-      throw firostError('ERROR_COMPRESS', 'Error while compressing files');
+      throw firostError('ABERLAAS_COMPRESS', 'Error while compressing files');
     }
 
     return true;

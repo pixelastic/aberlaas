@@ -53,7 +53,7 @@ describe('lint-css', () => {
         actual = error;
       }
 
-      expect(actual.code).toBe('ERROR_CSS_LINT');
+      expect(actual.code).toBe('ABERLAAS_LINT_CSS');
       expect(actual).toHaveProperty('message');
     });
     it('should run on all .css files by default and return true if all passes', async () => {
@@ -152,7 +152,7 @@ describe('lint-css', () => {
       const content = await read(filepath);
 
       expect(content).toBe('body {\n}');
-      expect(actual).toHaveProperty('code', 'ERROR_CSS_LINT');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_CSS');
       expect(actual).toHaveProperty(
         'message',
         expect.stringMatching('Unexpected empty block'),

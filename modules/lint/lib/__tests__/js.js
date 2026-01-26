@@ -55,7 +55,7 @@ describe('lint-js', () => {
         actual = error;
       }
 
-      expect(actual.code).toBe('JavaScriptLintError');
+      expect(actual.code).toBe('ABERLAAS_LINT_JS');
       expect(actual).toHaveProperty('message');
     });
     it('should test all .js files and return true if all passes', async () => {
@@ -117,7 +117,7 @@ describe('lint-js', () => {
         actual = error;
       }
 
-      expect(actual.code).toBe('JavaScriptLintError');
+      expect(actual.code).toBe('ABERLAAS_LINT_JS');
       expect(actual).toHaveProperty('message');
     });
   });

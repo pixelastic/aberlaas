@@ -20,7 +20,7 @@ export default {
 
     if (!this.isCI()) {
       throw firostError(
-        'ERROR_CI',
+        'ABERLAAS_CI_NOT_CI_ENVIRONMENT',
         'Current system is not a CI. Use CI=1 to force',
       );
     }

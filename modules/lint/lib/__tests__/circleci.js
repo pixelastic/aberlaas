@@ -136,7 +136,7 @@ describe('lint-circleci', () => {
           actual = error;
         }
 
-        expect(actual.code).toBe('CircleCiLintError');
+        expect(actual.code).toBe('ABERLAAS_LINT_CIRCLECI');
         expect(actual).toHaveProperty(
           'message',
           expect.stringMatching('foo bar'),
@@ -192,7 +192,7 @@ describe('lint-circleci', () => {
         actual = err;
       }
 
-      expect(actual.code).toBe('CircleCiLintError');
+      expect(actual.code).toBe('ABERLAAS_LINT_CIRCLECI');
       expect(actual).toHaveProperty(
         'message',
         expect.stringMatching('foo bar'),

@@ -66,7 +66,7 @@ describe('lint-yml', () => {
         actual = error;
       }
 
-      expect(actual.code).toBe('YamlLintError');
+      expect(actual.code).toBe('ABERLAAS_LINT_YML');
       expect(actual).toHaveProperty('message');
     });
     it('should throw all error message if a file fails', async () => {

@@ -41,7 +41,7 @@ export default {
     });
 
     if (hasErrors) {
-      throw firostError('JsonLintError', errorMessages.join('\n'));
+      throw firostError('ABERLAAS_LINT_JSON', errorMessages.join('\n'));
     }
     return true;
   },

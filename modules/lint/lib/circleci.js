@@ -61,7 +61,7 @@ export default {
       await this.validateConfig();
     } catch (error) {
       const errorMessage = `CircleCI config error on ${this.configPath}\n${error.message}`;
-      throw firostError('CircleCiLintError', errorMessage);
+      throw firostError('ABERLAAS_LINT_CIRCLECI', errorMessage);
     }
 
     return true;

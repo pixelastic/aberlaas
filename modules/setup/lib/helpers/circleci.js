@@ -34,7 +34,7 @@ export default {
       return response.body;
     } catch (_error) {
       throw firostError(
-        'ERROR_CIRCLECI',
+        'ABERLAAS_SETUP_CIRCLECI_API',
         "Can't connect to CircleCI API. Check that you have a valid ABERLAAS_CIRCLECI_TOKEN",
       );
     }

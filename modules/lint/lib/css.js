@@ -49,7 +49,7 @@ export default {
     });
 
     if (result.errored) {
-      throw firostError('ERROR_CSS_LINT', result.report);
+      throw firostError('ABERLAAS_LINT_CSS', result.report);
     }
     return true;
   },

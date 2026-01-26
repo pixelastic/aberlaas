@@ -22,12 +22,12 @@ export default {
       // Linting failed
       if (!result) {
         throw firostError(
-          'ERROR_PRECOMMIT_LINT_FAILED',
+          'ABERLAAS_PRECOMMIT_LINT_FAILED',
           'Precommit linting failed',
         );
       }
     } catch (_error) {
-      throw firostError('ERROR_PRECOMMIT', 'Precommit failed');
+      throw firostError('ABERLAAS_PRECOMMIT', 'Precommit failed');
     }
   },
 };

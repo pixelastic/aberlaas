@@ -43,7 +43,7 @@ export default {
     });
 
     if (hasErrors) {
-      throw firostError('YamlLintError', errorMessages.join('\n'));
+      throw firostError('ABERLAAS_LINT_YML', errorMessages.join('\n'));
     }
     return true;
   },

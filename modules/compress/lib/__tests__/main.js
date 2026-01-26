@@ -41,7 +41,7 @@ describe('compress', () => {
         actual = err;
       }
 
-      expect(actual).toHaveProperty('code', 'ERROR_COMPRESS');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_COMPRESS');
     });
   });
 });

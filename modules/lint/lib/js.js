@@ -62,7 +62,7 @@ export default {
     // Format errors
     const formatter = await eslint.loadFormatter('stylish');
     const errorText = formatter.format(results);
-    throw firostError('JavaScriptLintError', errorText);
+    throw firostError('ABERLAAS_LINT_JS', errorText);
   },
   /**
    * Autofix files in place

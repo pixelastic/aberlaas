@@ -42,7 +42,7 @@ export default {
       const command = `${binaryPath} ${files.join(' ')}`;
       await run(command, { stdout: false });
     } catch (error) {
-      throw firostError('PngCompressError', error.message);
+      throw firostError('ABERLAAS_COMPRESS_PNG', error.message);
     }
 
     return true;

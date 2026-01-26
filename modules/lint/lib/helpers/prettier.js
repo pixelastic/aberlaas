@@ -39,7 +39,7 @@ export async function fix(inputFiles) {
     });
 
     throw firostError(
-      'LINT_ERROR_FIX_PRETTIER',
+      'ABERLAAS_LINT_PRETTIER_FIX',
       `Some files could not be automatically fixed:\n\n${formattedErrors}`,
     );
   }

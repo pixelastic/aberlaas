@@ -58,7 +58,7 @@ export default {
     // Source file does not exist
     if (!(await isFile(absoluteSource))) {
       throw firostError(
-        'ERROR_INIT_COPY_FILE',
+        'ABERLAAS_INIT_COPY_FILE_NOT_FOUND',
         `Unable to locate ${absoluteSource} file`,
       );
     }

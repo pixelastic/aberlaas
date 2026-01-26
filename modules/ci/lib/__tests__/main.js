@@ -20,7 +20,7 @@ describe('ci', () => {
       expect(current.__runTest).not.toHaveBeenCalled();
       expect(current.__runLint).not.toHaveBeenCalled();
       expect(current.displayVersions).not.toHaveBeenCalled();
-      expect(actual).toHaveProperty('code', 'ERROR_CI');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_CI_NOT_CI_ENVIRONMENT');
     });
 
     describe('on CI server', () => {
