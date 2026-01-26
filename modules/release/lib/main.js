@@ -38,11 +38,12 @@ export default {
    * @returns {boolean} True on success
    */
   async run(cliArgs = {}) {
-    await ensureValidSetup(cliArgs);
+    await __.ensureValidSetup(cliArgs);
 
-    const releaseData = await getReleaseData(cliArgs);
+    const releaseData = await __.getReleaseData(cliArgs);
 
-    await updateGitRepo(releaseData);
+    await __.updateGitRepo(releaseData);
+
     await __.publishAllPackagesToNpm(releaseData);
   },
 };
