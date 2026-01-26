@@ -1,12 +1,10 @@
-import { consoleInfo, glob, readJson } from 'firost';
+import { glob, readJson } from 'firost';
 import { _, pMap } from 'golgoth';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import semver from 'semver';
 import { getGitDiff, parseCommits } from 'changelogen';
 
 export const __ = {
-  consoleInfo,
-
   /**
    * Gets all packages that need to be released
    * @returns {Array<{filepath: string, content: object}>} Array of packages with their filepath and content

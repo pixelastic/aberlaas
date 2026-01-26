@@ -132,6 +132,7 @@ describe('getReleaseData', () => {
 
   describe('getBumpType', () => {
     vi.setConfig({ testTimeout: 10_000 });
+
     it('should use the argument passed to the CLI', async () => {
       const actual = await __.getBumpType({ _: ['major'] }, 'whatever');
 

@@ -14,9 +14,12 @@ describe('main', () => {
   describe('run', () => {
     beforeEach(() => {
       vi.spyOn(__, 'ensureValidSetup').mockReturnValue();
-      vi.spyOn(__, 'getReleaseData').mockReturnValue();
+      vi.spyOn(__, 'getReleaseData').mockReturnValue({
+        newVersion: '2.0.0',
+      });
       vi.spyOn(__, 'updateGitRepo').mockReturnValue();
       vi.spyOn(__, 'publishAllPackagesToNpm').mockReturnValue();
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
     });
 
     it('should orchestrate the full release flow', async () => {
@@ -24,6 +27,7 @@ describe('main', () => {
 
       expect(__.ensureValidSetup).toHaveBeenCalled();
       expect(__.getReleaseData).toHaveBeenCalled();
+      expect(__.consoleInfo).toHaveBeenCalledWith('Release new version 2.0.0');
       expect(__.updateGitRepo).toHaveBeenCalled();
       expect(__.publishAllPackagesToNpm).toHaveBeenCalled();
     });

@@ -41,6 +41,7 @@ export default {
     await __.ensureValidSetup(cliArgs);
 
     const releaseData = await __.getReleaseData(cliArgs);
+    __.consoleInfo(`Release new version ${releaseData.newVersion}`);
 
     await __.updateGitRepo(releaseData);
 
