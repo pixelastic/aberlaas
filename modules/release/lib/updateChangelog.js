@@ -8,12 +8,7 @@ import {
   write,
 } from 'firost';
 import { _ } from 'golgoth';
-import {
-  generateMarkDown,
-  getGitDiff,
-  loadChangelogConfig,
-  parseCommits,
-} from 'changelogen';
+import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import cliMarkdown from 'cli-markdown';
 
@@ -29,9 +24,7 @@ export const __ = {
     const currentVersionTag = `v${currentVersion}`;
 
     // Get config
-    const defaultConfig = await loadChangelogConfig(gitRoot);
     const config = {
-      ...defaultConfig,
       from: currentVersionTag,
       to: 'HEAD',
       newVersion,
@@ -41,6 +34,12 @@ export const __ = {
         fix: { title: 'Bug Fixes', semver: 'patch' },
         perf: { title: 'Performance', semver: 'patch' },
       },
+      templates: {
+        tagMessage: 'v{{newVersion}}',
+        tagBody: 'v{{newVersion}}',
+      },
+      // Note: This scopeMap key is required by changelogen
+      scopeMap: {},
     };
 
     const rawCommits = await getGitDiff(currentVersionTag, 'HEAD', gitRoot);

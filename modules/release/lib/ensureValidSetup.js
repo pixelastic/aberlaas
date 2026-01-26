@@ -8,19 +8,28 @@ import { ensureNpmLogin } from './ensureNpmLogin.js';
 
 export const __ = {
   /**
-   * Validates that the provided bump type is one of the accepted semantic versioning types.
+   * Validates that the provided bump type is one of the accepted semantic
+   * versioning types, or empty for auto-detection.
    * @param {object} cliArgs Release options
    * @returns {void} - Returns nothing if valid, throws error if invalid
-   * @throws {Error} Throws ABERLAAS_RELEASE_UNKNOWN_BUMP_TYPE error if bumpType is not 'patch', 'minor', or 'major'
+   * @throws {Error} Throws ABERLAAS_RELEASE_UNKNOWN_BUMP_TYPE error if bumpType is provided but not 'patch', 'minor', or 'major'
    */
   ensureCorrectBumpType(cliArgs) {
     const bumpType = cliArgs._[0];
+
+    // If no bump type provided, allow it (will be auto-detected)
+    if (_.isEmpty(bumpType)) {
+      return true;
+    }
+
+    // If bump type is provided, validate it
     if (_.includes(['patch', 'minor', 'major'], bumpType)) {
       return true;
     }
+
     throw firostError(
       'ABERLAAS_RELEASE_UNKNOWN_BUMP_TYPE',
-      'Bump type should be either major, minor or patch',
+      'Bump type should be either major, minor or patch (or omitted for auto-detection)',
     );
   },
 

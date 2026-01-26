@@ -15,6 +15,10 @@ describe('ensureValidSetup', () => {
         { title: 'patch', input: 'patch' },
         { title: 'minor', input: 'minor' },
         { title: 'major', input: 'major' },
+        { title: 'undefined', input: undefined },
+        { title: 'empty arg', input: [] },
+        { title: 'null', input: null },
+        { title: 'empty string', input: '' },
       ])('$title', ({ input }) => {
         const cliArgs = { _: [input] };
         const actual = __.ensureCorrectBumpType(cliArgs);
@@ -22,12 +26,10 @@ describe('ensureValidSetup', () => {
         expect(actual).toEqual(true);
       });
     });
+
     describe('invalid bumptypes', () => {
       it.each([
         { title: 'invalid', input: 'invalid' },
-        { title: 'undefined', input: undefined },
-        { title: 'null', input: null },
-        { title: 'empty string', input: '' },
         { title: 'uppercase PATCH', input: 'PATCH' },
         { title: 'misspelled pach', input: 'pach' },
       ])('$title', ({ input }) => {
