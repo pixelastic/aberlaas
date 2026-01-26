@@ -7,7 +7,6 @@ import aberlaasLint from 'aberlaas-lint';
 import { ensureNpmLogin } from './ensureNpmLogin.js';
 
 export const __ = {
-  consoleInfo,
   /**
    * Validates that the provided bump type is one of the accepted semantic versioning types.
    * @param {object} cliArgs Release options
@@ -95,6 +94,9 @@ export const __ = {
       throw firostError('ABERLAAS_RELEASE_LINT_FAILING', err.message);
     }
   },
+
+  consoleInfo,
+  ensureNpmLogin,
 };
 
 /**
@@ -116,7 +118,7 @@ export async function ensureValidSetup(cliArgs = {}) {
   await __.ensureCleanRepository(repo);
 
   // Check npm login
-  await ensureNpmLogin();
+  await __.ensureNpmLogin();
 
   // Check tests are passing
   await __.ensureTestsArePassing(cliArgs);

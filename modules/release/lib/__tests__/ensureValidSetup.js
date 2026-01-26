@@ -3,7 +3,7 @@ import { __ as helper } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import aberlaasTest from 'aberlaas-test';
 import aberlaasLint from 'aberlaas-lint';
-import { __ } from '../ensureValidSetup.js';
+import { __, ensureValidSetup } from '../ensureValidSetup.js';
 
 describe('ensureValidSetup', () => {
   const testDirectory = tmpDirectory('aberlaas/release/ensureValidSetup');
@@ -185,6 +185,52 @@ describe('ensureValidSetup', () => {
 
       expect(__.consoleInfo).toHaveBeenCalled();
       expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_LINT_FAILING');
+    });
+  });
+
+  describe('ensureValidSetup', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'ensureCorrectBumpType').mockReturnValue(true);
+      vi.spyOn(__, 'ensureCorrectBranch').mockReturnValue(true);
+      vi.spyOn(__, 'ensureCleanRepository').mockReturnValue(true);
+      vi.spyOn(__, 'ensureTestsArePassing').mockReturnValue(true);
+      vi.spyOn(__, 'ensureLintIsPassing').mockReturnValue(true);
+      vi.spyOn(__, 'ensureNpmLogin').mockReturnValue();
+    });
+
+    it('should call all validation methods', async () => {
+      const cliArgs = { _: ['patch'] };
+
+      await ensureValidSetup(cliArgs);
+
+      expect(__.ensureCorrectBumpType).toHaveBeenCalled();
+      expect(__.ensureCorrectBranch).toHaveBeenCalled();
+      expect(__.ensureCleanRepository).toHaveBeenCalled();
+      expect(__.ensureNpmLogin).toHaveBeenCalled();
+      expect(__.ensureTestsArePassing).toHaveBeenCalled();
+      expect(__.ensureLintIsPassing).toHaveBeenCalled();
+    });
+
+    it('should stop execution when a validation fails', async () => {
+      const cliArgs = { _: ['patch'] };
+      vi.spyOn(__, 'ensureNpmLogin').mockImplementation(() => {
+        throw firostError('BAD_NPM', 'Bad npm');
+      });
+
+      let actual = null;
+      try {
+        await ensureValidSetup(cliArgs);
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty('code', 'BAD_NPM');
+      expect(__.ensureCorrectBumpType).toHaveBeenCalled();
+      expect(__.ensureCorrectBranch).toHaveBeenCalled();
+      expect(__.ensureCleanRepository).toHaveBeenCalled();
+      expect(__.ensureNpmLogin).toHaveBeenCalled();
+      expect(__.ensureTestsArePassing).not.toHaveBeenCalled();
+      expect(__.ensureLintIsPassing).not.toHaveBeenCalled();
     });
   });
 });
