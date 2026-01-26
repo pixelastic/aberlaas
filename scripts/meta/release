@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-# Release script disabled
-echo "Release script is currently disabled"
-exit 0

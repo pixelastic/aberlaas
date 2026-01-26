@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-node_modules/.bin/aberlaas lint --fix "$@"
+./modules/lib/bin/aberlaas.js lint --fix "$@"

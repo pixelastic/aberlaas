@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-node_modules/.bin/aberlaas test --watch "$@"
+./modules/lib/bin/aberlaas.js test --watch "$@"
