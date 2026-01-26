@@ -90,6 +90,7 @@ export const __ = {
     );
   },
 
+  ensureValidSetup,
   updateGitRepo,
   consoleInfo,
   run,
@@ -102,7 +103,7 @@ export default {
    * @returns {boolean} True on success
    */
   async run(cliArgs = {}) {
-    await ensureValidSetup(cliArgs);
+    await __.ensureValidSetup(cliArgs);
 
     const releaseData = await __.getReleaseData(cliArgs);
 
