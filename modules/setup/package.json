@@ -26,18 +26,16 @@
     "parse-github-repo-url": "1.4.1"
   },
   "scripts": {
-    "build": "../../scripts/local/build",
-    "build:prod": "../../scripts/local/build-prod",
-    "cms": "../../scripts/local/cms",
-    "serve": "../../scripts/local/serve",
-    "ci": "../../scripts/local/ci",
-    "release": "../../scripts/local/release",
-    "update-dependencies": "node ../../scripts/meta/update-dependencies.js",
-    "test:meta": "../../scripts/local/test-meta",
-    "test": "../../scripts/local/test",
-    "test:watch": "../../scripts/local/test-watch",
-    "compress": "../../scripts/local/compress",
-    "lint": "../../scripts/local/lint",
-    "lint:fix": "../../scripts/local/lint-fix"
+    "build": "cd ../docs && yarn run build",
+    "build:prod": "cd ../docs && yarn run build:prod",
+    "cms": "cd ../docs && yarn run cms",
+    "serve": "cd ../docs && yarn run serve",
+    "release": "cd ../.. && ./scripts/release",
+    "test:meta": "cd ../.. && ./scripts/test-meta",
+    "test": "cd ../.. && ./scripts/test",
+    "test:watch": "cd ../.. && ./scripts/test-watch",
+    "compress": "cd ../.. && ./scripts/compress",
+    "lint": "cd ../.. && ./scripts/lint",
+    "lint:fix": "cd ../.. && ./scripts/lint-fix"
   }
 }
