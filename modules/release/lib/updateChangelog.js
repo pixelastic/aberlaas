@@ -40,16 +40,6 @@ export const __ = {
         feat: { title: 'Features', semver: 'minor' },
         fix: { title: 'Bug Fixes', semver: 'patch' },
         perf: { title: 'Performance', semver: 'patch' },
-        // Unused types 👇️
-        // refactor: { title: '💅 Refactors', semver: 'patch' },
-        // docs: { title: '📖 Documentation', semver: 'patch' },
-        // build: { title: '📦 Build', semver: 'patch' },
-        // types: { title: '🌊 Types', semver: 'patch' },
-        // chore: { title: '🏡 Chore' },
-        // examples: { title: '🏀 Examples' },
-        // test: { title: '✅ Tests' },
-        // style: { title: '🎨 Styles' },
-        // ci: { title: '🤖 CI' }
       },
     };
 
@@ -62,8 +52,14 @@ export const __ = {
       return _.includes(allowedTypes, commit.type);
     });
 
+    // Sort commits by type order
+    const typeOrder = { feat: 0, fix: 1, perf: 2 };
+    const sortedCommits = _.sortBy(filteredCommits, (commit) => {
+      return typeOrder[commit.type];
+    });
+
     // Generate markdown
-    return await generateMarkDown(filteredCommits, config);
+    return await generateMarkDown(sortedCommits, config);
   },
 
   /**

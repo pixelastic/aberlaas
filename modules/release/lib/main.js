@@ -1,11 +1,10 @@
 import path from 'node:path';
-import { consoleInfo, glob, readJson, run, writeJson } from 'firost';
-import Gilmore from 'gilmore';
+import { consoleInfo, glob, readJson, run } from 'firost';
 import { _, pMap } from 'golgoth';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import semver from 'semver';
 import { ensureValidSetup } from './ensureValidSetup.js';
-import { updateChangelog } from './updateChangelog.js';
+import { updateGitRepo } from './updateGitRepo.js';
 
 export const __ = {
   /**
@@ -74,21 +73,6 @@ export const __ = {
   },
 
   /**
-   * Bumps the version of all packages to the new version
-   * @param {object} releaseData - Release data containing allPackages and newVersion
-   */
-  async bumpAllPackageVersions(releaseData) {
-    await pMap(releaseData.allPackages, async ({ filepath, content }) => {
-      const packageName = content.name;
-      __.consoleInfo(`Updating ${packageName} to ${releaseData.newVersion}`);
-      const newContent = { ...content, version: releaseData.newVersion };
-      await writeJson(newContent, filepath, {
-        sort: false,
-      });
-    });
-  },
-
-  /**
    * Publishes all packages to npm
    * @param {object} releaseData - Release data containing allPackages
    */
@@ -106,6 +90,7 @@ export const __ = {
     );
   },
 
+  updateGitRepo,
   consoleInfo,
   run,
 };
@@ -121,23 +106,7 @@ export default {
 
     const releaseData = await __.getReleaseData(cliArgs);
 
-    await updateChangelog(releaseData);
-
-    await __.bumpAllPackageVersions(releaseData);
-
-    // Commit the changes
-    const gitRoot = hostGitRoot();
-    consoleInfo(`Creating new commit for version v${releaseData.newVersion}`);
-    const repo = new Gilmore(gitRoot);
-    await repo.commitAll(`v${releaseData.newVersion}`, { skipHook: true });
-
+    await __.updateGitRepo(releaseData);
     await __.publishAllPackagesToNpm(releaseData);
-
-    // We create a tag for this version
-    await repo.createTag(`v${releaseData.newVersion}`);
-
-    // We push to the remote
-    consoleInfo(`Creating tag v${releaseData.newVersion} and pushing to repo`);
-    await repo.push();
   },
 };
