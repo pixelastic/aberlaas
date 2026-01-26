@@ -18,6 +18,13 @@
   "engines": {
     "node": ">=18.18.0"
   },
+  "dependencies": {
+    "@octokit/rest": "21.0.2",
+    "aberlaas-helper": "workspace:*",
+    "firost": "5.3.0",
+    "golgoth": "3.0.0",
+    "parse-github-repo-url": "1.4.1"
+  },
   "scripts": {
     "build": "../../scripts/local/build",
     "build:prod": "../../scripts/local/build-prod",
@@ -32,12 +39,5 @@
     "compress": "../../scripts/local/compress",
     "lint": "../../scripts/local/lint",
     "lint:fix": "../../scripts/local/lint-fix"
-  },
-  "dependencies": {
-    "@octokit/rest": "21.0.2",
-    "aberlaas-helper": "workspace:*",
-    "firost": "5.3.0",
-    "golgoth": "3.0.0",
-    "parse-github-repo-url": "1.4.1"
   }
 }

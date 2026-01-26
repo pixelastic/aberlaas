@@ -17,6 +17,12 @@
   "engines": {
     "node": ">=18.18.0"
   },
+  "dependencies": {
+    "aberlaas-versions": "workspace:*",
+    "find-up": "7.0.0",
+    "firost": "5.3.0",
+    "golgoth": "3.0.0"
+  },
   "scripts": {
     "build": "../../scripts/local/build",
     "build:prod": "../../scripts/local/build-prod",
@@ -31,11 +37,5 @@
     "compress": "../../scripts/local/compress",
     "lint": "../../scripts/local/lint",
     "lint:fix": "../../scripts/local/lint-fix"
-  },
-  "dependencies": {
-    "aberlaas-versions": "workspace:*",
-    "find-up": "7.0.0",
-    "firost": "5.3.0",
-    "golgoth": "3.0.0"
   }
 }
