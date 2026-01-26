@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "aberlaas-versions": "workspace:*",
-    "find-up": "7.0.0",
     "firost": "5.3.0",
     "golgoth": "3.0.0"
   },

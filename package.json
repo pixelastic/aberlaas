@@ -12,7 +12,6 @@
   "license": "MIT",
   "packageManager": "yarn@4.10.3",
   "devDependencies": {
-    "aberlaas": "^2.9.0",
     "firost": "5.3.0",
     "golgoth": "3.0.0"
   },

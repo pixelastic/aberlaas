@@ -51,12 +51,9 @@
     "aberlaas-setup": "workspace:*",
     "aberlaas-test": "workspace:*",
     "aberlaas-versions": "workspace:*",
-    "dedent": "1.5.3",
     "firost": "5.3.0",
-    "gilmore": "1.0.0",
     "golgoth": "3.0.0",
-    "minimist": "1.2.8",
-    "std-mocks": "2.0.0"
+    "minimist": "1.2.8"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",
