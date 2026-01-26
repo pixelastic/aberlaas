@@ -23,8 +23,8 @@
     "aberlaas-test": "workspace:*",
     "changelogen": "0.6.2",
     "cli-markdown": "3.5.1",
-    "firost": "5.3.0",
-    "gilmore": "1.0.0",
+    "firost": "5.5.0",
+    "gilmore": "1.1.0",
     "golgoth": "3.0.0",
     "semver": "7.7.3"
   },
