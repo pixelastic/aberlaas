@@ -1,9 +1,7 @@
 import { absolute, emptyDir, exists, newFile } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
-import current from '../png.js';
-// TODO: Update vim auto-save, so if there is a _ is not defined or a method
-// from firost, it automatically adds it at the top
+import { __, run } from '../png.js';
 
 describe('compress > png', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/compress/png');
@@ -25,7 +23,7 @@ describe('compress > png', () => {
       await newFile(goodPath);
       await newFile(badPath);
 
-      const actual = await current.getInputFiles();
+      const actual = await __.getInputFiles();
 
       expect(actual).toContain(goodPath);
       expect(actual).not.toContain(badPath);
@@ -46,7 +44,7 @@ describe('compress > png', () => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
-        const actual = await current.getInputFiles('assets/**/*');
+        const actual = await __.getInputFiles('assets/**/*');
         const hasFile = _.includes(actual, absolutePath);
         expect(hasFile).toEqual(expected);
       });
@@ -55,16 +53,16 @@ describe('compress > png', () => {
 
   describe('getBinaryPath', () => {
     it('should return path to binary if exists', async () => {
-      vi.spyOn(current, '__which').mockReturnValue('/path/to/binary');
+      vi.spyOn(__, 'which').mockReturnValue('/path/to/binary');
 
-      const actual = await current.getBinaryPath();
+      const actual = await __.getBinaryPath();
 
       expect(actual).toBe('/path/to/binary');
     });
     it('should return false if does not exist', async () => {
-      vi.spyOn(current, '__which').mockReturnValue(false);
+      vi.spyOn(__, 'which').mockReturnValue(false);
 
-      const actual = await current.getBinaryPath();
+      const actual = await __.getBinaryPath();
 
       expect(actual).toBe(false);
     });
@@ -73,16 +71,16 @@ describe('compress > png', () => {
   describe('run', () => {
     describe('with no binary available', () => {
       beforeEach(async () => {
-        vi.spyOn(current, 'getBinaryPath').mockReturnValue(false);
+        vi.spyOn(__, 'getBinaryPath').mockReturnValue(false);
       });
       it('should stop early', async () => {
-        const actual = await current.run();
+        const actual = await run();
         expect(actual).toBe(true);
       });
     });
     describe('with a binary available', () => {
       it('should run the binary on all files', async () => {
-        vi.spyOn(current, 'getBinaryPath').mockReturnValue('rm');
+        vi.spyOn(__, 'getBinaryPath').mockReturnValue('rm');
 
         const filepath = helper.hostPackagePath('cat.png');
         await newFile(filepath);
@@ -90,35 +88,35 @@ describe('compress > png', () => {
         const actualBefore = await exists(filepath);
         expect(actualBefore).toBe(true);
 
-        await current.run();
+        await run();
 
         const actualAfter = await exists(filepath);
         expect(actualAfter).toBe(false);
       });
       it('should return true on success', async () => {
-        vi.spyOn(current, 'getBinaryPath').mockReturnValue('echo');
+        vi.spyOn(__, 'getBinaryPath').mockReturnValue('echo');
 
         const filepath = helper.hostPackagePath('cat.png');
         await newFile(filepath);
 
-        const actual = await current.run();
+        const actual = await run();
         expect(actual).toBe(true);
       });
       it('should return true if not file found', async () => {
-        vi.spyOn(current, 'getBinaryPath').mockReturnValue('echo');
+        vi.spyOn(__, 'getBinaryPath').mockReturnValue('echo');
 
-        const actual = await current.run();
+        const actual = await run();
         expect(actual).toBe(true);
       });
       it('should throw an error if the binary returns an error code', async () => {
-        vi.spyOn(current, 'getBinaryPath').mockReturnValue('false');
+        vi.spyOn(__, 'getBinaryPath').mockReturnValue('false');
 
         const filepath = helper.hostPackagePath('cat.png');
         await newFile(filepath);
 
         let actual;
         try {
-          await current.run();
+          await run();
         } catch (err) {
           actual = err;
         }
