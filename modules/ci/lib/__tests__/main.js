@@ -1,43 +1,43 @@
-import current from '../main.js';
+import { __, run } from '../main.js';
 
 describe('ci', () => {
   describe('run', () => {
     beforeEach(async () => {
-      vi.spyOn(current, '__runTest').mockReturnValue();
-      vi.spyOn(current, '__runLint').mockReturnValue();
-      vi.spyOn(current, 'displayVersions').mockReturnValue();
+      vi.spyOn(__, 'runTest').mockReturnValue();
+      vi.spyOn(__, 'runLint').mockReturnValue();
+      vi.spyOn(__, 'displayVersions').mockReturnValue();
     });
 
     it('should fail if not on a CI server', async () => {
-      vi.spyOn(current, 'isCI').mockReturnValue(false);
+      vi.spyOn(__, 'isCI').mockReturnValue(false);
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (err) {
         actual = err;
       }
 
-      expect(current.__runTest).not.toHaveBeenCalled();
-      expect(current.__runLint).not.toHaveBeenCalled();
-      expect(current.displayVersions).not.toHaveBeenCalled();
+      expect(__.runTest).not.toHaveBeenCalled();
+      expect(__.runLint).not.toHaveBeenCalled();
+      expect(__.displayVersions).not.toHaveBeenCalled();
       expect(actual).toHaveProperty('code', 'ABERLAAS_CI_NOT_CI_ENVIRONMENT');
     });
 
     describe('on CI server', () => {
       beforeEach(async () => {
-        vi.spyOn(current, 'isCI').mockReturnValue(true);
+        vi.spyOn(__, 'isCI').mockReturnValue(true);
       });
       describe('should fail if any sub command fails', () => {
-        it.each([['__runTest'], ['__runLint']])(
+        it.each([['runTest'], ['runLint']])(
           'should fail if %s fails',
           async (input) => {
-            vi.spyOn(current, input).mockImplementation(() => {
+            vi.spyOn(__, input).mockImplementation(() => {
               throw new Error();
             });
 
             let actual = null;
             try {
-              await current.run();
+              await run();
             } catch (error) {
               actual = error;
             }
@@ -47,25 +47,25 @@ describe('ci', () => {
         );
       });
       it('should not call further lint if test fails', async () => {
-        vi.spyOn(current, '__runTest').mockImplementation(() => {
+        vi.spyOn(__, 'runTest').mockImplementation(() => {
           throw new Error();
         });
 
         try {
-          await current.run();
+          await run();
         } catch (_error) {
           // Swallow error
         }
 
-        expect(current.__runLint).not.toHaveBeenCalled();
+        expect(__.runLint).not.toHaveBeenCalled();
       });
       it('should display the currently used versions', async () => {
-        await current.run();
+        await run();
 
-        expect(current.displayVersions).toHaveBeenCalled();
+        expect(__.displayVersions).toHaveBeenCalled();
       });
       it('should succeed if all steps succeed', async () => {
-        const actual = await current.run();
+        const actual = await run();
 
         expect(actual).toBe(true);
       });
@@ -73,10 +73,10 @@ describe('ci', () => {
   });
   describe('displayVersions', () => {
     beforeEach(async () => {
-      vi.spyOn(current, '__consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
     });
     it('should display both node and yarn version', async () => {
-      vi.spyOn(current, 'runCommand').mockImplementation((command) => {
+      vi.spyOn(__, 'runCommand').mockImplementation((command) => {
         if (command.startsWith('node')) {
           return '42.0.n';
         }
@@ -85,16 +85,14 @@ describe('ci', () => {
         }
       });
 
-      await current.displayVersions();
+      await __.displayVersions();
 
-      expect(current.__consoleInfo).toHaveBeenCalledWith(
-        'node 42.0.n, yarn 42.0.y',
-      );
+      expect(__.consoleInfo).toHaveBeenCalledWith('node 42.0.n, yarn 42.0.y');
     });
     it('should a real command with suppressed output', async () => {
-      vi.spyOn(current, '__run').mockReturnValue({ stdout: 'output' });
-      await current.displayVersions();
-      expect(current.__run).toHaveBeenCalledWith(expect.anything(), {
+      vi.spyOn(__, 'firostRun').mockReturnValue({ stdout: 'output' });
+      await __.displayVersions();
+      expect(__.firostRun).toHaveBeenCalledWith(expect.anything(), {
         stdout: false,
       });
     });
