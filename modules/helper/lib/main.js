@@ -166,6 +166,9 @@ export const __ = {
   },
 };
 
+// Named exports of each method, but they wrap a call to __.{methodName}.
+// This allow us to mock __.{methodName} in tests, and still having the named
+// export use the mocked versions of the inner methods.
 export const hostWorkingDirectory = wrap(__, 'hostWorkingDirectory');
 export const hostPackageRoot = wrap(__, 'hostPackageRoot');
 export const hostPackagePath = wrap(__, 'hostPackagePath');
