@@ -1,5 +1,4 @@
 import { writeJson } from 'firost';
-
 import { hostGitPath } from 'aberlaas-helper';
 import {
   nodeVersion,
@@ -7,15 +6,43 @@ import {
   norskaVersion,
   yarnVersion,
 } from 'aberlaas-versions';
-import initHelper from '../helper.js';
+import {
+  addConfigFiles,
+  addLibFiles,
+  addLicenseFile,
+  addScripts,
+  getAberlaasVersion,
+  getProjectAuthor,
+  getProjectName,
+} from '../helper.js';
 
-export default {
+export let __;
+
+/**
+ * Scaffold a repo:
+ * - As a monorepo
+ * - With ./libs and ./docs subfolders
+ */
+export async function run() {
+  await __.createRootWorkspace();
+  await __.createDocsWorkspace();
+  await __.createLibWorkspace();
+  await __.addLicenseFiles();
+
+  await addConfigFiles();
+  await addScripts('__libdocs');
+  await addLibFiles();
+}
+
+__ = {
+  // Public methods
+
   /**
    * Create the top-level workspace
    */
   async createRootWorkspace() {
-    const aberlaasVersion = this.__getAberlaasVersion();
-    const sharedProjectData = await this.getSharedProjectData();
+    const aberlaasVersion = getAberlaasVersion();
+    const sharedProjectData = await __.getSharedProjectData();
     const engines = {
       node: `>=${nodeVersion}`,
     };
@@ -68,11 +95,12 @@ export default {
       sort: false,
     });
   },
+
   /**
    * Create the docs workspace
    */
   async createDocsWorkspace() {
-    const sharedProjectData = await this.getSharedProjectData();
+    const sharedProjectData = await __.getSharedProjectData();
 
     const packageContent = {
       // Name & Version
@@ -105,11 +133,12 @@ export default {
       sort: false,
     });
   },
+
   /**
    * Create the lib workspace
    */
   async createLibWorkspace() {
-    const sharedProjectData = await this.getSharedProjectData();
+    const sharedProjectData = await __.getSharedProjectData();
     const engines = {
       node: `>=${nodeVersion}`,
     };
@@ -153,28 +182,24 @@ export default {
       sort: false,
     });
   },
+
   /**
    * Add MIT license files to the repository
    */
   async addLicenseFiles() {
     // One at the repo root, for GitHub
-    await initHelper.addLicenseFile('LICENSE');
+    await addLicenseFile('LICENSE');
     // One in ./lib to be released with the module
-    await initHelper.addLicenseFile('lib/LICENSE');
+    await addLicenseFile('lib/LICENSE');
   },
-  /**
-   * Add config files
-   */
-  async addConfigFiles() {
-    await initHelper.addConfigFiles();
-  },
+
   /**
    * Returns shared project data, like name, author, scripts, etc
    * @returns {object} Object of common keys
    */
   async getSharedProjectData() {
-    const name = await this.__getProjectName();
-    const author = await this.__getProjectAuthor();
+    const name = await getProjectName();
+    const author = await getProjectAuthor();
     const homepage = `https://projects.pixelastic.com/${name}`;
     const repository = `${author}/${name}`;
     const license = 'MIT';
@@ -200,22 +225,8 @@ export default {
       scripts,
     };
   },
-  /**
-   * Scaffold a repo:
-   * - As a monorepo
-   * - With ./libs and ./docs subfolders
-   */
-  async run() {
-    await this.createRootWorkspace();
-    await this.createDocsWorkspace();
-    await this.createLibWorkspace();
+};
 
-    await this.addLicenseFiles();
-    await this.addConfigFiles();
-    await initHelper.addScripts('__libdocs');
-    await initHelper.addLibFiles();
-  },
-  __getProjectName: initHelper.getProjectName,
-  __getProjectAuthor: initHelper.getProjectAuthor.bind(initHelper),
-  __getAberlaasVersion: initHelper.getAberlaasVersion,
+export default {
+  run,
 };

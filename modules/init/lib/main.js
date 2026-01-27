@@ -1,4 +1,10 @@
-import { consoleInfo, firostError, run, spinner, write } from 'firost';
+import {
+  consoleInfo,
+  firostError,
+  run as firostRun,
+  spinner,
+  write,
+} from 'firost';
 
 import Gilmore from 'gilmore';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
@@ -7,84 +13,99 @@ import moduleLayout from './layouts/module.js';
 import libdocsLayout from './layouts/libdocs.js';
 import monorepoLayout from './layouts/monorepo.js';
 
-export default {
-  /**
-   * Configure git hooks to use scripts/hooks instead of .git/hooks
-   */
-  async configureGit() {
-    const repo = new Gilmore(hostGitRoot());
-    await repo.setConfig('core.hooksPath', 'scripts/hooks');
-  },
-  /**
-   * Pin the node version through nvm
-   */
-  async configureNode() {
-    const nvmrcPath = hostGitPath('.nvmrc');
-    await write(nodeVersion, nvmrcPath);
-  },
-  /**
-   * Run yarn install to install all deps
-   */
-  async yarnInstall() {
-    await run('yarn install');
-  },
-  /**
-   * Returns the correct layout object, based on args
-   * @param {object} args Arguments, as passed by minimist
-   * @returns {object} Object with a .run() method
-   **/
-  getLayout(args) {
-    if (args.monorepo && args.libdocs) {
-      throw firostError(
-        'ABERLAAS_INIT_LAYOUT_INCOMPATIBLE',
-        "You can't specific both --monorepo and --libdocs",
-      );
-    }
+export let __;
 
-    if (args.monorepo) {
-      return this.__monorepoLayout();
-    }
-    if (args.libdocs) {
-      return this.__libdocsLayout();
-    }
-    return this.__moduleLayout();
-  },
-  /**
-   * Copy all config files and configure the scripts
-   * @param {object} args Argument object, as passed by minimist
-   */
-  async run(args = {}) {
-    const progress = this.__spinner();
+/**
+ * Configure git hooks to use scripts/hooks instead of .git/hooks
+ */
+export async function configureGit() {
+  const repo = new Gilmore(hostGitRoot());
+  await repo.setConfig('core.hooksPath', 'scripts/hooks');
+}
 
-    progress.tick('Configuring Git & Node');
-    await this.configureGit();
-    await this.configureNode();
+/**
+ * Pin the node version through nvm
+ */
+export async function configureNode() {
+  const nvmrcPath = hostGitPath('.nvmrc');
+  await write(nodeVersion, nvmrcPath);
+}
 
-    progress.tick('Adding default files ');
+/**
+ * Run yarn install to install all deps
+ */
+export async function yarnInstall() {
+  await firostRun('yarn install');
+}
 
-    // Create a different scaffolding based on if creating a monorepo or not
-    const layout = this.getLayout(args);
-    await layout.run();
-
-    progress.success('aberlaas project initialized');
-
-    this.__consoleInfo('Synchronizing dependencies');
-    await this.yarnInstall();
-
-    this.__consoleInfo(
-      "Don't forget to run aberlaas setup after pushing your repository",
+/**
+ * Returns the correct layout object, based on args
+ * @param {object} args Arguments, as passed by minimist
+ * @returns {object} Object with a .run() method
+ **/
+export function getLayout(args) {
+  if (args.monorepo && args.libdocs) {
+    throw firostError(
+      'ABERLAAS_INIT_LAYOUT_INCOMPATIBLE',
+      "You can't specify both --monorepo and --libdocs",
     );
-  },
-  __consoleInfo: consoleInfo,
-  __spinner: spinner,
+  }
+
+  if (args.monorepo) {
+    return __.monorepoLayout();
+  }
+  if (args.libdocs) {
+    return __.libdocsLayout();
+  }
+  return __.moduleLayout();
+}
+
+/**
+ * Copy all config files and configure the scripts
+ * @param {object} args Argument object, as passed by minimist
+ */
+export async function run(args = {}) {
+  const progress = __.spinner();
+
+  progress.tick('Configuring Git & Node');
+  await __.configureGit();
+  await __.configureNode();
+
+  progress.tick('Adding default files ');
+
+  // Create a different scaffolding based on if creating a monorepo or not
+  const layout = __.getLayout(args);
+  await layout.run();
+
+  progress.success('aberlaas project initialized');
+
+  __.consoleInfo('Synchronizing dependencies');
+  await __.yarnInstall();
+
+  __.consoleInfo(
+    "Don't forget to run aberlaas setup after pushing your repository",
+  );
+}
+
+__ = {
+  configureGit,
+  configureNode,
+  yarnInstall,
+  getLayout,
+  consoleInfo,
+  spinner,
   // Why the old-school getters? So we can mock which layout is returned
-  __moduleLayout() {
+  moduleLayout() {
     return moduleLayout;
   },
-  __libdocsLayout() {
+  libdocsLayout() {
     return libdocsLayout;
   },
-  __monorepoLayout() {
+  monorepoLayout() {
     return monorepoLayout;
   },
+};
+
+export default {
+  run,
 };

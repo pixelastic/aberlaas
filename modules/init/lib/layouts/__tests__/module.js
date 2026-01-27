@@ -1,7 +1,8 @@
 import { glob, read, readJson, remove, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
-import current from '../module.js';
+import { __, run } from '../module.js';
+import { __ as initHelper } from '../../helper.js';
 
 describe('init > module', () => {
   beforeEach(async () => {
@@ -11,9 +12,9 @@ describe('init > module', () => {
       tmpDirectory('aberlaas/init/module'),
     );
 
-    vi.spyOn(current, '__getProjectName').mockReturnValue('my-project');
-    vi.spyOn(current, '__getProjectAuthor').mockReturnValue('my-name');
-    vi.spyOn(current, '__getAberlaasVersion').mockReturnValue('1.2.3');
+    vi.spyOn(initHelper, 'getProjectName').mockReturnValue('my-project');
+    vi.spyOn(initHelper, 'getProjectAuthor').mockReturnValue('my-name');
+    vi.spyOn(initHelper, 'getAberlaasVersion').mockReturnValue('1.2.3');
   });
   afterEach(async () => {
     await remove(helper.hostGitRoot());
@@ -83,7 +84,7 @@ describe('init > module', () => {
         },
       ],
     ])('%s', async (_title, expected) => {
-      await current.createPackageJson();
+      await __.createPackageJson();
 
       const actual = await readJson(helper.hostGitPath('package.json'));
 
@@ -93,7 +94,7 @@ describe('init > module', () => {
 
   describe('run', () => {
     it('should build a module structure', async () => {
-      await current.run();
+      await run();
 
       const actual = await glob('**/*', {
         cwd: helper.hostGitPath(),
@@ -129,7 +130,7 @@ describe('init > module', () => {
     });
 
     it('should write a correct circleCI file', async () => {
-      await current.run();
+      await run();
 
       const circleciConfig = await read(
         helper.hostGitPath('.circleci/config.yml'),

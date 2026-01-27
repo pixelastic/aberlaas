@@ -6,7 +6,8 @@ import {
   norskaVersion,
   yarnVersion,
 } from 'aberlaas-versions';
-import current from '../monorepo.js';
+import { __, run } from '../monorepo.js';
+import { __ as initHelper } from '../../helper.js';
 
 describe('init > monorepo', () => {
   beforeEach(async () => {
@@ -16,9 +17,9 @@ describe('init > monorepo', () => {
       tmpDirectory('aberlaas/init/monorepo'),
     );
 
-    vi.spyOn(current, '__getProjectName').mockReturnValue('my-project');
-    vi.spyOn(current, '__getProjectAuthor').mockReturnValue('my-name');
-    vi.spyOn(current, '__getAberlaasVersion').mockReturnValue('1.2.3');
+    vi.spyOn(initHelper, 'getProjectName').mockReturnValue('my-project');
+    vi.spyOn(initHelper, 'getProjectAuthor').mockReturnValue('my-name');
+    vi.spyOn(initHelper, 'getAberlaasVersion').mockReturnValue('1.2.3');
   });
   afterEach(async () => {
     await remove(helper.hostGitRoot());
@@ -57,7 +58,7 @@ describe('init > monorepo', () => {
         },
       ],
     ])('%s', async (_title, expected) => {
-      await current.createRootWorkspace();
+      await __.createRootWorkspace();
 
       const actual = await readJson(helper.hostGitPath('package.json'));
 
@@ -95,7 +96,7 @@ describe('init > monorepo', () => {
         },
       ],
     ])('%s', async (_title, expected) => {
-      await current.createDocsWorkspace();
+      await __.createDocsWorkspace();
 
       const actual = await readJson(
         helper.hostGitPath('modules/docs/package.json'),
@@ -146,7 +147,7 @@ describe('init > monorepo', () => {
         },
       ],
     ])('%s', async (_title, expected) => {
-      await current.createLibWorkspace();
+      await __.createLibWorkspace();
 
       const actual = await readJson(
         helper.hostGitPath('modules/lib/package.json'),
@@ -158,7 +159,7 @@ describe('init > monorepo', () => {
 
   describe('addLicenseFiles', () => {
     it('creates license file in root and ./lib', async () => {
-      await current.addLicenseFiles();
+      await __.addLicenseFiles();
 
       expect(await exists(helper.hostGitPath('LICENSE'))).toBe(true);
       expect(await exists(helper.hostGitPath('modules/lib/LICENSE'))).toBe(
@@ -169,7 +170,7 @@ describe('init > monorepo', () => {
 
   describe('run', () => {
     it('should build a monorepo structure', async () => {
-      await current.run();
+      await run();
 
       const actual = await glob('**/*', {
         cwd: helper.hostGitPath(),

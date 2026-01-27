@@ -1,18 +1,41 @@
 import { writeJson } from 'firost';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import { hostGitPath } from 'aberlaas-helper';
-import initHelper from '../helper.js';
+import {
+  addConfigFiles,
+  addLibFiles,
+  addLicenseFile,
+  addScripts,
+  getAberlaasVersion,
+  getProjectAuthor,
+  getProjectName,
+} from '../helper.js';
 
-export default {
+export let __;
+
+/**
+ * Scaffold a repo:
+ * - With ./lib holding the code
+ */
+export async function run() {
+  await __.createPackageJson();
+
+  await addLicenseFile('LICENSE');
+  await addConfigFiles();
+  await addScripts('__module');
+  await addLibFiles();
+}
+
+__ = {
   /**
    * Create the package.json
    */
   async createPackageJson() {
-    const aberlaasVersion = this.__getAberlaasVersion();
-    const name = await this.__getProjectName();
+    const aberlaasVersion = getAberlaasVersion();
+    const name = await getProjectName();
     const version = '0.0.1';
 
-    const author = await this.__getProjectAuthor();
+    const author = await getProjectAuthor();
     const description = '';
     const keywords = [];
     const repository = `${author}/${name}`;
@@ -83,20 +106,8 @@ export default {
       sort: false,
     });
   },
+};
 
-  /**
-   * Scaffold a repo:
-   * - With ./lib holding the code
-   */
-  async run() {
-    await this.createPackageJson();
-
-    await initHelper.addLicenseFile('LICENSE');
-    await initHelper.addConfigFiles();
-    await initHelper.addScripts('__module');
-    await initHelper.addLibFiles();
-  },
-  __getProjectName: initHelper.getProjectName,
-  __getProjectAuthor: initHelper.getProjectAuthor.bind(initHelper),
-  __getAberlaasVersion: initHelper.getAberlaasVersion,
+export default {
+  run,
 };

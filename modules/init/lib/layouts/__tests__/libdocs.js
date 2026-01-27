@@ -6,7 +6,8 @@ import {
   norskaVersion,
   yarnVersion,
 } from 'aberlaas-versions';
-import current from '../libdocs.js';
+import { __, run } from '../libdocs.js';
+import { __ as initHelper } from '../../helper.js';
 
 describe('init > libdocs', () => {
   beforeEach(async () => {
@@ -16,9 +17,9 @@ describe('init > libdocs', () => {
       tmpDirectory('aberlaas/init/libdocs'),
     );
 
-    vi.spyOn(current, '__getProjectName').mockReturnValue('my-project');
-    vi.spyOn(current, '__getProjectAuthor').mockReturnValue('my-name');
-    vi.spyOn(current, '__getAberlaasVersion').mockReturnValue('1.2.3');
+    vi.spyOn(initHelper, 'getProjectName').mockReturnValue('my-project');
+    vi.spyOn(initHelper, 'getProjectAuthor').mockReturnValue('my-name');
+    vi.spyOn(initHelper, 'getAberlaasVersion').mockReturnValue('1.2.3');
   });
   afterEach(async () => {
     await remove(helper.hostGitRoot());
@@ -57,7 +58,7 @@ describe('init > libdocs', () => {
         },
       ],
     ])('%s', async (_title, expected) => {
-      await current.createRootWorkspace();
+      await __.createRootWorkspace();
 
       const actual = await readJson(helper.hostGitPath('package.json'));
 
@@ -95,7 +96,7 @@ describe('init > libdocs', () => {
         },
       ],
     ])('%s', async (_title, expected) => {
-      await current.createDocsWorkspace();
+      await __.createDocsWorkspace();
 
       const actual = await readJson(helper.hostGitPath('docs/package.json'));
 
@@ -144,7 +145,7 @@ describe('init > libdocs', () => {
         },
       ],
     ])('%s', async (_title, expected) => {
-      await current.createLibWorkspace();
+      await __.createLibWorkspace();
 
       const actual = await readJson(helper.hostGitPath('lib/package.json'));
 
@@ -154,7 +155,7 @@ describe('init > libdocs', () => {
 
   describe('addLicenseFiles', () => {
     it('creates license file in root and ./lib', async () => {
-      await current.addLicenseFiles();
+      await __.addLicenseFiles();
 
       expect(await exists(helper.hostGitPath('LICENSE'))).toBe(true);
       expect(await exists(helper.hostGitPath('lib/LICENSE'))).toBe(true);
@@ -164,7 +165,7 @@ describe('init > libdocs', () => {
   describe('run', () => {
     vi.setConfig({ testTimeout: 10_000 });
     it('should build a libdocs structure', async () => {
-      await current.run();
+      await run();
 
       const actual = await glob('**/*', {
         cwd: helper.hostGitPath(),

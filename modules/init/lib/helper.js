@@ -1,5 +1,4 @@
 import path from 'node:path';
-import Gilmore from 'gilmore';
 import {
   absolute,
   copy,
@@ -9,22 +8,104 @@ import {
   isFile,
   move,
   read,
+  wrap,
   write,
 } from 'firost';
+import Gilmore from 'gilmore';
 import { _, pMap } from 'golgoth';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 
-/**
- * This hold functions shared for both the monorepo and simple init scenarios
- */
-export default {
+export const __ = {
   /**
-   * Return name of the current project, as the name of the current directory
-   * @returns {string} Name of the project
+   * Add config files to the host. Each config files reference the default
+   * aberlaas config for its tool. This pattern allow end-users to use aberlaas
+   * default rules and overwrite them as they see fit
    */
-  getProjectName() {
-    return path.basename(hostGitRoot());
+  async addConfigFiles() {
+    // Git
+    await __.copyTemplateToHost('./_gitignore', './.gitignore');
+    await __.copyTemplateToHost('./_gitattributes', './.gitattributes');
+
+    // README template
+    await __.copyTemplateToHost('_README.template.md', '.README.template.md');
+
+    // Yarn
+    await __.copyTemplateToHost('_yarnrc.yml', '.yarnrc.yml');
+
+    // ESLint
+    await __.copyTemplateToHost('eslint.config.js', 'eslint.config.js');
+
+    // Lint-staged
+    await __.copyTemplateToHost('lintstaged.config.js', 'lintstaged.config.js');
+
+    // Vite
+    await __.copyTemplateToHost('vite.config.js', 'vite.config.js');
+
+    // Prettier
+    await __.copyTemplateToHost('prettier.config.js', 'prettier.config.js');
+
+    // Stylelint
+    await __.copyTemplateToHost('stylelint.config.js', 'stylelint.config.js');
+
+    // Renovate
+    await __.copyTemplateToHost(
+      '_github/renovate.json',
+      '.github/renovate.json',
+    );
+
+    // CircleCI
+    await __.addCircleCIConfigFile();
+  },
+
+  /**
+   * Add default files required to have the minimum lib module
+   * @param {string} libPrefixPath Path to the lib files, ./lib by default
+   */
+  async addLibFiles(libPrefixPath = 'lib') {
+    await __.copyTemplateToHost('lib/main.js', `${libPrefixPath}/main.js`);
+    await __.copyTemplateToHost(
+      'lib/__tests__/main.js',
+      `${libPrefixPath}/__tests__/main.js`,
+    );
+  },
+
+  /**
+   * Add MIT license file
+   * @param {string} hostFilepath Path to the LICENSE file, relative to the host
+   */
+  async addLicenseFile(hostFilepath) {
+    // Start by adding a template
+    await __.copyTemplateToHost('LICENSE', hostFilepath);
+
+    // Replace placeholder with real value
+    const licensePath = hostGitPath(hostFilepath);
+    const author = await __.getProjectAuthor();
+    const templateContent = await read(licensePath);
+    const actualContent = _.replace(templateContent, '{author}', author);
+
+    // Write it again
+    await write(actualContent, licensePath);
+  },
+
+  /**
+   * Add script files
+   * @param {string} layoutPrefixPath Path to the subfolder in
+   * ./templates/scripts that hold the script files to copy
+   */
+  async addScripts(layoutPrefixPath) {
+    const templateFolder = absolute('../templates/scripts/', layoutPrefixPath);
+    const templateScripts = await glob('**/*', {
+      directories: false,
+      cwd: templateFolder,
+      absolutePaths: false,
+    });
+
+    await pMap(templateScripts, async (templatePath) => {
+      const sourcePath = `scripts/${layoutPrefixPath}/${templatePath}`;
+      const destinationPath = `scripts/${templatePath}`;
+      await __.copyTemplateToHost(sourcePath, destinationPath);
+    });
   },
 
   /**
@@ -32,8 +113,16 @@ export default {
    * @returns {string} Name of the author, or __placeholder__ if undefined
    */
   async getProjectAuthor() {
-    const repo = this.__getRepo();
+    const repo = __.getRepo();
     return (await repo.githubRepoOwner()) || '__placeholder__';
+  },
+
+  /**
+   * Return name of the current project, as the name of the current directory
+   * @returns {string} Name of the project
+   */
+  getProjectName() {
+    return path.basename(hostGitRoot());
   },
 
   /**
@@ -45,6 +134,7 @@ export default {
     return env('ABERLAAS_VERSION');
   },
 
+  // === PRIVATE METHODS ===
   /**
    * Copy a config template to the host
    * @param {string} source Path to source file, relative to ./templates folder
@@ -82,31 +172,13 @@ export default {
   },
 
   /**
-   * Add MIT license file
-   * @param {string} hostFilepath Path to the LICENSE file, relative to the host
-   */
-  async addLicenseFile(hostFilepath) {
-    // Start by adding a template
-    await this.copyTemplateToHost('LICENSE', hostFilepath);
-
-    // Replace placeholder with real value
-    const licensePath = hostGitPath(hostFilepath);
-    const author = await this.getProjectAuthor();
-    const templateContent = await read(licensePath);
-    const actualContent = _.replace(templateContent, '{author}', author);
-
-    // Write it again
-    await write(actualContent, licensePath);
-  },
-
-  /**
    * Add CircleCI Config file
    */
   async addCircleCIConfigFile() {
     const configFilepath = hostGitPath('./.circleci/config.yml');
 
     // Start by adding a template
-    await this.copyTemplateToHost('_circleci/config.yml', configFilepath);
+    await __.copyTemplateToHost('_circleci/config.yml', configFilepath);
 
     // Replace placeholder with real value
     const templateContent = await read(configFilepath);
@@ -118,83 +190,18 @@ export default {
     // Write it again
     await write(actualContent, configFilepath);
   },
-
-  /**
-   * Add script files
-   * @param {string} layoutPrefixPath Path to the subfolder in
-   * ./templates/scripts that hold the script files to copy
-   */
-  async addScripts(layoutPrefixPath) {
-    const templateFolder = absolute('../templates/scripts/', layoutPrefixPath);
-    const templateScripts = await glob('**/*', {
-      directories: false,
-      cwd: templateFolder,
-      absolutePaths: false,
-    });
-
-    await pMap(templateScripts, async (templatePath) => {
-      const sourcePath = `scripts/${layoutPrefixPath}/${templatePath}`;
-      const destinationPath = `scripts/${templatePath}`;
-      await this.copyTemplateToHost(sourcePath, destinationPath);
-    });
-  },
-
-  /**
-   * Add config files to the host. Each config files reference the default
-   * aberlaas config for its tool. This pattern allow end-users to use aberlaas
-   * default rules and overwrite them as they see fit
-   */
-  async addConfigFiles() {
-    // Git
-    await this.copyTemplateToHost('./_gitignore', './.gitignore');
-    await this.copyTemplateToHost('./_gitattributes', './.gitattributes');
-
-    // README template
-    await this.copyTemplateToHost('_README.template.md', '.README.template.md');
-
-    // Yarn
-    await this.copyTemplateToHost('_yarnrc.yml', '.yarnrc.yml');
-
-    // ESLint
-    await this.copyTemplateToHost('eslint.config.js', 'eslint.config.js');
-
-    // Lint-staged
-    await this.copyTemplateToHost(
-      'lintstaged.config.js',
-      'lintstaged.config.js',
-    );
-
-    // Vite
-    await this.copyTemplateToHost('vite.config.js', 'vite.config.js');
-
-    // Prettier
-    await this.copyTemplateToHost('prettier.config.js', 'prettier.config.js');
-
-    // Stylelint
-    await this.copyTemplateToHost('stylelint.config.js', 'stylelint.config.js');
-
-    // Renovate
-    await this.copyTemplateToHost(
-      '_github/renovate.json',
-      '.github/renovate.json',
-    );
-
-    // CircleCI
-    await this.addCircleCIConfigFile();
-  },
-
-  /**
-   * Add default files required to have the minimum lib module
-   * @param {string} libPrefixPath Path to the lib files, ./lib by default
-   */
-  async addLibFiles(libPrefixPath = 'lib') {
-    await this.copyTemplateToHost('lib/main.js', `${libPrefixPath}/main.js`);
-    await this.copyTemplateToHost(
-      'lib/__tests__/main.js',
-      `${libPrefixPath}/__tests__/main.js`,
-    );
-  },
-  __getRepo() {
+  getRepo() {
     return new Gilmore(hostGitRoot());
   },
 };
+
+// Named exports of public methods, but wrapped in dynamic method so we can
+// still mock the inner methods in tests
+//
+export const addConfigFiles = wrap(__, 'addConfigFiles');
+export const addLibFiles = wrap(__, 'addLibFiles');
+export const addLicenseFile = wrap(__, 'addLicenseFile');
+export const addScripts = wrap(__, 'addScripts');
+export const getAberlaasVersion = wrap(__, 'getAberlaasVersion');
+export const getProjectAuthor = wrap(__, 'getProjectAuthor');
+export const getProjectName = wrap(__, 'getProjectName');

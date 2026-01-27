@@ -2,7 +2,7 @@ import Gilmore from 'gilmore';
 import { read, remove, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
-import current from '../main.js';
+import { __, configureGit, configureNode, run } from '../main.js';
 
 describe('init', () => {
   const testDirectory = tmpDirectory('aberlaas/init');
@@ -20,7 +20,7 @@ describe('init', () => {
       const repo = new Gilmore(helper.hostGitRoot());
       await repo.init();
 
-      await current.configureGit();
+      await configureGit();
 
       const actual = await repo.getConfig('core.hooksPath');
       expect(actual).toBe('scripts/hooks');
@@ -28,7 +28,7 @@ describe('init', () => {
   });
   describe('configureNode', () => {
     it('should set a .nvmrc file', async () => {
-      await current.configureNode();
+      await configureNode();
 
       const actual = await read(helper.hostGitPath('.nvmrc'));
 
@@ -37,11 +37,11 @@ describe('init', () => {
   });
   describe('run', () => {
     beforeEach(async () => {
-      vi.spyOn(current, 'configureGit').mockReturnValue();
-      vi.spyOn(current, 'configureNode').mockReturnValue();
-      vi.spyOn(current, 'yarnInstall').mockReturnValue();
-      vi.spyOn(current, '__consoleInfo').mockReturnValue();
-      vi.spyOn(current, '__spinner').mockReturnValue({
+      vi.spyOn(__, 'configureGit').mockReturnValue();
+      vi.spyOn(__, 'configureNode').mockReturnValue();
+      vi.spyOn(__, 'yarnInstall').mockReturnValue();
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'spinner').mockReturnValue({
         tick: vi.fn(),
         success: vi.fn(),
       });
@@ -52,38 +52,38 @@ describe('init', () => {
     describe('layouts', () => {
       it('should build the module layout by default', async () => {
         const mockedRun = vi.fn();
-        vi.spyOn(current, '__moduleLayout').mockReturnValue({
+        vi.spyOn(__, 'moduleLayout').mockReturnValue({
           run: mockedRun,
         });
 
-        await current.run({});
+        await run({});
 
         expect(mockedRun).toHaveBeenCalled();
       });
       it('should build the libdocs layout with --libdocs', async () => {
         const mockedRun = vi.fn();
-        vi.spyOn(current, '__libdocsLayout').mockReturnValue({
+        vi.spyOn(__, 'libdocsLayout').mockReturnValue({
           run: mockedRun,
         });
 
-        await current.run({ libdocs: true });
+        await run({ libdocs: true });
 
         expect(mockedRun).toHaveBeenCalled();
       });
       it('should build the monorepo layout with --monorepo', async () => {
         const mockedRun = vi.fn();
-        vi.spyOn(current, '__monorepoLayout').mockReturnValue({
+        vi.spyOn(__, 'monorepoLayout').mockReturnValue({
           run: mockedRun,
         });
 
-        await current.run({ monorepo: true });
+        await run({ monorepo: true });
 
         expect(mockedRun).toHaveBeenCalled();
       });
       it('should throw an error if both --libdocs and --monorepo are passed', async () => {
         let actual = null;
         try {
-          await current.run({ monorepo: true, libdocs: true });
+          await run({ monorepo: true, libdocs: true });
         } catch (err) {
           actual = err;
         }
