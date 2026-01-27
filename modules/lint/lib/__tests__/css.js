@@ -122,7 +122,20 @@ describe('lint-css', () => {
     });
   });
   describe('fix', () => {
-    it('should fix files', async () => {
+    it('should call prettierFix with the correct files', async () => {
+      vi.spyOn(current, '__prettierFix').mockResolvedValue();
+      vi.spyOn(current, 'run').mockResolvedValue(true);
+
+      await write('body{color: red;}', helper.hostPackagePath('test.css'));
+
+      await current.fix();
+
+      expect(current.__prettierFix).toHaveBeenCalledWith([
+        expect.stringContaining('test.css'),
+      ]);
+    });
+
+    it('should fix files end-to-end', async () => {
       await write(
         'body{color:       red;}',
         helper.hostPackagePath('style.css'),
@@ -134,11 +147,13 @@ describe('lint-css', () => {
 
       expect(actual).toBe('body {\n  color: red;\n}');
     });
+
     it('stop early if no file found', async () => {
       const actual = await current.fix();
 
       expect(actual).toBe(true);
     });
+
     it('should throw if fix works but linting fails', async () => {
       const filepath = helper.hostPackagePath('foo.css');
       await write('body{}', filepath);

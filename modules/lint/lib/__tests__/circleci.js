@@ -82,7 +82,7 @@ describe('lint-circleci', () => {
           actual = error;
         }
 
-        expect(actual.code).toBe('YamlLintError');
+        expect(actual.code).toBe('ABERLAAS_LINT_YML');
         expect(actual).toHaveProperty('message');
       });
       it('should return true if file is valid yml', async () => {
@@ -115,7 +115,7 @@ describe('lint-circleci', () => {
           actual = error;
         }
 
-        expect(actual.code).toBe('YamlLintError');
+        expect(actual.code).toBe('ABERLAAS_LINT_YML');
         expect(actual).toHaveProperty('message');
       });
       it('should stop early if no file found', async () => {

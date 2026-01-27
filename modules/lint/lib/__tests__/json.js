@@ -88,7 +88,19 @@ describe('lint-json', () => {
     });
   });
   describe('fix', () => {
-    it('should fix files', async () => {
+    it('should call prettierFix with the correct files', async () => {
+      vi.spyOn(current, '__prettierFix').mockResolvedValue();
+
+      await write('{"foo": "bar"}', helper.hostPackagePath('test.json'));
+
+      await current.fix();
+
+      expect(current.__prettierFix).toHaveBeenCalledWith([
+        expect.stringContaining('test.json'),
+      ]);
+    });
+
+    it('should fix files end-to-end', async () => {
       await write('{ "foo": "bar", }', helper.hostPackagePath('foo.json'));
 
       await current.fix();
@@ -97,6 +109,7 @@ describe('lint-json', () => {
 
       expect(actual).toBe('{ "foo": "bar" }');
     });
+
     it('stop early if no file found', async () => {
       const actual = await current.run();
       expect(actual).toBe(true);

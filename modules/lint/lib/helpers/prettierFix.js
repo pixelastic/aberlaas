@@ -5,10 +5,10 @@ import { getConfig } from 'aberlaas-helper';
 import prettierConfig from '../../configs/prettier.js';
 
 /**
- * Fix all files using prettier
+ * Fix files using prettier
  * @param {Array} inputFiles Files to auto-fix
  */
-export async function fix(inputFiles) {
+export async function prettierFix(inputFiles) {
   // Config file
   const config = await getConfig(null, 'prettier.config.js', prettierConfig);
 
@@ -32,19 +32,17 @@ export async function fix(inputFiles) {
     { concurrency: 10 },
   );
 
-  if (!_.isEmpty(errors)) {
-    let formattedErrors = '';
-    _.each(errors, (error) => {
-      formattedErrors = `${formattedErrors}${error.filepath}\n\n${error.message}\n\n`;
-    });
-
-    throw firostError(
-      'ABERLAAS_LINT_PRETTIER_FIX',
-      `Some files could not be automatically fixed:\n\n${formattedErrors}`,
-    );
+  if (_.isEmpty(errors)) {
+    return;
   }
-}
 
-export default {
-  fix,
-};
+  let formattedErrors = '';
+  _.each(errors, (error) => {
+    formattedErrors = `${formattedErrors}${error.filepath}\n\n${error.message}\n\n`;
+  });
+
+  throw firostError(
+    'ABERLAAS_LINT_PRETTIER_FIX',
+    `Some files could not be automatically fixed:\n\n${formattedErrors}`,
+  );
+}

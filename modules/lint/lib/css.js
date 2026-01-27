@@ -3,7 +3,7 @@ import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { findHostPackageFiles, getConfig } from 'aberlaas-helper';
 import stylelintConfig from '../configs/stylelint.js';
-import { fix as prettierFix } from './helpers/prettier.js';
+import { prettierFix } from './helpers/prettierFix.js';
 
 export default {
   /**
@@ -65,9 +65,10 @@ export default {
       return true;
     }
     // Try to pretiffy as much as we can
-    await prettierFix(files);
+    await this.__prettierFix(files);
     // Still run a lint on it so it can fail if not everything is fixed
     await this.run(userPatterns, userConfigFile, { fix: true });
     return true;
   },
+  __prettierFix: prettierFix,
 };

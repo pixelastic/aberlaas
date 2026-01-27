@@ -92,7 +92,19 @@ describe('lint-yml', () => {
     });
   });
   describe('fix', () => {
-    it('should fix files', async () => {
+    it('should call prettierFix with the correct files', async () => {
+      vi.spyOn(current, '__prettierFix').mockResolvedValue();
+
+      await write('foo: bar', helper.hostPackagePath('test.yml'));
+
+      await current.fix();
+
+      expect(current.__prettierFix).toHaveBeenCalledWith([
+        expect.stringContaining('test.yml'),
+      ]);
+    });
+
+    it('should fix files end-to-end', async () => {
       await write('    foo: "bar"', helper.hostPackagePath('foo.yml'));
 
       await current.fix();
@@ -101,6 +113,7 @@ describe('lint-yml', () => {
 
       expect(actual).toBe("foo: 'bar'");
     });
+
     it('stop early if no file found', async () => {
       const actual = await current.run();
 

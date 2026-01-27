@@ -3,7 +3,7 @@ import { firostError, read } from 'firost';
 import { _, pMap } from 'golgoth';
 import yamlLint from 'yaml-lint';
 import { findHostPackageFiles, hostGitRoot } from 'aberlaas-helper';
-import { fix as prettierFix } from './helpers/prettier.js';
+import { prettierFix } from './helpers/prettierFix.js';
 
 export default {
   /**
@@ -57,6 +57,7 @@ export default {
     if (_.isEmpty(files)) {
       return true;
     }
-    await prettierFix(files);
+    await this.__prettierFix(files);
   },
+  __prettierFix: prettierFix,
 };
