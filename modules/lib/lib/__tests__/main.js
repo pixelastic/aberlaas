@@ -1,50 +1,50 @@
 import { absolute, packageRoot, readJson } from 'firost';
-import current from '../main.js';
+import { __, run } from '../main.js';
 
 describe('aberlaas', () => {
   describe('run', () => {
     beforeEach(async () => {
-      vi.spyOn(current, '__setEnv').mockReturnValue();
-      vi.spyOn(current, '__exit').mockReturnValue();
-      vi.spyOn(current, '__consoleError').mockReturnValue();
-      vi.spyOn(current, '__consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'setEnv').mockReturnValue();
+      vi.spyOn(__, 'exit').mockReturnValue();
+      vi.spyOn(__, 'consoleError').mockReturnValue();
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
     });
     it('should error when calling a command that does not exist', async () => {
-      vi.spyOn(current, 'getCommand').mockReturnValue(false);
+      vi.spyOn(__, 'getCommand').mockReturnValue(false);
 
       const input = ['foo'];
 
-      await current.run(input);
+      await run(input);
 
-      expect(current.__exit).toHaveBeenCalledWith(1);
-      expect(current.__consoleError).toHaveBeenCalledWith(
+      expect(__.exit).toHaveBeenCalledWith(1);
+      expect(__.consoleError).toHaveBeenCalledWith(
         expect.stringContaining('foo'),
       );
     });
     it('should display the existing command when calling an unknown command', async () => {
-      vi.spyOn(current, 'getCommand').mockReturnValue(false);
+      vi.spyOn(__, 'getCommand').mockReturnValue(false);
 
       const input = ['foo'];
 
-      await current.run(input);
+      await run(input);
 
-      expect(current.__consoleInfo).toHaveBeenCalledWith('- setup');
-      expect(current.__consoleInfo).toHaveBeenCalledWith('- lint');
-      expect(current.__consoleInfo).toHaveBeenCalledWith('- test');
+      expect(__.consoleInfo).toHaveBeenCalledWith('- setup');
+      expect(__.consoleInfo).toHaveBeenCalledWith('- lint');
+      expect(__.consoleInfo).toHaveBeenCalledWith('- test');
     });
     it('should call the run method on the specified command', async () => {
       const mockRun = vi.fn();
-      vi.spyOn(current, 'getCommand').mockReturnValue({ run: mockRun });
+      vi.spyOn(__, 'getCommand').mockReturnValue({ run: mockRun });
 
       const input = ['foo'];
 
-      await current.run(input);
+      await run(input);
 
       expect(mockRun).toHaveBeenCalled();
     });
     it('should call the method with parsed arguments', async () => {
       const mockRun = vi.fn();
-      vi.spyOn(current, 'getCommand').mockReturnValue({ run: mockRun });
+      vi.spyOn(__, 'getCommand').mockReturnValue({ run: mockRun });
 
       const input = [
         'foo',
@@ -56,7 +56,7 @@ describe('aberlaas', () => {
         './__tests__/foo.js',
       ];
 
-      await current.run(input);
+      await run(input);
 
       expect(mockRun).toHaveBeenCalledWith({
         _: ['./foo.js', './__tests__/foo.js'],
@@ -71,21 +71,18 @@ describe('aberlaas', () => {
         const expected = (
           await readJson(absolute(packageRoot(), './package.json'))
         ).version;
-        vi.spyOn(current, 'getCommand').mockReturnValue({ init: vi.fn() });
+        vi.spyOn(__, 'getCommand').mockReturnValue({ init: vi.fn() });
         const input = ['init'];
 
-        await current.run(input);
-        expect(current.__setEnv).toHaveBeenCalledWith(
-          'ABERLAAS_VERSION',
-          expected,
-        );
+        await run(input);
+        expect(__.setEnv).toHaveBeenCalledWith('ABERLAAS_VERSION', expected);
       });
       it('should not set it for other commands', async () => {
-        vi.spyOn(current, 'getCommand').mockReturnValue({ test: vi.fn() });
+        vi.spyOn(__, 'getCommand').mockReturnValue({ test: vi.fn() });
         const input = ['test'];
 
-        await current.run(input);
-        expect(current.__setEnv).not.toHaveBeenCalledWith(
+        await run(input);
+        expect(__.setEnv).not.toHaveBeenCalledWith(
           'ABERLAAS_VERSION',
           expect.anything(),
         );

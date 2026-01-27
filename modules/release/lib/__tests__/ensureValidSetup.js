@@ -1,7 +1,6 @@
 import { emptyDir, firostError, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
-import aberlaasTest from 'aberlaas-test';
 import aberlaasLint from 'aberlaas-lint';
 import { __, ensureValidSetup } from '../ensureValidSetup.js';
 
@@ -117,14 +116,14 @@ describe('ensureValidSetup', () => {
   describe('ensureTestsArePassing', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(aberlaasTest, 'run').mockReturnValue();
+      vi.spyOn(__, 'runTest').mockReturnValue();
     });
 
     it('should return false when skip-test is true', async () => {
       const actual = await __.ensureTestsArePassing({ 'skip-test': true });
 
       expect(actual).toEqual(false);
-      expect(aberlaasTest.run).not.toHaveBeenCalled();
+      expect(__.runTest).not.toHaveBeenCalled();
     });
 
     it('should pass when tests succeed', async () => {
@@ -132,11 +131,11 @@ describe('ensureValidSetup', () => {
 
       expect(actual).toEqual(true);
       expect(__.consoleInfo).toHaveBeenCalled();
-      expect(aberlaasTest.run).toHaveBeenCalledWith({ failFast: true });
+      expect(__.runTest).toHaveBeenCalledWith({ failFast: true });
     });
 
     it('should throw error when tests fail', async () => {
-      vi.spyOn(aberlaasTest, 'run').mockImplementation(() => {
+      vi.spyOn(__, 'runTest').mockImplementation(() => {
         throw firostError('ABERLAAS_TEST_FAIL', 'Tests are failing');
       });
 

@@ -2,7 +2,7 @@ import { _ } from 'golgoth';
 import { consoleInfo, firostError } from 'firost';
 import Gilmore from 'gilmore';
 import { hostGitRoot } from 'aberlaas-helper';
-import runTest from 'aberlaas-test';
+import { run as runTest } from 'aberlaas-test';
 import aberlaasLint from 'aberlaas-lint';
 import { ensureNpmLogin } from './ensureNpmLogin.js';
 
@@ -78,7 +78,7 @@ export const __ = {
     }
     __.consoleInfo('Running tests...');
     try {
-      await runTest({ failFast: true });
+      await __.runTest({ failFast: true });
       return true;
     } catch (err) {
       throw firostError('ABERLAAS_RELEASE_TESTS_FAILING', err.message);
@@ -106,6 +106,7 @@ export const __ = {
 
   consoleInfo,
   ensureNpmLogin,
+  runTest,
 };
 
 /**
