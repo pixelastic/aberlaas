@@ -4,69 +4,71 @@ import { _ } from 'golgoth';
 import { getConfig, hostPackageRoot } from 'aberlaas-helper';
 import viteConfig from '../configs/vite.js';
 
-export default {
-  /**
-   * Test all files using Vitest
-   * Usage:
-   * $ aberlaas test                                # Test all files
-   * $ aberlaas test ./path/to/__tests__/file.js    # Test specific files
-   * $ aberlaas test ./path/to/file.js              # Test specific files
-   * $ aberlaas test --related                      # Test all related files
-   * $ aberlaas test --failFast                     # Stop early as soon as one test fails
-   * $ aberlaas test --flags                        # Flags passed to vitest
-   * @param {object} cliArgs CLI Argument object, as created by minimist
-   * @returns {boolean} true on success
-   */
-  async run(cliArgs = {}) {
-    const options = await this.vitestOptions(cliArgs);
-    const isWatchMode = !!options.watch;
-    const isRelatedMode = options.related?.length > 0;
+export let __;
 
-    // If no files are passed, we assume we want to test the current project
-    const packageRoot = await hostPackageRoot();
-    let files = _.isEmpty(cliArgs._) ? [packageRoot] : cliArgs._;
+/**
+ * Test all files using Vitest
+ * Usage:
+ * $ aberlaas test                                # Test all files
+ * $ aberlaas test ./path/to/__tests__/file.js    # Test specific files
+ * $ aberlaas test ./path/to/file.js              # Test specific files
+ * $ aberlaas test --related                      # Test all related files
+ * $ aberlaas test --failFast                     # Stop early as soon as one test fails
+ * $ aberlaas test --flags                        # Flags passed to vitest
+ * @param {object} cliArgs CLI Argument object, as created by minimist
+ * @returns {boolean} true on success
+ */
+export async function run(cliArgs = {}) {
+  const options = await __.vitestOptions(cliArgs);
+  const isWatchMode = !!options.watch;
+  const isRelatedMode = options.related?.length > 0;
 
-    // If --related is passed, the list of files will already by in the .related
-    // key, and need to be removed from the files
-    if (isRelatedMode) files = [];
+  // If no files are passed, we assume we want to test the current project
+  const packageRoot = await hostPackageRoot();
+  let files = _.isEmpty(cliArgs._) ? [packageRoot] : cliArgs._;
 
-    // Vitest will change process.exitCode, so we save it to revert it later
-    const initialExitCode = process.exitCode;
+  // If --related is passed, the list of files will already by in the .related
+  // key, and need to be removed from the files
+  if (isRelatedMode) files = [];
 
-    const vitest = await createVitest('test', options);
+  // Vitest will change process.exitCode, so we save it to revert it later
+  const initialExitCode = process.exitCode;
 
-    // Enable keyboard interaction in watch mode
-    if (isWatchMode) {
-      registerConsoleShortcuts(vitest);
+  const vitest = await createVitest('test', options);
+
+  // Enable keyboard interaction in watch mode
+  if (isWatchMode) {
+    registerConsoleShortcuts(vitest);
+  }
+
+  try {
+    await vitest.start(files);
+  } catch (err) {
+    // We can safely swallow the VITEST_FILES_NOT_FOUND error. It's ok to
+    // continue if no files are found
+    if (err.code != 'VITEST_FILES_NOT_FOUND') {
+      throw err;
     }
+  }
 
-    try {
-      await vitest.start(files);
-    } catch (err) {
-      // We can safely swallow the VITEST_FILES_NOT_FOUND error. It's ok to
-      // continue if no files are found
-      if (err.code != 'VITEST_FILES_NOT_FOUND') {
-        throw err;
-      }
-    }
+  const testsAreFailing = process.exitCode == 1;
+  process.exitCode = initialExitCode;
 
-    const testsAreFailing = process.exitCode == 1;
-    process.exitCode = initialExitCode;
+  if (isWatchMode) {
+    return;
+  }
 
-    if (isWatchMode) {
-      return;
-    }
+  // Stop vitest, it doesn't stop itself by default
+  await vitest.close();
 
-    // Stop vitest, it doesn't stop itself by default
-    await vitest.close();
+  if (testsAreFailing) {
+    throw firostError('ABERLAAS_TEST_FAIL', 'Tests are failing');
+  }
 
-    if (testsAreFailing) {
-      throw firostError('ABERLAAS_TEST_FAIL', 'Tests are failing');
-    }
+  return true;
+}
 
-    return true;
-  },
-
+__ = {
   /**
    * Transform all aberlaas test cli options into suitable vitest options
    * @param {object} cliArgs CLI Argument object, as created by minimist
@@ -126,4 +128,8 @@ export default {
       ...optionsFromCli,
     };
   },
+};
+
+export default {
+  run,
 };

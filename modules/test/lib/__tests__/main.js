@@ -1,7 +1,7 @@
 import { absolute, emptyDir, write } from 'firost';
 import { _ } from 'golgoth';
 import { __ as helper } from 'aberlaas-helper';
-import current from '../main.js';
+import { __ } from '../main.js';
 
 describe('test', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/test');
@@ -13,13 +13,13 @@ describe('test', () => {
     describe('--related', () => {
       it('should have no related by default', async () => {
         const input = {};
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).not.toHaveProperty('related');
       });
       it('should have all files as part of the related field', async () => {
         const input = { _: ['file.js'], related: true };
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty('related', ['file.js']);
       });
@@ -27,13 +27,13 @@ describe('test', () => {
     describe('--failFast', () => {
       it('should have no --bail by default', async () => {
         const input = {};
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).not.toHaveProperty('bail');
       });
       it('should have --bail=1 with --failFast', async () => {
         const input = { failFast: true };
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty('bail', 1);
       });
@@ -41,23 +41,23 @@ describe('test', () => {
     describe('--watch', () => {
       it('should have vitest --watch=false by default', async () => {
         const input = {};
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty('watch', false);
       });
       it('should have vitest --watch=true with --watch', async () => {
         const input = { watch: true };
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty('watch', true);
       });
     });
     describe('--exclude', () => {
       it('should add the passed exclusion to the list of existing exclusions', async () => {
-        const { exclude: defaultExclude } = await current.vitestOptions({});
+        const { exclude: defaultExclude } = await __.vitestOptions({});
 
         const input = { exclude: '**/__meta_tests__/**' };
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty(
           'exclude',
@@ -74,7 +74,7 @@ describe('test', () => {
         'aberlaas test  %s',
         async (cliName) => {
           const input = {};
-          const actual = await current.vitestOptions(input);
+          const actual = await __.vitestOptions(input);
           const optionName = _.replace(cliName, '--', '');
           expect(actual).toHaveProperty(optionName, true);
         },
@@ -92,7 +92,7 @@ describe('test', () => {
           helper.hostGitPath('vite.config.js'),
         );
         const input = {};
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
         expect(actual).toHaveProperty('newOption', true);
       });
       it('should allow specifying the config file', async () => {
@@ -106,7 +106,7 @@ describe('test', () => {
           helper.hostGitPath('custom.vite.config.js'),
         );
         const input = { config: 'custom.vite.config.js' };
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty('newOption', true);
       });
@@ -114,7 +114,7 @@ describe('test', () => {
     describe('additional options', () => {
       it('should allow passing new options to vitest', async () => {
         const input = { open: false, reporter: 'json' };
-        const actual = await current.vitestOptions(input);
+        const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty('open', false);
         expect(actual).toHaveProperty('reporter', 'json');
