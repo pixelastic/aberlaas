@@ -22,7 +22,7 @@
   "dependencies": {
     "aberlaas-helper": "workspace:*",
     "aberlaas-versions": "workspace:*",
-    "firost": "5.5.0",
+    "firost": "5.5.1",
     "gilmore": "1.1.0",
     "golgoth": "3.0.0"
   },

@@ -21,7 +21,7 @@
     "aberlaas-lint": "workspace:*",
     "aberlaas-test": "workspace:*",
     "ci-info": "4.1.0",
-    "firost": "5.5.0"
+    "firost": "5.5.1"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",

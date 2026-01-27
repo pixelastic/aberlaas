@@ -12,7 +12,7 @@
   "license": "MIT",
   "packageManager": "yarn@4.10.3",
   "devDependencies": {
-    "firost": "5.5.0",
+    "firost": "5.5.1",
     "golgoth": "3.0.0"
   },
   "scripts": {
