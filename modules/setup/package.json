@@ -19,7 +19,7 @@
     "node": ">=18.18.0"
   },
   "dependencies": {
-    "@octokit/rest": "21.0.2",
+    "@octokit/rest": "22.0.1",
     "aberlaas-helper": "workspace:*",
     "firost": "5.5.1",
     "golgoth": "3.0.0",

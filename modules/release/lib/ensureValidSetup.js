@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { consoleInfo, firostError } from 'firost';
 import { hostGitRoot } from 'aberlaas-helper';
-import aberlaasLint from 'aberlaas-lint';
+import { run as runLint } from 'aberlaas-lint';
 import { run as runTest } from 'aberlaas-test';
 import Gilmore from 'gilmore';
 import { ensureNpmLogin } from './ensureNpmLogin.js';
@@ -97,7 +97,7 @@ export const __ = {
     }
     __.consoleInfo('Running lint...');
     try {
-      await aberlaasLint.run();
+      await __.runLint();
       return true;
     } catch (err) {
       throw firostError('ABERLAAS_RELEASE_LINT_FAILING', err.message);
@@ -107,6 +107,7 @@ export const __ = {
   consoleInfo,
   ensureNpmLogin,
   runTest,
+  runLint,
 };
 
 /**

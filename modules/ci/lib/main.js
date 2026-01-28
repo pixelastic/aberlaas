@@ -1,5 +1,5 @@
 import { consoleInfo, firostError, run as firostRun } from 'firost';
-import commandLint from 'aberlaas-lint';
+import { run as runLint } from 'aberlaas-lint';
 import { run as runTest } from 'aberlaas-test';
 import ciInfo from 'ci-info';
 
@@ -69,7 +69,7 @@ __ = {
   consoleInfo,
   firostRun,
   runTest,
-  runLint: commandLint.run.bind(commandLint),
+  runLint,
 };
 
 export default {

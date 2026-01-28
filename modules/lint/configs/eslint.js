@@ -158,7 +158,7 @@ export default [
       'import/no-unresolved': [
         'error',
         {
-          ignore: ['changelogen', 'lint-staged', '@octokit/rest'],
+          ignore: ['changelogen', 'lint-staged', '@octokit/rest', 'stylelint'],
         },
       ],
 
