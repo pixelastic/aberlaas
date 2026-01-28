@@ -1,17 +1,28 @@
+export const commands = {
+  lintCss: 'yarn run lint:fix --css',
+  lintYml: 'yarn run lint:fix --yml',
+  lintCircleci: 'yarn run lint --circleci',
+  lintJson: 'yarn run lint:fix --json',
+  lintJs: 'yarn run lint:fix --js',
+  testJs: 'FORCE_COLOR=1 yarn run test --failFast --related',
+  compressPng: 'yarn run compress --png',
+  readme: 'yarn run aberlaas readme',
+};
+
 export default {
   // Lint
-  '*.css': ['yarn run lint:fix --css'],
-  '*.{yml,yaml}': ['yarn run lint:fix --yml'],
-  '.circleci/config.yml': ['yarn run lint --circleci'],
-  '*.json': ['yarn run lint:fix --json'],
-  '*.js': ['yarn run lint:fix --js'],
+  '**/*.css': [commands.lintCss],
+  '**/*.{yml,yaml}': [commands.lintYml],
+  '.circleci/config.yml': [commands.lintCircleci],
+  '**/*.json': [commands.lintJson],
+  '**/*.js': [commands.lintJs],
 
   // Test
-  '**/lib/**/*.js': ['FORCE_COLOR=1 yarn run test --failFast --related'],
+  '**/lib/**/*.js': [commands.testJs],
 
   // Compress
-  '*.png': ['yarn run compress --png'],
+  '**/*.png': [commands.compressPng],
 
   // Documentation
-  '*.md': ['yarn run aberlaas readme'],
+  '**/*.md': [commands.readme],
 };
