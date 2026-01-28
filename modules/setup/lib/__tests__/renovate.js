@@ -1,11 +1,13 @@
-import current from '../renovate.js';
+import { __, enable } from '../renovate.js';
 import githubHelper from '../helpers/github.js';
+
+const RENOVATE_ID = 2471197;
 
 describe('setup > renovate', () => {
   beforeEach(async () => {
-    vi.spyOn(current, '__consoleSuccess').mockReturnValue();
-    vi.spyOn(current, '__consoleInfo').mockReturnValue();
-    vi.spyOn(current, '__consoleError').mockReturnValue();
+    vi.spyOn(__, 'consoleSuccess').mockReturnValue();
+    vi.spyOn(__, 'consoleInfo').mockReturnValue();
+    vi.spyOn(__, 'consoleError').mockReturnValue();
     vi.spyOn(githubHelper, 'repoData').mockReturnValue({
       username: 'pixelastic',
       repo: 'aberlaas',
@@ -15,7 +17,7 @@ describe('setup > renovate', () => {
   describe('getRepositoryId', () => {
     it('should return the current repo id', async () => {
       githubHelper.octokit.mockReturnValue({ id: 42 });
-      const actual = await current.getRepositoryId();
+      const actual = await __.getRepositoryId();
       expect(actual).toBe(42);
       expect(githubHelper.octokit).toHaveBeenCalledWith('repos.get', {
         owner: 'pixelastic',
@@ -25,15 +27,15 @@ describe('setup > renovate', () => {
   });
   describe('enable', () => {
     beforeEach(async () => {
-      vi.spyOn(current, '__consoleSuccess').mockReturnValue();
-      vi.spyOn(current, '__consoleError').mockReturnValue();
-      vi.spyOn(current, 'getRepositoryId').mockReturnValue();
+      vi.spyOn(__, 'consoleSuccess').mockReturnValue();
+      vi.spyOn(__, 'consoleError').mockReturnValue();
+      vi.spyOn(__, 'getRepositoryId').mockReturnValue();
     });
     it('should stop if no token available', async () => {
       vi.spyOn(githubHelper, 'hasToken').mockReturnValue(false);
-      const actual = await current.enable();
+      const actual = await enable();
       expect(actual).toBe(false);
-      expect(current.__consoleError).toHaveBeenCalled();
+      expect(__.consoleError).toHaveBeenCalled();
     });
     it('should stop if no adding the repo fails', async () => {
       vi.spyOn(githubHelper, 'hasToken').mockReturnValue(true);
@@ -41,21 +43,21 @@ describe('setup > renovate', () => {
         throw new Error();
       });
 
-      const actual = await current.enable();
+      const actual = await enable();
       expect(actual).toBe(false);
-      expect(current.__consoleError).toHaveBeenCalled();
+      expect(__.consoleError).toHaveBeenCalled();
     });
     it('should add the repo id to the app installation', async () => {
       vi.spyOn(githubHelper, 'hasToken').mockReturnValue(true);
-      vi.spyOn(current, 'getRepositoryId').mockReturnValue(42);
+      vi.spyOn(__, 'getRepositoryId').mockReturnValue(42);
 
-      const actual = await current.enable();
+      const actual = await enable();
       expect(actual).toBe(true);
-      expect(current.__consoleSuccess).toHaveBeenCalled();
+      expect(__.consoleSuccess).toHaveBeenCalled();
       expect(githubHelper.octokit).toHaveBeenCalledWith(
         'apps.addRepoToInstallation',
         {
-          installation_id: current.renovateId,
+          installation_id: RENOVATE_ID,
           repository_id: 42,
         },
       );

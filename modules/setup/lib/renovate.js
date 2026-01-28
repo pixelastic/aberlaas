@@ -1,8 +1,56 @@
 import { consoleError, consoleInfo, consoleSuccess } from 'firost';
 import githubHelper from './helpers/github.js';
 
-export default {
-  renovateId: 2471197,
+export let __;
+
+const RENOVATE_ID = 2471197;
+
+/**
+ * Attempt to automatically add the current repo to renovate, otherwise
+ * display the link to do it manually
+ * @returns {boolean} True if enabled, false otherwise
+ */
+export async function enable() {
+  const { username, repo } = await githubHelper.repoData();
+  const manualUrl = `https://github.com/settings/installations/${RENOVATE_ID}`;
+  const renovateDashboardUrl = `https://developer.mend.io/github/${username}/${repo}`;
+
+  // Fail early if no token available
+  if (!githubHelper.hasToken()) {
+    __.consoleError(
+      'Renovate: ABERLAAS_GITHUB_TOKEN environment variable must be set',
+    );
+    __.consoleInfo("  Create a Classic token with 'repo' scope");
+    __.consoleInfo('  https://github.com/settings/tokens\n');
+    return false;
+  }
+
+  // Check if already enabled
+  if (await __.isAlreadyEnabled()) {
+    __.consoleSuccess('Renovate: Already configured');
+    __.consoleInfo(`  ${renovateDashboardUrl}\n`);
+    return true;
+  }
+
+  try {
+    const repositoryId = await __.getRepositoryId();
+    await githubHelper.octokit('apps.addRepoToInstallation', {
+      installation_id: RENOVATE_ID,
+      repository_id: repositoryId,
+    });
+  } catch (_err) {
+    __.consoleError('Renovate is not installed with this GitHub account');
+    __.consoleInfo('  Please visit the installation page to install it first');
+    __.consoleInfo(`  ${manualUrl}\n`);
+    return false;
+  }
+
+  __.consoleSuccess('Renovate: Repository configured');
+  __.consoleInfo(`  ${renovateDashboardUrl}\n`);
+  return true;
+}
+
+__ = {
   /**
    * Returns the GitHub repository Id
    * @returns {number} Repository Id
@@ -16,52 +64,6 @@ export default {
     return id;
   },
   /**
-   * Attempt to automatically add the current repo to renovate, otherwise
-   * display the link to do it manually
-   * @returns {boolean} True if enabled, false otherwise
-   */
-  async enable() {
-    const { username, repo } = await githubHelper.repoData();
-    const manualUrl = `https://github.com/settings/installations/${this.renovateId}`;
-    const renovateDashboardUrl = `https://developer.mend.io/github/${username}/${repo}`;
-
-    // Fail early if no token available
-    if (!githubHelper.hasToken()) {
-      this.__consoleError(
-        'Renovate: ABERLAAS_GITHUB_TOKEN environment variable must be set',
-      );
-      this.__consoleInfo("  Create a Classic token with 'repo' scope");
-      this.__consoleInfo('  https://github.com/settings/tokens\n');
-      return false;
-    }
-
-    // Check if already enabled
-    if (await this.isAlreadyEnabled()) {
-      this.__consoleSuccess('Renovate: Already configured');
-      this.__consoleInfo(`  ${renovateDashboardUrl}\n`);
-      return true;
-    }
-
-    try {
-      const repositoryId = await this.getRepositoryId();
-      await githubHelper.octokit('apps.addRepoToInstallation', {
-        installation_id: this.renovateId,
-        repository_id: repositoryId,
-      });
-    } catch (_err) {
-      this.__consoleError('Renovate is not installed with this GitHub account');
-      this.__consoleInfo(
-        '  Please visit the installation page to install it first',
-      );
-      this.__consoleInfo(`  ${manualUrl}\n`);
-      return false;
-    }
-
-    this.__consoleSuccess('Renovate: Repository configured');
-    this.__consoleInfo(`  ${renovateDashboardUrl}\n`);
-    return true;
-  },
-  /**
    * Check if Renovate is already enabled for this repository
    * @returns {boolean} True if already enabled, false otherwise
    */
@@ -71,7 +73,7 @@ export default {
       const installations = await githubHelper.octokit(
         'apps.listReposAccessibleToInstallation',
         {
-          installation_id: this.renovateId,
+          installation_id: RENOVATE_ID,
         },
       );
 
@@ -84,7 +86,9 @@ export default {
       return false;
     }
   },
-  __consoleSuccess: consoleSuccess,
-  __consoleInfo: consoleInfo,
-  __consoleError: consoleError,
+  consoleSuccess,
+  consoleInfo,
+  consoleError,
 };
+
+export default { enable };

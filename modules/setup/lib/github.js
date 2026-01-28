@@ -2,6 +2,8 @@ import { consoleError, consoleInfo, consoleSuccess } from 'firost';
 import { _ } from 'golgoth';
 import githubHelper from './helpers/github.js';
 
+export let __;
+
 const gitHubSettings = {
   allow_merge_commit: false,
   allow_rebase_merge: true,
@@ -9,54 +11,55 @@ const gitHubSettings = {
   delete_branch_on_merge: true,
 };
 
-export default {
-  /**
-   * Configure the GitHub repo with default settings:
-   * - Do not enable merge commits on PR
-   * - Automatically delete branches after PR merge
-   * @returns {boolean} True if enabled, false otherwise
-   */
-  async enable() {
-    const { username, repo } = await githubHelper.repoData();
-    const settingsUrl = `https://github.com/${username}/${repo}/settings`;
+/**
+ * Configure the GitHub repo with default settings:
+ * - Do not enable merge commits on PR
+ * - Automatically delete branches after PR merge
+ * @returns {boolean} True if enabled, false otherwise
+ */
+export async function enable() {
+  const { username, repo } = await githubHelper.repoData();
+  const settingsUrl = `https://github.com/${username}/${repo}/settings`;
 
-    // Fail early if no token available
-    if (!githubHelper.hasToken()) {
-      this.__consoleError(
-        'GitHub: ABERLAAS_GITHUB_TOKEN environment variable must be set',
-      );
-      this.__consoleInfo("  Create a Classic token with 'repo' scope");
-      this.__consoleInfo('  https://github.com/settings/tokens\n');
+  // Fail early if no token available
+  if (!githubHelper.hasToken()) {
+    __.consoleError(
+      'GitHub: ABERLAAS_GITHUB_TOKEN environment variable must be set',
+    );
+    __.consoleInfo("  Create a Classic token with 'repo' scope");
+    __.consoleInfo('  https://github.com/settings/tokens\n');
+    return false;
+  }
+
+  // Check if already configured
+  try {
+    if (await __.isAlreadyConfigured()) {
+      __.consoleSuccess('GitHub: Already configured');
+      __.consoleInfo(`  ${settingsUrl}\n`);
+      return true;
+    }
+  } catch (error) {
+    if (error.status === 401) {
+      __.consoleError('GitHub: ABERLAAS_GITHUB_TOKEN is invalid');
+      __.consoleInfo("  Create a Classic token with 'repo' scope");
+      __.consoleInfo('  https://github.com/settings/tokens\n');
       return false;
     }
+    throw error;
+  }
 
-    // Check if already configured
-    try {
-      if (await this.isAlreadyConfigured()) {
-        this.__consoleSuccess('GitHub: Already configured');
-        this.__consoleInfo(`  ${settingsUrl}\n`);
-        return true;
-      }
-    } catch (error) {
-      if (error.status === 401) {
-        this.__consoleError('GitHub: ABERLAAS_GITHUB_TOKEN is invalid');
-        this.__consoleInfo("  Create a Classic token with 'repo' scope");
-        this.__consoleInfo('  https://github.com/settings/tokens\n');
-        return false;
-      }
-      throw error;
-    }
+  await githubHelper.octokit('repos.update', {
+    owner: username,
+    repo,
+    ...gitHubSettings,
+  });
 
-    await githubHelper.octokit('repos.update', {
-      owner: username,
-      repo,
-      ...gitHubSettings,
-    });
+  __.consoleSuccess('GitHub: Repository configured');
+  __.consoleInfo(`  ${settingsUrl}\n`);
+  return true;
+}
 
-    this.__consoleSuccess('GitHub: Repository configured');
-    this.__consoleInfo(`  ${settingsUrl}\n`);
-    return true;
-  },
+__ = {
   /**
    * Check if GitHub repo is already configured with desired settings
    * @returns {boolean} True if already configured, false otherwise
@@ -70,7 +73,9 @@ export default {
 
     return _.isMatch(repoData, gitHubSettings);
   },
-  __consoleSuccess: consoleSuccess,
-  __consoleInfo: consoleInfo,
-  __consoleError: consoleError,
+  consoleSuccess,
+  consoleInfo,
+  consoleError,
 };
+
+export default { enable };

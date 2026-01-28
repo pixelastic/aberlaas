@@ -3,39 +3,42 @@ import { consoleError, consoleInfo, consoleSuccess } from 'firost';
 import circleCiHelper from './helpers/circleci.js';
 import githubHelper from './helpers/github.js';
 
-export default {
-  /**
-   * Attempt to automatically follow the repo in CircleCI if possible, otherwise
-   * display the link to follow it manually
-   * @returns {boolean} True if enabled, false otherwise
-   */
-  async enable() {
-    const { username, repo } = await githubHelper.repoData();
-    const projectUrl = `https://app.circleci.com/pipelines/github/${username}/${repo}`;
+export let __;
 
-    // Fail early if no token available
-    if (!circleCiHelper.hasToken()) {
-      this.__consoleError(
-        'CircleCI: ABERLAAS_CIRCLECI_TOKEN environment variable must be set',
-      );
-      this.__consoleInfo('  Create a token at CircleCI account settings');
-      this.__consoleInfo('  https://circleci.com/account/api\n');
-      return false;
-    }
+/**
+ * Attempt to automatically follow the repo in CircleCI if possible, otherwise
+ * display the link to follow it manually
+ * @returns {boolean} True if enabled, false otherwise
+ */
+export async function enable() {
+  const { username, repo } = await githubHelper.repoData();
+  const projectUrl = `https://app.circleci.com/pipelines/github/${username}/${repo}`;
 
-    // Do nothing if already enabled
-    if (await this.isEnabled()) {
-      this.__consoleSuccess('CircleCI: Already configured');
-      this.__consoleInfo(`  ${projectUrl}\n`);
-      return true;
-    }
+  // Fail early if no token available
+  if (!circleCiHelper.hasToken()) {
+    __.consoleError(
+      'CircleCI: ABERLAAS_CIRCLECI_TOKEN environment variable must be set',
+    );
+    __.consoleInfo('  Create a token at CircleCI account settings');
+    __.consoleInfo('  https://circleci.com/account/api\n');
+    return false;
+  }
 
-    // Follow the repo
-    await this.followRepo();
-    this.__consoleSuccess('CircleCI: Repository configured');
-    this.__consoleInfo(`  ${projectUrl}\n`);
+  // Do nothing if already enabled
+  if (await __.isEnabled()) {
+    __.consoleSuccess('CircleCI: Already configured');
+    __.consoleInfo(`  ${projectUrl}\n`);
     return true;
-  },
+  }
+
+  // Follow the repo
+  await __.followRepo();
+  __.consoleSuccess('CircleCI: Repository configured');
+  __.consoleInfo(`  ${projectUrl}\n`);
+  return true;
+}
+
+__ = {
   /**
    * Check if CircleCI is already enabled for this project
    * @returns {boolean} True if already enabled, false otherwise
@@ -57,7 +60,9 @@ export default {
       method: 'post',
     });
   },
-  __consoleInfo: consoleInfo,
-  __consoleSuccess: consoleSuccess,
-  __consoleError: consoleError,
+  consoleInfo,
+  consoleSuccess,
+  consoleError,
 };
+
+export default { enable };

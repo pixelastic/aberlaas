@@ -1,22 +1,22 @@
-import current from '../main.js';
+import { __, run } from '../main.js';
 
 describe('setup', () => {
   describe('run', () => {
     beforeEach(async () => {
-      vi.spyOn(current, 'github').mockReturnValue();
-      vi.spyOn(current, 'circleci').mockReturnValue();
-      vi.spyOn(current, 'renovate').mockReturnValue();
+      vi.spyOn(__, 'enableGithub').mockReturnValue();
+      vi.spyOn(__, 'enableCircleci').mockReturnValue();
+      vi.spyOn(__, 'enableRenovate').mockReturnValue();
     });
     it('should configure github, circleci and renovate by default', async () => {
-      await current.run();
-      expect(current.github).toHaveBeenCalled();
-      expect(current.circleci).toHaveBeenCalled();
-      expect(current.renovate).toHaveBeenCalled();
+      await run();
+      expect(__.enableGithub).toHaveBeenCalled();
+      expect(__.enableCircleci).toHaveBeenCalled();
+      expect(__.enableRenovate).toHaveBeenCalled();
     });
     it('should allow disabling services', async () => {
-      await current.run({ circleci: false, renovate: false });
-      expect(current.circleci).not.toHaveBeenCalled();
-      expect(current.renovate).not.toHaveBeenCalled();
+      await run({ circleci: false, renovate: false });
+      expect(__.enableCircleci).not.toHaveBeenCalled();
+      expect(__.enableRenovate).not.toHaveBeenCalled();
     });
   });
 });

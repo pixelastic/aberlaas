@@ -1,52 +1,42 @@
 import { _ } from 'golgoth';
-import github from './github.js';
-import circleci from './circleci.js';
-import renovate from './renovate.js';
+import { enable as enableGithub } from './github.js';
+import { enable as enableCircleci } from './circleci.js';
+import { enable as enableRenovate } from './renovate.js';
 
-export default {
-  /**
-   * Enable external services.
-   * Will enable CircleCI, GitHub and Renovate by default.
-   * @param {object} cliArgs CLI Argument object, as created by minimist
-   */
-  async run(cliArgs = {}) {
-    const defaultServices = {
-      circleci: true,
-      renovate: true,
-      github: true,
-    };
-    const cliServices = _.omit(cliArgs, ['_']);
-    const servicesToEnable = {
-      ...defaultServices,
-      ...cliServices,
-    };
+export let __;
 
-    if (servicesToEnable.github) {
-      await this.github();
-    }
-    if (servicesToEnable.circleci) {
-      await this.circleci();
-    }
-    if (servicesToEnable.renovate) {
-      await this.renovate();
-    }
-  },
-  /**
-   * Configure GitHub
-   */
-  async github() {
-    await github.enable();
-  },
-  /**
-   * Enable CircleCI
-   */
-  async circleci() {
-    await circleci.enable();
-  },
-  /**
-   * Enable renovate
-   */
-  async renovate() {
-    await renovate.enable();
-  },
+/**
+ * Enable external services.
+ * Will enable CircleCI, GitHub and Renovate by default.
+ * @param {object} cliArgs CLI Argument object, as created by minimist
+ */
+export async function run(cliArgs = {}) {
+  const defaultServices = {
+    circleci: true,
+    renovate: true,
+    github: true,
+  };
+  const cliServices = _.omit(cliArgs, ['_']);
+  const servicesToEnable = {
+    ...defaultServices,
+    ...cliServices,
+  };
+
+  if (servicesToEnable.github) {
+    await __.enableGithub();
+  }
+  if (servicesToEnable.circleci) {
+    await __.enableCircleci();
+  }
+  if (servicesToEnable.renovate) {
+    await __.enableRenovate();
+  }
+}
+
+__ = {
+  enableGithub,
+  enableCircleci,
+  enableRenovate,
 };
+
+export default { run };

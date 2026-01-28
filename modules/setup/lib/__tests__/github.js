@@ -1,12 +1,12 @@
-import current from '../github.js';
+import { __, enable } from '../github.js';
 import githubHelper from '../helpers/github.js';
 
 describe('setup > github', () => {
   describe('enable', () => {
     beforeEach(async () => {
-      vi.spyOn(current, '__consoleSuccess').mockReturnValue();
-      vi.spyOn(current, '__consoleInfo').mockReturnValue();
-      vi.spyOn(current, '__consoleError').mockReturnValue();
+      vi.spyOn(__, 'consoleSuccess').mockReturnValue();
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'consoleError').mockReturnValue();
       vi.spyOn(githubHelper, 'repoData').mockReturnValue({
         username: 'username',
         repo: 'repo',
@@ -15,17 +15,17 @@ describe('setup > github', () => {
     });
     it('when no token available', async () => {
       vi.spyOn(githubHelper, 'hasToken').mockReturnValue(false);
-      const actual = await current.enable();
+      const actual = await enable();
       expect(actual).toBe(false);
-      expect(current.__consoleError).toHaveBeenCalled();
-      expect(current.__consoleSuccess).not.toHaveBeenCalled();
+      expect(__.consoleError).toHaveBeenCalled();
+      expect(__.consoleSuccess).not.toHaveBeenCalled();
     });
     it('with a token', async () => {
       vi.spyOn(githubHelper, 'hasToken').mockReturnValue(true);
-      const actual = await current.enable();
+      const actual = await enable();
       expect(actual).toBe(true);
-      expect(current.__consoleError).not.toHaveBeenCalled();
-      expect(current.__consoleSuccess).toHaveBeenCalled();
+      expect(__.consoleError).not.toHaveBeenCalled();
+      expect(__.consoleSuccess).toHaveBeenCalled();
       expect(githubHelper.octokit).toHaveBeenCalledWith('repos.update', {
         owner: 'username',
         repo: 'repo',
