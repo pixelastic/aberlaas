@@ -1,6 +1,6 @@
 import { firostError, remove, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import { __, default as current } from '../main.js';
+import { __, run } from '../main.js';
 
 describe('main', () => {
   const testDirectory = tmpDirectory('aberlaas/release/main');
@@ -23,7 +23,7 @@ describe('main', () => {
     });
 
     it('should orchestrate the full release flow', async () => {
-      await current.run();
+      await run();
 
       expect(__.ensureValidSetup).toHaveBeenCalled();
       expect(__.getReleaseData).toHaveBeenCalled();
@@ -39,7 +39,7 @@ describe('main', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (err) {
         actual = err;
       }
@@ -54,7 +54,7 @@ describe('main', () => {
   describe('publishAllPackagesToNpm', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'run').mockReturnValue();
+      vi.spyOn(__, 'firostRun').mockReturnValue();
     });
     it('should publish all packages to npm', async () => {
       const releaseData = {
@@ -72,10 +72,10 @@ describe('main', () => {
 
       await __.publishAllPackagesToNpm(releaseData);
 
-      expect(__.run).toHaveBeenCalledWith('npm publish --access public', {
+      expect(__.firostRun).toHaveBeenCalledWith('npm publish --access public', {
         cwd: `${testDirectory}/packages/a`,
       });
-      expect(__.run).toHaveBeenCalledWith('npm publish --access public', {
+      expect(__.firostRun).toHaveBeenCalledWith('npm publish --access public', {
         cwd: `${testDirectory}/packages/b`,
       });
 
