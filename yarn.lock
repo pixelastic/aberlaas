@@ -4341,7 +4341,7 @@ __metadata:
   dependencies:
     aberlaas-lint: "workspace:*"
     aberlaas-test: "workspace:*"
-    ci-info: "npm:4.1.0"
+    ci-info: "npm:4.3.1"
     firost: "npm:5.5.1"
   languageName: unknown
   linkType: soft
@@ -4396,7 +4396,7 @@ __metadata:
     "@vitest/eslint-plugin": "npm:1.6.5"
     aberlaas-helper: "workspace:*"
     aberlaas-versions: "workspace:*"
-    ci-info: "npm:4.1.0"
+    ci-info: "npm:4.3.1"
     eslint: "npm:9.39.2"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-import: "npm:2.32.0"
@@ -6399,10 +6399,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ci-info@npm:4.1.0":
-  version: 4.1.0
-  resolution: "ci-info@npm:4.1.0"
-  checksum: 10c0/0f969ce32a974c542bc8abe4454b220d9d9323bb9415054c92a900faa5fdda0bb222eda68c490127c1d78503510d46b6aca614ecaba5a60515b8ac7e170119e6
+"ci-info@npm:4.3.1":
+  version: 4.3.1
+  resolution: "ci-info@npm:4.3.1"
+  checksum: 10c0/7dd82000f514d76ddfe7775e4cb0d66e5c638f5fa0e2a3be29557e898da0d32ac04f231217d414d07fb968b1fbc6d980ee17ddde0d2c516f23da9cfff608f6c1
   languageName: node
   linkType: hard
 

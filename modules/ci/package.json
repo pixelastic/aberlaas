@@ -20,7 +20,7 @@
   "dependencies": {
     "aberlaas-lint": "workspace:*",
     "aberlaas-test": "workspace:*",
-    "ci-info": "4.1.0",
+    "ci-info": "4.3.1",
     "firost": "5.5.1"
   },
   "scripts": {

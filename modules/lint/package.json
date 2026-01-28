@@ -28,7 +28,7 @@
     "@vitest/eslint-plugin": "1.6.5",
     "aberlaas-helper": "workspace:*",
     "aberlaas-versions": "workspace:*",
-    "ci-info": "4.1.0",
+    "ci-info": "4.3.1",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
