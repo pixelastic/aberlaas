@@ -6,7 +6,7 @@ export const commands = {
   lintJs: 'yarn run lint:fix --js',
   testJs: 'FORCE_COLOR=1 yarn run test --failFast --related',
   compressPng: 'yarn run compress --png',
-  readme: 'yarn run aberlaas readme',
+  readme: 'yarn run aberlaas readme --add-to-git',
 };
 
 export default {

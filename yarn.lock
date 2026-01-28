@@ -4382,7 +4382,7 @@ __metadata:
     aberlaas-helper: "workspace:*"
     aberlaas-versions: "workspace:*"
     firost: "npm:5.5.1"
-    gilmore: "npm:1.1.0"
+    gilmore: "npm:1.2.0"
     golgoth: "npm:3.0.0"
   languageName: unknown
   linkType: soft
@@ -4429,7 +4429,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     firost: "npm:5.5.1"
-    gilmore: "npm:1.1.0"
+    gilmore: "npm:1.2.0"
     golgoth: "npm:3.0.0"
     lint-staged: "npm:15.2.10"
     micromatch: "npm:4.0.8"
@@ -4444,6 +4444,7 @@ __metadata:
     dedent: "npm:1.5.3"
     firost: "npm:5.5.1"
     front-matter: "npm:4.0.2"
+    gilmore: "npm:1.2.0"
     golgoth: "npm:3.0.0"
   languageName: unknown
   linkType: soft
@@ -4458,7 +4459,7 @@ __metadata:
     changelogen: "npm:0.6.2"
     cli-markdown: "npm:3.5.1"
     firost: "npm:5.5.1"
-    gilmore: "npm:1.1.0"
+    gilmore: "npm:1.2.0"
     golgoth: "npm:3.0.0"
     semver: "npm:7.7.3"
   languageName: unknown
@@ -11032,14 +11033,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gilmore@npm:1.1.0":
-  version: 1.1.0
-  resolution: "gilmore@npm:1.1.0"
+"gilmore@npm:1.2.0":
+  version: 1.2.0
+  resolution: "gilmore@npm:1.2.0"
   dependencies:
     firost: "npm:5.3.0"
     golgoth: "npm:3.0.0"
     parse-github-repo-url: "npm:1.4.1"
-  checksum: 10c0/73e60bd7399fdf726d86a286b4d48686cabbac5b79036c69ae7e9d62fbf39ece43da53f1b271770c10d1f93fe8b0f603efaaecaba1ccb3031e572c9f447832a8
+  checksum: 10c0/32a67335a54ed77a9313562662b3004619efe58bd3a9f11a9ecae0ea78186e152ee8f079be08a5e3988621c6267755b87ac656cbfd4285295a5ba4735f59341e
   languageName: node
   linkType: hard
 

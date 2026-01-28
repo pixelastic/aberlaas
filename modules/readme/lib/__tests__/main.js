@@ -1,6 +1,7 @@
 import { emptyDir, newFile, read, tmpDirectory, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import dedent from 'dedent';
+import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
 describe('readme', () => {
@@ -297,6 +298,23 @@ describe('readme', () => {
     });
   });
 
+  describe('addToGit', () => {
+    it('should add all output files to git staging area', async () => {
+      const repo = new Gilmore(testDirectory);
+      await repo.init();
+
+      const templateData = {
+        outputs: [`${testDirectory}/lib/README.md`],
+      };
+      await newFile(`${testDirectory}/lib/README.md`);
+
+      await __.addToGit(templateData);
+
+      const actual = await repo.stagedFiles();
+      expect(actual).toEqual(['lib/README.md']);
+    });
+  });
+
   describe('run', () => {
     it('happy path', async () => {
       await write('# firost', `${testDirectory}/README.md`);
@@ -314,6 +332,24 @@ describe('readme', () => {
 
       const actual = await read(`${testDirectory}/lib/README.md`);
       expect(actual).toContain('# firost');
+    });
+    describe('--add-to-git', () => {
+      beforeEach(async () => {
+        vi.spyOn(__, 'warnIfDeprecatedTemplate').mockReturnValue();
+        vi.spyOn(__, 'ensureTemplateExists').mockReturnValue();
+        vi.spyOn(__, 'getTemplateData').mockReturnValue();
+        vi.spyOn(__, 'shouldContinue').mockReturnValue(true);
+        vi.spyOn(__, 'generateAndWrite').mockReturnValue();
+        vi.spyOn(__, 'addToGit').mockReturnValue();
+      });
+      it('should not add to git by default', async () => {
+        await run();
+        expect(__.addToGit).not.toHaveBeenCalled();
+      });
+      it('should add to git if --add-to-git is passed', async () => {
+        await run({ 'add-to-git': true });
+        expect(__.addToGit).toHaveBeenCalled();
+      });
     });
   });
 });

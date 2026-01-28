@@ -38,7 +38,7 @@
     "lint:fix": "cd ../.. && ./scripts/lint-fix"
   },
   "devDependencies": {
-    "gilmore": "1.1.0",
+    "gilmore": "1.2.0",
     "golgoth": "3.0.0",
     "micromatch": "4.0.8"
   }

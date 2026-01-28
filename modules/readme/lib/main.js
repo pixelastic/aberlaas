@@ -1,8 +1,9 @@
 import { _, pMap } from 'golgoth';
 import { consoleWarn, exists, firostError, read, write } from 'firost';
-import { hostGitPath } from 'aberlaas-helper';
+import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import dedent from 'dedent';
 import frontMatter from 'front-matter';
+import Gilmore from 'gilmore';
 
 export let __;
 
@@ -13,6 +14,7 @@ const TEMPLATE_PATH = '.README.template.md';
  * @param {object} cliArgs CLI Argument object, as created by minimist
  * @param {string} cliArgs.template Path to the template (default to .README.template.md)
  * @param {Array} cliArgs._ List of files that changed (passed by lint-staged)
+ * @param {boolean} cliArgs.addToGit Whether to add generated files to git staging area
  */
 export async function run(cliArgs = {}) {
   await __.warnIfDeprecatedTemplate();
@@ -28,6 +30,11 @@ export async function run(cliArgs = {}) {
 
   // Regenerate the READMEs
   await __.generateAndWrite(templateData);
+
+  // Add generated files to git staging area if requested
+  if (cliArgs['add-to-git']) {
+    await __.addToGit(templateData);
+  }
 }
 
 __ = {
@@ -170,6 +177,16 @@ __ = {
     await pMap(outputs, async (outputPath) => {
       await write(content, outputPath);
     });
+  },
+
+  /**
+   * Adds generated README files to git staging area
+   * @param {object} templateData Template data containing outputs
+   */
+  async addToGit(templateData) {
+    const { outputs } = templateData;
+    const repo = new Gilmore(hostGitRoot());
+    await repo.add(outputs);
   },
   consoleWarn,
 };
