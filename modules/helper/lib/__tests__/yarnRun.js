@@ -9,12 +9,12 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   afterAll(async () => {
     await remove(testDirectory);
   });
-  describe('in a module layout', () => {
+  describe.concurrent('in a module layout', () => {
     beforeAll(async () => {
       await setupFixture(absolute(testDirectory, 'module'), 'module');
     });
 
-    it.each([
+    it.concurrent.each([
       [
         './module',
         {
@@ -74,12 +74,12 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
       expect(actual).toHaveProperty('hostGitRoot', expected.hostGitRoot);
     });
   });
-  describe('in a libdocs layout', () => {
+  describe.concurrent('in a libdocs layout', () => {
     beforeAll(async () => {
       await setupFixture(absolute(testDirectory, 'libdocs'), 'libdocs');
     });
 
-    it.each([
+    it.concurrent.each([
       [
         './libdocs',
         {
@@ -148,12 +148,12 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
       expect(actual).toHaveProperty('hostGitRoot', expected.hostGitRoot);
     });
   });
-  describe('in a monorepo layout', () => {
+  describe.concurrent('in a monorepo layout', () => {
     beforeAll(async () => {
       await setupFixture(absolute(testDirectory, 'monorepo'), 'monorepo');
     });
 
-    it.each([
+    it.concurrent.each([
       [
         './monorepo',
         {
