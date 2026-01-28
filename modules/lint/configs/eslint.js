@@ -1,16 +1,14 @@
-import globals from 'globals';
 import js from '@eslint/js';
+// @vitest/plugins requires @typescript-eslint/utils and typescripts as deps
+// See: https://github.com/vitest-dev/eslint-plugin-vitest/issues/543
+import pluginVitest from '@vitest/eslint-plugin';
+import { nodeVersion } from 'aberlaas-versions';
 import pluginImport from 'eslint-plugin-import';
 import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
-// Note:
-// It is currently required to manually add typescript and
-// @typescript-eslint/utils to aberlaas for the plugin to work
-// See: https://github.com/vitest-dev/eslint-plugin-vitest/issues/543
-import pluginVitest from '@vitest/eslint-plugin';
-import { nodeVersion } from 'aberlaas-versions';
+import globals from 'globals';
 
 export default [
   {
@@ -118,7 +116,40 @@ export default [
       // Import
       'import/first': ['error'],
       'import/no-cycle': ['error', { ignoreExternal: true, disableScc: true }],
-      'import/order': ['error'],
+      // Put most common modules (firost, golgoth, etc) first
+      // Then other third parties
+      // Then internal files
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+          ],
+          pathGroups: [
+            {
+              pattern: 'golgoth',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'firost',
+              group: 'external',
+              position: 'before',
+            },
+          ],
+          pathGroupsExcludedImportTypes: [],
+          'newlines-between': 'never',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
       'import/newline-after-import': ['error'],
       // import/no-unresolved can only check for .main fields, not the more
       // modern .exports fields.

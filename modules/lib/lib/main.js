@@ -1,4 +1,4 @@
-import minimist from 'minimist';
+import { _ } from 'golgoth';
 import {
   absolute,
   consoleError,
@@ -9,7 +9,7 @@ import {
   packageRoot,
   readJson,
 } from 'firost';
-import { _ } from 'golgoth';
+import minimist from 'minimist';
 
 const availableCommands = {
   ci: 'aberlaas-ci',

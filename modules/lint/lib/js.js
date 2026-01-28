@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { ESLint } from 'eslint';
 import { findHostPackageFiles, getConfig } from 'aberlaas-helper';
+import { ESLint } from 'eslint';
 import eslintConfig from '../configs/eslint.js';
 
 export let __;
