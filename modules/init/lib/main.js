@@ -16,51 +16,6 @@ import monorepoLayout from './layouts/monorepo.js';
 export let __;
 
 /**
- * Configure git hooks to use scripts/hooks instead of .git/hooks
- */
-export async function configureGit() {
-  const repo = new Gilmore(hostGitRoot());
-  await repo.setConfig('core.hooksPath', 'scripts/hooks');
-}
-
-/**
- * Pin the node version through nvm
- */
-export async function configureNode() {
-  const nvmrcPath = hostGitPath('.nvmrc');
-  await write(nodeVersion, nvmrcPath);
-}
-
-/**
- * Run yarn install to install all deps
- */
-export async function yarnInstall() {
-  await firostRun('yarn install');
-}
-
-/**
- * Returns the correct layout object, based on args
- * @param {object} args Arguments, as passed by minimist
- * @returns {object} Object with a .run() method
- **/
-export function getLayout(args) {
-  if (args.monorepo && args.libdocs) {
-    throw firostError(
-      'ABERLAAS_INIT_LAYOUT_INCOMPATIBLE',
-      "You can't specify both --monorepo and --libdocs",
-    );
-  }
-
-  if (args.monorepo) {
-    return __.monorepoLayout();
-  }
-  if (args.libdocs) {
-    return __.libdocsLayout();
-  }
-  return __.moduleLayout();
-}
-
-/**
  * Copy all config files and configure the scripts
  * @param {object} args Argument object, as passed by minimist
  */
@@ -88,12 +43,51 @@ export async function run(args = {}) {
 }
 
 __ = {
-  configureGit,
-  configureNode,
-  yarnInstall,
-  getLayout,
-  consoleInfo,
-  spinner,
+  /**
+   * Configure git hooks to use scripts/hooks instead of .git/hooks
+   */
+  async configureGit() {
+    const repo = new Gilmore(hostGitRoot());
+    await repo.setConfig('core.hooksPath', 'scripts/hooks');
+  },
+
+  /**
+   * Pin the node version through nvm
+   */
+  async configureNode() {
+    const nvmrcPath = hostGitPath('.nvmrc');
+    await write(nodeVersion, nvmrcPath);
+  },
+
+  /**
+   * Run yarn install to install all deps
+   */
+  async yarnInstall() {
+    await firostRun('yarn install');
+  },
+
+  /**
+   * Returns the correct layout object, based on args
+   * @param {object} args Arguments, as passed by minimist
+   * @returns {object} Object with a .run() method
+   **/
+  getLayout(args) {
+    if (args.monorepo && args.libdocs) {
+      throw firostError(
+        'ABERLAAS_INIT_LAYOUT_INCOMPATIBLE',
+        "You can't specify both --monorepo and --libdocs",
+      );
+    }
+
+    if (args.monorepo) {
+      return __.monorepoLayout();
+    }
+    if (args.libdocs) {
+      return __.libdocsLayout();
+    }
+    return __.moduleLayout();
+  },
+
   // Why the old-school getters? So we can mock which layout is returned
   moduleLayout() {
     return moduleLayout;
@@ -104,6 +98,8 @@ __ = {
   monorepoLayout() {
     return monorepoLayout;
   },
+  spinner,
+  consoleInfo,
 };
 
 export default {

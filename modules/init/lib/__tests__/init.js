@@ -40,11 +40,6 @@ describe('init', () => {
       vi.spyOn(__, 'configureGit').mockReturnValue();
       vi.spyOn(__, 'configureNode').mockReturnValue();
       vi.spyOn(__, 'yarnInstall').mockReturnValue();
-      vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'spinner').mockReturnValue({
-        tick: vi.fn(),
-        success: vi.fn(),
-      });
 
       const repo = new Gilmore(helper.hostGitRoot());
       await repo.init();
