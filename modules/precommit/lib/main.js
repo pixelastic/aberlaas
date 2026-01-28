@@ -1,6 +1,5 @@
-// import { _ } from 'golgoth';
+import { consoleInfo, firostError } from 'firost';
 import lintStaged from 'lint-staged';
-import { firostError } from 'firost';
 import { getConfig } from 'aberlaas-helper';
 import lintStagedConfig from '../configs/lintstaged.js';
 
@@ -14,47 +13,51 @@ let additionalOptions = {};
  * @returns {boolean} True on success
  */
 export async function run(cliArgs = {}) {
-  const config = await getConfig(
-    cliArgs.config,
-    'lintstaged.config.js',
-    lintStagedConfig,
-  );
+  const options = await __.getOptions(cliArgs);
 
-  const options = {
-    config,
-    ...additionalOptions,
-    shell: true,
-  };
-
+  // Grab all errors output by lint-staged, to display later
   const errors = [];
   const logger = {
-    log(input) {
-      console.log('Log:', input);
-    },
-    info(input) {
-      console.log('info:', input);
-    },
-    warn(input) {
-      console.log('warn:', input);
-    },
+    log: consoleInfo,
     error(error) {
-      console.log('error:', error);
       errors.push(error);
     },
   };
 
-  const result = await __.lintStaged(options, logger);
-  if (result) {
+  const canCommit = await __.lintStaged(options, logger);
+
+  // Stop if can commit
+  if (canCommit) {
     return true;
   }
 
-  throw __.firostError(
-    'ABERLAAS_PRECOMMIT_LINT_FAILED',
-    `Precommit linting failed:${errors.join('\n')}`,
-  );
+  // Throw error if can't commit
+  throw __.firostError('ABERLAAS_PRECOMMIT_LINT_FAILED', errors);
 }
 
 __ = {
+  /**
+   * Retrieves configuration options for lint-staged execution
+   * @param {object} cliArgs - Command line arguments object
+   * @param {string} [cliArgs.config] - Path to custom configuration file
+   * @returns {object} configuration options object with config, additional options, and shell set to true
+   */
+  async getOptions(cliArgs) {
+    // Find the most relevant config
+    const config = await getConfig(
+      cliArgs.config,
+      'lintstaged.config.js',
+      lintStagedConfig,
+    );
+
+    return {
+      config,
+      ...additionalOptions, // Additional overrides from tests
+      shell: true, // To allow for $ENV, pipe and redirections
+    };
+  },
+  lintStaged,
+  firostError,
   // Internal methods to pass additional options to lint-staged, for tests
   addOption(key, value) {
     additionalOptions[key] = value;
@@ -62,8 +65,6 @@ __ = {
   clearOptions() {
     additionalOptions = {};
   },
-  lintStaged,
-  firostError,
 };
 
 export default { run };
