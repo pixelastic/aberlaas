@@ -1,7 +1,7 @@
 import { emptyDir, newFile, read, tmpDirectory, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import dedent from 'dedent';
-import { __, default as current } from '../main.js';
+import { __, run } from '../main.js';
 
 describe('readme', () => {
   const testDirectory = tmpDirectory('aberlaas/readme');
@@ -310,7 +310,7 @@ describe('readme', () => {
         `,
         `${testDirectory}/.README.template.md`,
       );
-      await current.run();
+      await run();
 
       const actual = await read(`${testDirectory}/lib/README.md`);
       expect(actual).toContain('# firost');

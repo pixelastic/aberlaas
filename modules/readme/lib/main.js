@@ -4,9 +4,33 @@ import dedent from 'dedent';
 import frontMatter from 'front-matter';
 import { hostGitPath } from 'aberlaas-helper';
 
+export let __;
+
 const TEMPLATE_PATH = '.README.template.md';
 
-export const __ = {
+/**
+ * Update the various README.md files based on the template
+ * @param {object} cliArgs CLI Argument object, as created by minimist
+ * @param {string} cliArgs.template Path to the template (default to .README.template.md)
+ * @param {Array} cliArgs._ List of files that changed (passed by lint-staged)
+ */
+export async function run(cliArgs = {}) {
+  await __.warnIfDeprecatedTemplate();
+  await __.ensureTemplateExists();
+
+  // Get all template data (inputs, outputs, body)
+  const templateData = await __.getTemplateData();
+
+  // Stop if the passed args do not require a regeneration
+  if (!__.shouldContinue(cliArgs?._, templateData)) {
+    return;
+  }
+
+  // Regenerate the READMEs
+  await __.generateAndWrite(templateData);
+}
+
+__ = {
   /**
    * Warns the user if they are using the deprecated README template location.
    */
@@ -150,26 +174,4 @@ export const __ = {
   consoleWarn,
 };
 
-export default {
-  /**
-   * Update the various README.md files based on the template
-   * @param {object} cliArgs CLI Argument object, as created by minimist
-   * @param {string} cliArgs.template Path to the template (default to .README.template.md)
-   * @param {Array} cliArgs._ List of files that changed (passed by lint-staged)
-   */
-  async run(cliArgs = {}) {
-    await __.warnIfDeprecatedTemplate();
-    await __.ensureTemplateExists();
-
-    // Get all template data (inputs, outputs, body)
-    const templateData = await __.getTemplateData();
-
-    // Stop if the passed args do not require a regeneration
-    if (!__.shouldContinue(cliArgs?._, templateData)) {
-      return;
-    }
-
-    // Regenerate the READMEs
-    await __.generateAndWrite(templateData);
-  },
-};
+export default { run };
