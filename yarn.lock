@@ -4405,7 +4405,7 @@ __metadata:
     eslint-plugin-prettier: "npm:5.5.4"
     eslint-plugin-react: "npm:7.37.5"
     firost: "npm:5.5.1"
-    globals: "npm:17.0.0"
+    globals: "npm:17.2.0"
     golgoth: "npm:3.0.0"
     prettier: "npm:3.7.4"
     stylelint: "npm:16.10.0"
@@ -4441,7 +4441,7 @@ __metadata:
   resolution: "aberlaas-readme@workspace:modules/readme"
   dependencies:
     aberlaas-helper: "workspace:*"
-    dedent: "npm:1.5.3"
+    dedent: "npm:1.7.1"
     firost: "npm:5.5.1"
     front-matter: "npm:4.0.2"
     gilmore: "npm:1.2.0"
@@ -4482,9 +4482,9 @@ __metadata:
   resolution: "aberlaas-test@workspace:modules/test"
   dependencies:
     aberlaas-helper: "workspace:*"
-    dedent: "npm:1.5.3"
+    dedent: "npm:1.7.1"
     firost: "npm:5.5.1"
-    globals: "npm:17.0.0"
+    globals: "npm:17.2.0"
     golgoth: "npm:3.0.0"
     jest-extended: "npm:4.0.2"
     vitest: "npm:2.1.2"
@@ -7839,15 +7839,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dedent@npm:1.5.3":
-  version: 1.5.3
-  resolution: "dedent@npm:1.5.3"
+"dedent@npm:1.7.1":
+  version: 1.7.1
+  resolution: "dedent@npm:1.7.1"
   peerDependencies:
     babel-plugin-macros: ^3.1.0
   peerDependenciesMeta:
     babel-plugin-macros:
       optional: true
-  checksum: 10c0/d94bde6e6f780be4da4fd760288fcf755ec368872f4ac5218197200d86430aeb8d90a003a840bff1c20221188e3f23adced0119cb811c6873c70d0ac66d12832
+  checksum: 10c0/ae29ec1c5bd5216c698c9f23acaa5b720260fd4cef3c8b5af887eb5f8c9e6fdd5fed8668767437b4efea35e2991bd798987717633411a1734807c28255769b78
   languageName: node
   linkType: hard
 
@@ -11177,10 +11177,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:17.0.0":
-  version: 17.0.0
-  resolution: "globals@npm:17.0.0"
-  checksum: 10c0/e3c169fdcb0fc6755707b697afb367bea483eb29992cfc0de1637382eb893146e17f8f96db6d7453e3696b478a7863ae2000e6c71cd2f4061410285106d3847a
+"globals@npm:17.2.0":
+  version: 17.2.0
+  resolution: "globals@npm:17.2.0"
+  checksum: 10c0/fd25a98b08c1d31082337cbbb5ff1b90b9980e1db69a8621fb942bdb2cdca8aa54d61466742e8bf4910578ea5fa903b8bf83bffd1b2d45551cc614830dba910b
   languageName: node
   linkType: hard
 
