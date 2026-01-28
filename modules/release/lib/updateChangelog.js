@@ -1,3 +1,4 @@
+import { _ } from 'golgoth';
 import {
   consoleInfo,
   exists,
@@ -7,9 +8,8 @@ import {
   select,
   write,
 } from 'firost';
-import { _ } from 'golgoth';
-import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
+import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import cliMarkdown from 'cli-markdown';
 
 export const __ = {

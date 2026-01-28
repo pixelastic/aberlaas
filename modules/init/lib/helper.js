@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { _, pMap } from 'golgoth';
 import {
   absolute,
   copy,
@@ -11,10 +12,9 @@ import {
   wrap,
   write,
 } from 'firost';
-import Gilmore from 'gilmore';
-import { _, pMap } from 'golgoth';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
+import Gilmore from 'gilmore';
 
 export const __ = {
   /**

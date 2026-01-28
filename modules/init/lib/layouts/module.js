@@ -1,6 +1,6 @@
 import { writeJson } from 'firost';
-import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import { hostGitPath } from 'aberlaas-helper';
+import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import {
   addConfigFiles,
   addLibFiles,

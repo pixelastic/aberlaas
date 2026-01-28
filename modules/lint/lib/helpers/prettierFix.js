@@ -1,7 +1,7 @@
-import { format as prettierFormat } from 'prettier';
-import { firostError, read, write } from 'firost';
 import { _, pMap } from 'golgoth';
+import { firostError, read, write } from 'firost';
 import { getConfig } from 'aberlaas-helper';
+import { format as prettierFormat } from 'prettier';
 import prettierConfig from '../../configs/prettier.js';
 
 /**

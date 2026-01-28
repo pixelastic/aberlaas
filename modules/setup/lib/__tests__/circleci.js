@@ -1,6 +1,6 @@
 import { __, enable } from '../circleci.js';
-import githubHelper from '../helpers/github.js';
 import circleciHelper from '../helpers/circleci.js';
+import githubHelper from '../helpers/github.js';
 
 describe('setup > circleci', () => {
   describe('enable', () => {

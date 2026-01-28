@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
-import { enable as enableGithub } from './github.js';
 import { enable as enableCircleci } from './circleci.js';
+import { enable as enableGithub } from './github.js';
 import { enable as enableRenovate } from './renovate.js';
 
 export let __;

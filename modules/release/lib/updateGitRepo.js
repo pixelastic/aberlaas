@@ -1,5 +1,5 @@
-import { consoleInfo, writeJson } from 'firost';
 import { pMap } from 'golgoth';
+import { consoleInfo, writeJson } from 'firost';
 import { hostGitRoot } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { updateChangelog } from './updateChangelog.js';

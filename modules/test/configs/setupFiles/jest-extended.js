@@ -4,7 +4,7 @@
 //
 // The expect.extend() from Vitest is compatible with the one from Jest, so
 // setup is straightforward
-import { expect } from 'vitest';
 import * as matchers from 'jest-extended';
+import { expect } from 'vitest';
 
 expect.extend(matchers);

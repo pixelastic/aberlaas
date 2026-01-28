@@ -1,7 +1,7 @@
+import { _ } from 'golgoth';
 import { run } from 'firost';
 import { Octokit } from '@octokit/rest';
 import parseGithubUrl from 'parse-github-repo-url';
-import { _ } from 'golgoth';
 
 export default {
   /**

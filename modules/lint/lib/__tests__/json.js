@@ -1,6 +1,6 @@
+import { _ } from 'golgoth';
 import { absolute, emptyDir, newFile, read, write, writeJson } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import { _ } from 'golgoth';
 import { __, fix, run } from '../json.js';
 
 describe('lint-json', () => {

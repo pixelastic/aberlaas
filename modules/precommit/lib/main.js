@@ -1,6 +1,6 @@
 import { consoleInfo, consoleWarn, firostError } from 'firost';
-import lintStaged from 'lint-staged';
 import { getConfig } from 'aberlaas-helper';
+import lintStaged from 'lint-staged';
 import lintStagedConfig from '../configs/lintstaged.js';
 
 export let __;

@@ -1,3 +1,4 @@
+import { _ } from 'golgoth';
 import {
   consoleInfo,
   consoleWarn,
@@ -10,7 +11,6 @@ import {
   wrap,
   write,
 } from 'firost';
-import { _ } from 'golgoth';
 import { hostGitPath, hostPackagePath } from 'aberlaas-helper';
 
 export const __ = {

@@ -1,6 +1,6 @@
 import { remove, tmpDirectory, write } from 'firost';
-import Gilmore from 'gilmore';
 import { __ as helper } from 'aberlaas-helper';
+import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
 describe('precommit', () => {

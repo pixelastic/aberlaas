@@ -1,7 +1,7 @@
 import { absolute, emptyDir, exists, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import current from '../ssh.js';
 import githubHelper from '../github.js';
+import current from '../ssh.js';
 
 describe('setup > helpers > ssh', () => {
   const tmpDir = absolute('<gitRoot>/tmp/setup/helpers/ssh');

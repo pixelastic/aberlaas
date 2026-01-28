@@ -1,5 +1,5 @@
-import { __, enable } from '../renovate.js';
 import githubHelper from '../helpers/github.js';
+import { __, enable } from '../renovate.js';
 
 const RENOVATE_ID = 2471197;
 

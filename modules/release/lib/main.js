@@ -1,9 +1,9 @@
 import path from 'node:path';
-import { consoleInfo, run as firostRun } from 'firost';
 import { pMap } from 'golgoth';
+import { consoleInfo, run as firostRun } from 'firost';
 import { ensureValidSetup } from './ensureValidSetup.js';
-import { updateGitRepo } from './updateGitRepo.js';
 import { getReleaseData } from './getReleaseData.js';
+import { updateGitRepo } from './updateGitRepo.js';
 
 export let __;
 

@@ -1,5 +1,5 @@
-import { consoleError, consoleInfo, consoleSuccess } from 'firost';
 import { _ } from 'golgoth';
+import { consoleError, consoleInfo, consoleSuccess } from 'firost';
 import githubHelper from './helpers/github.js';
 
 export let __;

@@ -6,8 +6,8 @@ import {
   norskaVersion,
   yarnVersion,
 } from 'aberlaas-versions';
-import { __, run } from '../monorepo.js';
 import { __ as initHelper } from '../../helper.js';
+import { __, run } from '../monorepo.js';
 
 describe('init > monorepo', () => {
   beforeEach(async () => {

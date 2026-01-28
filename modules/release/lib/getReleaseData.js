@@ -1,8 +1,8 @@
-import { glob, readJson } from 'firost';
 import { _, pMap } from 'golgoth';
+import { glob, readJson } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
-import semver from 'semver';
 import { getGitDiff, parseCommits } from 'changelogen';
+import semver from 'semver';
 
 export const __ = {
   /**

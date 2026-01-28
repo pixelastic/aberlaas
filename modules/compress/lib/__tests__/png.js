@@ -1,6 +1,6 @@
+import { _ } from 'golgoth';
 import { absolute, emptyDir, exists, newFile } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import { _ } from 'golgoth';
 import { __, run } from '../png.js';
 
 describe('compress > png', () => {

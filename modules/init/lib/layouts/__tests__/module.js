@@ -1,8 +1,8 @@
 import { glob, read, readJson, remove, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
-import { __, run } from '../module.js';
 import { __ as initHelper } from '../../helper.js';
+import { __, run } from '../module.js';
 
 describe('init > module', () => {
   beforeEach(async () => {

@@ -1,7 +1,7 @@
 import { consoleInfo, firostError, run as firostRun } from 'firost';
-import ciInfo from 'ci-info';
-import { run as runTest } from 'aberlaas-test';
 import commandLint from 'aberlaas-lint';
+import { run as runTest } from 'aberlaas-test';
+import ciInfo from 'ci-info';
 
 export let __;
 

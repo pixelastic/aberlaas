@@ -1,7 +1,7 @@
 import { emptyDir, firostError, tmpDirectory } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import Gilmore from 'gilmore';
 import aberlaasLint from 'aberlaas-lint';
+import Gilmore from 'gilmore';
 import { __, ensureValidSetup } from '../ensureValidSetup.js';
 
 describe('ensureValidSetup', () => {

@@ -6,8 +6,8 @@ import {
   norskaVersion,
   yarnVersion,
 } from 'aberlaas-versions';
-import { __, run } from '../libdocs.js';
 import { __ as initHelper } from '../../helper.js';
+import { __, run } from '../libdocs.js';
 
 describe('init > libdocs', () => {
   beforeEach(async () => {

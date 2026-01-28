@@ -1,5 +1,5 @@
-import { absolute, mkdirp, remove, run, tmpDirectory } from 'firost';
 import { _ } from 'golgoth';
+import { absolute, mkdirp, remove, run, tmpDirectory } from 'firost';
 import { setupFixture } from '../test-helper.js';
 
 describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {

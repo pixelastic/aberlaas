@@ -1,7 +1,7 @@
 import { _, pMap } from 'golgoth';
 import { consoleError, firostError } from 'firost';
-import compressPng from './png.js';
 import compressDummy from './dummy.js';
+import compressPng from './png.js';
 
 export let __;
 

@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream';
+import { _ } from 'golgoth';
 import { captureOutput, emptyDir, read, tmpDirectory, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import { _ } from 'golgoth';
 import Gilmore from 'gilmore';
 import { __, updateChangelog } from '../updateChangelog.js';
 

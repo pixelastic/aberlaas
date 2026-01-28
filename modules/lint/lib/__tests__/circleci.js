@@ -1,6 +1,6 @@
+import { _ } from 'golgoth';
 import { absolute, emptyDir, newFile, read, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import { _ } from 'golgoth';
 import { __, fix, run } from '../circleci.js';
 
 describe('lint-circleci', () => {
