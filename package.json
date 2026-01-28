@@ -20,6 +20,7 @@
     "build:prod": "cd ../docs && yarn run build:prod",
     "cms": "cd ../docs && yarn run cms",
     "serve": "cd ../docs && yarn run serve",
+    "ci": "./scripts/ci",
     "release": "./scripts/release",
     "test:meta": "./scripts/test-meta",
     "test": "./scripts/test",
