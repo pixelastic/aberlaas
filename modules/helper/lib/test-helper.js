@@ -1,115 +1,46 @@
-import { absolute, copy, mkdirp, run, symlink, write, writeJson } from 'firost';
+import { absolute, copy, mkdirp, readJson, symlink, writeJson } from 'firost';
 import { yarnVersion } from 'aberlaas-versions';
 
-const scriptsTestHelperContent = `#!/usr/bin/env bash
-
-node_modules/.bin/aberlaas debug
-`;
-
-const yarnRcYmlContent = `
-nodeLinker: node-modules
-`;
-
 /**
- * Setup a module fixture that looks like this:
+ * Potential fixtures look like this:
  *
+ * ===== MODULE =====
  * ./module
  *   ./.git
- *   ./config
+ *   ./.yarn
+ *     ./install-state.gz
  *   ./node_modules
- *     ./bin
+ *     ./.bin
  *       ./aberlaas
  *   ./scripts
  *     ./test-helper.js
- *   ./lib
- *     ./helpers
  *   ./.yarnrc.yml
  *   ./package.json
- * @param {string} rootPath Path where to set the fixture
- */
-export async function setupModuleFixture(rootPath) {
-  // Setup the initial fixture
-  const repoFixturePath = absolute('./fixtures/repo');
-  await copy(repoFixturePath, rootPath);
-
-  // We add a symlink to simulate aberlaas being installed
-  // Note: We don't put it in the fixture as we need the absolute path
-  await symlink(
-    absolute(rootPath, 'node_modules/.bin/aberlaas'),
-    absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
-  );
-
-  // We create a fake .git folder
-  // Note: We don't put it in the fixture as it might confuse git
-  await mkdirp(absolute(rootPath, '.git'));
-}
-
-/**
- * Setup a libdocs fixture that looks like this:
+ *   ./yarn.lock
  *
+ * ===== LIBDOCS =====
  * ./libdocs
  *   ./.git
+ *   ./.yarn
+ *     ./install-state.gz
  *   ./node_modules
- *     ./bin
+ *     ./.bin
  *       ./aberlaas
  *   ./scripts
  *     ./test-helper.js
  *   ./lib
- *     ./helpers
  *     ./package.json
  *   ./docs
- *     ./assets
  *     ./package.json
  *   ./.yarnrc.yml
  *   ./package.json
- * @param {string} rootPath Path where to set the fixture
- */
-export async function setupLibDocsFixture(rootPath) {
-  const rootPackageJson = {
-    type: 'module',
-    workspaces: ['lib', 'docs'],
-    scripts: {
-      'test-helper': './scripts/test-helper',
-    },
-    packageManager: `yarn@${yarnVersion}`,
-  };
-  const modulePackageJson = {
-    scripts: {
-      'test-helper': 'cd .. && ./scripts/test-helper',
-    },
-  };
-  // Git root
-  await mkdirp(absolute(rootPath, '.git'));
-  await symlink(
-    absolute(rootPath, 'node_modules/.bin/aberlaas'),
-    absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
-  );
-  await write(
-    scriptsTestHelperContent,
-    absolute(rootPath, 'scripts/test-helper'),
-  );
-  await run('chmod +x scripts/test-helper', { cwd: rootPath });
-  await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
-  await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
-
-  // ./lib
-  await mkdirp(absolute(rootPath, 'lib/helpers'));
-  await writeJson(modulePackageJson, absolute(rootPath, 'lib/package.json'));
-
-  // ./docs
-  await mkdirp(absolute(rootPath, 'docs/assets'));
-  await writeJson(modulePackageJson, absolute(rootPath, 'docs/package.json'));
-
-  // yarn install
-  await run('yarn install', { cwd: rootPath, stdout: false });
-}
-
-/**
- * Setup a monorepo fixture that looks like this:
+ *   ./yarn.lock
  *
+ * ===== MONOREPO =====
  * ./monorepo
  *   ./.git
- *   ./config
+ *   ./.yarn
+ *     ./install-state.gz
  *   ./node_modules
  *     ./bin
  *       ./aberlaas
@@ -127,57 +58,33 @@ export async function setupLibDocsFixture(rootPath) {
  *       ./package.json
  *   ./.yarnrc.yml
  *   ./package.json
- * @param {string} rootPath Path where to set the fixture
+ *   ./yarn.lock
  */
-export async function setupMonorepoFixture(rootPath) {
-  const rootPackageJson = {
-    type: 'module',
-    workspaces: ['modules/*'],
-    scripts: {
-      'test-helper': './scripts/test-helper',
-    },
-    packageManager: `yarn@${yarnVersion}`,
-  };
-  const modulePackageJson = {
-    scripts: {
-      'test-helper': 'cd ../../ && ./scripts/test-helper',
-    },
-  };
 
-  // Git root
+/**
+ * Sets up a test fixture by copying fixture files, configuring package.json, creating git folder, and symlinking aberlaas
+ * @param {string} rootPath - The directory path where the fixture will be set up
+ * @param {string} fixtureType - module, libdocs or monorepo
+ */
+export async function setupFixture(rootPath, fixtureType) {
+  // Setup the initial fixture
+  const repoFixturePath = absolute(`./fixtures/${fixtureType}`);
+  await copy(repoFixturePath, rootPath);
+
+  // Set the exact yarn version used by aberlaas
+  const packagePath = absolute(rootPath, 'package.json');
+  const packageContent = await readJson(packagePath);
+  packageContent.packageManager = `yarn@${yarnVersion}`;
+  await writeJson(packageContent, packagePath);
+
+  // We create a fake .git folder
+  // Note: We don't put it in the fixture as it might confuse git
   await mkdirp(absolute(rootPath, '.git'));
+
+  // We add a symlink to simulate aberlaas being installed
+  // Note: We don't put it in the fixture as we need the absolute path
   await symlink(
     absolute(rootPath, 'node_modules/.bin/aberlaas'),
     absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
   );
-  await write(
-    scriptsTestHelperContent,
-    absolute(rootPath, 'scripts/test-helper'),
-  );
-  await run('chmod +x scripts/test-helper', { cwd: rootPath });
-  await mkdirp(absolute(rootPath, 'config'));
-  await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
-  await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
-
-  // ./modules
-  await mkdirp(absolute(rootPath, 'modules/alpha/helpers'));
-  await writeJson(
-    modulePackageJson,
-    absolute(rootPath, 'modules/alpha/package.json'),
-  );
-
-  await mkdirp(absolute(rootPath, 'modules/beta/helpers'));
-  await writeJson(
-    modulePackageJson,
-    absolute(rootPath, 'modules/beta/package.json'),
-  );
-
-  await mkdirp(absolute(rootPath, 'modules/docs/assets'));
-  await writeJson(
-    modulePackageJson,
-    absolute(rootPath, 'modules/docs/package.json'),
-  );
-
-  // yarn install
-  await run('yarn install', { cwd: rootPath, stdout: false });
 }

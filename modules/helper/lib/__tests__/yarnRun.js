@@ -1,10 +1,6 @@
 import { absolute, mkdirp, remove, run, tmpDirectory } from 'firost';
 import { _ } from 'golgoth';
-import {
-  setupLibDocsFixture,
-  setupModuleFixture,
-  setupMonorepoFixture,
-} from '../test-helper.js';
+import { setupFixture } from '../test-helper.js';
 
 describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   vi.setConfig({ testTimeout: 10_000 });
@@ -15,16 +11,7 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   });
   describe('in a module layout', () => {
     beforeAll(async () => {
-      // ./module
-      //   ./.git
-      //   ./config
-      //   ./scripts
-      //     ./test-helper.js
-      //   ./lib
-      //     ./helpers
-      //   ./.yarnrc.yml
-      //   ./package.json
-      await setupModuleFixture(absolute(testDirectory, 'module'));
+      await setupFixture(absolute(testDirectory, 'module'), 'module');
     });
 
     it.each([
@@ -89,19 +76,7 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   });
   describe('in a libdocs layout', () => {
     beforeAll(async () => {
-      // ./libdocs
-      //   ./.git
-      //   ./scripts
-      //     ./test-helper.js
-      //   ./lib
-      //     ./helpers
-      //     ./package.json
-      //   ./docs
-      //     ./assets
-      //     ./package.json
-      //   ./.yarnrc.yml
-      //   ./package.json
-      await setupLibDocsFixture(absolute(testDirectory, 'libdocs'));
+      await setupFixture(absolute(testDirectory, 'libdocs'), 'libdocs');
     });
 
     it.each([
@@ -146,10 +121,14 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
         },
       ],
     ])('%s', async (input, expected) => {
+      // Ensure cwd exists
+      const cwd = absolute(testDirectory, input);
+      await mkdirp(cwd);
+
       // run yarn test-helper
       const { stdout } = await run('yarn test-helper', {
         stdout: false,
-        cwd: absolute(testDirectory, input),
+        cwd,
       });
 
       // Parse output
@@ -171,24 +150,7 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   });
   describe('in a monorepo layout', () => {
     beforeAll(async () => {
-      // ./monorepo
-      //   ./.git
-      //   ./config
-      //   ./scripts
-      //     ./test-helper.js
-      //   ./modules
-      //     ./alpha
-      //       ./package.json
-      //       ./helpers
-      //     ./beta
-      //       ./package.json
-      //       ./helpers
-      //     ./docs
-      //       ./package.json
-      //       ./assets
-      //   ./.yarnrc.yml
-      //   ./package.json
-      await setupMonorepoFixture(absolute(testDirectory, 'monorepo'));
+      await setupFixture(absolute(testDirectory, 'monorepo'), 'monorepo');
     });
 
     it.each([
@@ -265,10 +227,14 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
         },
       ],
     ])('%s', async (input, expected) => {
+      // Ensure cwd exists
+      const cwd = absolute(testDirectory, input);
+      await mkdirp(cwd);
+
       // run yarn test-helper
       const { stdout } = await run('yarn test-helper', {
         stdout: false,
-        cwd: absolute(testDirectory, input),
+        cwd,
       });
 
       // Parse output

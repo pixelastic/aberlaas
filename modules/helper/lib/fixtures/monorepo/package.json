@@ -1,0 +1,10 @@
+{
+  "packageManager": "yarn@4.10.3",
+  "scripts": {
+    "test-helper": "./scripts/test-helper"
+  },
+  "type": "module",
+  "workspaces": [
+    "modules/*"
+  ]
+}

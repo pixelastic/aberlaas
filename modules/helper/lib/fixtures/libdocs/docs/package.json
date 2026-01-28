@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "test-helper": "cd .. && ./scripts/test-helper"
+  }
+}
