@@ -1,4 +1,4 @@
-import { absolute, mkdirp, run, symlink, write, writeJson } from 'firost';
+import { absolute, copy, mkdirp, run, symlink, write, writeJson } from 'firost';
 import { yarnVersion } from 'aberlaas-versions';
 
 const scriptsTestHelperContent = `#!/usr/bin/env bash
@@ -28,33 +28,20 @@ nodeLinker: node-modules
  * @param {string} rootPath Path where to set the fixture
  */
 export async function setupModuleFixture(rootPath) {
-  const rootPackageJson = {
-    type: 'module',
-    scripts: {
-      'test-helper': './scripts/test-helper',
-    },
-    packageManager: `yarn@${yarnVersion}`,
-  };
-  // Git root
-  await mkdirp(absolute(rootPath, '.git'));
+  // Setup the initial fixture
+  const repoFixturePath = absolute('./fixtures/repo');
+  await copy(repoFixturePath, rootPath);
+
+  // We add a symlink to simulate aberlaas being installed
+  // Note: We don't put it in the fixture as we need the absolute path
   await symlink(
     absolute(rootPath, 'node_modules/.bin/aberlaas'),
     absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
   );
-  await write(
-    scriptsTestHelperContent,
-    absolute(rootPath, 'scripts/test-helper'),
-  );
-  await run('chmod +x scripts/test-helper', { cwd: rootPath });
-  await mkdirp(absolute(rootPath, 'config'));
-  await write(yarnRcYmlContent, absolute(rootPath, '.yarnrc.yml'));
-  await writeJson(rootPackageJson, absolute(rootPath, 'package.json'));
 
-  // ./lib
-  await mkdirp(absolute(rootPath, 'lib/helpers'));
-
-  // yarn install
-  await run('yarn install', { cwd: rootPath, stdout: false });
+  // We create a fake .git folder
+  // Note: We don't put it in the fixture as it might confuse git
+  await mkdirp(absolute(rootPath, '.git'));
 }
 
 /**

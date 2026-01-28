@@ -1,4 +1,4 @@
-import { absolute, remove, run, tmpDirectory } from 'firost';
+import { absolute, mkdirp, remove, run, tmpDirectory } from 'firost';
 import { _ } from 'golgoth';
 import {
   setupLibDocsFixture,
@@ -61,12 +61,15 @@ describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
         },
       ],
     ])('%s', async (input, expected) => {
+      // Ensure cwd exists
+      const cwd = absolute(testDirectory, input);
+      await mkdirp(cwd);
+
       // run yarn test-helper
       const { stdout } = await run('yarn test-helper', {
         stdout: false,
-        cwd: absolute(testDirectory, input),
+        cwd,
       });
-
       // Parse output
       const actual = {};
       _.each(JSON.parse(stdout), (value, key) => {
