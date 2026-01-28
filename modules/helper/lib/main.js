@@ -130,15 +130,16 @@ export const __ = {
           `Provided config file (${userConfigPath}) not found`,
         );
       }
+      // TODO: Add a test for that
 
-      return await firostImport(configPath);
+      return await firostImport(configPath, { forceReload: true });
     }
 
     // Checking for custom config in the host
     if (hostConfigPath) {
       const hostConfigFullPath = __.hostGitPath(hostConfigPath);
       if (await exists(hostConfigFullPath)) {
-        return await firostImport(hostConfigFullPath);
+        return await firostImport(hostConfigFullPath, { forceReload: true });
       }
     }
 

@@ -4429,6 +4429,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     firost: "npm:5.5.1"
+    gilmore: "npm:1.1.0"
     lint-staged: "npm:15.2.10"
   languageName: unknown
   linkType: soft

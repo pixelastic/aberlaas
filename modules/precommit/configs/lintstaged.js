@@ -7,7 +7,7 @@ export default {
   '*.js': ['yarn run lint:fix --js'],
 
   // Test
-  './lib/**/*.js': ['FORCE_COLOR=1 yarn run test --failFast --related'],
+  '**/lib/**/*.js': ['FORCE_COLOR=1 yarn run test --failFast --related'],
 
   // Compress
   '*.png': ['yarn run compress --png'],

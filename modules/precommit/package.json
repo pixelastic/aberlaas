@@ -36,5 +36,8 @@
     "compress": "cd ../.. && ./scripts/compress",
     "lint": "cd ../.. && ./scripts/lint",
     "lint:fix": "cd ../.. && ./scripts/lint-fix"
+  },
+  "devDependencies": {
+    "gilmore": "1.1.0"
   }
 }
