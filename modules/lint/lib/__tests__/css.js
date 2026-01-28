@@ -1,7 +1,7 @@
 import { absolute, emptyDir, newFile, read, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
-import current from '../css.js';
+import { __, fix, run } from '../css.js';
 
 describe('lint-css', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/css');
@@ -32,7 +32,7 @@ describe('lint-css', () => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
-        const actual = await current.getInputFiles('theme/**/*');
+        const actual = await __.getInputFiles('theme/**/*');
         const hasFile = _.includes(actual, absolutePath);
         expect(hasFile).toEqual(expected);
       });
@@ -48,7 +48,7 @@ describe('lint-css', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -59,12 +59,12 @@ describe('lint-css', () => {
     it('should run on all .css files by default and return true if all passes', async () => {
       await write('body { color: red; }', helper.hostPackagePath('foo.css'));
 
-      const actual = await current.run();
+      const actual = await run();
 
       expect(actual).toBe(true);
     });
     it('returns true if no file found', async () => {
-      const actual = await current.run();
+      const actual = await run();
       expect(actual).toBe(true);
     });
     it('should be able to pass specific files', async () => {
@@ -73,7 +73,7 @@ describe('lint-css', () => {
       await write('body { color: red; }', goodFilePath);
       await write('body{color:       left;}', badFilePath);
 
-      const actual = await current.run([goodFilePath]);
+      const actual = await run([goodFilePath]);
 
       expect(actual).toBe(true);
     });
@@ -87,7 +87,7 @@ describe('lint-css', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -116,21 +116,21 @@ describe('lint-css', () => {
         helper.hostGitPath('deep/bad.css'),
       );
 
-      const actual = await current.run(null, configFilepath);
+      const actual = await run(null, configFilepath);
 
       expect(actual).toBe(true);
     });
   });
   describe('fix', () => {
     it('should call prettierFix with the correct files', async () => {
-      vi.spyOn(current, '__prettierFix').mockResolvedValue();
-      vi.spyOn(current, 'run').mockResolvedValue(true);
+      vi.spyOn(__, 'prettierFix').mockResolvedValue();
+      vi.spyOn({ run }, 'run').mockResolvedValue(true);
 
       await write('body{color: red;}', helper.hostPackagePath('test.css'));
 
-      await current.fix();
+      await fix();
 
-      expect(current.__prettierFix).toHaveBeenCalledWith([
+      expect(__.prettierFix).toHaveBeenCalledWith([
         expect.stringContaining('test.css'),
       ]);
     });
@@ -141,7 +141,7 @@ describe('lint-css', () => {
         helper.hostPackagePath('style.css'),
       );
 
-      await current.fix();
+      await fix();
 
       const actual = await read(helper.hostPackagePath('style.css'));
 
@@ -149,7 +149,7 @@ describe('lint-css', () => {
     });
 
     it('stop early if no file found', async () => {
-      const actual = await current.fix();
+      const actual = await fix();
 
       expect(actual).toBe(true);
     });
@@ -159,7 +159,7 @@ describe('lint-css', () => {
       await write('body{}', filepath);
       let actual;
       try {
-        await current.fix();
+        await fix();
       } catch (error) {
         actual = error;
       }

@@ -1,12 +1,12 @@
 import { absolute, emptyDir } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
-import current from '../main.js';
+import { __, run } from '../main.js';
 
 describe('lint', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/root');
   beforeEach(async () => {
     await emptyDir(tmpDirectory);
-    vi.spyOn(current, '__consoleError').mockReturnValue();
+    vi.spyOn(__, 'consoleError').mockReturnValue();
 
     // We mock them all so a bug doesn't just wipe our real aberlaas repo
     vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
@@ -24,7 +24,7 @@ describe('lint', () => {
       yml: { run: vi.fn(), fix: vi.fn() },
     };
     beforeEach(async () => {
-      vi.spyOn(current, 'getLinter').mockImplementation((linterName) => {
+      vi.spyOn(__, 'getLinter').mockImplementation((linterName) => {
         return mockedLinters[linterName];
       });
     });
@@ -32,7 +32,7 @@ describe('lint', () => {
     it('should run all linters by default', async () => {
       const input = {};
 
-      await current.run(input);
+      await run(input);
 
       expect(mockedLinters.circleci.run).toHaveBeenCalled();
       expect(mockedLinters.css.run).toHaveBeenCalled();
@@ -43,7 +43,7 @@ describe('lint', () => {
     it('should run only selected linters if cliArgs passed', async () => {
       const input = { js: true, yml: true };
 
-      await current.run(input);
+      await run(input);
 
       expect(mockedLinters.circleci.run).not.toHaveBeenCalled();
       expect(mockedLinters.css.run).not.toHaveBeenCalled();
@@ -54,7 +54,7 @@ describe('lint', () => {
     it('should run fix instead of run if --fix passed', async () => {
       const input = { fix: true, css: true };
 
-      await current.run(input);
+      await run(input);
 
       expect(mockedLinters.css.run).not.toHaveBeenCalled();
       expect(mockedLinters.css.fix).toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('lint', () => {
     it('should return true if all passes', async () => {
       const input = {};
 
-      const actual = await current.run(input);
+      const actual = await run(input);
 
       expect(actual).toBe(true);
     });
@@ -74,7 +74,7 @@ describe('lint', () => {
 
       let actual = null;
       try {
-        await current.run(input);
+        await run(input);
       } catch (err) {
         actual = err;
       }
@@ -92,13 +92,13 @@ describe('lint', () => {
       const input = {};
 
       try {
-        await current.run(input);
+        await run(input);
       } catch (_err) {
         // Swallowing the error
       }
 
-      expect(current.__consoleError).toHaveBeenCalledWith('ymlError');
-      expect(current.__consoleError).toHaveBeenCalledWith('jsError');
+      expect(__.consoleError).toHaveBeenCalledWith('ymlError');
+      expect(__.consoleError).toHaveBeenCalledWith('jsError');
     });
     it('should pass list of files to all linters and config to each linter', async () => {
       const input = {
@@ -108,7 +108,7 @@ describe('lint', () => {
         yml: true,
       };
 
-      await current.run(input);
+      await run(input);
 
       expect(mockedLinters.css.run).toHaveBeenCalledWith(
         ['foo.css'],

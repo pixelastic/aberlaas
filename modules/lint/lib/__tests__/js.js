@@ -1,7 +1,7 @@
 import { absolute, emptyDir, newFile, read, write, writeJson } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
-import current from '../js.js';
+import { __ as helper } from 'aberlaas-helper';
+import { __, fix, run } from '../js.js';
 
 describe('lint-js', () => {
   // Note: tmpDirectory must be a children of the package that loads ESLint
@@ -34,7 +34,7 @@ describe('lint-js', () => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
-        const actual = await current.getInputFiles('demo/**/*');
+        const actual = await __.getInputFiles('demo/**/*');
         const hasFile = _.includes(actual, absolutePath);
         expect(hasFile).toEqual(expected);
       });
@@ -50,7 +50,7 @@ describe('lint-js', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -64,12 +64,12 @@ describe('lint-js', () => {
         helper.hostPackagePath('foo.js'),
       );
 
-      const actual = await current.run();
+      const actual = await run();
 
       expect(actual).toBe(true);
     });
     it('stop early if no file found', async () => {
-      const actual = await current.run();
+      const actual = await run();
       expect(actual).toBe(true);
     });
     it('should throw all error messages of all failed files', async () => {
@@ -82,7 +82,7 @@ describe('lint-js', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -112,7 +112,7 @@ describe('lint-js', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -128,14 +128,14 @@ describe('lint-js', () => {
         helper.hostPackagePath('foo.js'),
       );
 
-      await current.fix();
+      await fix();
 
       const actual = await read(helper.hostPackagePath('foo.js'));
 
       expect(actual).toBe("const foo = 'bar';\nalert(foo);");
     });
     it('stop early if no file found', async () => {
-      const actual = await current.fix();
+      const actual = await fix();
 
       expect(actual).toBe(true);
     });

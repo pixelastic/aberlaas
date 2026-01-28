@@ -1,7 +1,7 @@
 import { absolute, emptyDir, newFile, read, write, writeJson } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
-import current from '../json.js';
+import { __, fix, run } from '../json.js';
 
 describe('lint-json', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/json');
@@ -32,7 +32,7 @@ describe('lint-json', () => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
-        const actual = await current.getInputFiles('tools/**/*');
+        const actual = await __.getInputFiles('tools/**/*');
         const hasFile = _.includes(actual, absolutePath);
         expect(hasFile).toEqual(expected);
       });
@@ -45,7 +45,7 @@ describe('lint-json', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -56,12 +56,12 @@ describe('lint-json', () => {
     it('should run on all .json files and return true if all passes', async () => {
       await writeJson({ foo: 'bar' }, helper.hostPackagePath('foo.json'));
 
-      const actual = await current.run();
+      const actual = await run();
 
       expect(actual).toBe(true);
     });
     it('stop early if no file found', async () => {
-      const actual = await current.run();
+      const actual = await run();
 
       expect(actual).toBe(true);
     });
@@ -72,7 +72,7 @@ describe('lint-json', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -89,13 +89,13 @@ describe('lint-json', () => {
   });
   describe('fix', () => {
     it('should call prettierFix with the correct files', async () => {
-      vi.spyOn(current, '__prettierFix').mockResolvedValue();
+      vi.spyOn(__, 'prettierFix').mockResolvedValue();
 
       await write('{"foo": "bar"}', helper.hostPackagePath('test.json'));
 
-      await current.fix();
+      await fix();
 
-      expect(current.__prettierFix).toHaveBeenCalledWith([
+      expect(__.prettierFix).toHaveBeenCalledWith([
         expect.stringContaining('test.json'),
       ]);
     });
@@ -103,7 +103,7 @@ describe('lint-json', () => {
     it('should fix files end-to-end', async () => {
       await write('{ "foo": "bar", }', helper.hostPackagePath('foo.json'));
 
-      await current.fix();
+      await fix();
 
       const actual = await read(helper.hostPackagePath('foo.json'));
 
@@ -111,7 +111,7 @@ describe('lint-json', () => {
     });
 
     it('stop early if no file found', async () => {
-      const actual = await current.run();
+      const actual = await run();
       expect(actual).toBe(true);
     });
   });

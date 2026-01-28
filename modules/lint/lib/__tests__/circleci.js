@@ -1,13 +1,13 @@
 import { absolute, emptyDir, newFile, read, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
-import current from '../circleci.js';
+import { __, fix, run } from '../circleci.js';
 
 describe('lint-circleci', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/circleci');
   beforeEach(async () => {
     await emptyDir(tmpDirectory);
-    vi.spyOn(current, 'isRunningOnCircleCi').mockReturnValue(false);
+    vi.spyOn(__, 'isRunningOnCircleCi').mockReturnValue(false);
 
     // We mock them all so a bug doesn't just wipe our real aberlaas repo
     vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
@@ -32,7 +32,7 @@ describe('lint-circleci', () => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
-        const actual = await current.getInputFile();
+        const actual = await __.getInputFile();
         const hasFile = _.includes(actual, absolutePath);
         expect(hasFile).toEqual(expected);
       });
@@ -54,7 +54,7 @@ describe('lint-circleci', () => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
-        const actual = await current.getInputFile();
+        const actual = await __.getInputFile();
         const hasFile = _.includes(actual, absolutePath);
         expect(hasFile).toEqual(expected);
       });
@@ -67,7 +67,7 @@ describe('lint-circleci', () => {
 
     describe('without circleci in the path', () => {
       beforeEach(async () => {
-        vi.spyOn(current, 'hasCircleCiBin').mockReturnValue(false);
+        vi.spyOn(__, 'hasCircleCiBin').mockReturnValue(false);
       });
       it('should throw if yml is invalid', async () => {
         await write(
@@ -77,7 +77,7 @@ describe('lint-circleci', () => {
 
         let actual = null;
         try {
-          await current.run();
+          await run();
         } catch (error) {
           actual = error;
         }
@@ -88,19 +88,19 @@ describe('lint-circleci', () => {
       it('should return true if file is valid yml', async () => {
         await write('foo: bar', helper.hostGitPath('.circleci/config.yml'));
 
-        const actual = await current.run();
+        const actual = await run();
 
         expect(actual).toBe(true);
       });
       it('should stop early if no file found', async () => {
-        const actual = await current.run();
+        const actual = await run();
 
         expect(actual).toBe(true);
       });
     });
     describe('with circleci in the path', () => {
       beforeEach(async () => {
-        vi.spyOn(current, 'hasCircleCiBin').mockReturnValue(true);
+        vi.spyOn(__, 'hasCircleCiBin').mockReturnValue(true);
       });
       it('should throw if yml is invalid', async () => {
         await write(
@@ -110,7 +110,7 @@ describe('lint-circleci', () => {
 
         let actual = null;
         try {
-          await current.run();
+          await run();
         } catch (error) {
           actual = error;
         }
@@ -119,19 +119,19 @@ describe('lint-circleci', () => {
         expect(actual).toHaveProperty('message');
       });
       it('should stop early if no file found', async () => {
-        const actual = await current.run();
+        const actual = await run();
 
         expect(actual).toBe(true);
       });
       it('should throw if config is invalid', async () => {
-        vi.spyOn(current, 'validateConfig').mockImplementation(() => {
+        vi.spyOn(__, 'validateConfig').mockImplementation(() => {
           throw new Error('foo bar');
         });
         await write('foo: invalid', helper.hostGitPath('.circleci/config.yml'));
 
         let actual = null;
         try {
-          await current.run();
+          await run();
         } catch (error) {
           actual = error;
         }
@@ -143,22 +143,22 @@ describe('lint-circleci', () => {
         );
       });
       it('should return true if file is valid yml and valid config', async () => {
-        vi.spyOn(current, 'validateConfig').mockReturnValue(true);
+        vi.spyOn(__, 'validateConfig').mockReturnValue(true);
         await write('foo: valid', helper.hostGitPath('.circleci/config.yml'));
 
-        const actual = await current.run();
+        const actual = await run();
 
         expect(actual).toBe(true);
       });
       it('should always validate on CircleCI itself', async () => {
-        vi.spyOn(current, 'isRunningOnCircleCi').mockReturnValue(true);
-        vi.spyOn(current, 'validateConfig').mockImplementation(() => {
+        vi.spyOn(__, 'isRunningOnCircleCi').mockReturnValue(true);
+        vi.spyOn(__, 'validateConfig').mockImplementation(() => {
           throw new Error('foo bar');
         });
 
         await write('foo: valid', helper.hostGitPath('.circleci/config.yml'));
 
-        const actual = await current.run();
+        const actual = await run();
 
         expect(actual).toBe(true);
       });
@@ -169,25 +169,25 @@ describe('lint-circleci', () => {
       vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(tmpDirectory);
     });
     it('should fix yml issues', async () => {
-      vi.spyOn(current, 'validateConfig').mockReturnValue(true);
+      vi.spyOn(__, 'validateConfig').mockReturnValue(true);
       await write('    foo: "bar"', helper.hostGitPath('.circleci/config.yml'));
 
-      await current.fix();
+      await fix();
 
       const actual = await read(helper.hostGitPath('.circleci/config.yml'));
 
       expect(actual).toBe("foo: 'bar'");
     });
     it('should throw an error if config still invalid', async () => {
-      vi.spyOn(current, 'hasCircleCiBin').mockReturnValue(true);
-      vi.spyOn(current, 'validateConfig').mockImplementation(() => {
+      vi.spyOn(__, 'hasCircleCiBin').mockReturnValue(true);
+      vi.spyOn(__, 'validateConfig').mockImplementation(() => {
         throw new Error('foo bar');
       });
       await write('    foo: bar', helper.hostGitPath('.circleci/config.yml'));
 
       let actual;
       try {
-        await current.fix();
+        await fix();
       } catch (err) {
         actual = err;
       }
@@ -201,7 +201,7 @@ describe('lint-circleci', () => {
     it('should do nothing if no file', async () => {
       let actual = null;
       try {
-        await current.fix();
+        await fix();
       } catch (err) {
         actual = err;
       }

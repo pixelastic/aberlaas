@@ -1,7 +1,7 @@
 import { absolute, emptyDir, newFile, read, write } from 'firost';
 import { __ as helper } from 'aberlaas-helper';
 import { _ } from 'golgoth';
-import current from '../yml.js';
+import { __, fix, run } from '../yml.js';
 
 describe('lint-yml', () => {
   const tmpDirectory = absolute('<gitRoot>/tmp/lint/yml');
@@ -34,7 +34,7 @@ describe('lint-yml', () => {
         const absolutePath = helper.hostGitPath(filepath);
         await newFile(absolutePath);
 
-        const actual = await current.getInputFiles('tools/**/*');
+        const actual = await __.getInputFiles('tools/**/*');
         const hasFile = _.includes(actual, absolutePath);
         expect(hasFile).toEqual(expected);
       });
@@ -46,12 +46,12 @@ describe('lint-yml', () => {
       await write('foo: bar', helper.hostPackagePath('foo.yml'));
       await write('foo: bar', helper.hostPackagePath('foo.yaml'));
 
-      const actual = await current.run();
+      const actual = await run();
 
       expect(actual).toBe(true);
     });
     it('stop early if no file found', async () => {
-      const actual = await current.run();
+      const actual = await run();
 
       expect(actual).toBe(true);
     });
@@ -61,7 +61,7 @@ describe('lint-yml', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -76,7 +76,7 @@ describe('lint-yml', () => {
 
       let actual = null;
       try {
-        await current.run();
+        await run();
       } catch (error) {
         actual = error;
       }
@@ -93,13 +93,13 @@ describe('lint-yml', () => {
   });
   describe('fix', () => {
     it('should call prettierFix with the correct files', async () => {
-      vi.spyOn(current, '__prettierFix').mockResolvedValue();
+      vi.spyOn(__, 'prettierFix').mockResolvedValue();
 
       await write('foo: bar', helper.hostPackagePath('test.yml'));
 
-      await current.fix();
+      await fix();
 
-      expect(current.__prettierFix).toHaveBeenCalledWith([
+      expect(__.prettierFix).toHaveBeenCalledWith([
         expect.stringContaining('test.yml'),
       ]);
     });
@@ -107,7 +107,7 @@ describe('lint-yml', () => {
     it('should fix files end-to-end', async () => {
       await write('    foo: "bar"', helper.hostPackagePath('foo.yml'));
 
-      await current.fix();
+      await fix();
 
       const actual = await read(helper.hostPackagePath('foo.yml'));
 
@@ -115,7 +115,7 @@ describe('lint-yml', () => {
     });
 
     it('stop early if no file found', async () => {
-      const actual = await current.run();
+      const actual = await run();
 
       expect(actual).toBe(true);
     });
