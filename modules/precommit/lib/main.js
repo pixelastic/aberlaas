@@ -54,7 +54,6 @@ __ = {
     return {
       config,
       ...additionalOptions, // Additional overrides from tests
-      shell: true, // To allow for $ENV, pipe and redirections
     };
   },
   lintStaged,
