@@ -1,4 +1,4 @@
-import { consoleInfo, firostError } from 'firost';
+import { consoleInfo, consoleWarn, firostError } from 'firost';
 import lintStaged from 'lint-staged';
 import { getConfig } from 'aberlaas-helper';
 import lintStagedConfig from '../configs/lintstaged.js';
@@ -19,6 +19,7 @@ export async function run(cliArgs = {}) {
   const errors = [];
   const logger = {
     log: consoleInfo,
+    warn: consoleWarn,
     error(error) {
       errors.push(error);
     },
