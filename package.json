@@ -10,7 +10,7 @@
   "homepage": "https://projects.pixelastic.com/aberlaas/",
   "type": "module",
   "license": "MIT",
-  "packageManager": "yarn@4.10.3",
+  "packageManager": "yarn@4.12.0",
   "devDependencies": {
     "firost": "5.5.1",
     "golgoth": "3.0.0"
