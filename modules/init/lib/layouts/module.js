@@ -3,9 +3,9 @@ import { hostGitPath } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import {
   addConfigFiles,
+  addDefaultScripts,
   addLibFiles,
   addLicenseFile,
-  addScripts,
   getAberlaasVersion,
   getProjectAuthor,
   getProjectName,
@@ -22,7 +22,7 @@ export async function run() {
 
   await addLicenseFile('LICENSE');
   await addConfigFiles();
-  await addScripts('__module');
+  await addDefaultScripts();
   await addLibFiles();
 }
 

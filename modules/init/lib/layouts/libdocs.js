@@ -8,9 +8,10 @@ import {
 } from 'aberlaas-versions';
 import {
   addConfigFiles,
+  addDefaultScripts,
+  addDocsScripts,
   addLibFiles,
   addLicenseFile,
-  addScripts,
   getAberlaasVersion,
   getProjectAuthor,
   getProjectName,
@@ -30,7 +31,8 @@ export async function run() {
   await __.addLicenseFiles();
 
   await addConfigFiles();
-  await addScripts('__libdocs');
+  await addDefaultScripts();
+  await addDocsScripts();
   await addLibFiles();
 }
 
@@ -76,19 +78,19 @@ __ = {
       // Scripts
       scripts: {
         // Docs
-        build: './scripts/meta/build',
-        'build:prod': './scripts/meta/build-prod',
-        cms: './scripts/meta/cms',
-        serve: './scripts/meta/serve',
+        build: './scripts/build',
+        'build:prod': './scripts/build-prod',
+        cms: './scripts/cms',
+        serve: './scripts/serve',
 
         // Lib
-        release: './scripts/meta/release',
-        test: './scripts/meta/test',
-        'test:watch': './scripts/meta/test-watch',
-        ci: './scripts/meta/ci',
-        compress: './scripts/meta/compress',
-        lint: './scripts/meta/lint',
-        'lint:fix': './scripts/meta/lint-fix',
+        release: './scripts/release',
+        test: './scripts/test',
+        'test:watch': './scripts/test-watch',
+        ci: './scripts/ci',
+        compress: './scripts/compress',
+        lint: './scripts/lint',
+        'lint:fix': './scripts/lint-fix',
       },
     };
     await writeJson(packageContent, hostGitPath('./package.json'), {
@@ -204,17 +206,17 @@ __ = {
     const repository = `${author}/${name}`;
     const license = 'MIT';
     const scripts = {
-      build: '../scripts/local/build',
-      'build:prod': '../scripts/local/build-prod',
-      cms: '../scripts/local/cms',
-      serve: '../scripts/local/serve',
-      ci: '../scripts/local/ci',
-      release: '../scripts/local/release',
-      test: '../scripts/local/test',
-      'test:watch': '../scripts/local/test-watch',
-      compress: '../scripts/local/compress',
-      lint: '../scripts/local/lint',
-      'lint:fix': '../scripts/local/lint-fix',
+      build: 'cd .. && ./scripts/build',
+      'build:prod': 'cd .. && ./scripts/build-prod',
+      cms: 'cd .. && ./scripts/cms',
+      serve: 'cd .. && ./scripts/serve',
+      ci: 'cd .. && ./scripts/ci',
+      release: 'cd .. && ./scripts/release',
+      test: 'cd .. && ./scripts/test',
+      'test:watch': 'cd .. && ./scripts/test-watch',
+      compress: 'cd .. && ./scripts/compress',
+      lint: 'cd .. && ./scripts/lint',
+      'lint:fix': 'cd .. && ./scripts/lint-fix',
     };
     return {
       author,

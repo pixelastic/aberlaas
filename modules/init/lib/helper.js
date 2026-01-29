@@ -1,11 +1,10 @@
 import path from 'node:path';
-import { _, pMap } from 'golgoth';
+import { _ } from 'golgoth';
 import {
   absolute,
   consoleWarn,
   copy,
   firostError,
-  glob,
   isFile,
   move,
   read,
@@ -94,23 +93,32 @@ export const __ = {
   },
 
   /**
-   * Add script files
-   * @param {string} layoutPrefixPath Path to the subfolder in
-   * ./templates/scripts that hold the script files to copy
+   * Add default script files from templates/scripts to the host
+   * Excludes documentation-specific scripts (build, build-prod, cms, serve)
    */
-  async addScripts(layoutPrefixPath) {
-    const templateFolder = absolute('../templates/scripts/', layoutPrefixPath);
-    const templateScripts = await glob('**/*', {
-      directories: false,
-      cwd: templateFolder,
-      absolutePaths: false,
-    });
+  async addDefaultScripts() {
+    await __.copyTemplateToHost('scripts/ci', 'scripts/ci');
+    await __.copyTemplateToHost('scripts/compress', 'scripts/compress');
+    await __.copyTemplateToHost('scripts/lint', 'scripts/lint');
+    await __.copyTemplateToHost('scripts/lint-fix', 'scripts/lint-fix');
+    await __.copyTemplateToHost('scripts/release', 'scripts/release');
+    await __.copyTemplateToHost('scripts/test', 'scripts/test');
+    await __.copyTemplateToHost('scripts/test-watch', 'scripts/test-watch');
+    await __.copyTemplateToHost(
+      'scripts/hooks/pre-commit',
+      'scripts/hooks/pre-commit',
+    );
+  },
 
-    await pMap(templateScripts, async (templatePath) => {
-      const sourcePath = `scripts/${layoutPrefixPath}/${templatePath}`;
-      const destinationPath = `scripts/${templatePath}`;
-      await __.copyTemplateToHost(sourcePath, destinationPath);
-    });
+  /**
+   * Add documentation-specific scripts from templates/scripts to the host
+   * Only includes: build, build-prod, cms, serve
+   */
+  async addDocsScripts() {
+    await __.copyTemplateToHost('scripts/build', 'scripts/build');
+    await __.copyTemplateToHost('scripts/build-prod', 'scripts/build-prod');
+    await __.copyTemplateToHost('scripts/cms', 'scripts/cms');
+    await __.copyTemplateToHost('scripts/serve', 'scripts/serve');
   },
 
   /**
@@ -213,9 +221,10 @@ export const __ = {
 // still mock the inner methods in tests
 //
 export const addConfigFiles = wrap(__, 'addConfigFiles');
+export const addDefaultScripts = wrap(__, 'addDefaultScripts');
+export const addDocsScripts = wrap(__, 'addDocsScripts');
 export const addLibFiles = wrap(__, 'addLibFiles');
 export const addLicenseFile = wrap(__, 'addLicenseFile');
-export const addScripts = wrap(__, 'addScripts');
 export const getAberlaasVersion = wrap(__, 'getAberlaasVersion');
 export const getProjectAuthor = wrap(__, 'getProjectAuthor');
 export const getProjectName = wrap(__, 'getProjectName');

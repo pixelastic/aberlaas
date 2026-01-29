@@ -14,9 +14,10 @@ import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import {
   __,
   addConfigFiles,
+  addDefaultScripts,
+  addDocsScripts,
   addLibFiles,
   addLicenseFile,
-  addScripts,
   getProjectAuthor,
   getProjectName,
 } from '../helper.js';
@@ -171,23 +172,38 @@ describe('init > helper', () => {
         expect(actual).toInclude('Copyright (c) pixelastic');
       });
     });
-    describe('addScripts', () => {
-      it('copies files from the matching template folder', async () => {
-        await addScripts('__module');
+    describe('addDefaultScripts', () => {
+      it('copies base scripts from templates/scripts, excluding docs scripts', async () => {
+        await addDefaultScripts();
 
-        const actual = await glob('./scripts/**', {
-          cwd: hostGitPath(),
-          absolutePaths: false,
+        const actual = await glob(`${testDirectory}/scripts/**`, {
+          directories: false,
         });
+        expect(actual).toEqual([
+          `${testDirectory}/scripts/ci`,
+          `${testDirectory}/scripts/compress`,
+          `${testDirectory}/scripts/hooks/pre-commit`,
+          `${testDirectory}/scripts/lint`,
+          `${testDirectory}/scripts/lint-fix`,
+          `${testDirectory}/scripts/release`,
+          `${testDirectory}/scripts/test`,
+          `${testDirectory}/scripts/test-watch`,
+        ]);
+      });
+    });
+    describe('addDocsScripts', () => {
+      it('copies only documentation scripts from templates/scripts', async () => {
+        await addDocsScripts();
 
-        expect(actual).toInclude('./scripts/ci');
-        expect(actual).toInclude('./scripts/compress');
-        expect(actual).toInclude('./scripts/hooks/pre-commit');
-        expect(actual).toInclude('./scripts/lint');
-        expect(actual).toInclude('./scripts/lint-fix');
-        expect(actual).toInclude('./scripts/release');
-        expect(actual).toInclude('./scripts/test');
-        expect(actual).toInclude('./scripts/test-watch');
+        const actual = await glob(`${testDirectory}/scripts/**`, {
+          directories: false,
+        });
+        expect(actual).toEqual([
+          `${testDirectory}/scripts/build`,
+          `${testDirectory}/scripts/build-prod`,
+          `${testDirectory}/scripts/cms`,
+          `${testDirectory}/scripts/serve`,
+        ]);
       });
     });
     describe('addConfigFiles', () => {
