@@ -1,12 +1,12 @@
 import { remove, tmpDirectory, write, writeJson } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, getReleaseData } from '../getReleaseData.js';
 
 describe('getReleaseData', () => {
   const testDirectory = tmpDirectory('aberlaas/release/getReleaseData');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
   });
   afterEach(async () => {
     await remove(testDirectory);

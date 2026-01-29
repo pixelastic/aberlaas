@@ -1,5 +1,5 @@
 import { remove, tmpDirectory, write } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
@@ -8,7 +8,7 @@ describe('precommit', () => {
   let repo;
 
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
 
     __.clearOptions();
     __.addOption('quiet', true);

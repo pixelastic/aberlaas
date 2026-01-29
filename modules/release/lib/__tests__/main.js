@@ -1,11 +1,11 @@
 import { firostError, remove, tmpDirectory } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../main.js';
 
 describe('main', () => {
   const testDirectory = tmpDirectory('aberlaas/release/main');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
   });
   afterEach(async () => {
     await remove(testDirectory);

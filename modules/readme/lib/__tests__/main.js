@@ -1,5 +1,5 @@
-import { emptyDir, newFile, read, tmpDirectory, write } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { newFile, read, remove, tmpDirectory, write } from 'firost';
+import { mockHelperPaths } from 'aberlaas-helper';
 import dedent from 'dedent';
 import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
@@ -7,8 +7,10 @@ import { __, run } from '../main.js';
 describe('readme', () => {
   const testDirectory = tmpDirectory('aberlaas/readme');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
-    await emptyDir(testDirectory);
+    mockHelperPaths(testDirectory);
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
 
   describe('warnIfDeprecatedTemplate', () => {

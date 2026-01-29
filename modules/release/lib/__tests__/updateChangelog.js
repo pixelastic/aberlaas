@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream';
 import { _ } from 'golgoth';
-import { captureOutput, emptyDir, read, tmpDirectory, write } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { captureOutput, read, remove, tmpDirectory, write } from 'firost';
+import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, updateChangelog } from '../updateChangelog.js';
 
@@ -10,11 +10,13 @@ describe('updateChangelog', () => {
   let repo;
 
   beforeEach(async () => {
-    await emptyDir(testDirectory);
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
 
     repo = new Gilmore(testDirectory);
     await repo.init();
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
 
   describe('updateChangelog', () => {

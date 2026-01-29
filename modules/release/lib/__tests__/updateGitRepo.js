@@ -1,5 +1,5 @@
 import { readJson, remove, tmpDirectory, writeJson } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, updateGitRepo } from '../updateGitRepo.js';
 
@@ -8,7 +8,7 @@ describe('updateGitRepo', () => {
   let repo;
 
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
 
     repo = new Gilmore(testDirectory, { globalConfig: false });
     await repo.init();

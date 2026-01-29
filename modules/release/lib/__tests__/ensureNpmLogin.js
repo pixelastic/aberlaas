@@ -1,14 +1,16 @@
-import { emptyDir, firostError, read, tmpDirectory, writeJson } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { firostError, read, remove, tmpDirectory, writeJson } from 'firost';
+import { __ as helper, mockHelperPaths } from 'aberlaas-helper';
 import { __, ensureNpmLogin } from '../ensureNpmLogin.js';
 
 describe('ensureNpmLogin', () => {
   const testDirectory = tmpDirectory('aberlaas/release/ensureNpmLogin');
   beforeEach(async () => {
-    await emptyDir(testDirectory);
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
     vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(testDirectory);
     vi.spyOn(__, 'consoleInfo').mockReturnValue();
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
 
   describe('npmRun', () => {

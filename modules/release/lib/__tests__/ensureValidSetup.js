@@ -1,5 +1,5 @@
-import { emptyDir, firostError, tmpDirectory } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { firostError, remove, tmpDirectory } from 'firost';
+import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, ensureValidSetup } from '../ensureValidSetup.js';
 
@@ -51,13 +51,15 @@ describe('ensureValidSetup', () => {
 
   describe('with real git repo', () => {
     beforeEach(async () => {
-      vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
-      await emptyDir(testDirectory);
+      mockHelperPaths(testDirectory);
 
       repo = new Gilmore(testDirectory);
       await repo.init();
       await repo.newFile('README.md');
       await repo.commitAll('Initial commit');
+    });
+    afterEach(async () => {
+      await remove(testDirectory);
     });
     describe('ensureCorrectBranch', () => {
       it('should pass when on main branch', async () => {

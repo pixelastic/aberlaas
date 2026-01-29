@@ -1,13 +1,15 @@
 import { _ } from 'golgoth';
-import { absolute, emptyDir, write } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { remove, tmpDirectory, write } from 'firost';
+import { hostGitPath, mockHelperPaths } from 'aberlaas-helper';
 import { __ } from '../main.js';
 
 describe('test', () => {
-  const tmpDirectory = absolute('<gitRoot>/tmp/test');
+  const testDirectory = tmpDirectory('aberlaas/test');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    await emptyDir(helper.hostGitRoot());
+    mockHelperPaths(testDirectory);
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
   describe('vitestOptions', () => {
     describe('--related', () => {
@@ -89,7 +91,7 @@ describe('test', () => {
             newOption: true
           }
         }`,
-          helper.hostGitPath('vite.config.js'),
+          hostGitPath('vite.config.js'),
         );
         const input = {};
         const actual = await __.vitestOptions(input);
@@ -103,7 +105,7 @@ describe('test', () => {
             newOption: true
           }
         }`,
-          helper.hostGitPath('custom.vite.config.js'),
+          hostGitPath('custom.vite.config.js'),
         );
         const input = { config: 'custom.vite.config.js' };
         const actual = await __.vitestOptions(input);

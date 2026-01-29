@@ -1,12 +1,15 @@
-import { absolute, emptyDir, exists, write } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { exists, remove, tmpDirectory, write } from 'firost';
+import { __ as helper, hostGitPath, mockHelperPaths } from 'aberlaas-helper';
 import githubHelper from '../github.js';
 import current from '../ssh.js';
 
 describe('setup > helpers > ssh', () => {
-  const tmpDir = absolute('<gitRoot>/tmp/setup/helpers/ssh');
+  const tmpDir = tmpDirectory('aberlaas/setup/helpers/ssh');
   beforeEach(async () => {
-    await emptyDir(tmpDir);
+    mockHelperPaths(tmpDir);
+  });
+  afterEach(async () => {
+    await remove(tmpDir);
   });
   describe('hasBinary', () => {
     it('should check if ssh-keygen is available', async () => {
@@ -61,8 +64,8 @@ describe('setup > helpers > ssh', () => {
       vi.spyOn(current, 'getFingerprint').mockReturnValue();
     });
     it('should return the public, private and fingerprint of the keys', async () => {
-      await write('public_key', helper.hostGitPath('./tmp/ssh/key.pub'));
-      await write('private_key', helper.hostGitPath('./tmp/ssh/key'));
+      await write('public_key', hostGitPath('./tmp/ssh/key.pub'));
+      await write('private_key', hostGitPath('./tmp/ssh/key'));
       current.getFingerprint.mockReturnValue('fi:ng:er:pr:in:t');
 
       const actual = await current.getKeys();
@@ -72,8 +75,8 @@ describe('setup > helpers > ssh', () => {
     });
     it('should generate the keys first if not yet there', async () => {
       vi.spyOn(current, 'generateKeys').mockImplementation(async () => {
-        await write('new_public_key', helper.hostGitPath('./tmp/ssh/key.pub'));
-        await write('new_private_key', helper.hostGitPath('./tmp/ssh/key'));
+        await write('new_public_key', hostGitPath('./tmp/ssh/key.pub'));
+        await write('new_private_key', hostGitPath('./tmp/ssh/key'));
       });
       const actual = await current.getKeys();
       expect(current.generateKeys).toHaveBeenCalled();
