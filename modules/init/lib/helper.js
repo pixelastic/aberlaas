@@ -10,6 +10,7 @@ import {
   isFile,
   move,
   read,
+  remove,
   wrap,
   write,
 } from 'firost';
@@ -29,6 +30,7 @@ export const __ = {
 
     // Git
     await __.copyTemplateToHost('_gitignore', '.gitignore');
+    await remove(hostGitPath('.gitattributes'));
 
     // README template
     await __.copyTemplateToHost('_README.template.md', '.README.template.md');

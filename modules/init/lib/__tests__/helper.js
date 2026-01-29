@@ -3,6 +3,7 @@ import {
   exists,
   glob,
   isFile,
+  newFile,
   read,
   remove,
   tmpDirectory,
@@ -205,6 +206,15 @@ describe('init > helper', () => {
         await addConfigFiles();
         const actual = await isFile(hostGitPath(filepath));
         expect(actual).toBe(true);
+      });
+      it('should remove .gitattributes if it exists', async () => {
+        const gitattributesPath = hostGitPath('.gitattributes');
+        await newFile(gitattributesPath);
+
+        await addConfigFiles();
+
+        const actual = await isFile(gitattributesPath);
+        expect(actual).toBe(false);
       });
     });
     describe('addLibFiles', () => {
