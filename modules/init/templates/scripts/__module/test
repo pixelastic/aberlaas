@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-cd ./lib
-aberlaas test "$@"
+node_modules/.bin/aberlaas test "$@"

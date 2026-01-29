@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-cd ./lib
-aberlaas test --watch "$@"
+node_modules/.bin/aberlaas test --watch "$@"
