@@ -3,8 +3,8 @@ import { __, run } from '../main.js';
 describe('ci', () => {
   describe('run', () => {
     beforeEach(async () => {
-      vi.spyOn(__, 'runTest').mockReturnValue();
-      vi.spyOn(__, 'runLint').mockReturnValue();
+      vi.spyOn(__, 'yarnRunTest').mockReturnValue();
+      vi.spyOn(__, 'yarnRunLint').mockReturnValue();
       vi.spyOn(__, 'displayVersions').mockReturnValue();
     });
 
@@ -17,8 +17,8 @@ describe('ci', () => {
         actual = err;
       }
 
-      expect(__.runTest).not.toHaveBeenCalled();
-      expect(__.runLint).not.toHaveBeenCalled();
+      expect(__.yarnRunTest).not.toHaveBeenCalled();
+      expect(__.yarnRunLint).not.toHaveBeenCalled();
       expect(__.displayVersions).not.toHaveBeenCalled();
       expect(actual).toHaveProperty('code', 'ABERLAAS_CI_NOT_CI_ENVIRONMENT');
     });
@@ -28,7 +28,7 @@ describe('ci', () => {
         vi.spyOn(__, 'isCI').mockReturnValue(true);
       });
       describe('should fail if any sub command fails', () => {
-        it.each([['runTest'], ['runLint']])(
+        it.each([['yarnRunTest'], ['yarnRunLint']])(
           'should fail if %s fails',
           async (input) => {
             vi.spyOn(__, input).mockImplementation(() => {
@@ -47,7 +47,7 @@ describe('ci', () => {
         );
       });
       it('should not call further lint if test fails', async () => {
-        vi.spyOn(__, 'runTest').mockImplementation(() => {
+        vi.spyOn(__, 'yarnRunTest').mockImplementation(() => {
           throw new Error();
         });
 
@@ -57,7 +57,7 @@ describe('ci', () => {
           // Swallow error
         }
 
-        expect(__.runLint).not.toHaveBeenCalled();
+        expect(__.yarnRunLint).not.toHaveBeenCalled();
       });
       it('should display the currently used versions', async () => {
         await run();

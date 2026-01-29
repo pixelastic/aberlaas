@@ -1,6 +1,4 @@
 import { consoleInfo, firostError, run as firostRun } from 'firost';
-import { run as runLint } from 'aberlaas-lint';
-import { run as runTest } from 'aberlaas-test';
 import ciInfo from 'ci-info';
 
 export let __;
@@ -29,11 +27,11 @@ export async function run(cliArgs = {}) {
   await __.displayVersions();
 
   if (args.test) {
-    await __.runTest();
+    await __.yarnRunTest();
   }
 
   if (args.lint) {
-    await __.runLint();
+    await __.yarnRunLint();
   }
 
   return true;
@@ -66,10 +64,24 @@ __ = {
     });
     return stdout;
   },
+  /**
+   * Runs the test suite via yarn run test
+   * @returns {boolean} True on success
+   */
+  async yarnRunTest() {
+    await __.firostRun('yarn run test');
+    return true;
+  },
+  /**
+   * Runs linting via yarn run lint
+   * @returns {boolean} True on success
+   */
+  async yarnRunLint() {
+    await __.firostRun('yarn run lint');
+    return true;
+  },
   consoleInfo,
   firostRun,
-  runTest,
-  runLint,
 };
 
 export default {
