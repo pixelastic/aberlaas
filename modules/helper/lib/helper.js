@@ -160,7 +160,10 @@ export const __ = {
    */
   async yarnRun(command) {
     const cwd = __.hostGitRoot();
-    return await firostRun(`yarn run ${command}`, { cwd });
+    return await firostRun(`yarn run ${command}`, {
+      cwd,
+      env: { FORCE_COLOR: '1' },
+    });
   },
 
   async run() {
