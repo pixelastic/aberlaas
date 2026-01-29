@@ -1,3 +1,8 @@
+## v2.20.1
+
+I borked the previous release. My token didn't had right to push a new package.
+So bumping patch with the right packages this time.
+
 ## v2.20.0
 
 
