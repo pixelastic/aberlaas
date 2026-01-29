@@ -1,22 +1,17 @@
 import { newFile, remove, tmpDirectory, write, writeJson } from 'firost';
 import {
-  __,
   findHostPackageFiles,
   getConfig,
   hostGitPath,
   hostPackagePath,
+  mockHelperPaths,
 } from '../main.js';
 
 describe('helper', () => {
-  const testDirectory = tmpDirectory('aberlaas/helper');
+  const testDirectory = tmpDirectory('aberlaas/helper/main');
 
   beforeEach(async () => {
-    // Those are tested in ./yarnRun.js, so we can just mock them here
-    vi.spyOn(__, 'hostGitRoot').mockReturnValue(testDirectory);
-    vi.spyOn(__, 'hostPackageRoot').mockReturnValue(`${testDirectory}/lib`);
-    vi.spyOn(__, 'hostWorkingDirectory').mockReturnValue(
-      `${testDirectory}/lib/src`,
-    );
+    mockHelperPaths(testDirectory);
   });
 
   describe('hostGitPath', () => {
