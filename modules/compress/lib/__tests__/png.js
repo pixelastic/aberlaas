@@ -1,25 +1,21 @@
 import { _ } from 'golgoth';
-import { absolute, emptyDir, exists, newFile } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { exists, newFile, remove, tmpDirectory } from 'firost';
+import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../png.js';
 
 describe('compress > png', () => {
-  const tmpDirectory = absolute('<gitRoot>/tmp/compress/png');
+  const testDirectory = tmpDirectory('aberlaas/compress/png');
   beforeEach(async () => {
-    await emptyDir(tmpDirectory);
-
-    // We mock them all so a bug doesn't just wipe our real aberlaas repo
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
-    vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
-      `${tmpDirectory}/lib/src`,
-    );
+    mockHelperPaths(testDirectory);
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
 
   describe('getInputFiles', () => {
     it('should return all .png files by default', async () => {
-      const goodPath = helper.hostPackagePath('cat.png');
-      const badPath = helper.hostPackagePath('png.txt');
+      const goodPath = hostPackagePath('cat.png');
+      const badPath = hostPackagePath('png.txt');
       await newFile(goodPath);
       await newFile(badPath);
 
@@ -41,7 +37,7 @@ describe('compress > png', () => {
         ['lib/assets-backup/image.png', false],
         ['lib/assets/dist/image.png', false],
       ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = helper.hostGitPath(filepath);
+        const absolutePath = hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await __.getInputFiles('assets/**/*');
@@ -82,7 +78,7 @@ describe('compress > png', () => {
       it('should run the binary on all files', async () => {
         vi.spyOn(__, 'getBinaryPath').mockReturnValue('rm');
 
-        const filepath = helper.hostPackagePath('cat.png');
+        const filepath = hostPackagePath('cat.png');
         await newFile(filepath);
 
         const actualBefore = await exists(filepath);
@@ -96,7 +92,7 @@ describe('compress > png', () => {
       it('should return true on success', async () => {
         vi.spyOn(__, 'getBinaryPath').mockReturnValue('echo');
 
-        const filepath = helper.hostPackagePath('cat.png');
+        const filepath = hostPackagePath('cat.png');
         await newFile(filepath);
 
         const actual = await run();
@@ -111,7 +107,7 @@ describe('compress > png', () => {
       it('should throw an error if the binary returns an error code', async () => {
         vi.spyOn(__, 'getBinaryPath').mockReturnValue('false');
 
-        const filepath = helper.hostPackagePath('cat.png');
+        const filepath = hostPackagePath('cat.png');
         await newFile(filepath);
 
         let actual;
