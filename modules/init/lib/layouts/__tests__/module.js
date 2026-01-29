@@ -1,23 +1,20 @@
 import { glob, read, readJson, remove, tmpDirectory } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { hostGitPath, hostGitRoot, mockHelperPaths } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import { __ as initHelper } from '../../helper.js';
 import { __, run } from '../module.js';
 
 describe('init > module', () => {
+  const testDirectory = tmpDirectory('aberlaas/init/module');
   beforeEach(async () => {
-    // We need to make the tmp directory outside of this git repo tree, for all
-    // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(
-      tmpDirectory('aberlaas/init/module'),
-    );
+    mockHelperPaths(testDirectory);
 
     vi.spyOn(initHelper, 'getProjectName').mockReturnValue('my-project');
     vi.spyOn(initHelper, 'getProjectAuthor').mockReturnValue('my-name');
     vi.spyOn(initHelper, 'getAberlaasVersion').mockReturnValue('1.2.3');
   });
   afterEach(async () => {
-    await remove(helper.hostGitRoot());
+    await remove(hostGitRoot());
   });
 
   describe('createPackageJson', () => {
@@ -86,7 +83,7 @@ describe('init > module', () => {
     ])('%s', async (_title, expected) => {
       await __.createPackageJson();
 
-      const actual = await readJson(helper.hostGitPath('package.json'));
+      const actual = await readJson(hostGitPath('package.json'));
 
       expect(actual).toMatchObject(expected);
     });
@@ -97,7 +94,7 @@ describe('init > module', () => {
       await run();
 
       const actual = await glob('**/*', {
-        cwd: helper.hostGitPath(),
+        cwd: hostGitPath(),
         absolutePaths: false,
         directories: false,
       });
@@ -132,9 +129,7 @@ describe('init > module', () => {
     it('should write a correct circleCI file', async () => {
       await run();
 
-      const circleciConfig = await read(
-        helper.hostGitPath('.circleci/config.yml'),
-      );
+      const circleciConfig = await read(hostGitPath('.circleci/config.yml'));
 
       // Should not contain literal template placeholders
       expect(circleciConfig).not.toContain('{nodeVersion}');

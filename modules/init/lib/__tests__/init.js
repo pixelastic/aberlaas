@@ -1,5 +1,5 @@
 import { read, remove, tmpDirectory } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { hostGitPath, hostGitRoot, mockHelperPaths } from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
@@ -7,17 +7,15 @@ import { __, run } from '../main.js';
 describe('init', () => {
   const testDirectory = tmpDirectory('aberlaas/init');
   beforeEach(async () => {
-    // We need to make the tmp directory outside of this git repo tree, for all
-    // git/yarn related command to work so we put it in a /tmp directory
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
   });
   afterEach(async () => {
-    await remove(helper.hostGitRoot());
+    await remove(hostGitRoot());
   });
   // CONFIGURE
   describe('configureGit', () => {
     it('should change the default git hooksPath', async () => {
-      const repo = new Gilmore(helper.hostGitRoot());
+      const repo = new Gilmore(hostGitRoot());
       await repo.init();
 
       await __.configureGit();
@@ -30,7 +28,7 @@ describe('init', () => {
     it('should set a .nvmrc file', async () => {
       await __.configureNode();
 
-      const actual = await read(helper.hostGitPath('.nvmrc'));
+      const actual = await read(hostGitPath('.nvmrc'));
 
       expect(actual).toEqual(nodeVersion);
     });
@@ -46,7 +44,7 @@ describe('init', () => {
         success: vi.fn(),
       });
 
-      const repo = new Gilmore(helper.hostGitRoot());
+      const repo = new Gilmore(hostGitRoot());
       await repo.init();
     });
     describe('layouts', () => {

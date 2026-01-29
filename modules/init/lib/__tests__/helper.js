@@ -8,7 +8,7 @@ import {
   tmpDirectory,
   write,
 } from 'firost';
-import { __ as helper, hostGitRoot } from 'aberlaas-helper';
+import { hostGitPath, hostGitRoot, mockHelperPaths } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import {
   __,
@@ -23,7 +23,7 @@ import {
 describe('init > helper', () => {
   const testDirectory = tmpDirectory('aberlaas/init/helper');
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
   });
   afterEach(async () => {
     await remove(testDirectory);
@@ -35,9 +35,7 @@ describe('init > helper', () => {
         const expected = await read('../../templates/_gitignore');
         await __.copyTemplateToHost('_gitignore', 'subfolder/custom-file-name');
 
-        const actual = await read(
-          helper.hostGitPath('subfolder/custom-file-name'),
-        );
+        const actual = await read(hostGitPath('subfolder/custom-file-name'));
         expect(actual).toEqual(expected);
       });
       it('should return true if file copied', async () => {
@@ -62,50 +60,46 @@ describe('init > helper', () => {
       it('should create a backup copy of destination if already exists', async () => {
         const templateContent = await read('../../templates/_gitignore');
         const existingFileContent = 'node_modules/*';
-        await write(existingFileContent, helper.hostGitPath('.gitignore'));
+        await write(existingFileContent, hostGitPath('.gitignore'));
 
         await __.copyTemplateToHost('_gitignore', '.gitignore');
 
-        const configContent = await read(helper.hostGitPath('.gitignore'));
+        const configContent = await read(hostGitPath('.gitignore'));
         expect(configContent).toBe(templateContent);
 
-        const backupContent = await read(
-          helper.hostGitPath('.gitignore.backup'),
-        );
+        const backupContent = await read(hostGitPath('.gitignore.backup'));
         expect(backupContent).toBe(existingFileContent);
       });
       it('should not create a backup if the source and destination have the same content', async () => {
         const templateContent = await read('../../templates/_gitignore');
-        await write(templateContent, helper.hostGitPath('.gitignore'));
+        await write(templateContent, hostGitPath('.gitignore'));
 
         await __.copyTemplateToHost('_gitignore', '.gitignore');
 
-        const configExist = await isFile(helper.hostGitPath('.gitignore'));
+        const configExist = await isFile(hostGitPath('.gitignore'));
         expect(configExist).toBe(true);
 
-        const backupExist = await isFile(
-          helper.hostGitPath('.gitignore.backup'),
-        );
+        const backupExist = await isFile(hostGitPath('.gitignore.backup'));
         expect(backupExist).toBe(false);
       });
     });
     describe('addCircleCIConfigFile', () => {
       it('should create the file', async () => {
-        const configPath = helper.hostGitPath('.circleci/config.yml');
+        const configPath = hostGitPath('.circleci/config.yml');
         await __.addCircleCIConfigFile();
 
         const actual = await exists(configPath);
         expect(actual).toBe(true);
       });
       it('should use the right node image version', async () => {
-        const configPath = helper.hostGitPath('.circleci/config.yml');
+        const configPath = hostGitPath('.circleci/config.yml');
         await __.addCircleCIConfigFile();
 
         const actual = await read(configPath);
         expect(actual).toInclude(`- image: cimg/node:${nodeVersion}`);
       });
       it('should set the right yarn version', async () => {
-        const configPath = helper.hostGitPath('.circleci/config.yml');
+        const configPath = hostGitPath('.circleci/config.yml');
         await __.addCircleCIConfigFile();
 
         const actual = await read(configPath);
@@ -148,21 +142,21 @@ describe('init > helper', () => {
         const input = 'LICENSE';
         await addLicenseFile(input);
 
-        const actual = await exists(helper.hostGitPath(input));
+        const actual = await exists(hostGitPath(input));
         expect(actual).toBe(true);
       });
       it('should be a MIT license', async () => {
         const input = 'LICENSE';
         await addLicenseFile(input);
 
-        const actual = await read(helper.hostGitPath(input));
+        const actual = await read(hostGitPath(input));
         expect(actual).toInclude('MIT License');
       });
       it('should contain copyright with the current owner', async () => {
         const input = 'LICENSE';
         await addLicenseFile(input);
 
-        const actual = await read(helper.hostGitPath(input));
+        const actual = await read(hostGitPath(input));
         expect(actual).toInclude('Copyright (c) pixelastic');
       });
     });
@@ -171,7 +165,7 @@ describe('init > helper', () => {
         await addScripts('__module');
 
         const actual = await glob('./scripts/**', {
-          cwd: helper.hostGitPath(),
+          cwd: hostGitPath(),
           absolutePaths: false,
         });
 
@@ -199,7 +193,7 @@ describe('init > helper', () => {
         ['Yarn config', '.yarnrc.yml'],
       ])('%s', async (_title, filepath) => {
         await addConfigFiles();
-        const actual = await isFile(helper.hostGitPath(filepath));
+        const actual = await isFile(hostGitPath(filepath));
         expect(actual).toBe(true);
       });
     });
@@ -207,11 +201,9 @@ describe('init > helper', () => {
       it('should include the minimum files', async () => {
         await addLibFiles();
 
-        const hasMain = await isFile(helper.hostGitPath('lib/main.js'));
+        const hasMain = await isFile(hostGitPath('lib/main.js'));
         expect(hasMain).toBe(true);
-        const hasTest = await isFile(
-          helper.hostGitPath('lib/__tests__/main.js'),
-        );
+        const hasTest = await isFile(hostGitPath('lib/__tests__/main.js'));
         expect(hasTest).toBe(true);
       });
     });
