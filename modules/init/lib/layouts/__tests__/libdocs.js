@@ -173,7 +173,6 @@ describe('init > libdocs', () => {
       expect(actual).toEqual([
         '.circleci/config.yml',
         '.editorconfig',
-        '.gitattributes',
         '.github/renovate.json',
         '.gitignore',
         '.README.template.md',

@@ -29,7 +29,6 @@ export const __ = {
 
     // Git
     await __.copyTemplateToHost('_gitignore', '.gitignore');
-    await __.copyTemplateToHost('_gitattributes', '.gitattributes');
 
     // README template
     await __.copyTemplateToHost('_README.template.md', '.README.template.md');

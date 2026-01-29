@@ -194,7 +194,6 @@ describe('init > helper', () => {
         ['CircleCI config', '.circleci/config.yml'],
         ['Editorconfig', '.editorconfig'],
         ['ESLint config', 'eslint.config.js'],
-        ['Git attributes', '.gitattributes'],
         ['Git ignore', '.gitignore'],
         ['LintStaged config', 'lintstaged.config.js'],
         ['Prettier config', 'prettier.config.js'],
