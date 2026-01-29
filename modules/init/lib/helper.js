@@ -38,19 +38,19 @@ export const __ = {
     await __.copyTemplateToHost('_yarnrc.yml', '.yarnrc.yml');
 
     // ESLint
-    await __.copyTemplateToHost('eslint.config.js', 'eslint.config.js');
+    await __.copyTemplateToHost('eslint.config.js');
 
     // Lint-staged
-    await __.copyTemplateToHost('lintstaged.config.js', 'lintstaged.config.js');
+    await __.copyTemplateToHost('lintstaged.config.js');
 
     // Vite
-    await __.copyTemplateToHost('vite.config.js', 'vite.config.js');
+    await __.copyTemplateToHost('vite.config.js');
 
     // Prettier
-    await __.copyTemplateToHost('prettier.config.js', 'prettier.config.js');
+    await __.copyTemplateToHost('prettier.config.js');
 
     // Stylelint
-    await __.copyTemplateToHost('stylelint.config.js', 'stylelint.config.js');
+    await __.copyTemplateToHost('stylelint.config.js');
 
     // Renovate
     await __.copyTemplateToHost(
@@ -97,17 +97,14 @@ export const __ = {
    * Excludes documentation-specific scripts (build, build-prod, cms, serve)
    */
   async addDefaultScripts() {
-    await __.copyTemplateToHost('scripts/ci', 'scripts/ci');
-    await __.copyTemplateToHost('scripts/compress', 'scripts/compress');
-    await __.copyTemplateToHost('scripts/lint', 'scripts/lint');
-    await __.copyTemplateToHost('scripts/lint-fix', 'scripts/lint-fix');
-    await __.copyTemplateToHost('scripts/release', 'scripts/release');
-    await __.copyTemplateToHost('scripts/test', 'scripts/test');
-    await __.copyTemplateToHost('scripts/test-watch', 'scripts/test-watch');
-    await __.copyTemplateToHost(
-      'scripts/hooks/pre-commit',
-      'scripts/hooks/pre-commit',
-    );
+    await __.copyTemplateToHost('scripts/ci');
+    await __.copyTemplateToHost('scripts/compress');
+    await __.copyTemplateToHost('scripts/lint');
+    await __.copyTemplateToHost('scripts/lint-fix');
+    await __.copyTemplateToHost('scripts/release');
+    await __.copyTemplateToHost('scripts/test');
+    await __.copyTemplateToHost('scripts/test-watch');
+    await __.copyTemplateToHost('scripts/hooks/pre-commit');
   },
 
   /**
@@ -115,10 +112,10 @@ export const __ = {
    * Only includes: build, build-prod, cms, serve
    */
   async addDocsScripts() {
-    await __.copyTemplateToHost('scripts/build', 'scripts/build');
-    await __.copyTemplateToHost('scripts/build-prod', 'scripts/build-prod');
-    await __.copyTemplateToHost('scripts/cms', 'scripts/cms');
-    await __.copyTemplateToHost('scripts/serve', 'scripts/serve');
+    await __.copyTemplateToHost('scripts/build');
+    await __.copyTemplateToHost('scripts/build-prod');
+    await __.copyTemplateToHost('scripts/cms');
+    await __.copyTemplateToHost('scripts/serve');
   },
 
   /**
@@ -156,10 +153,11 @@ export const __ = {
   /**
    * Copy a config template to the host
    * @param {string} source Path to source file, relative to ./templates folder
-   * @param {string} destination Path to destination file, relative to the host
+   * @param {string} userDestination Path to destination file, relative to the host. Defaults to source if not provided.
    * @returns {boolean} False if can't copy file, true otherwise
    */
-  async copyTemplateToHost(source, destination) {
+  async copyTemplateToHost(source, userDestination) {
+    const destination = userDestination || source;
     const absoluteSource = absolute('../templates/', source);
     const absoluteDestination = hostGitPath(destination);
 

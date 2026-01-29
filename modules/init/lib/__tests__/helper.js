@@ -94,6 +94,13 @@ describe('init > helper', () => {
 
         expect(__.consoleWarn).not.toHaveBeenCalled();
       });
+      it('should use source as destination when destination is not provided', async () => {
+        const expected = await read('../../templates/scripts/ci');
+        await __.copyTemplateToHost('scripts/ci');
+
+        const actual = await read(hostGitPath('scripts/ci'));
+        expect(actual).toEqual(expected);
+      });
     });
     describe('addCircleCIConfigFile', () => {
       it('should create the file', async () => {
