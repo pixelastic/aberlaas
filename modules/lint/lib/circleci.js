@@ -1,5 +1,5 @@
-import { firostError, run as firostRun, which } from 'firost';
-import { findHostPackageFiles, hostGitPath } from 'aberlaas-helper';
+import { exists, firostError, run as firostRun, which } from 'firost';
+import { hostGitPath } from 'aberlaas-helper';
 import ciInfo from 'ci-info';
 import { fix as fixYml, run as runYml } from './yml.js';
 
@@ -58,8 +58,11 @@ __ = {
    * @returns {Array} Array of files
    */
   async getInputFile() {
-    const files = await findHostPackageFiles([__.configPath]);
-    return files[0] || false;
+    const configFile = await hostGitPath(__.configPath);
+    if (!(await exists(configFile))) {
+      return false;
+    }
+    return configFile;
   },
 
   /**

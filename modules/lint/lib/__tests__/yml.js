@@ -1,19 +1,15 @@
 import { _ } from 'golgoth';
-import { absolute, emptyDir, newFile, read, write } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { newFile, read, remove, tmpDirectory, write } from 'firost';
+import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../yml.js';
 
 describe('lint-yml', () => {
-  const tmpDirectory = absolute('<gitRoot>/tmp/lint/yml');
+  const testDirectory = tmpDirectory('aberlaas/lint/yml');
   beforeEach(async () => {
-    await emptyDir(tmpDirectory);
-
-    // We mock them all so a bug doesn't just wipe our real aberlaas repo
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
-    vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
-      `${tmpDirectory}/lib/src`,
-    );
+    mockHelperPaths(testDirectory);
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
   describe('getInputFiles', () => {
     describe('tools/**/*', () => {
@@ -31,7 +27,7 @@ describe('lint-yml', () => {
         ['lib/tools-backup/config.yml', false],
         ['lib/tools/dist/config.yml', false],
       ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = helper.hostGitPath(filepath);
+        const absolutePath = hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await __.getInputFiles('tools/**/*');
@@ -43,8 +39,8 @@ describe('lint-yml', () => {
 
   describe('run', () => {
     it('should run on all yml files and return true if all passes', async () => {
-      await write('foo: bar', helper.hostPackagePath('foo.yml'));
-      await write('foo: bar', helper.hostPackagePath('foo.yaml'));
+      await write('foo: bar', hostPackagePath('foo.yml'));
+      await write('foo: bar', hostPackagePath('foo.yaml'));
 
       const actual = await run();
 
@@ -56,8 +52,8 @@ describe('lint-yml', () => {
       expect(actual).toBe(true);
     });
     it('should throw if a file errors', async () => {
-      await write('foo: bar', helper.hostPackagePath('good.yml'));
-      await write('foo: ****', helper.hostPackagePath('bad.yml'));
+      await write('foo: bar', hostPackagePath('good.yml'));
+      await write('foo: ****', hostPackagePath('bad.yml'));
 
       let actual = null;
       try {
@@ -70,9 +66,9 @@ describe('lint-yml', () => {
       expect(actual).toHaveProperty('message');
     });
     it('should throw all error message if a file fails', async () => {
-      await write('foo: bar', helper.hostPackagePath('good.yml'));
-      await write('foo: ****', helper.hostPackagePath('foo.yml'));
-      await write('foo: ****', helper.hostPackagePath('deep/bar.yaml'));
+      await write('foo: bar', hostPackagePath('good.yml'));
+      await write('foo: ****', hostPackagePath('foo.yml'));
+      await write('foo: ****', hostPackagePath('deep/bar.yaml'));
 
       let actual = null;
       try {
@@ -95,7 +91,7 @@ describe('lint-yml', () => {
     it('should call prettierFix with the correct files', async () => {
       vi.spyOn(__, 'prettierFix').mockResolvedValue();
 
-      await write('foo: bar', helper.hostPackagePath('test.yml'));
+      await write('foo: bar', hostPackagePath('test.yml'));
 
       await fix();
 
@@ -105,11 +101,11 @@ describe('lint-yml', () => {
     });
 
     it('should fix files end-to-end', async () => {
-      await write('    foo: "bar"', helper.hostPackagePath('foo.yml'));
+      await write('    foo: "bar"', hostPackagePath('foo.yml'));
 
       await fix();
 
-      const actual = await read(helper.hostPackagePath('foo.yml'));
+      const actual = await read(hostPackagePath('foo.yml'));
 
       expect(actual).toBe("foo: 'bar'");
     });

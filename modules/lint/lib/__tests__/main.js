@@ -1,19 +1,15 @@
-import { absolute, emptyDir } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { remove, tmpDirectory } from 'firost';
+import { mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../main.js';
 
 describe('lint', () => {
-  const tmpDirectory = absolute('<gitRoot>/tmp/lint/root');
+  const testDirectory = tmpDirectory('aberlaas/lint/root');
   beforeEach(async () => {
-    await emptyDir(tmpDirectory);
+    mockHelperPaths(testDirectory);
     vi.spyOn(__, 'consoleError').mockReturnValue();
-
-    // We mock them all so a bug doesn't just wipe our real aberlaas repo
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
-    vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
-      `${tmpDirectory}/lib/src`,
-    );
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
   describe('run', () => {
     const mockedLinters = {

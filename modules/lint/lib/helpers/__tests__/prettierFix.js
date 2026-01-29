@@ -1,12 +1,12 @@
 import { read, remove, tmpDirectory, write } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { mockHelperPaths } from 'aberlaas-helper';
 import { prettierFix } from '../prettierFix.js';
 
 describe('prettierFix', () => {
   const testDirectory = tmpDirectory('aberlaas/lint/prettierFix');
 
   beforeEach(async () => {
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    mockHelperPaths(testDirectory);
   });
 
   afterEach(async () => {

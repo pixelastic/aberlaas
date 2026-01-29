@@ -1,19 +1,15 @@
 import { _ } from 'golgoth';
-import { absolute, emptyDir, newFile, read, write, writeJson } from 'firost';
-import { __ as helper } from 'aberlaas-helper';
+import { newFile, read, remove, tmpDirectory, write, writeJson } from 'firost';
+import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../json.js';
 
 describe('lint-json', () => {
-  const tmpDirectory = absolute('<gitRoot>/tmp/lint/json');
+  const testDirectory = tmpDirectory('aberlaas/lint/json');
   beforeEach(async () => {
-    await emptyDir(tmpDirectory);
-
-    // We mock them all so a bug doesn't just wipe our real aberlaas repo
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
-    vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
-      `${tmpDirectory}/lib/src`,
-    );
+    mockHelperPaths(testDirectory);
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
   });
   describe('getInputFiles', () => {
     describe('tools/**/*', () => {
@@ -29,7 +25,7 @@ describe('lint-json', () => {
         ['lib/tools-backup/config.json', false],
         ['lib/tools/dist/config.json', false],
       ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = helper.hostGitPath(filepath);
+        const absolutePath = hostGitPath(filepath);
         await newFile(absolutePath);
 
         const actual = await __.getInputFiles('tools/**/*');
@@ -40,8 +36,8 @@ describe('lint-json', () => {
   });
   describe('run', () => {
     it('should throw if a file errors', async () => {
-      await writeJson({ foo: 'bar' }, helper.hostPackagePath('good.json'));
-      await write('{ "foo": bar }', helper.hostPackagePath('bad.json'));
+      await writeJson({ foo: 'bar' }, hostPackagePath('good.json'));
+      await write('{ "foo": bar }', hostPackagePath('bad.json'));
 
       let actual = null;
       try {
@@ -54,7 +50,7 @@ describe('lint-json', () => {
       expect(actual).toHaveProperty('message');
     });
     it('should run on all .json files and return true if all passes', async () => {
-      await writeJson({ foo: 'bar' }, helper.hostPackagePath('foo.json'));
+      await writeJson({ foo: 'bar' }, hostPackagePath('foo.json'));
 
       const actual = await run();
 
@@ -66,9 +62,9 @@ describe('lint-json', () => {
       expect(actual).toBe(true);
     });
     it('should throw all error message if a file fails', async () => {
-      await writeJson({ foo: 'bar' }, helper.hostPackagePath('good.json'));
-      await write('{ "foo": bar }', helper.hostPackagePath('foo.json'));
-      await write('{ "foo": bar }', helper.hostPackagePath('deep/bar.json'));
+      await writeJson({ foo: 'bar' }, hostPackagePath('good.json'));
+      await write('{ "foo": bar }', hostPackagePath('foo.json'));
+      await write('{ "foo": bar }', hostPackagePath('deep/bar.json'));
 
       let actual = null;
       try {
@@ -91,7 +87,7 @@ describe('lint-json', () => {
     it('should call prettierFix with the correct files', async () => {
       vi.spyOn(__, 'prettierFix').mockResolvedValue();
 
-      await write('{"foo": "bar"}', helper.hostPackagePath('test.json'));
+      await write('{"foo": "bar"}', hostPackagePath('test.json'));
 
       await fix();
 
@@ -101,11 +97,11 @@ describe('lint-json', () => {
     });
 
     it('should fix files end-to-end', async () => {
-      await write('{ "foo": "bar", }', helper.hostPackagePath('foo.json'));
+      await write('{ "foo": "bar", }', hostPackagePath('foo.json'));
 
       await fix();
 
-      const actual = await read(helper.hostPackagePath('foo.json'));
+      const actual = await read(hostPackagePath('foo.json'));
 
       expect(actual).toBe('{ "foo": "bar" }');
     });
