@@ -41,7 +41,7 @@ __ = {
    * Create the top-level workspace
    */
   async createRootWorkspace() {
-    const aberlaasVersion = getAberlaasVersion();
+    const aberlaasVersion = await getAberlaasVersion();
     const sharedProjectData = await __.getSharedProjectData();
     const engines = {
       node: `>=${nodeVersion}`,

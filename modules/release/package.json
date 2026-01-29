@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-release",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas release command: Release and publish new versions",
   "version": "2.19.0",
   "repository": "pixelastic/aberlaas",

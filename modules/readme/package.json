@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-readme",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas readme helper: Write and synchronize README",
   "version": "2.18.1",
   "repository": "pixelastic/aberlaas",

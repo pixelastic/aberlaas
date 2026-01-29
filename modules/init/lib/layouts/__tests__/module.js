@@ -1,4 +1,4 @@
-import { glob, read, readJson, remove, tmpDirectory } from 'firost';
+import { glob, read, readJson, remove, tmpDirectory, writeJson } from 'firost';
 import { hostGitPath, hostGitRoot, mockHelperPaths } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import { __ as initHelper } from '../../helper.js';
@@ -9,9 +9,14 @@ describe('init > module', () => {
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
 
+    // Create a package.json with aberlaas in devDependencies
+    await writeJson(
+      { devDependencies: { aberlaas: '1.2.3' } },
+      hostGitPath('package.json'),
+    );
+
     vi.spyOn(initHelper, 'getProjectName').mockReturnValue('my-project');
     vi.spyOn(initHelper, 'getProjectAuthor').mockReturnValue('my-name');
-    vi.spyOn(initHelper, 'getAberlaasVersion').mockReturnValue('1.2.3');
   });
   afterEach(async () => {
     await remove(hostGitRoot());

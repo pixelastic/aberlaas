@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-lint",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas lint command: Lint files",
   "version": "2.19.0",
   "repository": "pixelastic/aberlaas",

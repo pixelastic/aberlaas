@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-ci",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas ci command: Run tests and lint on each commit on the CI",
   "version": "2.19.0",
   "repository": "pixelastic/aberlaas",

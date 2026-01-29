@@ -4,12 +4,12 @@ import {
   absolute,
   consoleWarn,
   copy,
-  env,
   firostError,
   glob,
   isFile,
   move,
   read,
+  readJson,
   remove,
   wrap,
   write,
@@ -131,12 +131,17 @@ export const __ = {
   },
 
   /**
-   * Return the version of aberlaas used on the CLI
-   * This should have been set by the top-level entrypoint
+   * Return the version of aberlaas installed in the project
+   * Reads from the host package.json devDependencies or dependencies
    * @returns {string} Version number
    **/
-  getAberlaasVersion() {
-    return env('ABERLAAS_VERSION');
+  async getAberlaasVersion() {
+    const packageJsonPath = hostGitPath('package.json');
+    const packageJson = await readJson(packageJsonPath);
+    return (
+      packageJson?.devDependencies?.aberlaas ||
+      packageJson?.dependencies?.aberlaas
+    );
   },
 
   // === PRIVATE METHODS ===

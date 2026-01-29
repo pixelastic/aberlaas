@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-setup",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas setup helper: Setup third parties like GitHub, Netlify or CircleCI",
   "version": "2.18.1",
   "repository": "pixelastic/aberlaas",

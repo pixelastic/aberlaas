@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-helper",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas shared helper: Common methods used by all commands",
   "version": "2.18.1",
   "repository": "pixelastic/aberlaas",

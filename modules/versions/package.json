@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-versions",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas version config: Contains list of latest versions to use for tools we depend on",
   "version": "2.15.0",
   "repository": "pixelastic/aberlaas",

@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-init",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas init command: Setup the repository with all needed config",
   "version": "2.18.1",
   "repository": "pixelastic/aberlaas",

@@ -1,4 +1,3 @@
-import { absolute, packageRoot, readJson } from 'firost';
 import { __, run } from '../main.js';
 
 describe('aberlaas', () => {
@@ -64,28 +63,6 @@ describe('aberlaas', () => {
         bar: 'baz',
         baz: false,
         n: true,
-      });
-    });
-    describe('ABERLAAS_VERSION', () => {
-      it('should set it when command is init', async () => {
-        const expected = (
-          await readJson(absolute(packageRoot(), './package.json'))
-        ).version;
-        vi.spyOn(__, 'getCommand').mockReturnValue({ init: vi.fn() });
-        const input = ['init'];
-
-        await run(input);
-        expect(__.setEnv).toHaveBeenCalledWith('ABERLAAS_VERSION', expected);
-      });
-      it('should not set it for other commands', async () => {
-        vi.spyOn(__, 'getCommand').mockReturnValue({ test: vi.fn() });
-        const input = ['test'];
-
-        await run(input);
-        expect(__.setEnv).not.toHaveBeenCalledWith(
-          'ABERLAAS_VERSION',
-          expect.anything(),
-        );
       });
     });
   });

@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-precommit",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas precommit helper: Sanitize and cleanup on commit",
   "version": "2.18.1",
   "repository": "pixelastic/aberlaas",

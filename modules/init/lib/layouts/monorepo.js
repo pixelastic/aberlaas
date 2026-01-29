@@ -43,7 +43,7 @@ __ = {
    * - With ./modules holding all modules, including ./lib and ./docs
    */
   async createRootWorkspace() {
-    const aberlaasVersion = getAberlaasVersion();
+    const aberlaasVersion = await getAberlaasVersion();
     const sharedProjectData = await __.getSharedProjectData();
     const engines = {
       node: `>=${nodeVersion}`,

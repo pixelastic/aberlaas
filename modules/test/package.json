@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-test",
   "type": "module",
+  "sideEffects": false,
   "description": "aberlaas test command: Run automated tests",
   "version": "2.18.1",
   "repository": "pixelastic/aberlaas",
