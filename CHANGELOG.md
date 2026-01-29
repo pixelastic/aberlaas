@@ -1,3 +1,24 @@
+## v2.20.0
+
+
+### Features
+
+- Release does all the pre-checks (2cb2924)
+- **release:** Add almost complete-flow (missing tag creation) (7f0501c)
+- **release:** Create tag and push it (b61724b)
+- **readme:** Modernize template system with frontmatter-based config (265aadc)
+- **release:** Finalize changelog generation, with preview and edit (54e7522)
+- **readme:** Add --add-to-git for readme (636d1f0)
+- **ci:** Decouple test and lint from direct imports (d056a77)
+- **init:** Add .editorconfig template and improve backup handling (cb56ca7)
+- **readme:** Add readme template system with auto-staging (223a30b)
+
+### Bug Fixes
+
+- **init:** Remove node/yarn version duplication (8ee1077)
+- **init:** Remove .gitattributes template and references (f27dd10)
+- **helper:** Preserve colors in yarn run commands (5284bd8)
+
 ## [0.11.4](https://github.com/pixelastic/aberlaas/compare/0.11.3...0.11.4) (2020-01-17)
 
 
@@ -861,4 +882,3 @@
 
 
 ## 0.0.2 (2018-10-29)
-
