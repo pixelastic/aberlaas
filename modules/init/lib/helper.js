@@ -25,11 +25,11 @@ export const __ = {
    */
   async addConfigFiles() {
     // Editorconfig
-    await __.copyTemplateToHost('./_editorconfig', './.editorconfig');
+    await __.copyTemplateToHost('_editorconfig', '.editorconfig');
 
     // Git
-    await __.copyTemplateToHost('./_gitignore', './.gitignore');
-    await __.copyTemplateToHost('./_gitattributes', './.gitattributes');
+    await __.copyTemplateToHost('_gitignore', '.gitignore');
+    await __.copyTemplateToHost('_gitattributes', '.gitattributes');
 
     // README template
     await __.copyTemplateToHost('_README.template.md', '.README.template.md');
