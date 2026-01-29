@@ -117,14 +117,14 @@ describe('ensureValidSetup', () => {
   describe('ensureTestsArePassing', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'runTest').mockReturnValue();
+      vi.spyOn(__, 'firostRun').mockReturnValue();
     });
 
     it('should return false when skip-test is true', async () => {
       const actual = await __.ensureTestsArePassing({ 'skip-test': true });
 
       expect(actual).toEqual(false);
-      expect(__.runTest).not.toHaveBeenCalled();
+      expect(__.firostRun).not.toHaveBeenCalled();
     });
 
     it('should pass when tests succeed', async () => {
@@ -132,11 +132,11 @@ describe('ensureValidSetup', () => {
 
       expect(actual).toEqual(true);
       expect(__.consoleInfo).toHaveBeenCalled();
-      expect(__.runTest).toHaveBeenCalledWith({ failFast: true });
+      expect(__.firostRun).toHaveBeenCalledWith('yarn run test --failFast');
     });
 
     it('should throw error when tests fail', async () => {
-      vi.spyOn(__, 'runTest').mockImplementation(() => {
+      vi.spyOn(__, 'firostRun').mockImplementation(() => {
         throw firostError('ABERLAAS_TEST_FAIL', 'Tests are failing');
       });
 
@@ -155,14 +155,14 @@ describe('ensureValidSetup', () => {
   describe('ensureLintIsPassing', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'runLint').mockReturnValue();
+      vi.spyOn(__, 'firostRun').mockReturnValue();
     });
 
     it('should return false when skip-lint is true', async () => {
       const actual = await __.ensureLintIsPassing({ 'skip-lint': true });
 
       expect(actual).toEqual(false);
-      expect(__.runLint).not.toHaveBeenCalled();
+      expect(__.firostRun).not.toHaveBeenCalled();
     });
 
     it('should pass when lint succeeds', async () => {
@@ -170,11 +170,11 @@ describe('ensureValidSetup', () => {
 
       expect(actual).toEqual(true);
       expect(__.consoleInfo).toHaveBeenCalled();
-      expect(__.runLint).toHaveBeenCalled();
+      expect(__.firostRun).toHaveBeenCalledWith('yarn run lint');
     });
 
     it('should throw error when lint fails', async () => {
-      vi.spyOn(__, 'runLint').mockImplementation(() => {
+      vi.spyOn(__, 'firostRun').mockImplementation(() => {
         throw firostError('ABERLAAS_LINT_FAIL', 'Lint is failing');
       });
 
