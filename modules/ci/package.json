@@ -19,6 +19,7 @@
     "node": ">=18.18.0"
   },
   "dependencies": {
+    "aberlaas-helper": "workspace:*",
     "ci-info": "4.3.1",
     "firost": "5.5.1"
   },

@@ -5,6 +5,7 @@ import {
   exists,
   firostError,
   firostImport,
+  run as firostRun,
   gitRoot,
   glob,
   packageRoot,
@@ -152,6 +153,16 @@ export const __ = {
    * Used in tests, to double check in real conditions, what the various paths
    * refer to
    */
+  /**
+   * Run a yarn command from the host git root
+   * @param {string} command Command to run (e.g., 'test', 'lint', 'test --failFast')
+   * @returns {Promise} Result of the command execution
+   */
+  async yarnRun(command) {
+    const cwd = __.hostGitRoot();
+    return await firostRun(`yarn run ${command}`, { cwd });
+  },
+
   async run() {
     console.log(
       JSON.stringify(
@@ -177,4 +188,5 @@ export const findHostPackageFiles = wrap(__, 'findHostPackageFiles');
 export const hostGitRoot = wrap(__, 'hostGitRoot');
 export const hostGitPath = wrap(__, 'hostGitPath');
 export const getConfig = wrap(__, 'getConfig');
+export const yarnRun = wrap(__, 'yarnRun');
 export const run = wrap(__, 'run');

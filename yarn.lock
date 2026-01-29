@@ -4473,6 +4473,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas-ci@workspace:modules/ci"
   dependencies:
+    aberlaas-helper: "workspace:*"
     ci-info: "npm:4.3.1"
     firost: "npm:5.5.1"
   languageName: unknown

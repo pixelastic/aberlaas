@@ -1,4 +1,5 @@
 import { consoleInfo, firostError, run as firostRun } from 'firost';
+import { yarnRun } from 'aberlaas-helper';
 import ciInfo from 'ci-info';
 
 export let __;
@@ -69,7 +70,7 @@ __ = {
    * @returns {boolean} True on success
    */
   async yarnRunTest() {
-    await __.firostRun('yarn run test');
+    await __.yarnRun('test');
     return true;
   },
   /**
@@ -77,11 +78,12 @@ __ = {
    * @returns {boolean} True on success
    */
   async yarnRunLint() {
-    await __.firostRun('yarn run lint');
+    await __.yarnRun('lint');
     return true;
   },
   consoleInfo,
   firostRun,
+  yarnRun,
 };
 
 export default {

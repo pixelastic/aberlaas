@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { consoleInfo, firostError, run as firostRun } from 'firost';
-import { hostGitRoot } from 'aberlaas-helper';
+import { hostGitRoot, yarnRun } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { ensureNpmLogin } from './ensureNpmLogin.js';
 
@@ -76,7 +76,7 @@ export const __ = {
     }
     __.consoleInfo('Running tests...');
     try {
-      await __.firostRun('yarn run test --failFast');
+      await __.yarnRun('test --failFast');
       return true;
     } catch (err) {
       throw firostError('ABERLAAS_RELEASE_TESTS_FAILING', err.message);
@@ -95,7 +95,7 @@ export const __ = {
     }
     __.consoleInfo('Running lint...');
     try {
-      await __.firostRun('yarn run lint');
+      await __.yarnRun('lint');
       return true;
     } catch (err) {
       throw firostError('ABERLAAS_RELEASE_LINT_FAILING', err.message);
@@ -105,6 +105,7 @@ export const __ = {
   consoleInfo,
   ensureNpmLogin,
   firostRun,
+  yarnRun,
 };
 
 /**
