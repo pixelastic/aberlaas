@@ -101,6 +101,7 @@ describe('init > module', () => {
 
       expect(actual).toEqual([
         '.circleci/config.yml',
+        '.editorconfig',
         '.gitattributes',
         '.github/renovate.json',
         '.gitignore',

@@ -2,6 +2,7 @@ import path from 'node:path';
 import { _, pMap } from 'golgoth';
 import {
   absolute,
+  consoleWarn,
   copy,
   env,
   firostError,
@@ -23,6 +24,9 @@ export const __ = {
    * default rules and overwrite them as they see fit
    */
   async addConfigFiles() {
+    // Editorconfig
+    await __.copyTemplateToHost('./_editorconfig', './.editorconfig');
+
     // Git
     await __.copyTemplateToHost('./_gitignore', './.gitignore');
     await __.copyTemplateToHost('./_gitattributes', './.gitattributes');
@@ -161,9 +165,12 @@ export const __ = {
         return true;
       }
 
-      // Otherwise create a backup
-      const backupDestination = `${absoluteDestination}.backup`;
+      // Otherwise create a backup in ./tmp/backup
+      const backupDestination = hostGitPath(`./tmp/backup/${destination}`);
       await move(absoluteDestination, backupDestination);
+      __.consoleWarn(
+        `Existing ${destination} backed up in ./tmp/backup/${destination}`,
+      );
     }
 
     await copy(absoluteSource, absoluteDestination);
@@ -193,6 +200,7 @@ export const __ = {
   getRepo() {
     return new Gilmore(hostGitRoot());
   },
+  consoleWarn,
 };
 
 // Named exports of public methods, but wrapped in dynamic method so we can

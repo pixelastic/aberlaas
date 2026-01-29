@@ -57,7 +57,8 @@ describe('init > helper', () => {
 
         expect(actual).not.toBeNull();
       });
-      it('should create a backup copy of destination if already exists', async () => {
+      it('should create a backup copy of destination in ./tmp/backup/ if already exists', async () => {
+        vi.spyOn(__, 'consoleWarn').mockReturnValue();
         const templateContent = await read('../../templates/_gitignore');
         const existingFileContent = 'node_modules/*';
         await write(existingFileContent, hostGitPath('.gitignore'));
@@ -67,10 +68,15 @@ describe('init > helper', () => {
         const configContent = await read(hostGitPath('.gitignore'));
         expect(configContent).toBe(templateContent);
 
-        const backupContent = await read(hostGitPath('.gitignore.backup'));
+        const backupContent = await read(
+          hostGitPath('./tmp/backup/.gitignore'),
+        );
         expect(backupContent).toBe(existingFileContent);
+
+        expect(__.consoleWarn).toHaveBeenCalled();
       });
       it('should not create a backup if the source and destination have the same content', async () => {
+        vi.spyOn(__, 'consoleWarn').mockReturnValue();
         const templateContent = await read('../../templates/_gitignore');
         await write(templateContent, hostGitPath('.gitignore'));
 
@@ -79,8 +85,12 @@ describe('init > helper', () => {
         const configExist = await isFile(hostGitPath('.gitignore'));
         expect(configExist).toBe(true);
 
-        const backupExist = await isFile(hostGitPath('.gitignore.backup'));
+        const backupExist = await isFile(
+          hostGitPath('./tmp/backup/.gitignore'),
+        );
         expect(backupExist).toBe(false);
+
+        expect(__.consoleWarn).not.toHaveBeenCalled();
       });
     });
     describe('addCircleCIConfigFile', () => {
@@ -182,6 +192,7 @@ describe('init > helper', () => {
     describe('addConfigFiles', () => {
       it.each([
         ['CircleCI config', '.circleci/config.yml'],
+        ['Editorconfig', '.editorconfig'],
         ['ESLint config', 'eslint.config.js'],
         ['Git attributes', '.gitattributes'],
         ['Git ignore', '.gitignore'],
