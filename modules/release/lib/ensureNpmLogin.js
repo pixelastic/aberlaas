@@ -83,9 +83,8 @@ export const __ = {
    * Displays login instructions to the user
    */
   async displayLoginInstructions() {
-    const rootPackage = await readJson(hostPackagePath('package.json'));
-    const packageName = rootPackage.name;
-    const tokenName = __.generateTokenName(packageName);
+    const packageJson = await readJson(hostPackagePath('package.json'));
+    const tokenName = __.generateTokenName(packageJson);
 
     __.consoleInfo('');
     __.consoleInfo('Your npm token page will open.');
@@ -105,15 +104,25 @@ export const __ = {
   },
 
   /**
-   * Generates a suggested token name from package name
-   * @param {string} packageName - The package name
+   * Generates a suggested token name from package.json data
+   * @param {object} packageJson - The package.json content
    * @returns {string} The suggested token name
    */
-  generateTokenName(packageName) {
+  generateTokenName(packageJson) {
+    let packageName = packageJson.name;
+
+    // For workspace roots (monorepo/libdocs), strip suffixes
+    if (packageJson.workspaces) {
+      packageName = _.chain(packageName)
+        .replace(/-monorepo$/, '')
+        .replace(/-root$/, '')
+        .value();
+    }
+
     const cleanPackageName = _.chain(packageName)
-      .replace('-', '_')
-      .replace('@', '')
-      .replace('/', '_')
+      .replaceAll('-', '_')
+      .replaceAll('@', '')
+      .replaceAll('/', '_')
       .toUpper()
       .value();
     return `ABERLAAS_RELEASE_${cleanPackageName}`;

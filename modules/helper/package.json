@@ -23,7 +23,7 @@
   "dependencies": {
     "aberlaas-versions": "workspace:*",
     "firost": "5.5.1",
-    "golgoth": "3.0.0"
+    "golgoth": "3.1.0"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",

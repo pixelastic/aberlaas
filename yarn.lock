@@ -4485,7 +4485,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     firost: "npm:5.5.1"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
 
@@ -4504,7 +4504,7 @@ __metadata:
   dependencies:
     aberlaas-versions: "workspace:*"
     firost: "npm:5.5.1"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
 
@@ -4516,7 +4516,7 @@ __metadata:
     aberlaas-versions: "workspace:*"
     firost: "npm:5.5.1"
     gilmore: "npm:1.2.0"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
 
@@ -4539,7 +4539,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     firost: "npm:5.5.1"
     globals: "npm:17.2.0"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
     prettier: "npm:3.8.1"
     stylelint: "npm:17.0.0"
     typescript: "npm:5.9.3"
@@ -4552,7 +4552,7 @@ __metadata:
   resolution: "aberlaas-monorepo@workspace:."
   dependencies:
     firost: "npm:5.5.1"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
 
@@ -4563,7 +4563,7 @@ __metadata:
     aberlaas-helper: "workspace:*"
     firost: "npm:5.5.1"
     gilmore: "npm:1.2.0"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
     lint-staged: "npm:16.2.7"
     micromatch: "npm:4.0.8"
   languageName: unknown
@@ -4578,7 +4578,7 @@ __metadata:
     firost: "npm:5.5.1"
     front-matter: "npm:4.0.2"
     gilmore: "npm:1.2.0"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
 
@@ -4593,7 +4593,7 @@ __metadata:
     cli-markdown: "npm:3.5.1"
     firost: "npm:5.5.1"
     gilmore: "npm:1.2.0"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
     semver: "npm:7.7.3"
   languageName: unknown
   linkType: soft
@@ -4605,7 +4605,7 @@ __metadata:
     "@octokit/rest": "npm:22.0.1"
     aberlaas-helper: "workspace:*"
     firost: "npm:5.5.1"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
     parse-github-repo-url: "npm:1.4.1"
   languageName: unknown
   linkType: soft
@@ -4618,7 +4618,7 @@ __metadata:
     dedent: "npm:1.7.1"
     firost: "npm:5.5.1"
     globals: "npm:17.2.0"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
     jest-extended: "npm:4.0.2"
     vitest: "npm:2.1.2"
   languageName: unknown
@@ -4646,7 +4646,7 @@ __metadata:
     aberlaas-test: "workspace:*"
     aberlaas-versions: "workspace:*"
     firost: "npm:5.5.1"
-    golgoth: "npm:3.0.0"
+    golgoth: "npm:3.1.0"
     minimist: "npm:1.2.8"
   bin:
     aberlaas: bin/aberlaas.js
@@ -6347,6 +6347,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:5.6.2, chalk@npm:^5.4.1, chalk@npm:^5.6.2":
+  version: 5.6.2
+  resolution: "chalk@npm:5.6.2"
+  checksum: 10c0/99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
+  languageName: node
+  linkType: hard
+
 "chalk@npm:^0.5.1":
   version: 0.5.1
   resolution: "chalk@npm:0.5.1"
@@ -6391,13 +6398,6 @@ __metadata:
     ansi-styles: "npm:^4.1.0"
     supports-color: "npm:^7.1.0"
   checksum: 10c0/ee650b0a065b3d7a6fda258e75d3a86fc8e4effa55871da730a9e42ccb035bf5fd203525e5a1ef45ec2582ecc4f65b47eb11357c526b84dd29a14fb162c414d2
-  languageName: node
-  linkType: hard
-
-"chalk@npm:^5.4.1, chalk@npm:^5.6.2":
-  version: 5.6.2
-  resolution: "chalk@npm:5.6.2"
-  checksum: 10c0/99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
   languageName: node
   linkType: hard
 
@@ -7785,6 +7785,13 @@ __metadata:
   version: 1.11.13
   resolution: "dayjs@npm:1.11.13"
   checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:1.11.19":
+  version: 1.11.19
+  resolution: "dayjs@npm:1.11.19"
+  checksum: 10c0/7d8a6074a343f821f81ea284d700bd34ea6c7abbe8d93bce7aba818948957c1b7f56131702e5e890a5622cdfc05dcebe8aed0b8313bdc6838a594d7846b0b000
   languageName: node
   linkType: hard
 
@@ -11546,6 +11553,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"golgoth@npm:3.1.0":
+  version: 3.1.0
+  resolution: "golgoth@npm:3.1.0"
+  dependencies:
+    chalk: "npm:5.6.2"
+    dayjs: "npm:1.11.19"
+    flat: "npm:6.0.1"
+    got: "npm:11.8.6"
+    lodash: "npm:4.17.23"
+    p-all: "npm:5.0.1"
+    p-map: "npm:7.0.4"
+    p-map-series: "npm:3.0.0"
+    p-props: "npm:6.1.0"
+    pify: "npm:6.1.0"
+    query-string: "npm:9.3.1"
+    time-span: "npm:5.1.0"
+  checksum: 10c0/9252d0255f38bd13b318c3c172af01067065b8e48892f681a98260860654084075078bfa81ea450bba9484dc913be762c43ca6cc14b1cdd5ffcbaffda19adf4c
+  languageName: node
+  linkType: hard
+
 "gonzales-pe@npm:^4.2.3":
   version: 4.3.0
   resolution: "gonzales-pe@npm:4.3.0"
@@ -14431,6 +14458,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:4.17.23":
+  version: 4.17.23
+  resolution: "lodash@npm:4.17.23"
+  checksum: 10c0/1264a90469f5bb95d4739c43eb6277d15b6d9e186df4ac68c3620443160fc669e2f14c11e7d8b2ccf078b81d06147c01a8ccced9aab9f9f63d50dcf8cace6bf6
+  languageName: node
+  linkType: hard
+
 "log-process-errors@npm:^6.0.0":
   version: 6.3.0
   resolution: "log-process-errors@npm:6.3.0"
@@ -16888,6 +16922,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"p-all@npm:5.0.1":
+  version: 5.0.1
+  resolution: "p-all@npm:5.0.1"
+  dependencies:
+    p-map: "npm:^6.0.0"
+  checksum: 10c0/ebcb641e5799c7855bfdb39e5332cc190655b3488dfbb1d03c87c112912bc4d65482008b616044ee749cae8e049c953656a3264087dd3809b967a206681ccf48
+  languageName: node
+  linkType: hard
+
 "p-all@npm:^2.1.0":
   version: 2.1.0
   resolution: "p-all@npm:2.1.0"
@@ -17034,6 +17077,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"p-map@npm:7.0.4":
+  version: 7.0.4
+  resolution: "p-map@npm:7.0.4"
+  checksum: 10c0/a5030935d3cb2919d7e89454d1ce82141e6f9955413658b8c9403cfe379283770ed3048146b44cde168aa9e8c716505f196d5689db0ae3ce9a71521a2fef3abd
+  languageName: node
+  linkType: hard
+
 "p-map@npm:^2.0.0":
   version: 2.1.0
   resolution: "p-map@npm:2.1.0"
@@ -17072,6 +17122,15 @@ __metadata:
   dependencies:
     p-map: "npm:^6.0.0"
   checksum: 10c0/9aacc5372e85076e7fe3cfca1e79819f66eadb13abcdd29a7702d1a7f0ea5c1771fdae92c858f73c357ef879e804acea8f7468a36f2a892a16e042fae407488d
+  languageName: node
+  linkType: hard
+
+"p-props@npm:6.1.0":
+  version: 6.1.0
+  resolution: "p-props@npm:6.1.0"
+  dependencies:
+    p-map: "npm:^6.0.0"
+  checksum: 10c0/4a128c052797ee48c6c50d88e0fa687bec8dc0ba05378c300dd94f729d33e0953aa8721d15464daeda7c04a343b6d9ed5c4bd698501b174aba446be9cdc9b9d1
   languageName: node
   linkType: hard
 
@@ -18592,6 +18651,17 @@ __metadata:
     filter-obj: "npm:^5.1.0"
     split-on-first: "npm:^3.0.0"
   checksum: 10c0/16481f17754f660aec3cae7abb838a70e383dfcf152414d184e0d0f81fae426acf112b4d51bf754f9c256eaf83ba4241241ba907c8d58b6ed9704425e1712e8c
+  languageName: node
+  linkType: hard
+
+"query-string@npm:9.3.1":
+  version: 9.3.1
+  resolution: "query-string@npm:9.3.1"
+  dependencies:
+    decode-uri-component: "npm:^0.4.1"
+    filter-obj: "npm:^5.1.0"
+    split-on-first: "npm:^3.0.0"
+  checksum: 10c0/47f62350be7ace6d2e03d12becf5d1985731d97577963a4d8b684e166f6708cb42f63f09aa4c92931f2ee1ff57c0800a25807b95f28fd98f7064b1d06b02b07e
   languageName: node
   linkType: hard
 

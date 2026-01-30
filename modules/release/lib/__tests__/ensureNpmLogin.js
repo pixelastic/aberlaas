@@ -130,13 +130,32 @@ describe('ensureNpmLogin', () => {
 
   describe('generateTokenName', () => {
     it.each([
-      { input: 'my-package', expected: 'ABERLAAS_RELEASE_MY_PACKAGE' },
       {
-        input: '@scope/my-package',
+        packageJson: { name: 'my-package' },
+        expected: 'ABERLAAS_RELEASE_MY_PACKAGE',
+      },
+      {
+        packageJson: { name: '@scope/my-package' },
         expected: 'ABERLAAS_RELEASE_SCOPE_MY_PACKAGE',
       },
-    ])('$input → $expected', ({ input, expected }) => {
-      const actual = __.generateTokenName(input);
+      {
+        packageJson: { name: 'my-project-monorepo', workspaces: ['modules/*'] },
+        expected: 'ABERLAAS_RELEASE_MY_PROJECT',
+      },
+      {
+        packageJson: { name: 'my-project-root', workspaces: ['docs', 'lib'] },
+        expected: 'ABERLAAS_RELEASE_MY_PROJECT',
+      },
+      {
+        packageJson: { name: 'get-git-root' },
+        expected: 'ABERLAAS_RELEASE_GET_GIT_ROOT',
+      },
+      // {
+      //   packageJson: { name: 'my-monorepo-tool' },
+      //   expected: 'ABERLAAS_RELEASE_MY_MONOREPO_TOOL',
+      // },
+    ])('$packageJson.name → $expected', ({ packageJson, expected }) => {
+      const actual = __.generateTokenName(packageJson);
 
       expect(actual).toEqual(expected);
     });

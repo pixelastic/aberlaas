@@ -26,7 +26,7 @@
     "cli-markdown": "3.5.1",
     "firost": "5.5.1",
     "gilmore": "1.2.0",
-    "golgoth": "3.0.0",
+    "golgoth": "3.1.0",
     "semver": "7.7.3"
   },
   "scripts": {
