@@ -85,16 +85,43 @@ describe('lint', () => {
         throw new Error('jsError');
       });
 
-      const input = {};
-
+      let actual = null;
       try {
-        await run(input);
-      } catch (_err) {
-        // Swallowing the error
+        await run();
+      } catch (err) {
+        actual = err;
       }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_FAIL');
+
+      expect(mockedLinters.circleci.run).toHaveBeenCalled();
+      expect(mockedLinters.css.run).toHaveBeenCalled();
+      expect(mockedLinters.json.run).toHaveBeenCalled();
+      expect(mockedLinters.js.run).toHaveBeenCalled();
+      expect(mockedLinters.yml.run).toHaveBeenCalled();
 
       expect(__.consoleError).toHaveBeenCalledWith('ymlError');
       expect(__.consoleError).toHaveBeenCalledWith('jsError');
+    });
+    describe('with --failFast', () => {
+      it('should stop execution and throw error immediately when a linter fails', async () => {
+        mockedLinters.yml.run.mockImplementation(() => {
+          throw new Error('ymlError');
+        });
+        mockedLinters.js.run.mockImplementation(() => {
+          throw new Error('jsError');
+        });
+
+        let actual = null;
+        try {
+          await run({ failFast: true });
+        } catch (err) {
+          actual = err;
+        }
+
+        expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_FAIL_FAST');
+        expect(__.consoleError).toHaveBeenCalledOnce();
+      });
     });
     it('should pass list of files to all linters and config to each linter', async () => {
       const input = {

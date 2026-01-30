@@ -12,24 +12,36 @@ export async function run(cliArgs = {}) {
   const allTypesKeys = _.keys(__.linters);
   const userTypes = _.intersection(_.keys(cliArgs), allTypesKeys);
   const typesToLint = _.isEmpty(userTypes) ? allTypesKeys : userTypes;
+  const shouldFailFast = cliArgs.failFast;
+  const errors = [];
 
-  let hasErrors = false;
-  await pMap(typesToLint, async (type) => {
-    const methodName = cliArgs.fix ? 'fix' : 'run';
-    try {
+  await pMap(
+    typesToLint,
+    async (type) => {
+      const methodName = cliArgs.fix ? 'fix' : 'run';
       const linter = await __.getLinter(type);
-
       const configFile = _.get(cliArgs, `config.${type}`);
       const userPatterns = _.get(cliArgs, '_');
 
-      await linter[methodName](userPatterns, configFile);
-    } catch (error) {
-      __.consoleError(error.message);
-      hasErrors = true;
-    }
-  });
+      try {
+        await linter[methodName](userPatterns, configFile);
+      } catch (error) {
+        errors.push(error);
 
-  if (hasErrors) {
+        if (shouldFailFast) {
+          if (errors.length == 1) {
+            __.consoleError(error.message);
+          }
+          throw firostError('ABERLAAS_LINT_FAIL_FAST', 'Fail to lint files');
+        }
+
+        __.consoleError(error.message);
+      }
+    },
+    { stopOnError: shouldFailFast },
+  );
+
+  if (!_.isEmpty(errors)) {
     throw firostError('ABERLAAS_LINT_FAIL', 'Fail to lint files');
   }
 
