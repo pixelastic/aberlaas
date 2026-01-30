@@ -1,3 +1,14 @@
+## v2.20.2
+
+
+### Features
+
+- **release:** Use --no-test --no-lint --no-changelog (e0607bf)
+
+### Bug Fixes
+
+- **release:** Use newVersion from releaseData consistently (7e8678e)
+
 ## v2.20.1
 
 I borked the previous release. My token didn't had right to push a new package.
