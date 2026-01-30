@@ -35,7 +35,10 @@ __ = {
     const { filepath, content } = packageData;
 
     try {
-      await __.run('npm publish --access public', {
+      // Note:
+      // ✘ npm publish <= Keeps workspace:* in dependencies
+      // ✔ yarn npm publish <= Replaces workspace:* with actual versions
+      await __.run('yarn npm publish --access public', {
         cwd: path.dirname(filepath),
         stdout: false,
         stderr: false,

@@ -9,13 +9,13 @@ describe('publishToNpm', () => {
         name: 'my-package',
       },
     };
-    it('should run npm publish correctly', async () => {
+    it('should run yarn npm publish correctly', async () => {
       vi.spyOn(__, 'run').mockReturnValue();
 
       const actual = await __.publishPackage(packageData);
 
       expect(actual).toEqual(true);
-      expect(__.run).toHaveBeenCalledWith('npm publish --access public', {
+      expect(__.run).toHaveBeenCalledWith('yarn npm publish --access public', {
         cwd: '/path/to/package',
         stdout: false,
         stderr: false,
