@@ -166,3 +166,10 @@ yarn run ci
 yarn run ci --no-test
 yarn run ci --no-lint
 ```
+
+## What does "aberlaas" even mean?
+
+Aberlaas is the name of the base camp from which all great expeditions start in
+one of my favorite book: _La Horde du Contrevent_.
+
+I felt it was a great name for a bootstrapping kit
