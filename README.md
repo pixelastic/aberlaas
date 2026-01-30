@@ -1,203 +1,168 @@
-# aberlaas
+# Aberlaas
 
-<div class="lead">Scaffold your JavaScript projects with consistent config for tests, lint, release and CI.</div>
+> My opinionated dev toolbox
 
-`aberlaas` is a wrapper around Jest, ESLint, Prettier, etc and their plugins so
-you only install one package in your `devDependencies` instead of dozens.
+## What is Aberlaas?
 
-I created this module because I got tired of copy-pasting the same configuration
-files from project to project. With one _meta_ module to handle all the tooling,
-I could get started on a new project in minutes instead of hours.
+Aberlaas is my personal dev toolbox that configures my whole dev environment in
+a single package. Instead of copying configuration files, managing dependencies,
+and maintaining tooling across multiple projects, Aberlaas provides a unified
+setup that I can use consistently everywhere.
 
-Using `aberlaas` on every project ensured my linting rules and release process
-is consistent across my projects. Of course, if you don't like the defaults
-it's shipped with, you can override them as all configuration files are exposed.
+It adds testing with **Vitest**, linting with
+**ESLint**/**Stylelint**/**Prettier**/etc, dependencies with **Yarn**. It
+includes pre-commit hooks, release scripts and CI integration.
 
-## Installation
+## Philosophy
 
-```shell
+> Simple things are easy to do, while complex things are... possible.
+
+All configuration files are exposed at the project root. This gives me sensible
+defaults, while allowing me to configure specific rules per projects.
+
+The goal is to eliminate boilerplate while maintaining full flexibility.
+
+Install one package and get a complete development environment ready to go.
+
+## Quick Start
+
+```bash
+# Install as a dev dependency
 yarn add --dev aberlaas
 
+# Create all necessary configuration files, sets up git hooks, and installs dependencies.
 yarn run aberlaas init
-```
+# yarn run aberlaas init --libdocs  # To get ./lib and ./docs workspaces
+# yarn run aberlaas init --monorepo # To get ./modules/* workspaces
 
-This will add `aberlaas` to your `devDependencies` and bootstrap your project.
-Config files for all the tools will be created (`.eslintrc.js`,
-`jest.config.js`, etc) and new `yarn run` scripts will be added for the most
-common tasks (`lint`, `test`, `release`, etc).
-
-At that point, you should probably commit all the changes.
-
-### (Optional) Setup the external services
-
-```shell
+# Optional: Configure external services (GitHub, CircleCI, Renovate)
+# You might need:
+# - `ABERLAAS_GITHUB_TOKEN` - GitHub token with 'repo' scope
+# - `ABERLAAS_CIRCLECI_TOKEN` - CircleCI token
 yarn run aberlaas setup
+
 ```
 
-This will configure third party services like GitHub and CircleCI to work better
-with `aberlaas`.
+**Note:** You'll only run `init` and `setup` once when bootstrapping a new project.
 
----
+## Core Commands
 
+These are the commands you'll use daily during development. They're available as
+`aberlaas <command>` but typically accessed directly through `yarn run <command>`.
 
+### `yarn run test`
 
+Runs your test suite with Vitest.
 
-The following table lists all the scripts added:
+```bash
+# Run all tests
+yarn run test
 
-| Script                     | Description                                               |
-| -------------------------- | --------------------------------------------------------- |
-| `yarn run test`            | Run tests using Jest                                      |
-| `yarn run test:watch`      | Run tests using Jest in watch mode                        |
-| `yarn run ci`              | Run testing and linting in CI                             |
-| `yarn run release`         | Release the module on npm                                 |
+# Run specific test files
+yarn run test ./lib/myModule.js
 
-## Testing (with Jest)
+# Watch mode for development
+yarn run test --watch
 
-`aberlaas test` to run all the Jest tests in `./lib`. You can alter the behavior
-with the following options:
+# Stop on first failure
+yarn run test --failFast
+```
 
-| CLI Argument | Default value    | Description                                                  |
-| ------------ | ---------------- | ------------------------------------------------------------ |
-| `[...]`      | `./lib`          | Files and directories to test.                               |
-| `--config`   | `jest.config.js` | Jest config file to use                                      |
-| `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
-| `--failFast` | `false`          | If enabled, will stop as soon as one test fails              |
+### `yarn run lint`
 
-Note that you can also pass any other command-line flag and they will be passed
-directly to Jest under the hood.
+Lints JavaScript, CSS, JSON, YAML, and CircleCI config files.
 
-Jest is loaded with [jest-extended][1] allowing you to use new matchers like
-`.toBeString()`, `.toStartWith()`, etc.
+```bash
+# Lint everything
+yarn run lint
 
-### New global variables
+# Auto-fix what's fixable
+yarn run lint --fix
 
-`testName` is available in all tests and contains the name of the current
-`it`/`test` block.
+# Lint specific file types (also supports --css, --json, --yml, --circleci)
+yarn run lint --js
+```
 
-`captureOutput` allows to swallow any `stdout`/`stderr` output for later
-inspection. Output is stripped of any trailing newlines and ANSI characters.
+### `yarn run release`
+
+Publishes your package(s) to npm.
+
+```bash
+# Specify version bump explicitly
+yarn run release minor
+
+# Auto-detect version bump from conventional commit messages
+yarn run release
+
+# Skip tests, linting, and changelog generation
+yarn run release --no-test --no-lint --no-changelog
+```
+
+## Configuration
+
+All configuration files for the underlying tools are exported at your project
+root and can be customized as needed.
 
 ```javascript
-const actual = await captureOutput(async () => {
-  console.log('foo');
-});
-// actual.stdout = ['foo']
+// eslint.config.js
+// vite.config.js
+// prettier.config.js
+// stylelint.config.js
+// lintstaged.config.js
 ```
 
-[dedent][3] is included in all tests, so you can
-write multiline strings without having to break your indentation.
+Each file imports default configuration from `aberlaas/configs/*`, but you can override any setting:
 
 ```javascript
-describe('moduleName', () => {
-  describe('methodName', () => {
-    it('should test a multiline string', () => {
-      const input = dedent`
-        Leading and trailing lines will be trimmed, so you can write something like
-        this and have it work as you expect:
+// eslint.config.js - example of extending the config
+import config from 'aberlaas/configs/eslint';
 
-          * how convenient it is
-          * that I can use an indented list
-             - and still have it do the right thing`;
-      // …
-    });
-  });
+export default [
+  ...config,
+  {
+    rules: {
+      // Add your custom rules here
+      'no-console': 'warn',
+    },
+  },
+];
 ```
 
-## Precommit hooks
+This approach gives you sensible defaults while maintaining full control when you need it.
 
-`aberlaas` uses `lint-staged` to make sure all committed code
-follows your coding standard.
+## Automated Workflows
 
-All `css`, `js`, `json` and `yml` files will be checked for parsing errors
-(using `aberlaas lint` internally), and if errors are found it will attempt to
-automatically fix them. If errors persist, it will prevent the commit and let
-you know which file contains errors so you can fix them before committing again.
+### `precommit`
 
-Whenever you commit a `.js` file that has a test attached (or a test file
-directly), `aberlaas test` will be run on those files. If the tests don't pass,
-your commit will be rejected.
+A `pre-commit` hook will run before each commit, preventing you from commiting
+broken files.
 
-Those two measures ensure that you'll never "break the build", by committing
-invalid files or code that does not pass the test. If you want to ignore this
-behavior, you can always add the `-n` option to your `git commit` command to
-skip the hooks.
+On each commit, it:
+- Runs tests on changed files
+- Lints staged files
+- Compresses images
+- Regenerates README files
 
-## Releasing
+Note: If the hook fail to trigger, register it again with `git config core.hooksPath scripts/hooks`
 
-`aberlaas release` will release the package to npm. It will update
-the version in `package.json` as well as creating the related git tag.
+The `precommit` command uses two other commands behind the scenes:
+- `yarn run aberlaas compress` - Compresses images
+- `yarn run aberlaas readme` - Generates README from templates
 
-When called without arguments, it will prompt you for the next version to
-package. If called with an argument, this will be used as the next version
-number (for example, `yarn run release 1.1.3`). You can also use SemVer
-increments (for example, `yarn run release minor`).
+## CI Integration
 
-Use `--dry-run` to start a dry-run. It will simulate a release but won't
-actually push anything to GitHub or npm.
+### `yarn run ci`
 
-## Continuous Integration
+This is the command to run on your CI on each commit. It will run tests and
+lint, and stop if they fail.
 
-`aberlaas ci` is triggered by CI Servers (currently only CircleCI is supported),
-and won't do anything when run locally.
+CircleCI is automatically configured in `.circleci/config.yml`.
 
-When on a CI server it will first display the current node and yarn version, and
-then `test` and `lint` scripts in that order. It will fail whenever one of them
-fails, or succeed if they all succeed.
+```bash
+# Runs both test and lint
+yarn run ci
 
-The node and yarn version used both locally and on the CI server will be the
-same. A `.nvmrc` file is created when running `yarn run aberlaas init` that will
-force local users to use the specified version. The same version is also
-specified in the Docker image pulled by CircleCI. As for Yarn, a local copy of
-the whole yarn program is added to the repository when first initializing it, so
-both locals and CI servers will use it.
-
-By default, tests running on the CI will be parallelized on two CPUs (this is
-what most free CI tier offer). If you have access to higher end machines, you
-can update this value by passing the `--cpu-count=X` flag to your `aberlaas ci`
-call.
-
-### Auto-Releasing
-
-As an optional feature, you can have aberlaas automatically release a new
-version of your module from the CI environment when relevant.
-
-The CI will then check all the commits since the last release. If any commit is
-a `feat()` it will release a new minor version; it any commit is a `fix()` it
-will release a new patch version. For major release, you'll have to do it
-manually.
-
-This option is not enabled by default. If you need it, you need to follow those
-steps:
-
-- Run `aberlaas setup --auto-release`. It will setup the required `ENV` variables
-  and ssh keys
-- Update your `aberlaas ci` script to `aberlaas ci --auto-release`
-- Uncomment the `add_ssh_keys` in your `.circleci.yml` file
-
-## File structure
-
-`./lib/configs` contain the default configuration for all the tools. They are
-exported by the package and thus can be `require`d in userland.
-
-`./templates` contains default configurations files copied to userland. Each
-extends the configuration exported in the previous files. Copying files to
-userland allows user to change the files if they want to change the behavior.
-
-`.eslintrc.js`, `.stylelintrc.js` and `jest.config.js` are local
-configuration files for `aberlaas` itself. They eat their own dog food by
-referencing the same configs as above.
-
-## Where does the name Aberlaas come from?
-
-Aberlaas is the base camp from which all great expedition start in the _La Horde
-du Contrevent_ book. I felt it's a great name for a bootstrapping kit for
-modules.
-
-For your convenience, `aberlass` and `aberlas` are added as aliases by default.
-
-[1]: https://github.com/jest-community/jest-extended
-[3]: https://github.com/dmnd/dedent
-
-## Documentation
-
-The complete documentation can be found on https://projects.pixelastic.com/aberlaas/
+# Skip tests or linting if needed
+yarn run ci --no-test
+yarn run ci --no-lint
+```
