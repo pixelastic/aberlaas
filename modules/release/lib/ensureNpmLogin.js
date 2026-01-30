@@ -97,7 +97,7 @@ export const __ = {
     __.consoleInfo('');
     __.consoleInfo('PACKAGE AND SCOPES');
     __.consoleInfo('Permissions: Read and write');
-    __.consoleInfo(`🔘 Only select packages and scopes: ${packageName}`);
+    __.consoleInfo('🔘 All packages');
     __.consoleInfo('');
     __.consoleInfo('EXPIRATION');
     __.consoleInfo('Expiration date: 90 days');

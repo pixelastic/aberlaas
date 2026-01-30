@@ -69,15 +69,30 @@ describe('ensureNpmLogin', () => {
       await writeJson({ name: 'my-package' }, `${testDirectory}/package.json`);
     });
 
-    it('should display all instructions with generated token name and package name', async () => {
+    it('should display all required token configuration instructions', async () => {
       await __.displayLoginInstructions();
 
+      // Unique name per package
       expect(__.consoleInfo).toHaveBeenCalledWith(
         'Token name*: ABERLAAS_RELEASE_MY_PACKAGE',
       );
+      // Bypass 2FA
       expect(__.consoleInfo).toHaveBeenCalledWith(
-        '🔘 Only select packages and scopes: my-package',
+        '☑️ Bypass two-factor authentication (2FA)',
       );
+      // Permissions to write
+      expect(__.consoleInfo).toHaveBeenCalledWith(
+        'Permissions: Read and write',
+      );
+      // I wish we could use scoped packages, but NPM doesn't allow scoping to
+      // a package that does not yet exist. So if we scope, any new package
+      // to a monorepo later would get rejected on publish, resulting in borked
+      // published modules.
+      // So, better to use a broad token.
+      expect(__.consoleInfo).toHaveBeenCalledWith('🔘 All packages');
+
+      // Expiration date
+      expect(__.consoleInfo).toHaveBeenCalledWith('Expiration date: 90 days');
     });
   });
 
