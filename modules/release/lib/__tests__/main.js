@@ -12,13 +12,12 @@ describe('main', () => {
   });
 
   describe('run', () => {
+    const releaseData = { newVersion: '2.0.0' };
     beforeEach(() => {
       vi.spyOn(__, 'ensureValidSetup').mockReturnValue();
-      vi.spyOn(__, 'getReleaseData').mockReturnValue({
-        newVersion: '2.0.0',
-      });
+      vi.spyOn(__, 'getReleaseData').mockReturnValue(releaseData);
       vi.spyOn(__, 'updateGitRepo').mockReturnValue();
-      vi.spyOn(__, 'publishAllPackagesToNpm').mockReturnValue();
+      vi.spyOn(__, 'publishToNpm').mockReturnValue();
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
     });
 
@@ -28,8 +27,8 @@ describe('main', () => {
       expect(__.ensureValidSetup).toHaveBeenCalled();
       expect(__.getReleaseData).toHaveBeenCalled();
       expect(__.consoleInfo).toHaveBeenCalledWith('Release new version 2.0.0');
-      expect(__.updateGitRepo).toHaveBeenCalled();
-      expect(__.publishAllPackagesToNpm).toHaveBeenCalled();
+      expect(__.updateGitRepo).toHaveBeenCalled(releaseData);
+      expect(__.publishToNpm).toHaveBeenCalled(releaseData);
     });
 
     it('should stop execution when validation fails', async () => {
@@ -47,44 +46,7 @@ describe('main', () => {
       expect(actual).toHaveProperty('code', 'VALIDATION_FAILED');
       expect(__.getReleaseData).not.toHaveBeenCalled();
       expect(__.updateGitRepo).not.toHaveBeenCalled();
-      expect(__.publishAllPackagesToNpm).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('publishAllPackagesToNpm', () => {
-    beforeEach(async () => {
-      vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'firostRun').mockReturnValue();
-    });
-    it('should publish all packages to npm', async () => {
-      const releaseData = {
-        allPackages: [
-          {
-            filepath: `${testDirectory}/packages/a/package.json`,
-            content: { name: 'package-a' },
-          },
-          {
-            filepath: `${testDirectory}/packages/b/package.json`,
-            content: { name: 'package-b' },
-          },
-        ],
-      };
-
-      await __.publishAllPackagesToNpm(releaseData);
-
-      expect(__.firostRun).toHaveBeenCalledWith('npm publish --access public', {
-        cwd: `${testDirectory}/packages/a`,
-      });
-      expect(__.firostRun).toHaveBeenCalledWith('npm publish --access public', {
-        cwd: `${testDirectory}/packages/b`,
-      });
-
-      expect(__.consoleInfo).toHaveBeenCalledWith(
-        'Publishing package-a to npm',
-      );
-      expect(__.consoleInfo).toHaveBeenCalledWith(
-        'Publishing package-b to npm',
-      );
+      expect(__.publishToNpm).not.toHaveBeenCalled();
     });
   });
 });

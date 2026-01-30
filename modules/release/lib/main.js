@@ -1,8 +1,7 @@
-import path from 'node:path';
-import { pMap } from 'golgoth';
 import { consoleInfo, run as firostRun } from 'firost';
 import { ensureValidSetup } from './ensureValidSetup.js';
 import { getReleaseData } from './getReleaseData.js';
+import { publishToNpm } from './publishToNpm.js';
 import { updateGitRepo } from './updateGitRepo.js';
 
 export let __;
@@ -20,31 +19,14 @@ export async function run(cliArgs = {}) {
 
   await __.updateGitRepo(releaseData);
 
-  await __.publishAllPackagesToNpm(releaseData);
+  await __.publishToNpm(releaseData);
 }
 
 __ = {
-  /**
-   * Publishes all packages to npm
-   * @param {object} releaseData - Release data containing allPackages
-   */
-  async publishAllPackagesToNpm(releaseData) {
-    await pMap(
-      releaseData.allPackages,
-      async ({ filepath, content }) => {
-        const packageName = content.name;
-        __.consoleInfo(`Publishing ${packageName} to npm`);
-
-        const packageDir = path.dirname(filepath);
-        await __.firostRun('npm publish --access public', { cwd: packageDir });
-      },
-      { concurrency: 1 },
-    );
-  },
-
   ensureValidSetup,
-  updateGitRepo,
   getReleaseData,
+  publishToNpm,
+  updateGitRepo,
   consoleInfo,
   firostRun,
 };
