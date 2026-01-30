@@ -14,7 +14,7 @@ export let __;
  * @returns {Promise<void>} Promise that resolves when all packages are published
  */
 export async function publishToNpm(releaseData) {
-  const progress = __.spinner(releaseData.length);
+  const progress = __.spinner(releaseData.allPackages.length);
 
   await pMap(
     releaseData.allPackages,
