@@ -15,7 +15,7 @@ import cliMarkdown from 'cli-markdown';
 export const __ = {
   /**
    * Generate changelog markdown from git commits between two versions
-   * @param {object} releaseData - Release data containing currentVersion, newVersion, and skipChangelog
+   * @param {object} releaseData - Release data containing currentVersion, newVersion, and changeLog
    * @returns {string} Generated changelog markdown
    */
   async generateChangelogFromGit(releaseData) {
@@ -136,10 +136,11 @@ export const __ = {
 
 /**
  * Update the CHANGELOG.md file with new additions
- * @param {object} releaseData - Release data containing currentVersion, newVersion, and skipChangelog
+ * @param {object} releaseData - Release data containing currentVersion, newVersion, and changeLog
+ * @param {boolean} [releaseData.changelog=true] Generate changelog
  */
 export async function updateChangelog(releaseData) {
-  if (releaseData.skipChangelog) {
+  if (!releaseData.changelog) {
     return;
   }
 

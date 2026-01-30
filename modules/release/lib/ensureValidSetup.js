@@ -67,11 +67,12 @@ export const __ = {
 
   /**
    * Ensures that all tests are passing before proceeding with a release
-   * @param {object} cliArgs Release options
+   * @param {object} options Release options
+   * @param {boolean} [options.test=true] Run tests
    * @returns {Promise<void>} A promise that resolves if tests pass, rejects with ABERLAAS_RELEASE_TESTS_FAILING error if tests fail
    */
-  async ensureTestsArePassing(cliArgs = {}) {
-    if (cliArgs['skip-test']) {
+  async ensureTestsArePassing(options = {}) {
+    if (!options.test) {
       return false;
     }
     __.consoleInfo('Running tests...');
@@ -85,12 +86,13 @@ export const __ = {
 
   /**
    * Ensures that linting passes by running the lint process and throwing an error if it fails
-   * @param {object} cliArgs Release options
+   * @param {object} options Release options
+   * @param {boolean} [options.lint=true] Run lint
    * @returns {Promise<void>} A promise that resolves if linting passes
    * @throws {Error} Throws ABERLAAS_RELEASE_LINT_FAILING error if linting fails
    */
-  async ensureLintIsPassing(cliArgs = {}) {
-    if (cliArgs['skip-lint']) {
+  async ensureLintIsPassing(options = {}) {
+    if (!options.lint) {
       return false;
     }
     __.consoleInfo('Running lint...');
@@ -111,11 +113,18 @@ export const __ = {
 /**
  * Validate all pre-conditions before starting the release
  * @param {object} cliArgs Release options
- * @param {boolean} cliArgs.skipTest Skip test execution
- * @param {boolean} cliArgs.skipLint Skip lint execution
+ * @param {boolean} [cliArgs.test=true] Run test execution
+ * @param {boolean} [cliArgs.lint=true] Run lint execution
  * @returns {Promise<void>}
  */
 export async function ensureValidSetup(cliArgs = {}) {
+  // Default options: test and lint enabled unless explicitly disabled via CLI
+  const options = {
+    test: true,
+    lint: true,
+    ...cliArgs,
+  };
+
   __.ensureCorrectBumpType(cliArgs);
 
   const repo = new Gilmore(hostGitRoot());
@@ -130,8 +139,8 @@ export async function ensureValidSetup(cliArgs = {}) {
   await __.ensureNpmLogin();
 
   // Check tests are passing
-  await __.ensureTestsArePassing(cliArgs);
+  await __.ensureTestsArePassing(options);
 
   // Check lint is passing
-  await __.ensureLintIsPassing(cliArgs);
+  await __.ensureLintIsPassing(options);
 }

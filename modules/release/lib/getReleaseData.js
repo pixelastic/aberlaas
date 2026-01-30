@@ -90,22 +90,27 @@ export const __ = {
 /**
  * Gathers all release information from CLI arguments
  * @param {object} cliArgs - CLI arguments from minimist
- * @returns {object} Release data containing bumpType, allPackages, currentVersion, newVersion, skipChangelog
+ * @returns {object} Release data containing bumpType, allPackages, currentVersion, newVersion, changelog
  */
 export async function getReleaseData(cliArgs) {
+  // Default options: changelog enabled unless explicitly disabled via CLI
+  const options = {
+    changelog: true,
+    ...cliArgs,
+  };
+
   const allPackages = await __.getAllPackagesToRelease();
   const currentVersion = allPackages[0].content.version;
 
   const bumpType = await __.getBumpType(cliArgs, currentVersion);
 
   const newVersion = semver.inc(currentVersion, bumpType);
-  const skipChangelog = !!cliArgs['skip-changelog'];
 
   return {
     bumpType,
     allPackages,
     currentVersion,
     newVersion,
-    skipChangelog,
+    changelog: options.changelog,
   };
 }

@@ -26,8 +26,8 @@ describe('updateChangelog', () => {
       vi.spyOn(__, 'addToExistingChangelogFile');
     });
 
-    it('should do nothing when skipChangelog is true', async () => {
-      const releaseData = { skipChangelog: true };
+    it('should do nothing when changelog is false', async () => {
+      const releaseData = { changelog: false };
 
       await updateChangelog(releaseData);
 
@@ -38,7 +38,7 @@ describe('updateChangelog', () => {
 
     it('should orchestrate changelog generation, confirmation, and saving', async () => {
       const releaseData = {
-        skipChangelog: false,
+        changelog: true,
         currentVersion: '1.0.0',
         newVersion: '2.0.0',
       };

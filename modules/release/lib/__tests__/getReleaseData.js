@@ -37,7 +37,7 @@ describe('getReleaseData', () => {
         `${testDirectory}/packages/private/package.json`,
       );
 
-      const cliArgs = { _: ['major'], 'skip-changelog': true };
+      const cliArgs = { _: ['major'], changelog: false };
 
       const actual = await getReleaseData(cliArgs);
 
@@ -55,7 +55,7 @@ describe('getReleaseData', () => {
         ],
         currentVersion: '1.5.9',
         newVersion: '2.0.0',
-        skipChangelog: true,
+        changelog: false,
       });
     });
   });

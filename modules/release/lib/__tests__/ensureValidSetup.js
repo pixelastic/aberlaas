@@ -120,15 +120,15 @@ describe('ensureValidSetup', () => {
       vi.spyOn(__, 'yarnRun').mockReturnValue();
     });
 
-    it('should return false when skip-test is true', async () => {
-      const actual = await __.ensureTestsArePassing({ 'skip-test': true });
+    it('should return false when test is false', async () => {
+      const actual = await __.ensureTestsArePassing({ test: false });
 
       expect(actual).toEqual(false);
       expect(__.yarnRun).not.toHaveBeenCalled();
     });
 
     it('should pass when tests succeed', async () => {
-      const actual = await __.ensureTestsArePassing();
+      const actual = await __.ensureTestsArePassing({ test: true });
 
       expect(actual).toEqual(true);
       expect(__.consoleInfo).toHaveBeenCalled();
@@ -142,7 +142,7 @@ describe('ensureValidSetup', () => {
 
       let actual = null;
       try {
-        await __.ensureTestsArePassing();
+        await __.ensureTestsArePassing({ test: true });
       } catch (err) {
         actual = err;
       }
@@ -158,15 +158,15 @@ describe('ensureValidSetup', () => {
       vi.spyOn(__, 'yarnRun').mockReturnValue();
     });
 
-    it('should return false when skip-lint is true', async () => {
-      const actual = await __.ensureLintIsPassing({ 'skip-lint': true });
+    it('should return false when lint is false', async () => {
+      const actual = await __.ensureLintIsPassing({ lint: false });
 
       expect(actual).toEqual(false);
       expect(__.yarnRun).not.toHaveBeenCalled();
     });
 
     it('should pass when lint succeeds', async () => {
-      const actual = await __.ensureLintIsPassing();
+      const actual = await __.ensureLintIsPassing({ lint: true });
 
       expect(actual).toEqual(true);
       expect(__.consoleInfo).toHaveBeenCalled();
@@ -180,7 +180,7 @@ describe('ensureValidSetup', () => {
 
       let actual = null;
       try {
-        await __.ensureLintIsPassing();
+        await __.ensureLintIsPassing({ lint: true });
       } catch (err) {
         actual = err;
       }
