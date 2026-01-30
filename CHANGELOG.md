@@ -1,3 +1,14 @@
+## v2.21.0
+
+
+### Features
+
+- **lint:** Add --failFast flag to stop on first error (0c942c4)
+
+### Bug Fixes
+
+- **release:** Replace workspace:* with real version in published files (726cb62)
+
 ## v2.20.2
 
 
