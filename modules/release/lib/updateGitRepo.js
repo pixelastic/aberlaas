@@ -10,10 +10,14 @@ export const __ = {
    * @param {object} releaseData - Release data containing allPackages and newVersion
    */
   async bumpAllPackageVersions(releaseData) {
-    await pMap(releaseData.allPackages, async ({ filepath, content }) => {
+    const { newVersion } = releaseData;
+
+    await pMap(releaseData.allPackages, async (packageData) => {
+      const { filepath, content } = packageData;
       const packageName = content.name;
-      __.consoleInfo(`Updating ${packageName} to ${releaseData.newVersion}`);
-      const newContent = { ...content, version: releaseData.newVersion };
+      __.consoleInfo(`Updating ${packageName} to ${newVersion}`);
+
+      const newContent = { ...content, version: newVersion };
       await writeJson(newContent, filepath, {
         sort: false,
       });

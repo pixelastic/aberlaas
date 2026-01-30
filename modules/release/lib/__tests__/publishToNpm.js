@@ -46,6 +46,7 @@ describe('publishToNpm', () => {
   describe('publishToNpm', () => {
     let mockProgress;
     const releaseData = {
+      newVersion: '2.0.0',
       allPackages: [
         {
           filepath: '/path/to/package-a/package.json',
@@ -78,13 +79,13 @@ describe('publishToNpm', () => {
       expect(__.spinner).toHaveBeenCalledWith(3);
       expect(mockProgress.tick).toHaveBeenCalledTimes(3);
       expect(mockProgress.tick).toHaveBeenCalledWith(
-        'Publishing package-a@1.0.0',
+        'Publishing package-a@2.0.0',
       );
       expect(mockProgress.tick).toHaveBeenCalledWith(
-        'Publishing package-b@1.0.0',
+        'Publishing package-b@2.0.0',
       );
       expect(mockProgress.tick).toHaveBeenCalledWith(
-        'Publishing package-c@1.0.0',
+        'Publishing package-c@2.0.0',
       );
     });
 

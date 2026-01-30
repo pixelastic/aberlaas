@@ -14,14 +14,14 @@ export let __;
  * @returns {Promise<void>} Promise that resolves when all packages are published
  */
 export async function publishToNpm(releaseData) {
-  const progress = __.spinner(releaseData.allPackages.length);
+  const { allPackages, newVersion } = releaseData;
+  const progress = __.spinner(allPackages.length);
 
   await pMap(
-    releaseData.allPackages,
+    allPackages,
     async (packageData) => {
       const packageName = packageData.content.name;
-      const packageVersion = packageData.content.version;
-      progress.tick(`Publishing ${packageName}@${packageVersion}`);
+      progress.tick(`Publishing ${packageName}@${newVersion}`);
 
       await __.publishPackage(packageData);
     },
