@@ -3,66 +3,49 @@ import {
   consoleInfo,
   consoleWarn,
   env,
-  firostError,
+  exists,
   prompt,
+  read,
   readJson,
   run,
   sleep,
-  wrap,
   write,
 } from 'firost';
 import { hostGitPath, hostPackagePath } from 'aberlaas-helper';
+import { parse as parseEnvrc, stringify as stringifyEnvrc } from 'envfile';
 
-export const __ = {
-  /**
-   * Ensures the user is logged in to npm by checking authentication status and prompting for login if needed.
-   * @returns {boolean|undefined} Returns true if already logged in, undefined if login was required and completed
-   * @throws {Error} Throws error if npm authentication fails for reasons other than E401 unauthorized
-   */
-  async ensureNpmLogin() {
-    try {
-      await __.npmRun('whoami');
-      return true;
-    } catch (err) {
-      if (err.code == 'ABERLAAS_RELEASE_NPM_ERROR_E401') {
-        await __.waitForNpmLogin();
-        return;
-      }
-      throw err;
-    }
-  },
+export let __;
 
+/**
+ * Ensures the user is logged in to npm by checking authentication status and prompting for login if needed.
+ * @returns {boolean|undefined} Returns true if already logged in, undefined if login was required and completed
+ * @throws {Error} Throws error if npm authentication fails for reasons other than E401 unauthorized
+ */
+export async function ensureNpmLogin() {
+  if (await __.isAuthenticated()) {
+    return true;
+  }
+
+  await __.waitForNpmLogin();
+}
+
+__ = {
+  ensureNpmLogin,
   /**
-   * Executes an npm command and returns its output
-   * @param {string} command - The npm command to execute (without 'npm' prefix)
-   * @returns {string} The stdout output from the npm command
-   * @throws {Error} Throws a formatted error if the npm command fails
+   * Checks if the user is authenticated with npm by running 'yarn npm whoami' command
+   * @returns {Promise<boolean>} Promise that resolves to true if authenticated, false otherwise
    */
-  async npmRun(command) {
+  async isAuthenticated() {
     try {
-      const { stdout } = await __.run(`npm ${command}`, {
-        stdout: false,
+      await __.run('yarn npm whoami', {
         stderr: false,
+        stdout: false,
       });
-      return stdout;
-    } catch ({ stderr }) {
-      const errorLines = _.split(stderr, '\n');
-
-      // Identify known npm errors
-      if (_.startsWith(errorLines[0], 'npm error code')) {
-        const npmErrorCode = _.replace(errorLines[0], 'npm error code ', '');
-        const npmErrorMessage = _.chain(errorLines).slice(1).join('\n').value();
-        throw firostError(
-          `ABERLAAS_RELEASE_NPM_ERROR_${npmErrorCode}`,
-          npmErrorMessage,
-        );
-      }
-
-      // Throw unknown errors up
-      throw firostError('ABERLAAS_RELEASE_NPM_UNKNOWN_ERROR', stderr);
+      return true;
+    } catch (_err) {
+      return false;
     }
   },
-
   /**
    * Prompts the user to create and configure an npm authentication token when not logged in.
    * Opens the npm token creation page in browser, guides user through token setup,
@@ -160,13 +143,19 @@ export const __ = {
   },
 
   /**
-   * Saves the npm token to .npmrc file
+   * Saves the npm token to .envrc file
    */
   async saveNpmToken() {
+    // TODO: replace with keyleth
+    const envrcPath = hostGitPath('.envrc');
+    const envrcAsJson = (await exists(envrcPath))
+      ? parseEnvrc(await read(envrcPath))
+      : {};
+
     const npmToken = await __.prompt('Enter you new token here:');
-    const npmrcContent = `//registry.npmjs.org/:_authToken=${npmToken}`;
-    const npmrcPath = hostGitPath('.npmrc');
-    await write(npmrcContent, npmrcPath);
+    envrcAsJson.ABERLAAS_RELEASE_NPM_AUTH_TOKEN = npmToken;
+
+    await write(stringifyEnvrc(envrcAsJson), envrcPath);
   },
   run,
   env,
@@ -175,5 +164,3 @@ export const __ = {
   consoleInfo,
   sleep,
 };
-
-export const ensureNpmLogin = wrap(__, 'ensureNpmLogin');

@@ -4,7 +4,44 @@ import { hostGitRoot, yarnRun } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { ensureNpmLogin } from './ensureNpmLogin.js';
 
-export const __ = {
+export let __;
+
+/**
+ * Validate all pre-conditions before starting the release
+ * @param {object} cliArgs Release options
+ * @param {boolean} [cliArgs.test=true] Run test execution
+ * @param {boolean} [cliArgs.lint=true] Run lint execution
+ * @returns {Promise<void>}
+ */
+export async function ensureValidSetup(cliArgs = {}) {
+  // Default options: test and lint enabled unless explicitly disabled via CLI
+  const options = {
+    test: true,
+    lint: true,
+    ...cliArgs,
+  };
+
+  __.ensureCorrectBumpType(cliArgs);
+
+  const repo = new Gilmore(hostGitRoot());
+
+  // Need to be on branch main
+  await __.ensureCorrectBranch(repo);
+
+  // Need to have a clean directory
+  await __.ensureCleanRepository(repo);
+
+  // Check npm login
+  await __.ensureNpmLogin();
+
+  // Check tests are passing
+  await __.ensureTestsArePassing(options);
+
+  // Check lint is passing
+  await __.ensureLintIsPassing(options);
+}
+
+__ = {
   /**
    * Validates that the provided bump type is one of the accepted semantic
    * versioning types, or empty for auto-detection.
@@ -109,38 +146,3 @@ export const __ = {
   firostRun,
   yarnRun,
 };
-
-/**
- * Validate all pre-conditions before starting the release
- * @param {object} cliArgs Release options
- * @param {boolean} [cliArgs.test=true] Run test execution
- * @param {boolean} [cliArgs.lint=true] Run lint execution
- * @returns {Promise<void>}
- */
-export async function ensureValidSetup(cliArgs = {}) {
-  // Default options: test and lint enabled unless explicitly disabled via CLI
-  const options = {
-    test: true,
-    lint: true,
-    ...cliArgs,
-  };
-
-  __.ensureCorrectBumpType(cliArgs);
-
-  const repo = new Gilmore(hostGitRoot());
-
-  // Need to be on branch main
-  await __.ensureCorrectBranch(repo);
-
-  // Need to have a clean directory
-  await __.ensureCleanRepository(repo);
-
-  // Check npm login
-  await __.ensureNpmLogin();
-
-  // Check tests are passing
-  await __.ensureTestsArePassing(options);
-
-  // Check lint is passing
-  await __.ensureLintIsPassing(options);
-}

@@ -1,4 +1,4 @@
-import { firostError, read, remove, tmpDirectory, writeJson } from 'firost';
+import { read, remove, tmpDirectory, writeJson } from 'firost';
 import { __ as helper, mockHelperPaths } from 'aberlaas-helper';
 import { __, ensureNpmLogin } from '../ensureNpmLogin.js';
 
@@ -13,54 +13,47 @@ describe('ensureNpmLogin', () => {
     await remove(testDirectory);
   });
 
-  describe('npmRun', () => {
-    it('should return stdout when command succeeds', async () => {
-      vi.spyOn(__, 'run').mockReturnValue({
-        stdout: 'pixelastic',
-      });
+  describe('ensureNpmLogin', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'waitForNpmLogin').mockReturnValue();
+    });
+    it('should return true when already authenticated', async () => {
+      vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
 
-      const actual = await __.npmRun('whoami');
+      const actual = await ensureNpmLogin();
 
-      expect(actual).toEqual('pixelastic');
-      expect(__.run).toHaveBeenCalledWith('npm whoami', {
-        stdout: false,
+      expect(actual).toEqual(true);
+      expect(__.waitForNpmLogin).not.toHaveBeenCalled();
+    });
+
+    it('should call waitForNpmLogin when not authenticated (E401)', async () => {
+      vi.spyOn(__, 'isAuthenticated').mockReturnValue(false);
+
+      await ensureNpmLogin();
+
+      expect(__.waitForNpmLogin).toHaveBeenCalled();
+    });
+  });
+
+  describe('isAuthenticated', () => {
+    it('should return true if yarn npm login suceeds', async () => {
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      const actual = await __.isAuthenticated();
+
+      await expect(actual).toEqual(true);
+      expect(__.run).toHaveBeenCalledWith('yarn npm whoami', {
         stderr: false,
+        stdout: false,
       });
     });
-
-    it('should throw formatted error for EXXX', async () => {
-      vi.spyOn(__, 'run').mockRejectedValue({
-        stderr: 'npm error code E123\nnpm error 123 Custom Error',
+    it('should return false if yarn npm login throw an error', async () => {
+      vi.spyOn(__, 'run').mockImplementation(() => {
+        throw new Error('Some error');
       });
 
-      let actual = null;
-      try {
-        await __.npmRun('whoami');
-      } catch (err) {
-        actual = err;
-      }
-
-      expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_NPM_ERROR_E123');
-      expect(actual.message).toContain('123 Custom Error');
-    });
-
-    it('should throw the raw error if not a parseable npm one', async () => {
-      vi.spyOn(__, 'run').mockRejectedValue({
-        stderr: 'Some other error message',
-      });
-
-      let actual = null;
-      try {
-        await __.npmRun('whoami');
-      } catch (err) {
-        actual = err;
-      }
-
-      expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_RELEASE_NPM_UNKNOWN_ERROR',
-      );
-      expect(actual.message).toContain('Some other error message');
+      const actual = await __.isAuthenticated();
+      await expect(actual).toEqual(false);
     });
   });
 
@@ -102,10 +95,10 @@ describe('ensureNpmLogin', () => {
 
       await __.saveNpmToken();
 
-      const npmrcPath = helper.hostGitPath('.npmrc');
-      const actual = await read(npmrcPath);
+      const envrcPath = helper.hostGitPath('.envrc');
+      const actual = await read(envrcPath);
       expect(actual).toEqual(
-        '//registry.npmjs.org/:_authToken=npm_mySecretToken123',
+        'ABERLAAS_RELEASE_NPM_AUTH_TOKEN=npm_mySecretToken123',
       );
     });
   });
@@ -217,48 +210,6 @@ describe('ensureNpmLogin', () => {
       expect(actual).toEqual(
         'https://www.npmjs.com/settings/pixelastic/tokens/granular-access-tokens/new',
       );
-    });
-  });
-
-  describe('ensureNpmLogin', () => {
-    it('should return true when already authenticated', async () => {
-      vi.spyOn(__, 'npmRun').mockReturnValue('pixelastic');
-
-      const actual = await ensureNpmLogin();
-
-      expect(actual).toEqual(true);
-      expect(__.npmRun).toHaveBeenCalledWith('whoami');
-    });
-
-    it('should call waitForNpmLogin when not authenticated (E401)', async () => {
-      vi.spyOn(__, 'npmRun').mockImplementation(() => {
-        throw firostError(
-          'ABERLAAS_RELEASE_NPM_ERROR_E401',
-          'Not authenticated',
-        );
-      });
-      vi.spyOn(__, 'waitForNpmLogin').mockReturnValue();
-
-      await ensureNpmLogin();
-
-      expect(__.waitForNpmLogin).toHaveBeenCalled();
-    });
-
-    it('should re-throw error when npm fails with non-E401 error', async () => {
-      vi.spyOn(__, 'npmRun').mockImplementation(() => {
-        throw firostError('ABERLAAS_RELEASE_NPM_ERROR_E711', 'Another error');
-      });
-      vi.spyOn(__, 'waitForNpmLogin').mockReturnValue();
-
-      let actual = null;
-      try {
-        await ensureNpmLogin();
-      } catch (err) {
-        actual = err;
-      }
-
-      expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_NPM_ERROR_E711');
-      expect(__.waitForNpmLogin).not.toHaveBeenCalled();
     });
   });
 });

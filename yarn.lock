@@ -4591,6 +4591,7 @@ __metadata:
     aberlaas-test: "workspace:*"
     changelogen: "npm:0.6.2"
     cli-markdown: "npm:3.5.1"
+    envfile: "npm:7.1.0"
     firost: "npm:5.5.1"
     gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
@@ -8715,6 +8716,15 @@ __metadata:
   version: 3.0.0
   resolution: "env-paths@npm:3.0.0"
   checksum: 10c0/76dec878cee47f841103bacd7fae03283af16f0702dad65102ef0a556f310b98a377885e0f32943831eb08b5ab37842a323d02529f3dfd5d0a40ca71b01b435f
+  languageName: node
+  linkType: hard
+
+"envfile@npm:7.1.0":
+  version: 7.1.0
+  resolution: "envfile@npm:7.1.0"
+  bin:
+    envfile: bin.cjs
+  checksum: 10c0/7fa1e76d2f137846ef7755102041b3da494248b5d4e0aa61edba2ee05cb0ed1422b8f64a0b6998c453bfb2ee08996b0d11daaaede2783e5049638f4f20b1335c
   languageName: node
   linkType: hard
 
