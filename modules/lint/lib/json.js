@@ -1,7 +1,7 @@
-import path from 'node:path';
-import { _, pMap } from 'golgoth';
-import { firostError, read } from 'firost';
-import { findHostPackageFiles, hostGitRoot } from 'aberlaas-helper';
+import { _ } from 'golgoth';
+import { firostError } from 'firost';
+import { findHostPackageFiles } from 'aberlaas-helper';
+import { eslintRun } from './helpers/eslintRun.js';
 import { prettierFix } from './helpers/prettierFix.js';
 
 export let __;
@@ -9,44 +9,42 @@ export let __;
 /**
  * Lint all files and display results.
  * @param {Array} userPatterns Patterns to narrow the search down
+ * @param {string} userConfigFile Custom config file to use
+ * @param {object} userOptions Options to pass to ESLint, including fix
  * @returns {boolean} True on success
  */
-export async function run(userPatterns) {
+export async function run(userPatterns, userConfigFile, userOptions = {}) {
   const files = await __.getInputFiles(userPatterns);
-  if (_.isEmpty(files)) {
+
+  try {
+    await eslintRun(files, userConfigFile, userOptions);
     return true;
+  } catch (err) {
+    throw firostError('ABERLAAS_LINT_JSON', err.message);
   }
-
-  let hasErrors = false;
-  const errorMessages = [];
-  await pMap(files, async (filepath) => {
-    try {
-      JSON.parse(await read(filepath));
-    } catch (error) {
-      hasErrors = true;
-      const relativePath = path.relative(hostGitRoot(), filepath);
-      errorMessages.push(`Invalid JSON: ${relativePath}`);
-      errorMessages.push(error.message);
-    }
-  });
-
-  if (hasErrors) {
-    throw firostError('ABERLAAS_LINT_JSON', errorMessages.join('\n'));
-  }
-  return true;
 }
 
 /**
  * Autofix files in place
  * @param {Array} userPatterns Patterns to narrow the search down
+ * @param {string} userConfigFile Custom config file to use
  * @returns {boolean} True on success
  */
-export async function fix(userPatterns) {
+export async function fix(userPatterns, userConfigFile) {
   const files = await __.getInputFiles(userPatterns);
-  if (_.isEmpty(files)) {
-    return true;
+
+  // Note: The @eslint/json plugin doesn't seem to support fixing the JSON and
+  // chokes on malformed JSON (like trailing commas).
+  // Prettier, on the other hand, can fix trailing commas.
+  // So we run both.
+  try {
+    // To fix most issues ESLint can't fix
+    await __.prettierFix(files);
+    // To warn about leftover issues
+    return await run(userPatterns, userConfigFile, { fix: true });
+  } catch (err) {
+    throw firostError('ABERLAAS_LINT_JSON_FIX', err.message);
   }
-  await __.prettierFix(files);
 }
 
 __ = {

@@ -1,8 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { findHostPackageFiles, getConfig } from 'aberlaas-helper';
-import { ESLint } from 'eslint';
-import eslintConfig from '../configs/eslint.js';
+import { findHostPackageFiles } from 'aberlaas-helper';
+import { eslintRun } from './helpers/eslintRun.js';
 
 export let __;
 
@@ -14,45 +13,14 @@ export let __;
  * @returns {boolean} True on success
  */
 export async function run(userPatterns, userConfigFile, userOptions = {}) {
-  // Options
-  const options = { fix: false, warnIgnored: false, ...userOptions };
-
-  // Files to lint
   const files = await __.getInputFiles(userPatterns);
-  if (_.isEmpty(files)) {
+
+  try {
+    await eslintRun(files, userConfigFile, userOptions);
     return true;
+  } catch (err) {
+    throw firostError('ABERLAAS_LINT_JS', err.message);
   }
-
-  // Config file
-  const config = await getConfig(
-    userConfigFile,
-    'eslint.config.js',
-    eslintConfig,
-  );
-
-  // Run the actual lint
-  const eslint = new ESLint({
-    ...options,
-    overrideConfigFile: true,
-    overrideConfig: config,
-  });
-  const results = await eslint.lintFiles(files);
-
-  // Fix
-  if (options.fix) {
-    await ESLint.outputFixes(results);
-  }
-
-  // All good, we can stop
-  const errorCount = _.chain(results).map('errorCount').sum().value();
-  if (errorCount == 0) {
-    return true;
-  }
-
-  // Format errors
-  const formatter = await eslint.loadFormatter('stylish');
-  const errorText = formatter.format(results);
-  throw firostError('ABERLAAS_LINT_JS', errorText);
 }
 
 /**

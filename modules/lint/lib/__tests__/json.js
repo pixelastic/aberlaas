@@ -1,10 +1,13 @@
 import { _ } from 'golgoth';
-import { newFile, read, remove, tmpDirectory, write, writeJson } from 'firost';
+import { absolute, newFile, read, remove, write, writeJson } from 'firost';
 import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../json.js';
 
 describe('lint-json', () => {
-  const testDirectory = tmpDirectory('aberlaas/lint/json');
+  // IMPORTANT: This test MUST use a directory inside the repository (not /tmp system)
+  // because ESLint refuses to lint files outside of its base directory.
+  // This is an ESLint technical constraint, not a choice.
+  const testDirectory = absolute('<gitRoot>/tmp/lint/json');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });
@@ -84,19 +87,12 @@ describe('lint-json', () => {
     });
   });
   describe('fix', () => {
-    it('should call prettierFix with the correct files', async () => {
-      vi.spyOn(__, 'prettierFix').mockResolvedValue();
-
-      await write('{"foo": "bar"}', hostPackagePath('test.json'));
-
-      await fix();
-
-      expect(__.prettierFix).toHaveBeenCalledWith([
-        expect.stringContaining('test.json'),
-      ]);
+    it('stop early if no file found', async () => {
+      const actual = await run();
+      expect(actual).toBe(true);
     });
 
-    it('should fix files end-to-end', async () => {
+    it('should fix trailing comma', async () => {
       await write('{ "foo": "bar", }', hostPackagePath('foo.json'));
 
       await fix();
@@ -106,9 +102,20 @@ describe('lint-json', () => {
       expect(actual).toBe('{ "foo": "bar" }');
     });
 
-    it('stop early if no file found', async () => {
-      const actual = await run();
-      expect(actual).toBe(true);
+    it('should throw if still errors', async () => {
+      await write(
+        '{ "foo": "bar", "foo": "baz" }',
+        hostPackagePath('foo.json'),
+      );
+
+      let actual = null;
+      try {
+        await fix();
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JSON_FIX');
     });
   });
 });

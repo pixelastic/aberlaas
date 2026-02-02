@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import pluginJson from '@eslint/json';
 // @vitest/plugins requires @typescript-eslint/utils and typescripts as deps
 // See: https://github.com/vitest-dev/eslint-plugin-vitest/issues/543
 import pluginVitest from '@vitest/eslint-plugin';
@@ -273,6 +274,20 @@ export default [
       'react/jsx-uses-react': ['error'],
       'react/jsx-uses-vars': ['error'],
       'import/extensions': ['error', 'always', { ignorePackages: true }],
+    },
+  },
+  {
+    name: 'aberlaas/json',
+    plugins: { json: pluginJson },
+    language: 'json/json',
+    files: ['**/*.json'],
+    rules: {
+      'json/no-duplicate-keys': ['error'],
+      'json/no-empty-keys': ['error'],
+      'json/no-unnormalized-keys': ['error'],
+      'json/no-unsafe-values': ['error'],
+      'json/top-level-interop': ['error'],
+      'json/sort-keys': ['off'],
     },
   },
   {

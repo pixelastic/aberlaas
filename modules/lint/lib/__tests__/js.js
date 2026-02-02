@@ -7,14 +7,14 @@ describe('lint-js', () => {
   // IMPORTANT: This test MUST use a directory inside the repository (not /tmp system)
   // because ESLint refuses to lint files outside of its base directory.
   // This is an ESLint technical constraint, not a choice.
-  const tmpDirectory = absolute('<gitRoot>/modules/lib/tmp/lint/js');
+  const testDirectory = absolute('<gitRoot>/tmp/lint/js');
   beforeEach(async () => {
-    await emptyDir(tmpDirectory);
+    await emptyDir(testDirectory);
 
-    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDirectory);
-    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${tmpDirectory}/lib`);
+    vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
+    vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${testDirectory}/lib`);
     vi.spyOn(helper, 'hostWorkingDirectory').mockReturnValue(
-      `${tmpDirectory}/lib/src`,
+      `${testDirectory}/lib/src`,
     );
   });
   describe('getInputFiles', () => {
