@@ -1,13 +1,19 @@
 {
   "name": "aberlaas-lint",
+  "version": "2.21.1",
+  "description": "aberlaas lint command: Lint files",
+  "author": "Tim Carry <tim@pixelastic.com>",
+  "homepage": "https://projects.pixelastic.com/aberlaas/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixelastic/aberlaas"
+  },
   "type": "module",
   "sideEffects": false,
-  "description": "aberlaas lint command: Lint files",
-  "version": "2.21.1",
-  "repository": "pixelastic/aberlaas",
-  "homepage": "https://projects.pixelastic.com/aberlaas/",
-  "author": "Tim Carry (@pixelastic)",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "files": [
     "lib/*.js",
     "lib/helpers/*.js",
@@ -20,9 +26,6 @@
     "./configs/stylelint": "./configs/stylelint.js"
   },
   "main": "./lib/main.js",
-  "engines": {
-    "node": ">=18.18.0"
-  },
   "dependencies": {
     "@eslint/js": "9.39.2",
     "@eslint/json": "1.0.0",
@@ -36,11 +39,13 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsdoc": "62.5.0",
     "eslint-plugin-n": "17.23.2",
+    "eslint-plugin-package-json": "0.88.2",
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-react": "7.37.5",
     "firost": "5.5.1",
     "globals": "17.3.0",
     "golgoth": "3.1.0",
+    "jsonc-eslint-parser": "2.4.2",
     "prettier": "3.8.1",
     "stylelint": "17.1.0",
     "typescript": "5.9.3",
@@ -50,13 +55,13 @@
     "build": "cd ../docs && yarn run build",
     "build:prod": "cd ../docs && yarn run build:prod",
     "cms": "cd ../docs && yarn run cms",
-    "serve": "cd ../docs && yarn run serve",
-    "release": "cd ../.. && ./scripts/release",
-    "test:meta": "cd ../.. && ./scripts/test-meta",
-    "test": "cd ../.. && ./scripts/test",
-    "test:watch": "cd ../.. && ./scripts/test-watch",
     "compress": "cd ../.. && ./scripts/compress",
     "lint": "cd ../.. && ./scripts/lint",
-    "lint:fix": "cd ../.. && ./scripts/lint-fix"
+    "lint:fix": "cd ../.. && ./scripts/lint-fix",
+    "release": "cd ../.. && ./scripts/release",
+    "serve": "cd ../docs && yarn run serve",
+    "test": "cd ../.. && ./scripts/test",
+    "test:meta": "cd ../.. && ./scripts/test-meta",
+    "test:watch": "cd ../.. && ./scripts/test-watch"
   }
 }
