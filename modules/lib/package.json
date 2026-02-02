@@ -1,6 +1,6 @@
 {
   "name": "aberlaas",
-  "version": "2.21.0",
+  "version": "2.21.1",
   "author": "Tim Carry (@pixelastic)",
   "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
   "keywords": [],

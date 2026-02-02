@@ -1,3 +1,10 @@
+## v2.21.1
+
+
+### Bug Fixes
+
+- **release:** Replace .npmrc with .envrc for npm auth token (14e2216)
+
 ## v2.21.0
 
 
