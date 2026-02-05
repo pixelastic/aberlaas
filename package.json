@@ -1,14 +1,17 @@
 {
   "name": "aberlaas-monorepo",
   "private": true,
+  "type": "module",
   "workspaces": [
     "modules/*"
   ],
-  "author": "pixelastic",
   "description": "aberlaas monorepo",
-  "repository": "pixelastic/aberlaas",
+  "author": "Tim Carry <tim@pixelastic.com>",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
-  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixelastic/aberlaas"
+  },
   "license": "MIT",
   "packageManager": "yarn@4.12.0",
   "devDependencies": {
@@ -18,15 +21,15 @@
   "scripts": {
     "build": "cd ../docs && yarn run build",
     "build:prod": "cd ../docs && yarn run build:prod",
-    "cms": "cd ../docs && yarn run cms",
-    "serve": "cd ../docs && yarn run serve",
     "ci": "./scripts/ci",
-    "release": "./scripts/release",
-    "test:meta": "./scripts/test-meta",
-    "test": "./scripts/test",
-    "test:watch": "./scripts/test-watch",
+    "cms": "cd ../docs && yarn run cms",
     "compress": "./scripts/compress",
     "lint": "./scripts/lint",
-    "lint:fix": "./scripts/lint-fix"
+    "lint:fix": "./scripts/lint-fix",
+    "release": "./scripts/release",
+    "serve": "cd ../docs && yarn run serve",
+    "test": "./scripts/test",
+    "test:meta": "./scripts/test-meta",
+    "test:watch": "./scripts/test-watch"
   }
 }

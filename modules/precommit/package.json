@@ -1,12 +1,15 @@
 {
   "name": "aberlaas-precommit",
-  "type": "module",
-  "sideEffects": false,
-  "description": "aberlaas precommit helper: Sanitize and cleanup on commit",
   "version": "2.21.1",
-  "repository": "pixelastic/aberlaas",
+  "type": "module",
+  "description": "aberlaas precommit helper: Sanitize and cleanup on commit",
+  "author": "Tim Carry <tim@pixelastic.com>",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
-  "author": "Tim Carry (@pixelastic)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixelastic/aberlaas"
+  },
+  "sideEffects": false,
   "license": "MIT",
   "files": [
     "lib/*.js",
@@ -17,8 +20,10 @@
     "./configs/lintstaged": "./configs/lintstaged.js"
   },
   "main": "./lib/main.js",
-  "engines": {
-    "node": ">=18.18.0"
+  "devDependencies": {
+    "gilmore": "1.2.0",
+    "golgoth": "3.1.0",
+    "micromatch": "4.0.8"
   },
   "dependencies": {
     "aberlaas-helper": "workspace:*",
@@ -29,18 +34,13 @@
     "build": "cd ../docs && yarn run build",
     "build:prod": "cd ../docs && yarn run build:prod",
     "cms": "cd ../docs && yarn run cms",
-    "serve": "cd ../docs && yarn run serve",
-    "release": "cd ../.. && ./scripts/release",
-    "test:meta": "cd ../.. && ./scripts/test-meta",
-    "test": "cd ../.. && ./scripts/test",
-    "test:watch": "cd ../.. && ./scripts/test-watch",
     "compress": "cd ../.. && ./scripts/compress",
     "lint": "cd ../.. && ./scripts/lint",
-    "lint:fix": "cd ../.. && ./scripts/lint-fix"
-  },
-  "devDependencies": {
-    "gilmore": "1.2.0",
-    "golgoth": "3.1.0",
-    "micromatch": "4.0.8"
+    "lint:fix": "cd ../.. && ./scripts/lint-fix",
+    "release": "cd ../.. && ./scripts/release",
+    "serve": "cd ../docs && yarn run serve",
+    "test": "cd ../.. && ./scripts/test",
+    "test:meta": "cd ../.. && ./scripts/test-meta",
+    "test:watch": "cd ../.. && ./scripts/test-watch"
   }
 }

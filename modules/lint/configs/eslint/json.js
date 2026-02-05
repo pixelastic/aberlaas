@@ -62,6 +62,7 @@ export default [
             'files',
             'exports',
             'main',
+            'bin',
             // Dependencies
             'devDependencies',
             'dependencies',
@@ -109,11 +110,8 @@ export default [
   },
   {
     name: 'aberlaas/packageJsonPublishable',
-    files: [
-      '**/lib/package.json',
-      '**/modules/*/package.json',
-      '!**/docs/package.json',
-    ],
+    files: ['**/lib/package.json', '**/modules/*/package.json'],
+    ignores: ['**/docs/package.json'],
     plugins: {
       'package-json': packageJson,
     },

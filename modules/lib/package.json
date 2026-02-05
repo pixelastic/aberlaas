@@ -1,16 +1,27 @@
 {
   "name": "aberlaas",
   "version": "2.21.1",
-  "author": "Tim Carry (@pixelastic)",
-  "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
-  "keywords": [],
-  "repository": "pixelastic/aberlaas",
-  "homepage": "https://projects.pixelastic.com/aberlaas/",
   "type": "module",
+  "description": "Scaffold your JavaScript projects with tests, lint and release scripts",
+  "author": "Tim Carry <tim@pixelastic.com>",
+  "homepage": "https://projects.pixelastic.com/aberlaas/",
+  "keywords": [
+    "aberlaas",
+    "DX",
+    "lint",
+    "test",
+    "release",
+    "ci",
+    "precommit"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixelastic/aberlaas"
+  },
   "sideEffects": false,
   "license": "MIT",
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=22.18.0"
   },
   "files": [
     "bin/",
@@ -59,13 +70,13 @@
     "build": "cd ../docs && yarn run build",
     "build:prod": "cd ../docs && yarn run build:prod",
     "cms": "cd ../docs && yarn run cms",
-    "serve": "cd ../docs && yarn run serve",
-    "release": "cd ../.. && ./scripts/release",
-    "test:meta": "cd ../.. && ./scripts/test-meta",
-    "test": "cd ../.. && ./scripts/test",
-    "test:watch": "cd ../.. && ./scripts/test-watch",
     "compress": "cd ../.. && ./scripts/compress",
     "lint": "cd ../.. && ./scripts/lint",
-    "lint:fix": "cd ../.. && ./scripts/lint-fix"
+    "lint:fix": "cd ../.. && ./scripts/lint-fix",
+    "release": "cd ../.. && ./scripts/release",
+    "serve": "cd ../docs && yarn run serve",
+    "test": "cd ../.. && ./scripts/test",
+    "test:meta": "cd ../.. && ./scripts/test-meta",
+    "test:watch": "cd ../.. && ./scripts/test-watch"
   }
 }

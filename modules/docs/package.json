@@ -1,11 +1,15 @@
 {
-  "private": true,
   "name": "aberlaas-docs",
   "version": "2.19.0",
-  "author": "pixelastic",
+  "private": true,
+  "type": "commonjs",
   "description": "aberlaas docs",
-  "repository": "pixelastic/aberlaas",
+  "author": "Tim Carry <tim@pixelastic.com>",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixelastic/aberlaas"
+  },
   "license": "MIT",
   "dependencies": {
     "norska": "2.10.0",
@@ -15,13 +19,13 @@
     "build": "cd ../docs && yarn run build",
     "build:prod": "cd ../docs && yarn run build:prod",
     "cms": "cd ../docs && yarn run cms",
-    "serve": "cd ../docs && yarn run serve",
-    "release": "cd ../.. && ./scripts/release",
-    "test:meta": "cd ../.. && ./scripts/test-meta",
-    "test": "cd ../.. && ./scripts/test",
-    "test:watch": "cd ../.. && ./scripts/test-watch",
     "compress": "cd ../.. && ./scripts/compress",
     "lint": "cd ../.. && ./scripts/lint",
-    "lint:fix": "cd ../.. && ./scripts/lint-fix"
+    "lint:fix": "cd ../.. && ./scripts/lint-fix",
+    "release": "cd ../.. && ./scripts/release",
+    "serve": "cd ../docs && yarn run serve",
+    "test": "cd ../.. && ./scripts/test",
+    "test:meta": "cd ../.. && ./scripts/test-meta",
+    "test:watch": "cd ../.. && ./scripts/test-watch"
   }
 }

@@ -1,15 +1,17 @@
 {
   "name": "aberlaas-helper",
-  "type": "module",
-  "sideEffects": false,
-  "description": "aberlaas shared helper: Common methods used by all commands",
   "version": "2.21.1",
-  "repository": "pixelastic/aberlaas",
+  "type": "module",
+  "description": "aberlaas shared helper: Common methods used by all commands",
+  "author": "Tim Carry <tim@pixelastic.com>",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
-  "author": "Tim Carry (@pixelastic)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixelastic/aberlaas"
+  },
+  "sideEffects": false,
   "license": "MIT",
   "files": [
-    "lib/main.js",
     "lib/helper.js",
     "lib/test-helper.js"
   ],
@@ -17,9 +19,6 @@
     ".": "./lib/main.js"
   },
   "main": "./lib/main.js",
-  "engines": {
-    "node": ">=18.18.0"
-  },
   "dependencies": {
     "aberlaas-versions": "workspace:*",
     "firost": "5.5.1",
@@ -29,13 +28,13 @@
     "build": "cd ../docs && yarn run build",
     "build:prod": "cd ../docs && yarn run build:prod",
     "cms": "cd ../docs && yarn run cms",
-    "serve": "cd ../docs && yarn run serve",
-    "release": "cd ../.. && ./scripts/release",
-    "test:meta": "cd ../.. && ./scripts/test-meta",
-    "test": "cd ../.. && ./scripts/test",
-    "test:watch": "cd ../.. && ./scripts/test-watch",
     "compress": "cd ../.. && ./scripts/compress",
     "lint": "cd ../.. && ./scripts/lint",
-    "lint:fix": "cd ../.. && ./scripts/lint-fix"
+    "lint:fix": "cd ../.. && ./scripts/lint-fix",
+    "release": "cd ../.. && ./scripts/release",
+    "serve": "cd ../docs && yarn run serve",
+    "test": "cd ../.. && ./scripts/test",
+    "test:meta": "cd ../.. && ./scripts/test-meta",
+    "test:watch": "cd ../.. && ./scripts/test-watch"
   }
 }
