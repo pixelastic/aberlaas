@@ -1,4 +1,11 @@
-import { read, remove, tmpDirectory } from 'firost';
+import {
+  glob,
+  packageRoot,
+  read,
+  readJson,
+  remove,
+  tmpDirectory,
+} from 'firost';
 import { hostGitPath, hostGitRoot, mockHelperPaths } from 'aberlaas-helper';
 import { nodeVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
@@ -90,6 +97,23 @@ describe('init', () => {
           'ABERLAAS_INIT_LAYOUT_INCOMPATIBLE',
         );
       });
+    });
+  });
+  describe('package.json', () => {
+    // Note: yarn doesn't automatically preserve the +x bit, so we need to
+    // configure it
+    it('all template scripts should be marked as executable once published', async () => {
+      const aberlaasInitRoot = packageRoot();
+      const packageJson = await readJson(`${aberlaasInitRoot}/package.json`);
+      const executableFiles = packageJson.publishConfig.executableFiles;
+
+      const scriptTemplates = await glob('templates/scripts/**/*', {
+        cwd: aberlaasInitRoot,
+        absolutePaths: false,
+        directories: false,
+      });
+
+      expect(executableFiles).toEqual(scriptTemplates);
     });
   });
 });

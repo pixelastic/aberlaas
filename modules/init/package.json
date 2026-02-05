@@ -23,13 +23,13 @@
       "templates/scripts/ci",
       "templates/scripts/cms",
       "templates/scripts/compress",
+      "templates/scripts/hooks/pre-commit",
       "templates/scripts/lint",
       "templates/scripts/lint-fix",
       "templates/scripts/release",
       "templates/scripts/serve",
       "templates/scripts/test",
-      "templates/scripts/test-watch",
-      "templates/scripts/hooks/pre-commit"
+      "templates/scripts/test-watch"
     ]
   },
   "exports": {
