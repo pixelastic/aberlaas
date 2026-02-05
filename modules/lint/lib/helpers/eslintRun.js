@@ -2,7 +2,7 @@ import { _ } from 'golgoth';
 import { firostError, run } from 'firost';
 import { getConfig } from 'aberlaas-helper';
 import { ESLint } from 'eslint';
-import eslintConfig from '../../configs/eslint.js';
+import eslintConfig from '../../configs/eslint/index.js';
 
 /**
  * Lint all files and display results.

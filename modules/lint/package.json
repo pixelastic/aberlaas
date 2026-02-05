@@ -1,6 +1,7 @@
 {
   "name": "aberlaas-lint",
   "version": "2.21.1",
+  "type": "module",
   "description": "aberlaas lint command: Lint files",
   "author": "Tim Carry <tim@pixelastic.com>",
   "homepage": "https://projects.pixelastic.com/aberlaas/",
@@ -8,7 +9,6 @@
     "type": "git",
     "url": "https://github.com/pixelastic/aberlaas"
   },
-  "type": "module",
   "sideEffects": false,
   "license": "MIT",
   "engines": {
@@ -17,11 +17,12 @@
   "files": [
     "lib/*.js",
     "lib/helpers/*.js",
-    "configs/*.js"
+    "configs/*.js",
+    "configs/eslint/*.js"
   ],
   "exports": {
     ".": "./lib/main.js",
-    "./configs/eslint": "./configs/eslint.js",
+    "./configs/eslint": "./configs/eslint/index.js",
     "./configs/prettier": "./configs/prettier.js",
     "./configs/stylelint": "./configs/stylelint.js"
   },
