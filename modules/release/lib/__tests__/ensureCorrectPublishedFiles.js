@@ -1,0 +1,167 @@
+import {
+  firostError,
+  newFile,
+  remove,
+  run,
+  tmpDirectory,
+  writeJson,
+} from 'firost';
+import {
+  __,
+  ensureCorrectPublishedFiles,
+} from '../ensureCorrectPublishedFiles.js';
+
+describe('ensureCorrectPublishedFiles', () => {
+  const testDirectory = tmpDirectory(
+    'aberlaas/release/ensureCorrectPublishedFiles',
+  );
+  let packageJsonContent = {
+    name: 'test-package',
+    packageManager: 'yarn@4.12.0',
+    version: '1.0.0',
+    files: ['lib/main.js', 'lib/helpers/', 'templates/'],
+  };
+
+  beforeAll(async () => {
+    await newFile(`${testDirectory}/README.md`);
+    await newFile(`${testDirectory}/lib/main.js`);
+    await newFile(`${testDirectory}/lib/helpers/path.js`);
+    await newFile(`${testDirectory}/lib/helpers/env.js`);
+    await newFile(`${testDirectory}/templates/index.html`);
+    await writeJson(packageJsonContent, `${testDirectory}/package.json`);
+
+    await run('yarn install', { cwd: testDirectory, stdout: false });
+  });
+
+  afterAll(async () => {
+    await remove(testDirectory);
+  });
+
+  describe('ensureCorrectPublishedFiles', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'ensureSameFilesPublishedWithYarnOrNpm').mockImplementation(
+        ({ shouldThrow }) => {
+          if (!shouldThrow) return;
+          throw firostError('BAD_FILES');
+        },
+      );
+    });
+    it('should pass if same files on both package managers', async () => {
+      const releaseData = {
+        allPackages: [
+          { shouldThrow: false },
+          { shouldThrow: false },
+          { shouldThrow: false },
+          { shouldThrow: false },
+          { shouldThrow: false },
+        ],
+      };
+
+      const actual = await ensureCorrectPublishedFiles(releaseData);
+      expect(actual).toEqual(true);
+    });
+
+    it('should pass if same files on both package managers', async () => {
+      const releaseData = {
+        allPackages: [
+          { shouldThrow: false },
+          { shouldThrow: false },
+          { shouldThrow: true },
+          { shouldThrow: false },
+          { shouldThrow: false },
+        ],
+      };
+
+      let actual = null;
+      try {
+        await ensureCorrectPublishedFiles(releaseData);
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty('code', 'BAD_FILES');
+    });
+  });
+
+  describe('getNpmPublishedFiles', () => {
+    it('should return list of files that npm will publish', async () => {
+      const actual = await __.getNpmPublishedFiles({
+        filepath: `${testDirectory}/package.json`,
+        content: packageJsonContent,
+      });
+
+      expect(actual).toEqual([
+        'README.md',
+        'lib/helpers/env.js',
+        'lib/helpers/path.js',
+        'lib/main.js',
+        'package.json',
+        'templates/index.html',
+      ]);
+    });
+  });
+
+  describe('getYarnPublishedFiles', () => {
+    it('should return list of files that yarn will publish', async () => {
+      const actual = await __.getYarnPublishedFiles({
+        filepath: `${testDirectory}/package.json`,
+        content: packageJsonContent,
+      });
+
+      expect(actual).toEqual([
+        'README.md',
+        'lib/main.js',
+        'package.json',
+        'templates/index.html',
+      ]);
+    });
+  });
+
+  describe('ensureSameFilesPublishedWithYarnOrNpm', () => {
+    it('should not throw when npm and yarn return the same files', async () => {
+      vi.spyOn(__, 'getNpmPublishedFiles').mockReturnValue(['README.md']);
+      vi.spyOn(__, 'getYarnPublishedFiles').mockReturnValue(['README.md']);
+
+      const actual = await __.ensureSameFilesPublishedWithYarnOrNpm({
+        filepath: `${testDirectory}/package.json`,
+        content: packageJsonContent,
+      });
+
+      expect(actual).toEqual(true);
+    });
+
+    it('should throw when npm and yarn return different files', async () => {
+      vi.spyOn(__, 'getNpmPublishedFiles').mockReturnValue([
+        'README.md',
+        'templates/index.html',
+      ]);
+      vi.spyOn(__, 'getYarnPublishedFiles').mockReturnValue([
+        'README.md',
+        'lib/helpers/path.js',
+      ]);
+
+      let actual = null;
+      try {
+        await __.ensureSameFilesPublishedWithYarnOrNpm({
+          filepath: `${testDirectory}/package.json`,
+          content: packageJsonContent,
+        });
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_RELEASE_NPM_YARN_DIFFERENT_PUBLISHED_FILES',
+      );
+      expect(actual).toHaveProperty(
+        'message',
+        expect.stringContaining('Only in npm:\ntemplates/index.html'),
+      );
+      expect(actual).toHaveProperty(
+        'message',
+        expect.stringContaining('Only in yarn:\nlib/helpers/path.js'),
+      );
+    });
+  });
+});
