@@ -14,8 +14,6 @@ export const __ = {
 
     await pMap(releaseData.allPackages, async (packageData) => {
       const { filepath, content } = packageData;
-      const packageName = content.name;
-      __.consoleInfo(`Updating ${packageName} to ${newVersion}`);
 
       const newContent = { ...content, version: newVersion };
       await writeJson(newContent, filepath, {
