@@ -6,6 +6,7 @@ import {
   tmpDirectory,
   writeJson,
 } from 'firost';
+import { yarnVersion } from 'aberlaas-versions';
 import {
   __,
   ensureCorrectPublishedFiles,
@@ -17,7 +18,7 @@ describe('ensureCorrectPublishedFiles', () => {
   );
   let packageJsonContent = {
     name: 'test-package',
-    packageManager: 'yarn@4.12.0',
+    packageManager: `yarn@${yarnVersion}`,
     version: '1.0.0',
     files: ['lib/main.js', 'lib/helpers/', 'templates/'],
   };

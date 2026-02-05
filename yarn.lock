@@ -4637,6 +4637,7 @@ __metadata:
     aberlaas-helper: "workspace:*"
     aberlaas-lint: "workspace:*"
     aberlaas-test: "workspace:*"
+    aberlaas-versions: "workspace:*"
     changelogen: "npm:0.6.2"
     cli-markdown: "npm:3.5.1"
     envfile: "npm:7.1.0"

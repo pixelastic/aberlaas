@@ -18,6 +18,9 @@
     ".": "./lib/main.js"
   },
   "main": "./lib/main.js",
+  "devDependencies": {
+    "aberlaas-versions": "workspace:*"
+  },
   "dependencies": {
     "aberlaas-helper": "workspace:*",
     "aberlaas-lint": "workspace:*",
