@@ -1,3 +1,10 @@
+## v2.22.2
+
+
+### Bug Fixes
+
+- **init:** Explicitly list script files instead of glob pattern (6ab398b)
+
 ## v2.22.1
 
 

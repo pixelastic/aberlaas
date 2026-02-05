@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-compress",
-  "version": "2.22.1",
+  "version": "2.22.2",
   "type": "module",
   "description": "aberlaas compress command: Reduce image filesize",
   "author": "Tim Carry <tim@pixelastic.com>",
