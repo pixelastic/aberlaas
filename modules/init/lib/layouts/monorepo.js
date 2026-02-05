@@ -55,44 +55,39 @@ __ = {
       // Name and version
       name: `${sharedProjectData.name}-monorepo`,
 
-      // Visibility
+      // Dev info
       private: true,
+      type: 'module',
       workspaces: ['modules/*'],
 
       // Metadata
-      author: sharedProjectData.author,
       description: `${sharedProjectData.name} monorepo`,
-      repository: sharedProjectData.repository,
+      author: sharedProjectData.author,
       homepage: sharedProjectData.homepage,
+      repository: sharedProjectData.repository,
 
       // Compatibility
-      type: 'module',
       license: sharedProjectData.license,
       engines,
       packageManager: `yarn@${yarnVersion}`,
 
       // Dependencies
-      dependencies: {},
       devDependencies: {
         aberlaas: aberlaasVersion,
       },
 
       // Scripts
       scripts: {
-        // Docs
         build: './scripts/build',
         'build:prod': './scripts/build-prod',
         cms: './scripts/cms',
-        serve: './scripts/serve',
-
-        // Lib
-        release: './scripts/release',
-        test: './scripts/test',
-        'test:watch': './scripts/test-watch',
-        ci: './scripts/ci',
         compress: './scripts/compress',
         lint: './scripts/lint',
         'lint:fix': './scripts/lint-fix',
+        release: './scripts/release',
+        serve: './scripts/serve',
+        test: './scripts/test',
+        'test:watch': './scripts/test-watch',
       },
     };
     await writeJson(packageContent, hostGitPath('./package.json'), {
@@ -111,17 +106,17 @@ __ = {
       name: `${sharedProjectData.name}-docs`,
       version: '0.0.1',
 
-      // Visibility
+      // Dev info
       private: true,
+      type: 'commonjs',
 
       // Metadata
-      author: sharedProjectData.author,
       description: `${sharedProjectData.name} docs`,
-      repository: sharedProjectData.repository,
+      author: sharedProjectData.author,
       homepage: sharedProjectData.homepage,
+      repository: sharedProjectData.repository,
 
       // Compatibility
-      // "type": "module", // TODO: Uncomment once norska is ESM-compliant
       license: sharedProjectData.license,
 
       // Dependencies
@@ -129,7 +124,6 @@ __ = {
         norska: norskaVersion,
         'norska-theme-docs': norskaThemeDocsVersion,
       },
-      devDependencies: {},
 
       // Scripts
       scripts: sharedProjectData.scripts,
@@ -148,6 +142,7 @@ __ = {
    */
   async createLibWorkspace() {
     const sharedProjectData = await __.getSharedProjectData();
+    const projectName = sharedProjectData.name;
     const engines = {
       node: `>=${nodeVersion}`,
     };
@@ -157,18 +152,17 @@ __ = {
       name: sharedProjectData.name,
       version: '0.0.1',
 
-      // Visibility
-      private: false,
+      // Dev info
+      type: 'module',
 
       // Metadata
+      description: `${projectName} module`,
       author: sharedProjectData.author,
-      description: '',
-      keywords: [],
-      repository: sharedProjectData.repository,
       homepage: sharedProjectData.homepage,
+      keywords: [projectName],
+      repository: sharedProjectData.repository,
 
       // Compatibility
-      type: 'module',
       sideEffects: false,
       license: sharedProjectData.license,
       engines,
@@ -179,10 +173,6 @@ __ = {
         '.': './main.js',
       },
       main: './main.js',
-
-      // Dependencies
-      dependencies: {},
-      devDependencies: {},
 
       // Scripts
       scripts: sharedProjectData.scripts,
@@ -210,20 +200,23 @@ __ = {
     const name = await getProjectName();
     const author = await getProjectAuthor();
     const homepage = `https://projects.pixelastic.com/${name}`;
-    const repository = `${author}/${name}`;
+    const repository = {
+      type: 'git',
+      url: `https://github.com/${author}/${name}`,
+    };
     const license = 'MIT';
     const scripts = {
       build: 'cd ../.. && ./scripts/build',
       'build:prod': 'cd ../.. && ./scripts/build-prod',
-      cms: 'cd ../.. && ./scripts/cms',
-      serve: 'cd ../.. && ./scripts/serve',
       ci: 'cd ../.. && ./scripts/ci',
-      release: 'cd ../.. && ./scripts/release',
-      test: 'cd ../.. && ./scripts/test',
-      'test:watch': 'cd ../.. && ./scripts/test-watch',
+      cms: 'cd ../.. && ./scripts/cms',
       compress: 'cd ../.. && ./scripts/compress',
       lint: 'cd ../.. && ./scripts/lint',
       'lint:fix': 'cd ../.. && ./scripts/lint-fix',
+      release: 'cd ../.. && ./scripts/release',
+      serve: 'cd ../.. && ./scripts/serve',
+      test: 'cd ../.. && ./scripts/test',
+      'test:watch': 'cd ../.. && ./scripts/test-watch',
     };
     return {
       author,

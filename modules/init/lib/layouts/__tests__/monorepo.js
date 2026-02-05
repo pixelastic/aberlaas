@@ -43,7 +43,10 @@ describe('init > monorepo', () => {
           name: 'my-project-monorepo',
           author: 'my-name',
           description: 'my-project monorepo',
-          repository: 'my-name/my-project',
+          repository: {
+            type: 'git',
+            url: 'https://github.com/my-name/my-project',
+          },
           homepage: 'https://projects.pixelastic.com/my-project',
           license: 'MIT',
         },
@@ -55,7 +58,6 @@ describe('init > monorepo', () => {
           workspaces: ['modules/*'],
           type: 'module',
           packageManager: `yarn@${yarnVersion}`,
-          dependencies: {},
           devDependencies: {
             aberlaas: '1.2.3',
           },
@@ -83,7 +85,10 @@ describe('init > monorepo', () => {
           version: '0.0.1',
           author: 'my-name',
           description: 'my-project docs',
-          repository: 'my-name/my-project',
+          repository: {
+            type: 'git',
+            url: 'https://github.com/my-name/my-project',
+          },
           homepage: 'https://projects.pixelastic.com/my-project',
           license: 'MIT',
         },
@@ -92,7 +97,6 @@ describe('init > monorepo', () => {
         'should have docs specific data',
         {
           private: true,
-          devDependencies: {},
           dependencies: {
             norska: norskaVersion,
             'norska-theme-docs': norskaThemeDocsVersion,
@@ -120,9 +124,12 @@ describe('init > monorepo', () => {
           name: 'my-project',
           version: '0.0.1',
           author: 'my-name',
-          description: '',
-          keywords: [],
-          repository: 'my-name/my-project',
+          description: 'my-project module',
+          keywords: ['my-project'],
+          repository: {
+            type: 'git',
+            url: 'https://github.com/my-name/my-project',
+          },
           homepage: 'https://projects.pixelastic.com/my-project',
           license: 'MIT',
         },
@@ -130,7 +137,6 @@ describe('init > monorepo', () => {
       [
         'should have lib specific data',
         {
-          private: false,
           type: 'module',
           sideEffects: false,
           engines: {
@@ -142,9 +148,6 @@ describe('init > monorepo', () => {
           // Some tools have trouble parsing the .exports field, so we keep the
           // .main field for backward compatibility
           main: './main.js',
-
-          devDependencies: {},
-          dependencies: {},
 
           scripts: {
             build: 'cd ../.. && ./scripts/build',
