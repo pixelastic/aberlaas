@@ -35,13 +35,17 @@ __ = {
     const name = await getProjectName();
     const version = '0.0.1';
 
-    const author = await getProjectAuthor();
-    const description = '';
-    const keywords = [];
-    const repository = `${author}/${name}`;
-    const homepage = `https://github.com/${repository}`;
-
     const type = 'module';
+
+    const description = `${name} module`;
+    const author = await getProjectAuthor();
+    const homepage = `https://github.com/${author}/${name}`;
+    const keywords = [name];
+    const repository = {
+      type: 'git',
+      url: homepage,
+    };
+
     const sideEffects = false;
     const license = 'MIT';
     const engines = {
@@ -65,9 +69,9 @@ __ = {
       compress: './scripts/compress',
       lint: './scripts/lint',
       'lint:fix': './scripts/lint-fix',
+      release: './scripts/release',
       test: './scripts/test',
       'test:watch': './scripts/test-watch',
-      release: './scripts/release',
     };
 
     const packageContent = {
@@ -75,15 +79,17 @@ __ = {
       name,
       version,
 
+      // Dev info
+      type,
+
       // Metadata
-      author,
       description,
+      author,
+      homepage,
       keywords,
       repository,
-      homepage,
 
       // Compatibility
-      type,
       sideEffects,
       license,
       engines,
