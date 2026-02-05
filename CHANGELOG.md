@@ -1,3 +1,15 @@
+## v2.22.0
+
+
+### Features
+
+- **lint:** Add ESLint package.json validation with comprehensive rules (6ddb197)
+- **release:** Verify npm/yarn publish file consistency (bfd4d69)
+
+### Bug Fixes
+
+- **release:** Improve npm publish output parsing and file list formatting (8c6987c)
+
 ## v2.21.1
 
 

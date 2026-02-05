@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-test",
-  "version": "2.21.1",
+  "version": "2.22.0",
   "type": "module",
   "description": "aberlaas test command: Run automated tests",
   "author": "Tim Carry <tim@pixelastic.com>",
