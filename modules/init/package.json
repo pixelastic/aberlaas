@@ -13,8 +13,8 @@
   "license": "MIT",
   "files": [
     "lib/*.js",
-    "lib/layouts/",
-    "templates/"
+    "lib/layouts/**/*",
+    "templates/**/*"
   ],
   "exports": {
     ".": "./lib/main.js"

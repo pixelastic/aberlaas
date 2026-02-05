@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { _, pMap } from 'golgoth';
-import { firostError, run as firostRun } from 'firost';
+import { consoleInfo, firostError, run as firostRun } from 'firost';
 
 export let __;
 
@@ -11,13 +11,11 @@ export let __;
  * @returns {boolean} True when all packages have been verified
  */
 export async function ensureCorrectPublishedFiles(releaseData) {
-  await pMap(
-    releaseData.allPackages,
-    __.ensureSameFilesPublishedWithYarnOrNpm,
-    {
-      concurrency: 5,
-    },
-  );
+  const { allPackages } = releaseData;
+  __.consoleInfo('Checking files to publish...');
+  await pMap(allPackages, __.ensureSameFilesPublishedWithYarnOrNpm, {
+    concurrency: 5,
+  });
   return true;
 }
 
@@ -38,12 +36,12 @@ __ = {
     ];
     if (!_.isEmpty(onlyInNpm)) {
       message.push('Only in npm:');
-      message.push(onlyInNpm.join('\n - '));
+      message.push(' - ' + onlyInNpm.join('\n - '));
       message.push('');
     }
     if (!_.isEmpty(onlyInYarn)) {
       message.push('Only in yarn:');
-      message.push(onlyInYarn.join('\n - '));
+      message.push(' - ' + onlyInYarn.join('\n - '));
     }
     message.push('\nPlease check your .files key in package.json');
     throw firostError(
@@ -67,12 +65,17 @@ __ = {
       stderr: false,
     });
 
-    return _.chain(stdout)
-      .thru(JSON.parse)
-      .get('files')
-      .map('path')
-      .sort()
-      .value();
+    return __.parseNpmPublishOutput(stdout);
+  },
+  parseNpmPublishOutput(stdout) {
+    const parsedOutput = JSON.parse(stdout);
+
+    // Output either contains directly an object with all info, or the object
+    // itself is in a key with the name of the package (in case of workspaces)
+    const keys = _.keys(parsedOutput);
+    const root = keys.length === 1 ? parsedOutput[keys[0]] : parsedOutput;
+
+    return _.chain(root).get('files').map('path').sort().value();
   },
   /**
    * Gets the list of files that would be published to npm for a package using yarn
@@ -98,5 +101,6 @@ __ = {
       .value();
   },
 
+  consoleInfo,
   firostRun,
 };

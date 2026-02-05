@@ -24,6 +24,7 @@ describe('ensureCorrectPublishedFiles', () => {
 
   beforeAll(async () => {
     await newFile(`${testDirectory}/README.md`);
+    await newFile(`${testDirectory}/LICENSE`);
     await newFile(`${testDirectory}/lib/main.js`);
     await newFile(`${testDirectory}/lib/helpers/path.js`);
     await newFile(`${testDirectory}/lib/helpers/env.js`);
@@ -39,6 +40,7 @@ describe('ensureCorrectPublishedFiles', () => {
 
   describe('ensureCorrectPublishedFiles', () => {
     beforeEach(async () => {
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
       vi.spyOn(__, 'ensureSameFilesPublishedWithYarnOrNpm').mockImplementation(
         ({ shouldThrow }) => {
           if (!shouldThrow) return;
@@ -91,6 +93,7 @@ describe('ensureCorrectPublishedFiles', () => {
       });
 
       expect(actual).toEqual([
+        'LICENSE',
         'README.md',
         'lib/helpers/env.js',
         'lib/helpers/path.js',
@@ -98,6 +101,75 @@ describe('ensureCorrectPublishedFiles', () => {
         'package.json',
         'templates/index.html',
       ]);
+    });
+  });
+
+  describe('parseNpmPublishOutput', () => {
+    it.each([
+      [
+        {
+          title: 'happy path',
+          input: dedent`
+              {
+                "id": "test-package@1.0.0",
+                "name": "test-package",
+                "files": [
+                  {
+                    "path": "LICENSE",
+                    "size": 0,
+                    "mode": 420
+                  },
+                  {
+                    "path": "README.md",
+                    "size": 0,
+                    "mode": 420
+                  },
+                  {
+                    "path": "lib/helpers/env.js",
+                    "size": 0,
+                    "mode": 420
+                  }
+                ]
+              }`,
+
+          expected: ['LICENSE', 'README.md', 'lib/helpers/env.js'],
+        },
+      ],
+      [
+        {
+          title: 'within a workspace, with a top level key',
+          input: dedent`
+              {
+                "aberlaas-ci": {
+                  "id": "aberlaas-ci@2.21.1",
+                  "name": "aberlaas-ci",
+                  "files": [
+                    {
+                      "path": "LICENSE",
+                      "size": 1082,
+                      "mode": 420
+                    },
+                    {
+                      "path": "lib/main.js",
+                      "size": 2057,
+                      "mode": 420
+                    },
+                    {
+                      "path": "package.json",
+                      "size": 1156,
+                      "mode": 420
+                    }
+                  ]
+                }
+              }
+              `,
+
+          expected: ['LICENSE', 'lib/main.js', 'package.json'],
+        },
+      ],
+    ])('$title', async ({ input, expected }) => {
+      const actual = __.parseNpmPublishOutput(input);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -109,6 +181,7 @@ describe('ensureCorrectPublishedFiles', () => {
       });
 
       expect(actual).toEqual([
+        'LICENSE',
         'README.md',
         'lib/main.js',
         'package.json',
@@ -156,11 +229,11 @@ describe('ensureCorrectPublishedFiles', () => {
       );
       expect(actual).toHaveProperty(
         'message',
-        expect.stringContaining('Only in npm:\ntemplates/index.html'),
+        expect.stringContaining('Only in npm:\n - templates/index.html'),
       );
       expect(actual).toHaveProperty(
         'message',
-        expect.stringContaining('Only in yarn:\nlib/helpers/path.js'),
+        expect.stringContaining('Only in yarn:\n - lib/helpers/path.js'),
       );
     });
   });

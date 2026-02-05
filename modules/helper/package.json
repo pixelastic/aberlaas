@@ -12,8 +12,7 @@
   "sideEffects": false,
   "license": "MIT",
   "files": [
-    "lib/helper.js",
-    "lib/test-helper.js"
+    "lib/*.js"
   ],
   "exports": {
     ".": "./lib/main.js"
