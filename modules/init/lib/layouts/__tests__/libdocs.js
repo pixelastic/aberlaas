@@ -43,7 +43,10 @@ describe('init > libdocs', () => {
           name: 'my-project-root',
           author: 'my-name',
           description: 'my-project root workspace',
-          repository: 'my-name/my-project',
+          repository: {
+            type: 'git',
+            url: 'https://github.com/my-name/my-project',
+          },
           homepage: 'https://projects.pixelastic.com/my-project',
           license: 'MIT',
         },
@@ -55,7 +58,6 @@ describe('init > libdocs', () => {
           workspaces: ['docs', 'lib'],
           type: 'module',
           packageManager: `yarn@${yarnVersion}`,
-          dependencies: {},
           devDependencies: {
             aberlaas: '1.2.3',
           },
@@ -83,7 +85,10 @@ describe('init > libdocs', () => {
           version: '0.0.1',
           author: 'my-name',
           description: 'my-project docs',
-          repository: 'my-name/my-project',
+          repository: {
+            type: 'git',
+            url: 'https://github.com/my-name/my-project',
+          },
           homepage: 'https://projects.pixelastic.com/my-project',
           license: 'MIT',
         },
@@ -92,7 +97,6 @@ describe('init > libdocs', () => {
         'should have docs specific data',
         {
           private: true,
-          devDependencies: {},
           dependencies: {
             norska: norskaVersion,
             'norska-theme-docs': norskaThemeDocsVersion,
@@ -120,9 +124,12 @@ describe('init > libdocs', () => {
           name: 'my-project',
           version: '0.0.1',
           author: 'my-name',
-          description: '',
-          keywords: [],
-          repository: 'my-name/my-project',
+          description: 'my-project module',
+          keywords: ['my-project'],
+          repository: {
+            type: 'git',
+            url: 'https://github.com/my-name/my-project',
+          },
           homepage: 'https://projects.pixelastic.com/my-project',
           license: 'MIT',
         },
@@ -130,7 +137,6 @@ describe('init > libdocs', () => {
       [
         'should have lib specific data',
         {
-          private: false,
           type: 'module',
           sideEffects: false,
           engines: {
@@ -142,9 +148,6 @@ describe('init > libdocs', () => {
           // Some tools have trouble parsing the .exports field, so we keep the
           // .main field for backward compatibility
           main: './main.js',
-
-          devDependencies: {},
-          dependencies: {},
 
           scripts: {
             build: 'cd .. && ./scripts/build',

@@ -43,31 +43,37 @@ export default [
             // Name
             'name',
             'version',
+
             // Dev info
             'private',
             'type',
             'workspaces',
+
             // Metadata
             'description',
             'author',
             'homepage',
             'keywords',
             'repository',
+
             // Compatibility
             'sideEffects',
             'license',
             'engines',
             'packageManager',
+
             // Exports
             'files',
             'publishConfig',
             'exports',
             'main',
             'bin',
+
             // Dependencies
             'devDependencies',
             'dependencies',
             'peerDependencies',
+
             // Scripts
             'scripts',
           ],

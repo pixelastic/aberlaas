@@ -32,6 +32,7 @@ __ = {
    */
   async createPackageJson() {
     const aberlaasVersion = await getAberlaasVersion();
+
     const name = await getProjectName();
     const version = '0.0.1';
 
