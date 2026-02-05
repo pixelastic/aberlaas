@@ -60,6 +60,7 @@ export default [
             'packageManager',
             // Exports
             'files',
+            'publishConfig',
             'exports',
             'main',
             'bin',
