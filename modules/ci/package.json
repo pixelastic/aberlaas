@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-ci",
-  "version": "2.22.0",
+  "version": "2.22.1",
   "type": "module",
   "description": "aberlaas ci command: Run tests and lint on each commit on the CI",
   "author": "Tim Carry <tim@pixelastic.com>",

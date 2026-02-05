@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-versions",
-  "version": "2.22.0",
+  "version": "2.22.1",
   "type": "module",
   "description": "aberlaas version config: Contains list of latest versions to use for tools we depend on",
   "author": "Tim Carry <tim@pixelastic.com>",

@@ -1,3 +1,10 @@
+## v2.22.1
+
+
+### Bug Fixes
+
+- **init:** Corectly make ./scripts in init be executable (1e2521f)
+
 ## v2.22.0
 
 
