@@ -4,7 +4,24 @@ import { hostGitRoot } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { updateChangelog } from './updateChangelog.js';
 
-export const __ = {
+export let __;
+
+/**
+ * Update git repository with all changes for the release
+ * @param {object} releaseData - Release data containing currentVersion, newVersion, skipChangelog, and allPackages
+ */
+export async function updateGitRepo(releaseData) {
+  // Update CHANGELOG.md
+  await __.updateChangelog(releaseData);
+
+  // Update all .version keys in packages
+  await __.bumpAllPackageVersions(releaseData);
+
+  // Commit and push to remote
+  await __.commitTagAndPush(releaseData);
+}
+
+__ = {
   /**
    * Bumps the version of all packages to the new version
    * @param {object} releaseData - Release data containing allPackages and newVersion
@@ -47,18 +64,3 @@ export const __ = {
   consoleInfo,
   updateChangelog,
 };
-
-/**
- * Update git repository with all changes for the release
- * @param {object} releaseData - Release data containing currentVersion, newVersion, skipChangelog, and allPackages
- */
-export async function updateGitRepo(releaseData) {
-  // Update CHANGELOG.md
-  await __.updateChangelog(releaseData);
-
-  // Update all .version keys in packages
-  await __.bumpAllPackageVersions(releaseData);
-
-  // Commit and push to remote
-  await __.commitTagAndPush(releaseData);
-}

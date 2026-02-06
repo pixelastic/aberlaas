@@ -2,9 +2,40 @@ import { _, pMap } from 'golgoth';
 import { glob, readJson } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { getGitDiff, parseCommits } from 'changelogen';
+import Gilmore from 'gilmore';
 import semver from 'semver';
 
-export const __ = {
+export let __;
+
+/**
+ * Gathers all release information from CLI arguments
+ * @param {object} cliArgs - CLI arguments from minimist
+ * @returns {object} Release data containing bumpType, allPackages, currentVersion, newVersion, changelog
+ */
+export async function getReleaseData(cliArgs) {
+  // Default options: changelog enabled unless explicitly disabled via CLI
+  const options = {
+    changelog: true,
+    ...cliArgs,
+  };
+
+  const allPackages = await __.getAllPackagesToRelease();
+  const currentVersion = allPackages[0].content.version;
+
+  const bumpType = await __.getBumpType(cliArgs, currentVersion);
+
+  const newVersion = semver.inc(currentVersion, bumpType);
+
+  return {
+    bumpType,
+    allPackages,
+    currentVersion,
+    newVersion,
+    changelog: options.changelog,
+  };
+}
+
+__ = {
   /**
    * Gets all packages that need to be released
    * @returns {Array<{filepath: string, content: object}>} Array of packages with their filepath and content
@@ -60,12 +91,14 @@ export const __ = {
       return argFromCli;
     }
 
-    // Getting all commits since last version tag
-    const rawCommits = await getGitDiff(
-      `v${currentVersion}`,
-      'HEAD',
-      hostGitRoot(),
-    );
+    // Find all commits since last version tag, or from start of repo if no such tag
+    const repo = new Gilmore(hostGitRoot());
+    const lastTagName = `v${currentVersion}`;
+    const gitDiffStart = (await repo.tagExists(lastTagName))
+      ? lastTagName
+      : null;
+    const rawCommits = await getGitDiff(gitDiffStart, 'HEAD', hostGitRoot());
+
     // This is the minimal object required by changelogen
     const minimalConfig = { scopeMap: {} };
     const commits = parseCommits(rawCommits, minimalConfig);
@@ -86,31 +119,3 @@ export const __ = {
     return 'patch';
   },
 };
-
-/**
- * Gathers all release information from CLI arguments
- * @param {object} cliArgs - CLI arguments from minimist
- * @returns {object} Release data containing bumpType, allPackages, currentVersion, newVersion, changelog
- */
-export async function getReleaseData(cliArgs) {
-  // Default options: changelog enabled unless explicitly disabled via CLI
-  const options = {
-    changelog: true,
-    ...cliArgs,
-  };
-
-  const allPackages = await __.getAllPackagesToRelease();
-  const currentVersion = allPackages[0].content.version;
-
-  const bumpType = await __.getBumpType(cliArgs, currentVersion);
-
-  const newVersion = semver.inc(currentVersion, bumpType);
-
-  return {
-    bumpType,
-    allPackages,
-    currentVersion,
-    newVersion,
-    changelog: options.changelog,
-  };
-}

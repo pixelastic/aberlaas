@@ -11,8 +11,27 @@ import {
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import cliMarkdown from 'cli-markdown';
+import Gilmore from 'gilmore';
 
-export const __ = {
+export let __;
+
+/**
+ * Update the CHANGELOG.md file with new additions
+ * @param {object} releaseData - Release data containing currentVersion, newVersion, and changeLog
+ * @param {boolean} [releaseData.changelog=true] Generate changelog
+ */
+export async function updateChangelog(releaseData) {
+  if (!releaseData.changelog) {
+    return;
+  }
+
+  const suggestedChangelog = await __.generateChangelogFromGit(releaseData);
+  const approvedChangelog = await __.confirmOrEditChangelog(suggestedChangelog);
+
+  await __.addToExistingChangelogFile(approvedChangelog);
+}
+
+__ = {
   /**
    * Generate changelog markdown from git commits between two versions
    * @param {object} releaseData - Release data containing currentVersion, newVersion, and changeLog
@@ -21,11 +40,16 @@ export const __ = {
   async generateChangelogFromGit(releaseData) {
     const { currentVersion, newVersion } = releaseData;
     const gitRoot = hostGitRoot();
+
+    const repo = new Gilmore(gitRoot);
     const currentVersionTag = `v${currentVersion}`;
+    const from = (await repo.tagExists(currentVersionTag))
+      ? currentVersionTag
+      : null;
 
     // Get config
     const config = {
-      from: currentVersionTag,
+      from,
       to: 'HEAD',
       newVersion,
       noAuthors: true,
@@ -42,7 +66,7 @@ export const __ = {
       scopeMap: {},
     };
 
-    const rawCommits = await getGitDiff(currentVersionTag, 'HEAD', gitRoot);
+    const rawCommits = await getGitDiff(from, 'HEAD', gitRoot);
     const commits = parseCommits(rawCommits, config);
 
     // Filter commits to only keep user-facing types
@@ -133,19 +157,3 @@ export const __ = {
   cliMarkdown,
   run,
 };
-
-/**
- * Update the CHANGELOG.md file with new additions
- * @param {object} releaseData - Release data containing currentVersion, newVersion, and changeLog
- * @param {boolean} [releaseData.changelog=true] Generate changelog
- */
-export async function updateChangelog(releaseData) {
-  if (!releaseData.changelog) {
-    return;
-  }
-
-  const suggestedChangelog = await __.generateChangelogFromGit(releaseData);
-  const approvedChangelog = await __.confirmOrEditChangelog(suggestedChangelog);
-
-  await __.addToExistingChangelogFile(approvedChangelog);
-}
