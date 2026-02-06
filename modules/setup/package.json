@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-setup",
-  "version": "2.22.2",
+  "version": "2.22.3",
   "type": "module",
   "description": "aberlaas setup helper: Setup third parties like GitHub, Netlify or CircleCI",
   "author": "Tim Carry <tim@pixelastic.com>",

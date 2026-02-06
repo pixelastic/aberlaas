@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-readme",
-  "version": "2.22.2",
+  "version": "2.22.3",
   "type": "module",
   "description": "aberlaas readme helper: Write and synchronize README",
   "author": "Tim Carry <tim@pixelastic.com>",

@@ -1,3 +1,7 @@
+## v2.22.3
+
+Use .env rather than .envrc for storing npm auth token
+
 ## v2.22.2
 
 

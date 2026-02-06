@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-release",
-  "version": "2.22.2",
+  "version": "2.22.3",
   "type": "module",
   "description": "aberlaas release command: Release and publish new versions",
   "author": "Tim Carry <tim@pixelastic.com>",
