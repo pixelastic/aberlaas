@@ -28,7 +28,7 @@
     "gilmore": "1.2.0",
     "golgoth": "3.1.0",
     "keyleth": "0.2.0",
-    "semver": "7.7.3"
+    "semver": "7.7.4"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",
