@@ -1,4 +1,4 @@
-import { read, remove, tmpDirectory, writeJson } from 'firost';
+import { remove, tmpDirectory, writeJson } from 'firost';
 import { __ as helper, mockHelperPaths } from 'aberlaas-helper';
 import { __, ensureNpmLogin } from '../ensureNpmLogin.js';
 
@@ -36,16 +36,28 @@ describe('ensureNpmLogin', () => {
   });
 
   describe('isAuthenticated', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'getNpmAuthToken').mockReturnValue();
+    });
+    it('should all yarn npm whoami with the right npm token', async () => {
+      vi.spyOn(__, 'getNpmAuthToken').mockReturnValue('test_token_123');
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await __.isAuthenticated();
+
+      expect(__.run).toHaveBeenCalledWith('yarn npm whoami', {
+        stderr: false,
+        stdout: false,
+        env: {
+          ABERLAAS_RELEASE_NPM_AUTH_TOKEN: 'test_token_123',
+        },
+      });
+    });
     it('should return true if yarn npm login suceeds', async () => {
       vi.spyOn(__, 'run').mockReturnValue();
 
       const actual = await __.isAuthenticated();
-
-      await expect(actual).toEqual(true);
-      expect(__.run).toHaveBeenCalledWith('yarn npm whoami', {
-        stderr: false,
-        stdout: false,
-      });
+      expect(actual).toEqual(true);
     });
     it('should return false if yarn npm login throw an error', async () => {
       vi.spyOn(__, 'run').mockImplementation(() => {
@@ -90,16 +102,13 @@ describe('ensureNpmLogin', () => {
   });
 
   describe('saveNpmToken', () => {
-    it('should prompt for token and write it to .npmrc file', async () => {
+    it('should prompt for token and save it using helper', async () => {
       vi.spyOn(__, 'prompt').mockReturnValue('npm_mySecretToken123');
+      vi.spyOn(__, 'setNpmAuthToken').mockResolvedValue();
 
       await __.saveNpmToken();
 
-      const envrcPath = helper.hostGitPath('.envrc');
-      const actual = await read(envrcPath);
-      expect(actual).toEqual(
-        'ABERLAAS_RELEASE_NPM_AUTH_TOKEN=npm_mySecretToken123',
-      );
+      expect(__.setNpmAuthToken).toHaveBeenCalledWith('npm_mySecretToken123');
     });
   });
 

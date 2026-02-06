@@ -3,6 +3,7 @@
 # it needs to be a copy.
 
 # Important files that should not be committed
+.env
 .envrc
 
 # Build directories

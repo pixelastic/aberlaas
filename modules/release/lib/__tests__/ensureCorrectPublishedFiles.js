@@ -1,12 +1,4 @@
-import {
-  firostError,
-  newFile,
-  remove,
-  run,
-  tmpDirectory,
-  writeJson,
-} from 'firost';
-import { yarnVersion } from 'aberlaas-versions';
+import { absolute, copy, firostError, remove, tmpDirectory } from 'firost';
 import {
   __,
   ensureCorrectPublishedFiles,
@@ -16,23 +8,10 @@ describe('ensureCorrectPublishedFiles', () => {
   const testDirectory = tmpDirectory(
     'aberlaas/release/ensureCorrectPublishedFiles',
   );
-  let packageJsonContent = {
-    name: 'test-package',
-    packageManager: `yarn@${yarnVersion}`,
-    version: '1.0.0',
-    files: ['lib/main.js', 'lib/helpers/', 'templates/'],
-  };
 
   beforeAll(async () => {
-    await newFile(`${testDirectory}/README.md`);
-    await newFile(`${testDirectory}/LICENSE`);
-    await newFile(`${testDirectory}/lib/main.js`);
-    await newFile(`${testDirectory}/lib/helpers/path.js`);
-    await newFile(`${testDirectory}/lib/helpers/env.js`);
-    await newFile(`${testDirectory}/templates/index.html`);
-    await writeJson(packageJsonContent, `${testDirectory}/package.json`);
-
-    await run('yarn install', { cwd: testDirectory, stdout: false });
+    const fixturePath = absolute('../fixtures/repo/');
+    await copy(fixturePath, testDirectory);
   });
 
   afterAll(async () => {
@@ -90,7 +69,6 @@ describe('ensureCorrectPublishedFiles', () => {
     it('should return list of files that npm will publish', async () => {
       const actual = await __.getNpmPublishedFiles({
         filepath: `${testDirectory}/package.json`,
-        content: packageJsonContent,
       });
 
       expect(actual).toEqual([
@@ -178,7 +156,6 @@ describe('ensureCorrectPublishedFiles', () => {
     it('should return list of files that yarn will publish', async () => {
       const actual = await __.getYarnPublishedFiles({
         filepath: `${testDirectory}/package.json`,
-        content: packageJsonContent,
       });
 
       expect(actual).toEqual([
@@ -198,7 +175,7 @@ describe('ensureCorrectPublishedFiles', () => {
 
       const actual = await __.ensureSameFilesPublishedWithYarnOrNpm({
         filepath: `${testDirectory}/package.json`,
-        content: packageJsonContent,
+        content: { name: 'my-package' },
       });
 
       expect(actual).toEqual(true);
@@ -218,7 +195,7 @@ describe('ensureCorrectPublishedFiles', () => {
       try {
         await __.ensureSameFilesPublishedWithYarnOrNpm({
           filepath: `${testDirectory}/package.json`,
-          content: packageJsonContent,
+          content: { name: 'my-package' },
         });
       } catch (err) {
         actual = err;

@@ -18,19 +18,16 @@
     ".": "./lib/main.js"
   },
   "main": "./lib/main.js",
-  "devDependencies": {
-    "aberlaas-versions": "workspace:*"
-  },
   "dependencies": {
     "aberlaas-helper": "workspace:*",
     "aberlaas-lint": "workspace:*",
     "aberlaas-test": "workspace:*",
     "changelogen": "0.6.2",
     "cli-markdown": "3.5.1",
-    "envfile": "7.1.0",
     "firost": "5.5.1",
     "gilmore": "1.2.0",
     "golgoth": "3.1.0",
+    "keyleth": "0.2.0",
     "semver": "7.7.3"
   },
   "scripts": {

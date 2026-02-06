@@ -3,16 +3,13 @@ import {
   consoleInfo,
   consoleWarn,
   env,
-  exists,
   prompt,
-  read,
   readJson,
   run,
   sleep,
-  write,
 } from 'firost';
-import { hostGitPath, hostPackagePath } from 'aberlaas-helper';
-import { parse as parseEnvrc, stringify as stringifyEnvrc } from 'envfile';
+import { hostPackagePath } from 'aberlaas-helper';
+import { getNpmAuthToken, setNpmAuthToken } from './helper.js';
 
 export let __;
 
@@ -33,13 +30,18 @@ __ = {
   ensureNpmLogin,
   /**
    * Checks if the user is authenticated with npm by running 'yarn npm whoami' command
-   * @returns {Promise<boolean>} Promise that resolves to true if authenticated, false otherwise
+   * @returns {boolean} Promise that resolves to true if authenticated, false otherwise
    */
   async isAuthenticated() {
+    const npmAuthToken = await __.getNpmAuthToken();
+
     try {
       await __.run('yarn npm whoami', {
         stderr: false,
         stdout: false,
+        env: {
+          ABERLAAS_RELEASE_NPM_AUTH_TOKEN: npmAuthToken,
+        },
       });
       return true;
     } catch (_err) {
@@ -143,20 +145,14 @@ __ = {
   },
 
   /**
-   * Saves the npm token to .envrc file
+   * Saves the npm token to .env file
    */
   async saveNpmToken() {
-    // TODO: replace with keyleth
-    const envrcPath = hostGitPath('.envrc');
-    const envrcAsJson = (await exists(envrcPath))
-      ? parseEnvrc(await read(envrcPath))
-      : {};
-
     const npmToken = await __.prompt('Enter you new token here:');
-    envrcAsJson.ABERLAAS_RELEASE_NPM_AUTH_TOKEN = npmToken;
-
-    await write(stringifyEnvrc(envrcAsJson), envrcPath);
+    await __.setNpmAuthToken(npmToken);
   },
+  getNpmAuthToken,
+  setNpmAuthToken,
   run,
   env,
   prompt,

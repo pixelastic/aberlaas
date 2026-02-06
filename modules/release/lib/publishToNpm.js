@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { pMap } from 'golgoth';
 import { firostError, run, spinner } from 'firost';
+import { getNpmAuthToken } from './helper.js';
 
 export let __;
 
@@ -33,6 +34,7 @@ export async function publishToNpm(releaseData) {
 __ = {
   async publishPackage(packageData) {
     const { filepath, content } = packageData;
+    const npmAuthToken = await __.getNpmAuthToken();
 
     try {
       // Note:
@@ -42,6 +44,9 @@ __ = {
         cwd: path.dirname(filepath),
         stdout: false,
         stderr: false,
+        env: {
+          ABERLAAS_RELEASE_NPM_AUTH_TOKEN: npmAuthToken,
+        },
       });
       return true;
     } catch (err) {
@@ -52,6 +57,7 @@ __ = {
       );
     }
   },
+  getNpmAuthToken,
   run,
   spinner,
 };

@@ -3,14 +3,19 @@ import { __, publishToNpm } from '../publishToNpm.js';
 
 describe('publishToNpm', () => {
   describe('publishPackage', () => {
+    beforeEach(async () => {
+      vi.spyOn(__, 'getNpmAuthToken').mockReturnValue();
+      vi.spyOn(__, 'run').mockReturnValue();
+    });
     const packageData = {
       filepath: '/path/to/package/package.json',
       content: {
         name: 'my-package',
       },
     };
+
     it('should run yarn npm publish correctly', async () => {
-      vi.spyOn(__, 'run').mockReturnValue();
+      vi.spyOn(__, 'getNpmAuthToken').mockReturnValue('npm_mock_token_123');
 
       const actual = await __.publishPackage(packageData);
 
@@ -19,6 +24,9 @@ describe('publishToNpm', () => {
         cwd: '/path/to/package',
         stdout: false,
         stderr: false,
+        env: {
+          ABERLAAS_RELEASE_NPM_AUTH_TOKEN: 'npm_mock_token_123',
+        },
       });
     });
 

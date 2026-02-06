@@ -4,7 +4,7 @@
 -->
 # Aberlaas
 
-> My opinionated dev toolbox
+> 🏰 My opinionated dev toolbox for testing, linting and releasing
 
 ## What is Aberlaas?
 

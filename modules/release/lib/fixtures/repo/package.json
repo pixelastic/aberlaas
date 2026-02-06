@@ -1,0 +1,13 @@
+{
+  "name": "test-package",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A fake package to test the release module",
+  "license": "MIT",
+  "packageManager": "yarn@4.12.0",
+  "files": [
+    "lib/main.js",
+    "lib/helpers/",
+    "templates/"
+  ]
+}

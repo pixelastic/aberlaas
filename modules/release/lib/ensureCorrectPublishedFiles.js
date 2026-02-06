@@ -20,6 +20,12 @@ export async function ensureCorrectPublishedFiles(releaseData) {
 }
 
 __ = {
+  /**
+   * Ensures that npm and yarn publish the same files for a package
+   * @param {object} packageData - The package data object containing package information
+   * @returns {Promise<boolean>} True if npm and yarn publish the same files
+   * @throws {Error} Throws an error if published files differ between npm and yarn
+   */
   async ensureSameFilesPublishedWithYarnOrNpm(packageData) {
     const packageName = packageData.content.name;
     const npmFiles = await __.getNpmPublishedFiles(packageData);
