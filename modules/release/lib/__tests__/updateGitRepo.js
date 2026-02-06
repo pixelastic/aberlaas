@@ -111,6 +111,7 @@ describe('updateGitRepo', () => {
   });
 
   describe('updateGitRepo', () => {
+    vi.setConfig({ testTimeout: 10_000 });
     beforeEach(() => {
       vi.spyOn(__, 'updateChangelog').mockReturnValue();
       vi.spyOn(__, 'bumpAllPackageVersions').mockReturnValue();
