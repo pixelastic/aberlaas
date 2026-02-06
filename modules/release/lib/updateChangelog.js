@@ -11,7 +11,7 @@ import {
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import cliMarkdown from 'cli-markdown';
-import Gilmore from 'gilmore';
+import { getLastReleasePoint } from './helper.js';
 
 export let __;
 
@@ -39,17 +39,12 @@ __ = {
    */
   async generateChangelogFromGit(releaseData) {
     const { currentVersion, newVersion } = releaseData;
-    const gitRoot = hostGitRoot();
 
-    const repo = new Gilmore(gitRoot);
-    const currentVersionTag = `v${currentVersion}`;
-    const from = (await repo.tagExists(currentVersionTag))
-      ? currentVersionTag
-      : null;
+    const lastReleasePoint = await getLastReleasePoint(currentVersion);
 
     // Get config
     const config = {
-      from,
+      from: lastReleasePoint,
       to: 'HEAD',
       newVersion,
       noAuthors: true,
@@ -66,7 +61,11 @@ __ = {
       scopeMap: {},
     };
 
-    const rawCommits = await getGitDiff(from, 'HEAD', gitRoot);
+    const rawCommits = await getGitDiff(
+      lastReleasePoint,
+      'HEAD',
+      hostGitRoot(),
+    );
     const commits = parseCommits(rawCommits, config);
 
     // Filter commits to only keep user-facing types
@@ -156,4 +155,5 @@ __ = {
   select,
   cliMarkdown,
   run,
+  getLastReleasePoint,
 };

@@ -2,8 +2,8 @@ import { _, pMap } from 'golgoth';
 import { glob, readJson } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { getGitDiff, parseCommits } from 'changelogen';
-import Gilmore from 'gilmore';
 import semver from 'semver';
+import { getLastReleasePoint } from './helper.js';
 
 export let __;
 
@@ -91,13 +91,13 @@ __ = {
       return argFromCli;
     }
 
-    // Find all commits since last version tag, or from start of repo if no such tag
-    const repo = new Gilmore(hostGitRoot());
-    const lastTagName = `v${currentVersion}`;
-    const gitDiffStart = (await repo.tagExists(lastTagName))
-      ? lastTagName
-      : null;
-    const rawCommits = await getGitDiff(gitDiffStart, 'HEAD', hostGitRoot());
+    // Find all commits since last publish
+    const lastReleasePoint = await getLastReleasePoint(currentVersion);
+    const rawCommits = await getGitDiff(
+      lastReleasePoint,
+      'HEAD',
+      hostGitRoot(),
+    );
 
     // This is the minimal object required by changelogen
     const minimalConfig = { scopeMap: {} };
