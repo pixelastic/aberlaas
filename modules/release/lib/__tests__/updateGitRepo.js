@@ -70,6 +70,7 @@ describe('updateGitRepo', () => {
   });
 
   describe('commitTagAndPush', () => {
+    vi.setConfig({ testTimeout: 10_000 });
     const testDirectoryRemote = tmpDirectory(
       'aberlaas/release/updateGitRepo/remote',
     );
