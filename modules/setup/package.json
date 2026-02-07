@@ -22,7 +22,7 @@
   "dependencies": {
     "@octokit/rest": "22.0.1",
     "aberlaas-helper": "workspace:*",
-    "firost": "5.5.1",
+    "firost": "5.5.2",
     "golgoth": "3.1.0",
     "parse-github-repo-url": "1.4.1"
   },
