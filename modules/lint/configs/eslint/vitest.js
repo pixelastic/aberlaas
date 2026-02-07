@@ -32,6 +32,7 @@ export default [
     },
     rules: {
       ...pluginVitest.configs.recommended.rules,
+      // Warn about focused and skipped tests
       'no-restricted-globals': [
         'error',
         { name: 'fit', message: 'No focused test' },
@@ -39,12 +40,20 @@ export default [
         { name: 'xit', message: 'No skipped test' },
         { name: 'xdescribe', message: 'No skipped tests' },
       ],
+      // Don't warn for expect() inside of custom it.slow, fit, xit
+      'vitest/no-standalone-expect': [
+        'error',
+        {
+          additionalTestBlockFunctions: ['it.slow', 'fit', 'xit'],
+        },
+      ],
+      // Prefer it() over test()
+      'vitest/consistent-test-it': ['warn', { fn: 'it' }],
       // In tests, we like to have the variable 'current' hold the object
       // under test. The import/no-named-as-default-member would have warned
       // us about using current.foo rather than foo directly, so we disable
       // it.
       'import/no-named-as-default-member': ['off'],
-      'vitest/consistent-test-it': ['warn', { fn: 'it' }],
       // Disabling vitest/no-identical-title
       // It can make eslint crash when used with fit/xit/fdescribe/xdescribe
       // See: https://github.com/veritem/eslint-plugin-vitest/issues/310
