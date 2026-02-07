@@ -174,8 +174,7 @@ describe('init > libdocs', () => {
     });
   });
 
-  describe('run', () => {
-    vi.setConfig({ testTimeout: 10_000 });
+  describe.slow('run', () => {
     it('should build a libdocs structure', async () => {
       await run();
 

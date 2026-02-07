@@ -69,8 +69,7 @@ describe('updateGitRepo', () => {
     });
   });
 
-  describe('commitTagAndPush', () => {
-    vi.setConfig({ testTimeout: 10_000 });
+  describe.slow('commitTagAndPush', () => {
     const testDirectoryRemote = tmpDirectory(
       'aberlaas/release/updateGitRepo/remote',
     );
@@ -111,8 +110,7 @@ describe('updateGitRepo', () => {
     });
   });
 
-  describe('updateGitRepo', () => {
-    vi.setConfig({ testTimeout: 10_000 });
+  describe.slow('updateGitRepo', () => {
     beforeEach(() => {
       vi.spyOn(__, 'updateChangelog').mockReturnValue();
       vi.spyOn(__, 'bumpAllPackageVersions').mockReturnValue();

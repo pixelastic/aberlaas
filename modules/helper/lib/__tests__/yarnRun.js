@@ -40,9 +40,7 @@ export async function setupFixture(rootPath, fixtureType) {
   );
 }
 
-describe('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
-  vi.setConfig({ testTimeout: 10_000 });
-
+describe.slow('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
   const testDirectory = tmpDirectory('aberlaas/helper/yarnRun');
   afterAll(async () => {
     await remove(testDirectory);

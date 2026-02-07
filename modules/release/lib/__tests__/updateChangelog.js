@@ -58,8 +58,7 @@ describe('updateChangelog', () => {
     });
   });
 
-  describe('generateChangelogFromGit', () => {
-    vi.setConfig({ testTimeout: 10_000 });
+  describe.slow('generateChangelogFromGit', () => {
     it('should generate changelog with feat/fix/perf commits and filter others', async () => {
       await repo.newFile('README.md');
       await repo.commitAll('chore: initial commit');
