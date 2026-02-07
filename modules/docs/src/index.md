@@ -53,23 +53,44 @@ The following table lists all the scripts added:
 | `yarn run ci`              | Run testing and linting in CI                             |
 | `yarn run release`         | Release the module on npm                                 |
 
-## Testing (with Jest)
+## Testing (with Vitest)
 
-`aberlaas test` to run all the Jest tests in `./lib`. You can alter the behavior
+`aberlaas test` to run all the Vitest tests in `./lib`. You can alter the behavior
 with the following options:
 
-| CLI Argument | Default value    | Description                                                  |
-| ------------ | ---------------- | ------------------------------------------------------------ |
-| `[...]`      | `./lib`          | Files and directories to test.                               |
-| `--config`   | `jest.config.js` | Jest config file to use                                      |
-| `--watch`    | `false`          | If enabled, will listen for changes on files and rerun tests |
-| `--failFast` | `false`          | If enabled, will stop as soon as one test fails              |
+| CLI Argument  | Default value      | Description                                                  |
+| ------------- | ------------------ | ------------------------------------------------------------ |
+| `[...]`       | `./lib`            | Files and directories to test.                               |
+| `--config`    | `vite.config.js`   | Vitest config file to use                                    |
+| `--watch`     | `false`            | If enabled, will listen for changes on files and rerun tests |
+| `--failFast`  | `false`            | If enabled, will stop as soon as one test fails              |
+| `--only-slow` | `false`            | If enabled, will run only tests marked with `.slow()`        |
 
 Note that you can also pass any other command-line flag and they will be passed
-directly to Jest under the hood.
+directly to Vitest under the hood.
 
-Jest is loaded with [jest-extended][1] allowing you to use new matchers like
+Vitest is loaded with [jest-extended][1] allowing you to use new matchers like
 `.toBeString()`, `.toStartWith()`, etc.
+
+### Slow tests
+
+For tests that involve heavy operations (Git, Yarn, filesystem I/O), you can use
+`.slow()` to increase the timeout:
+
+```javascript
+describe.slow('Git operations', () => {
+  it('should commit and push', async () => {
+    // This test has a 30 second timeout instead of the default 5 seconds
+  });
+});
+
+it.slow('should install packages with Yarn', async () => {
+  // Individual tests can also use .slow()
+});
+```
+
+Tests marked with `.slow()` can be filtered with `--only-slow` to run them in
+isolation for debugging or optimization.
 
 ### New global variables
 
