@@ -2,6 +2,7 @@ import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { getConfig, hostPackageRoot } from 'aberlaas-helper';
 import { createVitest, registerConsoleShortcuts } from 'vitest/node';
+import { slowPrefix } from '../configs/slow.js';
 import viteConfig from '../configs/vite.js';
 
 export let __;
@@ -14,6 +15,7 @@ export let __;
  * $ aberlaas test ./path/to/file.js              # Test specific files
  * $ aberlaas test --related                      # Test all related files
  * $ aberlaas test --failFast                     # Stop early as soon as one test fails
+ * $ aberlaas test --only-slow                    # Run only tests marked with .slow()
  * $ aberlaas test --flags                        # Flags passed to vitest
  * @param {object} cliArgs CLI Argument object, as created by minimist
  * @returns {boolean} true on success
@@ -83,6 +85,7 @@ __ = {
       'failFast',
       'related',
       'exclude',
+      'only-slow',
     ];
 
     // Reading base options from the config file
@@ -102,6 +105,10 @@ __ = {
     // --failFast stops early as soon as one test fails
     if (cliArgs.failFast) {
       optionsFromAberlaas.bail = 1;
+    }
+    // --only-slow runs only tests marked with .slow()
+    if (cliArgs['only-slow']) {
+      optionsFromAberlaas.testNamePattern = _.escapeRegExp(slowPrefix);
     }
     // --related runs also related files
     // Note (2024-10-01): The related option is not documented, but should
