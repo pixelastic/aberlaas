@@ -63,7 +63,7 @@ with the following options:
 | `[...]`       | `./lib`            | Files and directories to test.                               |
 | `--config`    | `vite.config.js`   | Vitest config file to use                                    |
 | `--watch`     | `false`            | If enabled, will listen for changes on files and rerun tests |
-| `--failFast`  | `false`            | If enabled, will stop as soon as one test fails              |
+| `--fail-fast` | `false`            | If enabled, will stop as soon as one test fails              |
 | `--only-slow` | `false`            | If enabled, will run only tests marked with `.slow()`        |
 
 Note that you can also pass any other command-line flag and they will be passed

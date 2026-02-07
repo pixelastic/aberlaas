@@ -12,7 +12,7 @@ export async function run(cliArgs = {}) {
   const allTypesKeys = _.keys(__.linters);
   const userTypes = _.intersection(_.keys(cliArgs), allTypesKeys);
   const typesToLint = _.isEmpty(userTypes) ? allTypesKeys : userTypes;
-  const shouldFailFast = cliArgs.failFast;
+  const shouldFailFast = cliArgs['fail-fast'];
   const errors = [];
 
   await pMap(

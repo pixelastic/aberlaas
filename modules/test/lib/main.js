@@ -14,7 +14,7 @@ export let __;
  * $ aberlaas test ./path/to/__tests__/file.js    # Test specific files
  * $ aberlaas test ./path/to/file.js              # Test specific files
  * $ aberlaas test --related                      # Test all related files
- * $ aberlaas test --failFast                     # Stop early as soon as one test fails
+ * $ aberlaas test --fail-fast                    # Stop early as soon as one test fails
  * $ aberlaas test --only-slow                    # Run only tests marked with .slow()
  * $ aberlaas test --flags                        # Flags passed to vitest
  * @param {object} cliArgs CLI Argument object, as created by minimist
@@ -82,7 +82,7 @@ __ = {
     const specialMeaningCliArgs = [
       '_',
       'config',
-      'failFast',
+      'fail-fast',
       'related',
       'exclude',
       'only-slow',
@@ -102,8 +102,8 @@ __ = {
       // by the lint command instead
       allowOnly: true,
     };
-    // --failFast stops early as soon as one test fails
-    if (cliArgs.failFast) {
+    // --fail-fast stops early as soon as one test fails
+    if (cliArgs['fail-fast']) {
       optionsFromAberlaas.bail = 1;
     }
     // --only-slow runs only tests marked with .slow()

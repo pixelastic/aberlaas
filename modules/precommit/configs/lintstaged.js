@@ -4,7 +4,7 @@ export const commands = {
   lintCircleci: 'yarn run lint --circleci',
   lintJson: 'yarn run lint:fix --json',
   lintJs: 'yarn run lint:fix --js',
-  testJs: 'yarn run test --failFast --related',
+  testJs: 'yarn run test --fail-fast --related',
   compressPng: 'yarn run compress --png',
   readme: 'yarn run aberlaas readme --add-to-git',
 };

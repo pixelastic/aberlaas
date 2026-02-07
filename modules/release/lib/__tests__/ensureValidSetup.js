@@ -132,7 +132,7 @@ describe('ensureValidSetup', () => {
 
       expect(actual).toEqual(true);
       expect(__.consoleInfo).toHaveBeenCalled();
-      expect(__.yarnRun).toHaveBeenCalledWith('test --failFast');
+      expect(__.yarnRun).toHaveBeenCalledWith('test --fail-fast');
     });
 
     it('should throw error when tests fail', async () => {

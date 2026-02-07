@@ -103,7 +103,7 @@ describe('lint', () => {
       expect(__.consoleError).toHaveBeenCalledWith('ymlError');
       expect(__.consoleError).toHaveBeenCalledWith('jsError');
     });
-    describe('with --failFast', () => {
+    describe('with --fail-fast', () => {
       it('should stop execution and throw error immediately when a linter fails', async () => {
         mockedLinters.yml.run.mockImplementation(() => {
           throw new Error('ymlError');
@@ -114,7 +114,7 @@ describe('lint', () => {
 
         let actual = null;
         try {
-          await run({ failFast: true });
+          await run({ 'fail-fast': true });
         } catch (err) {
           actual = err;
         }

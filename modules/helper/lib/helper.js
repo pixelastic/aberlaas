@@ -155,7 +155,7 @@ export const __ = {
    */
   /**
    * Run a yarn command from the host git root
-   * @param {string} command Command to run (e.g., 'test', 'lint', 'test --failFast')
+   * @param {string} command Command to run (e.g., 'test', 'lint', 'test --fail-fast')
    * @returns {Promise} Result of the command execution
    */
   async yarnRun(command) {

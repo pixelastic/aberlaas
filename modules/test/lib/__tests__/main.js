@@ -26,15 +26,15 @@ describe('test', () => {
         expect(actual).toHaveProperty('related', ['file.js']);
       });
     });
-    describe('--failFast', () => {
+    describe('--fail-fast', () => {
       it('should have no --bail by default', async () => {
         const input = {};
         const actual = await __.vitestOptions(input);
 
         expect(actual).not.toHaveProperty('bail');
       });
-      it('should have --bail=1 with --failFast', async () => {
-        const input = { failFast: true };
+      it('should have --bail=1 with --fail-fast', async () => {
+        const input = { 'fail-fast': true };
         const actual = await __.vitestOptions(input);
 
         expect(actual).toHaveProperty('bail', 1);

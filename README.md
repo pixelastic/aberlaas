@@ -65,7 +65,7 @@ yarn run test ./lib/myModule.js
 yarn run test --watch
 
 # Stop on first failure
-yarn run test --failFast
+yarn run test --fail-fast
 ```
 
 ### `yarn run lint`

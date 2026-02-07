@@ -114,7 +114,7 @@ __ = {
     }
     __.consoleInfo('Running tests...');
     try {
-      await __.yarnRun('test --failFast');
+      await __.yarnRun('test --fail-fast');
       return true;
     } catch (err) {
       throw firostError('ABERLAAS_RELEASE_TESTS_FAILING', err.message);

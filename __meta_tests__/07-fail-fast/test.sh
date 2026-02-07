@@ -2,11 +2,11 @@
 
 source "$(dirname "$0")/../test_framework/index"
 
-test "should fail early with --failFast"
+test "should fail early with --fail-fast"
 
 actual() {
 	"${ROOT}"/modules/lib/bin/aberlaas.js test \
-		--failFast \
+		--fail-fast \
 		"${HERE}/__tests__/feature.js"
 }
 
