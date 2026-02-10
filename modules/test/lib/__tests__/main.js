@@ -4,7 +4,7 @@ import { hostGitPath, mockHelperPaths } from 'aberlaas-helper';
 import { __ } from '../main.js';
 
 describe('test', () => {
-  const testDirectory = tmpDirectory('aberlaas/test');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });
@@ -86,11 +86,11 @@ describe('test', () => {
       it('default host config file', async () => {
         await write(
           dedent`
-        export default {
-          test: {
-            newOption: true
-          }
-        }`,
+      export default {
+        test: {
+          newOption: true
+        }
+      }`,
           hostGitPath('vite.config.js'),
         );
         const input = {};
@@ -100,11 +100,11 @@ describe('test', () => {
       it('should allow specifying the config file', async () => {
         await write(
           dedent`
-        export default {
-          test: {
-            newOption: true
-          }
-        }`,
+      export default {
+        test: {
+          newOption: true
+        }
+      }`,
           hostGitPath('custom.vite.config.js'),
         );
         const input = { config: 'custom.vite.config.js' };
@@ -129,6 +129,10 @@ describe('test', () => {
     });
   });
   describe('describeName', () => {
+    const describeNameInBody = describeName;
+    it('should be available in the describe() body', () => {
+      expect(describeNameInBody).toBe('describeName');
+    });
     it('should contain the parent describe name', async () => {
       expect(describeName).toBe('describeName');
     });
