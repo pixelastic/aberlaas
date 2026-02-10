@@ -11,6 +11,7 @@ import {
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import cliMarkdown from 'cli-markdown';
+import Gilmore from 'gilmore';
 import { getLastReleasePoint } from './helper.js';
 
 export let __;
@@ -40,7 +41,10 @@ __ = {
   async generateChangelogFromGit(releaseData) {
     const { currentVersion, newVersion } = releaseData;
 
+    const repo = new Gilmore(hostGitRoot());
     const lastReleasePoint = await getLastReleasePoint(currentVersion);
+
+    const repoSlug = await repo.githubRepoSlug();
 
     // Get config
     const config = {
@@ -48,6 +52,11 @@ __ = {
       to: 'HEAD',
       newVersion,
       noAuthors: true,
+      repo: {
+        provider: 'github',
+        domain: 'github.com',
+        repo: repoSlug,
+      },
       types: {
         feat: { title: 'Features', semver: 'minor' },
         fix: { title: 'Bug Fixes', semver: 'patch' },

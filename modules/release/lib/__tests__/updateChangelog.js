@@ -60,6 +60,11 @@ describe('updateChangelog', () => {
 
   describe.slow('generateChangelogFromGit', () => {
     it('should generate changelog with feat/fix/perf commits and filter others', async () => {
+      await repo.createRemote(
+        'origin',
+        'https://github.com/test-owner/test-repo.git',
+      );
+
       await repo.newFile('README.md');
       await repo.commitAll('chore: initial commit');
       await repo.createTag('v1.0.0');
@@ -86,25 +91,25 @@ describe('updateChangelog', () => {
       });
 
       // Normalize: replace commit SHAs with placeholder
-      const actual = _.replace(rawChangelog, /\([0-9a-f]{7}\)/g, '(SHA)');
+      const actual = _.replace(rawChangelog, /([0-9a-f]{7})/g, 'SHA');
 
-      const expected = dedent`
+      expect(actual).toEqual(dedent`
           ## v1.1.0
 
+          [compare changes](https://github.com/test-owner/test-repo/compare/v1.0.0...v1.1.0)
 
           ### Features
 
-          - Add new feature (SHA)
+          - Add new feature ([SHA](https://github.com/test-owner/test-repo/commit/SHA))
 
           ### Bug Fixes
 
-          - Correct a bug (SHA)
+          - Correct a bug ([SHA](https://github.com/test-owner/test-repo/commit/SHA))
 
           ### Performance
 
-          - Improve performance (SHA)`;
-
-      expect(actual).toEqual(expected);
+          - Improve performance ([SHA](https://github.com/test-owner/test-repo/commit/SHA))
+    `);
     });
   });
 
