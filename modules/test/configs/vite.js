@@ -14,6 +14,9 @@ export default defineConfig({
     // Hide skipped tests, allowing less noisy debug with fit/fdescribe
     hideSkippedTests: true,
 
+    // Display details of tests as they run
+    reporters: ['tree'],
+
     // Tests should be in a __tests__ folder next to their code
     include: ['**/__tests__/**/*.js?(x)'],
     // We ignore temporary folders from the tests
