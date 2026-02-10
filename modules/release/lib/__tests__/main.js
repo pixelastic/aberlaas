@@ -2,7 +2,7 @@ import { firostError, remove, tmpDirectory } from 'firost';
 import { mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../main.js';
 
-describe('main', () => {
+describe('release/main', () => {
   const testDirectory = tmpDirectory('aberlaas/release/main');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

@@ -2,7 +2,7 @@ import { read, remove, tmpDirectory, write } from 'firost';
 import { mockHelperPaths } from 'aberlaas-helper';
 import { prettierFix } from '../prettierFix.js';
 
-describe('prettierFix', () => {
+describe('lint/prettierFix', () => {
   const testDirectory = tmpDirectory('aberlaas/lint/prettierFix');
 
   beforeEach(async () => {

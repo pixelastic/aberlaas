@@ -3,7 +3,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
-describe('precommit', () => {
+describe('precommit/main', () => {
   const testDirectory = tmpDirectory('aberlaas/precommit');
   let repo;
 

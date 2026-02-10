@@ -8,7 +8,7 @@ import {
 } from 'aberlaas-helper';
 import { __, fix, run } from '../circleci.js';
 
-describe('lint-circleci', () => {
+describe('lint/circleci', () => {
   const testDirectory = tmpDirectory('aberlaas/lint/circleci');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

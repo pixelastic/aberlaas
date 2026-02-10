@@ -7,8 +7,8 @@ import {
   setNpmAuthToken,
 } from '../helper.js';
 
-describe('helper', () => {
-  const testDirectory = tmpDirectory('aberlaas/release/helpers');
+describe('release/helper', () => {
+  const testDirectory = tmpDirectory('aberlaas/release/helper');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

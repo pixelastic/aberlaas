@@ -3,7 +3,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, ensureValidSetup } from '../ensureValidSetup.js';
 
-describe('ensureValidSetup', () => {
+describe('release/ensureValidSetup', () => {
   const testDirectory = tmpDirectory('aberlaas/release/ensureValidSetup');
   let repo;
 

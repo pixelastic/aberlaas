@@ -2,7 +2,7 @@ import { remove, tmpDirectory, writeJson } from 'firost';
 import { __ as helper, mockHelperPaths } from 'aberlaas-helper';
 import { __, ensureNpmLogin } from '../ensureNpmLogin.js';
 
-describe('ensureNpmLogin', () => {
+describe('release/ensureNpmLogin', () => {
   const testDirectory = tmpDirectory('aberlaas/release/ensureNpmLogin');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

@@ -1,6 +1,6 @@
 import { __, run } from '../main.js';
 
-describe('compress', () => {
+describe('compress/main', () => {
   describe('run', () => {
     beforeEach(async () => {
       vi.spyOn(__.types.png, 'run').mockReturnValue();

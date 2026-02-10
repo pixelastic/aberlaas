@@ -3,7 +3,7 @@ import { exists, newFile, remove, tmpDirectory } from 'firost';
 import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../png.js';
 
-describe('compress > png', () => {
+describe('compress/png', () => {
   const testDirectory = tmpDirectory('aberlaas/compress/png');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

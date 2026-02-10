@@ -16,7 +16,7 @@ import {
 import { __ as initHelper } from '../../helper.js';
 import { __, run } from '../monorepo.js';
 
-describe('init > monorepo', () => {
+describe('init/monorepo', () => {
   const testDirectory = tmpDirectory('aberlaas/init/monorepo');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

@@ -3,7 +3,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, updateGitRepo } from '../updateGitRepo.js';
 
-describe('updateGitRepo', () => {
+describe('release/updateGitRepo', () => {
   const testDirectory = tmpDirectory('aberlaas/release/updateGitRepo/repo');
   let repo;
 

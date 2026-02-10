@@ -1,6 +1,6 @@
 import current from '../circleci.js';
 
-describe('setup > helpers > circleci', () => {
+describe('setup/circleci', () => {
   describe('api', () => {
     beforeEach(async () => {
       vi.spyOn(current, 'token').mockReturnValue('token');

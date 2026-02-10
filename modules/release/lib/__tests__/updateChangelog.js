@@ -5,7 +5,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, updateChangelog } from '../updateChangelog.js';
 
-describe('updateChangelog', () => {
+describe('release/updateChangelog', () => {
   const testDirectory = tmpDirectory('aberlaas/release/updateChangelog');
   let repo;
 

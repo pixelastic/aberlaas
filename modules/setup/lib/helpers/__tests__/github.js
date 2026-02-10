@@ -1,6 +1,6 @@
 import current from '../github.js';
 
-describe('setup > helpers > github', () => {
+describe('setup/github', () => {
   beforeEach(async () => {
     current.__cache = {};
   });

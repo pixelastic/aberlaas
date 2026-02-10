@@ -7,7 +7,7 @@ import {
   mockHelperPaths,
 } from '../main.js';
 
-describe('helper', () => {
+describe('helper/main', () => {
   const testDirectory = tmpDirectory('aberlaas/helper/main');
 
   beforeEach(async () => {

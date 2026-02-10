@@ -1,5 +1,5 @@
 /* eslint-disable vitest/no-disabled-tests,no-restricted-globals */
-describe('test > skip', () => {
+describe('test/skip', () => {
   describe('xdescribe', () => {
     xdescribe('[describe]', () => {
       it('should not run', async () => {

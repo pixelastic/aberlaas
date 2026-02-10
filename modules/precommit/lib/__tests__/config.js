@@ -21,7 +21,7 @@ function getCommandsForFile(filepath) {
   );
 }
 
-describe('lintstaged config', () => {
+describe('precommit/lintstaged-config', () => {
   it.each([
     // JavaScript
     ['lib/main.js', [commands.lintJs, commands.testJs]],

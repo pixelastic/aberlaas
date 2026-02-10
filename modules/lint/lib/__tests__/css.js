@@ -3,7 +3,7 @@ import { newFile, read, remove, tmpDirectory, write } from 'firost';
 import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../css.js';
 
-describe('lint-css', () => {
+describe('lint/css', () => {
   const testDirectory = tmpDirectory('aberlaas/lint/css');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

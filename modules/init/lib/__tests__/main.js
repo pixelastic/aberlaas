@@ -11,7 +11,7 @@ import { nodeVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
-describe('init', () => {
+describe('init/main', () => {
   const testDirectory = tmpDirectory('aberlaas/init/main');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

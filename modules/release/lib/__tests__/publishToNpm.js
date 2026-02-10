@@ -1,7 +1,7 @@
 import { firostError } from 'firost';
 import { __, publishToNpm } from '../publishToNpm.js';
 
-describe('publishToNpm', () => {
+describe('release/publishToNpm', () => {
   describe('publishPackage', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'getNpmAuthToken').mockReturnValue();

@@ -3,7 +3,7 @@ import { remove, tmpDirectory, write } from 'firost';
 import { hostGitPath, mockHelperPaths } from 'aberlaas-helper';
 import { __ } from '../main.js';
 
-describe('test', () => {
+describe('test/main', () => {
   const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

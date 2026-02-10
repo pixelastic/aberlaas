@@ -1,7 +1,7 @@
 import { __, enable } from '../github.js';
 import githubHelper from '../helpers/github.js';
 
-describe('setup > github', () => {
+describe('setup/github', () => {
   describe('enable', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'consoleSuccess').mockReturnValue();

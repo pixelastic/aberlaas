@@ -1,6 +1,6 @@
 import { __, run } from '../main.js';
 
-describe('setup', () => {
+describe('setup/main', () => {
   describe('run', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'enableGithub').mockReturnValue();

@@ -3,7 +3,7 @@ import { __ as helper, hostGitPath, mockHelperPaths } from 'aberlaas-helper';
 import githubHelper from '../github.js';
 import current from '../ssh.js';
 
-describe('setup > helpers > ssh', () => {
+describe('setup/ssh', () => {
   const tmpDir = tmpDirectory('aberlaas/setup/helpers/ssh');
   beforeEach(async () => {
     mockHelperPaths(tmpDir);

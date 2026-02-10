@@ -40,7 +40,7 @@ export async function setupFixture(rootPath, fixtureType) {
   );
 }
 
-describe.slow('hostWorkingDirectory, hostPackageRoot, hostGitRoot', () => {
+describe.slow('helper/yarnRun', () => {
   const testDirectory = tmpDirectory('aberlaas/helper/yarnRun');
   afterAll(async () => {
     await remove(testDirectory);

@@ -3,7 +3,7 @@ import { __, enable } from '../renovate.js';
 
 const RENOVATE_ID = 2471197;
 
-describe('setup > renovate', () => {
+describe('setup/renovate', () => {
   beforeEach(async () => {
     vi.spyOn(__, 'consoleSuccess').mockReturnValue();
     vi.spyOn(__, 'consoleInfo').mockReturnValue();

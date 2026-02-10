@@ -4,7 +4,7 @@ import {
   ensureCorrectPublishedFiles,
 } from '../ensureCorrectPublishedFiles.js';
 
-describe('ensureCorrectPublishedFiles', () => {
+describe('release/ensureCorrectPublishedFiles', () => {
   const testDirectory = tmpDirectory(
     'aberlaas/release/ensureCorrectPublishedFiles',
   );

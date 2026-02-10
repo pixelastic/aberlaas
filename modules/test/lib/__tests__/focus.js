@@ -1,4 +1,4 @@
-describe('test > focus', () => {
+describe('test/focus', () => {
   describe('fdescribe', () => {
     // eslint-disable-next-line no-restricted-globals
     fdescribe('[fdescribe]', () => {

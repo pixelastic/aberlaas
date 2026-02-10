@@ -3,7 +3,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import { __, getReleaseData } from '../getReleaseData.js';
 
-describe('getReleaseData', () => {
+describe('release/getReleaseData', () => {
   const testDirectory = tmpDirectory('aberlaas/release/getReleaseData');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

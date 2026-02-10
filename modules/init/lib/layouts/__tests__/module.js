@@ -4,7 +4,7 @@ import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import { __ as initHelper } from '../../helper.js';
 import { __, run } from '../module.js';
 
-describe('init > module', () => {
+describe('init/module', () => {
   const testDirectory = tmpDirectory('aberlaas/init/module');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
