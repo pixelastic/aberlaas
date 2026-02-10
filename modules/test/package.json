@@ -27,7 +27,7 @@
     "globals": "17.2.0",
     "golgoth": "3.1.0",
     "jest-extended": "4.0.2",
-    "vitest": "2.1.2"
+    "vitest": "4.0.18"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",

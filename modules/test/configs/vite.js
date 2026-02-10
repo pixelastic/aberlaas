@@ -18,19 +18,24 @@ export default defineConfig({
     include: ['**/__tests__/**/*.js?(x)'],
     // We ignore temporary folders from the tests
     exclude: aberlaasVitestExclude,
-    // Restore mocks after each tests
+
+    // Restore mocks to their real implementation between tests
     restoreMocks: true,
+    // Clear the number of time a mock has been called between tests
+    clearMocks: true,
 
     // Make describe, it, beforeEach and other globally available
     globals: true,
     // Run before each test file
     setupFiles: [
-      `${configDir}/setupFiles/dedent.js`,
       `${configDir}/setupFiles/captureOutput.js`,
-      `${configDir}/setupFiles/fit-xit-fdescribe-xdescribe.js`,
-      `${configDir}/setupFiles/slow.js`,
+      `${configDir}/setupFiles/dedent.js`,
+      `${configDir}/setupFiles/describeName.js`,
+      `${configDir}/setupFiles/focus.js`,
       `${configDir}/setupFiles/jest-extended.js`,
-      `${configDir}/setupFiles/describeName-testName.js`,
+      `${configDir}/setupFiles/skip.js`,
+      `${configDir}/setupFiles/slow.js`,
+      `${configDir}/setupFiles/testName.js`,
     ],
   },
   server: {

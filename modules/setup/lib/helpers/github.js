@@ -56,7 +56,7 @@ export default {
     // Instanciate Octokit if not available
     if (!this.__cache.octokit) {
       const githubToken = this.token();
-      this.__cache.octokit = new this.__Octokit({
+      this.__cache.octokit = this.__Octokit({
         auth: githubToken,
         log: {
           debug: this.__noOp,
@@ -73,7 +73,9 @@ export default {
     return response.data;
   },
   __run: run,
-  __Octokit: Octokit,
+  __Octokit(...args) {
+    return new Octokit(...args);
+  },
   __cache: {},
   __noOp: () => {},
 };

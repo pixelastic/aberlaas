@@ -11,15 +11,17 @@ describe('lint', () => {
   afterEach(async () => {
     await remove(testDirectory);
   });
+
   describe('run', () => {
-    const mockedLinters = {
-      circleci: { run: vi.fn(), fix: vi.fn() },
-      css: { run: vi.fn(), fix: vi.fn() },
-      json: { run: vi.fn(), fix: vi.fn() },
-      js: { run: vi.fn(), fix: vi.fn() },
-      yml: { run: vi.fn(), fix: vi.fn() },
-    };
+    let mockedLinters;
     beforeEach(async () => {
+      mockedLinters = {
+        circleci: { run: vi.fn(), fix: vi.fn() },
+        css: { run: vi.fn(), fix: vi.fn() },
+        json: { run: vi.fn(), fix: vi.fn() },
+        js: { run: vi.fn(), fix: vi.fn() },
+        yml: { run: vi.fn(), fix: vi.fn() },
+      };
       vi.spyOn(__, 'getLinter').mockImplementation((linterName) => {
         return mockedLinters[linterName];
       });
