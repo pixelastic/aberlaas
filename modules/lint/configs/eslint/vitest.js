@@ -23,6 +23,7 @@ export default [
         fdescribe: false,
         fit: false,
         testName: false,
+        describeName: false,
         xdescribe: false,
         xit: false,
       },

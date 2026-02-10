@@ -30,7 +30,7 @@ export default defineConfig({
       `${configDir}/setupFiles/fit-xit-fdescribe-xdescribe.js`,
       `${configDir}/setupFiles/slow.js`,
       `${configDir}/setupFiles/jest-extended.js`,
-      `${configDir}/setupFiles/testName.js`,
+      `${configDir}/setupFiles/describeName-testName.js`,
     ],
   },
   server: {

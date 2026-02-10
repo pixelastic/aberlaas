@@ -128,6 +128,16 @@ describe('test', () => {
       expect(testName).toBe('this is the name of my test');
     });
   });
+  describe('describeName', () => {
+    it('should contain the parent describe name', async () => {
+      expect(describeName).toBe('describeName');
+    });
+    describe('nested describe', () => {
+      it('should contain the direct parent describe name', async () => {
+        expect(describeName).toBe('nested describe');
+      });
+    });
+  });
   describe('run', () => {
     it('should just pass', async () => {
       // We do not test this method on purpose.
@@ -145,4 +155,7 @@ describe('test', () => {
       expect(true).toBe(true);
     });
   });
+});
+it('describeName should be undefined for test at root level', async () => {
+  expect(describeName).toBeUndefined();
 });
