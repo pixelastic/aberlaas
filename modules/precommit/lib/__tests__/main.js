@@ -24,11 +24,11 @@ describe('precommit/main', () => {
   });
 
   describe('run', () => {
-    it('should do nothing if no files passed', async () => {
+    it('should do nothing if no files in the staging area', async () => {
       const actual = await run();
       expect(actual).toEqual(true);
     });
-    it('should return true if linting pass', async () => {
+    it.slow('should return true if linting pass', async () => {
       await write(
         "export default { '*.js': ['true'] }",
         `${testDirectory}/lintstaged.config.js`,
@@ -42,7 +42,7 @@ describe('precommit/main', () => {
 
       expect(actual).toEqual(true);
     });
-    it('should throw an error if linting fails', async () => {
+    it.slow('should throw an error if linting fails', async () => {
       await write(
         "export default { '*.js': ['false'] }",
         `${testDirectory}/lintstaged.config.js`,

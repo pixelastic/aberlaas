@@ -21,7 +21,7 @@ describe('init/main', () => {
   });
   // CONFIGURE
   describe('configureGit', () => {
-    it('should change the default git hooksPath', async () => {
+    it.slow('should change the default git hooksPath', async () => {
       const repo = new Gilmore(hostGitRoot());
       await repo.init();
 

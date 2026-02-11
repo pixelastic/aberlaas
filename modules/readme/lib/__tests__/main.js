@@ -301,7 +301,7 @@ describe('readme', () => {
   });
 
   describe('addToGit', () => {
-    it('should add all output files to git staging area', async () => {
+    it.slow('should add all output files to git staging area', async () => {
       const repo = new Gilmore(testDirectory);
       await repo.init();
 

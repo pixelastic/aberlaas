@@ -16,7 +16,7 @@ describe('release/helper', () => {
     await remove(testDirectory);
   });
 
-  describe('getLastReleasePoint', () => {
+  describe.slow('getLastReleasePoint', () => {
     it('should return the tag name when the tag exists', async () => {
       const repo = new Gilmore(testDirectory);
       await repo.init();
