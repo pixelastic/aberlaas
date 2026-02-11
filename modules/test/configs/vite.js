@@ -36,7 +36,7 @@ export default defineConfig({
       `${configDir}/setupFiles/dedent.js`,
       `${configDir}/setupFiles/describeName.js`,
       `${configDir}/setupFiles/focus.js`,
-      `${configDir}/setupFiles/jest-extended.js`,
+      `${configDir}/setupFiles/matchers.js`,
       `${configDir}/setupFiles/skip.js`,
       `${configDir}/setupFiles/slow.js`,
       `${configDir}/setupFiles/testName.js`,
