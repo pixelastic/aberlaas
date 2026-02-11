@@ -64,7 +64,7 @@ describe('init/module', () => {
       [
         'should export the right files',
         {
-          files: ['lib/*.js'],
+          files: ['./lib/*.js'],
           exports: { '.': './lib/main.js' },
           main: './lib/main.js',
         },

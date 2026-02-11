@@ -54,7 +54,7 @@ __ = {
     };
     const packageManager = `yarn@${yarnVersion}`;
 
-    const files = ['lib/*.js'];
+    const files = ['./lib/*.js'];
     const exports = {
       '.': './lib/main.js',
     };

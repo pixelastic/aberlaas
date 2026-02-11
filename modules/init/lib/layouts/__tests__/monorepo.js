@@ -143,7 +143,7 @@ describe('init/monorepo', () => {
             node: `>=${nodeVersion}`,
           },
 
-          files: ['*.js'],
+          files: ['./*.js'],
           exports: { '.': './main.js' },
           // Some tools have trouble parsing the .exports field, so we keep the
           // .main field for backward compatibility

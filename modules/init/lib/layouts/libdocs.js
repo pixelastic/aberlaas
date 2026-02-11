@@ -163,7 +163,7 @@ __ = {
       engines,
 
       // Exports
-      files: ['*.js'],
+      files: ['./*.js'],
       exports: {
         '.': './main.js',
       },
