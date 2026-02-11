@@ -1,5 +1,13 @@
 import { _ } from 'golgoth';
-import { absolute, newFile, read, remove, write, writeJson } from 'firost';
+import {
+  absolute,
+  gitRoot,
+  newFile,
+  read,
+  remove,
+  write,
+  writeJson,
+} from 'firost';
 import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../json.js';
 
@@ -7,7 +15,7 @@ describe('lint/json', () => {
   // IMPORTANT: This test MUST use a directory inside the repository (not /tmp system)
   // because ESLint refuses to lint files outside of its base directory.
   // This is an ESLint technical constraint, not a choice.
-  const testDirectory = absolute('<gitRoot>/tmp/lint/json');
+  const testDirectory = absolute(gitRoot(), 'tmp/lint/json');
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });
