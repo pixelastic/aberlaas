@@ -21,7 +21,7 @@
   "dependencies": {
     "aberlaas-helper": "workspace:*",
     "ci-info": "4.4.0",
-    "firost": "5.6.0"
+    "firost": "5.6.1"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",

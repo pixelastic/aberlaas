@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "aberlaas-helper": "workspace:*",
-    "firost": "5.6.0",
+    "firost": "5.6.1",
     "lint-staged": "16.2.7"
   },
   "scripts": {

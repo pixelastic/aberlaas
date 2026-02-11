@@ -4595,7 +4595,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     ci-info: "npm:4.4.0"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
   languageName: unknown
   linkType: soft
 
@@ -4604,7 +4604,7 @@ __metadata:
   resolution: "aberlaas-compress@workspace:modules/compress"
   dependencies:
     aberlaas-helper: "workspace:*"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
@@ -4623,7 +4623,7 @@ __metadata:
   resolution: "aberlaas-helper@workspace:modules/helper"
   dependencies:
     aberlaas-versions: "workspace:*"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
@@ -4634,7 +4634,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     aberlaas-versions: "workspace:*"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
   languageName: unknown
@@ -4659,7 +4659,7 @@ __metadata:
     eslint-plugin-package-json: "npm:0.88.2"
     eslint-plugin-prettier: "npm:5.5.5"
     eslint-plugin-react: "npm:7.37.5"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     globals: "npm:17.3.0"
     golgoth: "npm:3.1.0"
     jsonc-eslint-parser: "npm:2.4.2"
@@ -4674,7 +4674,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aberlaas-monorepo@workspace:."
   dependencies:
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
@@ -4684,7 +4684,7 @@ __metadata:
   resolution: "aberlaas-precommit@workspace:modules/precommit"
   dependencies:
     aberlaas-helper: "workspace:*"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
     lint-staged: "npm:16.2.7"
@@ -4698,7 +4698,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     dedent: "npm:1.7.1"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     front-matter: "npm:4.0.2"
     gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
@@ -4714,7 +4714,7 @@ __metadata:
     aberlaas-test: "workspace:*"
     changelogen: "npm:0.6.2"
     cli-markdown: "npm:3.5.1"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
     keyleth: "npm:0.2.0"
@@ -4728,7 +4728,7 @@ __metadata:
   dependencies:
     "@octokit/rest": "npm:22.0.1"
     aberlaas-helper: "workspace:*"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
     parse-github-repo-url: "npm:1.4.1"
@@ -4741,7 +4741,7 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     dedent: "npm:1.7.1"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     globals: "npm:17.2.0"
     golgoth: "npm:3.1.0"
     jest-extended: "npm:4.0.2"
@@ -4770,7 +4770,7 @@ __metadata:
     aberlaas-setup: "workspace:*"
     aberlaas-test: "workspace:*"
     aberlaas-versions: "workspace:*"
-    firost: "npm:5.6.0"
+    firost: "npm:5.6.1"
     golgoth: "npm:3.1.0"
     minimist: "npm:1.2.8"
   bin:
@@ -10695,9 +10695,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firost@npm:5.6.0":
-  version: 5.6.0
-  resolution: "firost@npm:5.6.0"
+"firost@npm:5.6.1":
+  version: 5.6.1
+  resolution: "firost@npm:5.6.1"
   dependencies:
     "@inquirer/input": "npm:5.0.4"
     "@inquirer/select": "npm:5.0.4"
@@ -10717,11 +10717,10 @@ __metadata:
     rev-hash: "npm:4.1.0"
     std-mocks: "npm:2.0.0"
     strip-ansi: "npm:7.1.2"
-    temp-dir: "npm:3.0.0"
     untildify: "npm:6.0.0"
-    which: "npm:6.0.0"
+    which: "npm:6.0.1"
     yoctocolors: "npm:2.1.2"
-  checksum: 10c0/b9e83edfe90f47f57e466e1aae296db7409706611fe6195376926f7cca00b89697985dea3459d1cc23ff9283e962cf4131cfae8079283ced1a1497617d584586
+  checksum: 10c0/e7b33261ccd592b47bb62b1ec32850008b13d5820d903f3348dfd386bf6900d938ccbbf32e8747b2fdfc4f320ac1e2d980045197764ee316956afc4f1f5f55c2
   languageName: node
   linkType: hard
 
@@ -13730,6 +13729,13 @@ __metadata:
   version: 3.1.1
   resolution: "isexe@npm:3.1.1"
   checksum: 10c0/9ec257654093443eb0a528a9c8cbba9c0ca7616ccb40abd6dde7202734d96bb86e4ac0d764f0f8cd965856aacbff2f4ce23e730dc19dfb41e3b0d865ca6fdcc7
+  languageName: node
+  linkType: hard
+
+"isexe@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "isexe@npm:4.0.0"
+  checksum: 10c0/5884815115bceac452877659a9c7726382531592f43dc29e5d48b7c4100661aed54018cb90bd36cb2eaeba521092570769167acbb95c18d39afdccbcca06c5ce
   languageName: node
   linkType: hard
 
@@ -23091,6 +23097,17 @@ __metadata:
   bin:
     node-which: bin/which.js
   checksum: 10c0/fe9d6463fe44a76232bb6e3b3181922c87510a5b250a98f1e43a69c99c079b3f42ddeca7e03d3e5f2241bf2d334f5a7657cfa868b97c109f3870625842f4cc15
+  languageName: node
+  linkType: hard
+
+"which@npm:6.0.1":
+  version: 6.0.1
+  resolution: "which@npm:6.0.1"
+  dependencies:
+    isexe: "npm:^4.0.0"
+  bin:
+    node-which: bin/which.js
+  checksum: 10c0/7e710e54ea36d2d6183bee2f9caa27a3b47b9baf8dee55a199b736fcf85eab3b9df7556fca3d02b50af7f3dfba5ea3a45644189836df06267df457e354da66d5
   languageName: node
   linkType: hard
 
