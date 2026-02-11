@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { consoleError, consoleInfo, consoleSuccess } from 'firost';
-import circleCiHelper from './helpers/circleci.js';
-import githubHelper from './helpers/github.js';
+import { api, hasToken } from './helpers/circleci.js';
+import { getRepoData } from './helpers/github.js';
 
 export let __;
 
@@ -11,11 +11,11 @@ export let __;
  * @returns {boolean} True if enabled, false otherwise
  */
 export async function enable() {
-  const { username, repo } = await githubHelper.repoData();
+  const { username, repo } = await __.getRepoData();
   const projectUrl = `https://app.circleci.com/pipelines/github/${username}/${repo}`;
 
   // Fail early if no token available
-  if (!circleCiHelper.hasToken()) {
+  if (!__.hasToken()) {
     __.consoleError(
       'CircleCI: ABERLAAS_CIRCLECI_TOKEN environment variable must be set',
     );
@@ -46,8 +46,8 @@ __ = {
   async isEnabled() {
     // There is no endpoint to check if a project is followed or not, so we get
     // the list of all followed projects and check if the current one is in it
-    const allProjects = await circleCiHelper.api('projects');
-    const { username, repo } = await githubHelper.repoData();
+    const allProjects = await __.api('projects');
+    const { username, repo } = await __.getRepoData();
     const thisProject = _.find(allProjects, { username, reponame: repo });
     return !!thisProject;
   },
@@ -55,14 +55,17 @@ __ = {
    * Automatically follow the repo on CircleCI.
    */
   async followRepo() {
-    const { username, repo } = await githubHelper.repoData();
-    await circleCiHelper.api(`project/github/${username}/${repo}/follow`, {
+    const { username, repo } = await __.getRepoData();
+    await __.api(`project/github/${username}/${repo}/follow`, {
       method: 'post',
     });
   },
   consoleInfo,
   consoleSuccess,
   consoleError,
+  getRepoData,
+  hasToken,
+  api,
 };
 
 export default { enable };

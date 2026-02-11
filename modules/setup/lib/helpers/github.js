@@ -1,9 +1,68 @@
 import { _ } from 'golgoth';
 import { run } from 'firost';
 import { Octokit } from '@octokit/rest';
+import { hostGitRoot } from 'aberlaas-helper';
+import Gilmore from 'gilmore';
 import parseGithubUrl from 'parse-github-repo-url';
 
-export default {
+export let __;
+/**
+ * Check if a GitHub token is available
+ * @returns {boolean} True if a token is defined
+ */
+export function hasToken() {
+  return !!__.token();
+}
+/**
+ * Returns some data from the git config
+ * @returns {object} Object with .username, .repo and .email keys
+ */
+export async function getRepoData() {
+  if (__.cache.repoData) {
+    return __.cache.repoData;
+  }
+
+  const email = await __.config('user.email');
+  const remoteUrl = await __.config('remote.origin.url');
+  const [username, repo] = parseGithubUrl(remoteUrl);
+
+  const result = { username, repo, email };
+  __.cache.repoData = result;
+  return result;
+}
+/**
+ * Wraps Octokit and return the results
+ * @param {string} methodPath Path of the method to call
+ * @param {object} options Options to pass to the method
+ * @returns {*} Response from the API
+ */
+export async function octokit(methodPath, options) {
+  // Instanciate Octokit if not available
+  if (!__.cache.octokit) {
+    const githubToken = __.token();
+    __.cache.octokit = __.newOctokit({
+      auth: githubToken,
+      log: {
+        debug: __.noOp,
+        info: __.noOp,
+        warn: __.noOp,
+        error: __.noOp,
+      },
+    });
+  }
+
+  const octokitInstance = __.cache.octokit;
+  const method = _.get(octokitInstance, methodPath);
+  const response = await method(options);
+  return response.data;
+}
+
+__ = {
+  cache: {},
+  clearCache() {
+    __.cache = {};
+  },
+  noOp: () => {},
   /**
    * Returns the GitHub token saved in ENV
    * @returns {string} The GitHub token
@@ -12,70 +71,25 @@ export default {
     return process.env.ABERLAAS_GITHUB_TOKEN;
   },
   /**
-   * Check if a GitHub token is available
-   * @returns {boolean} True if a token is defined
-   */
-  hasToken() {
-    return !!this.token();
-  },
-  /**
-   * Returns some data from the git config
-   * @returns {object} Object with .username, .repo and .email keys
-   */
-  async repoData() {
-    if (this.__cache.repoData) {
-      return this.__cache.repoData;
-    }
-
-    const email = await this.config('user.email');
-    const remoteUrl = await this.config('remote.origin.url');
-    const [username, repo] = parseGithubUrl(remoteUrl);
-
-    const result = { username, repo, email };
-    this.__cache.githubData = result;
-    return result;
-  },
-  /**
    * Return the value of a git config
    * @param {string} key Config key
    * @returns {string} Config value
    */
   async config(key) {
-    const response = await this.__run(`git config ${key}`, {
-      stdout: false,
-    });
-    return response.stdout;
-  },
-  /**
-   * Wraps Octokit and return the results
-   * @param {string} methodPath Path of the method to call
-   * @param {object} options Options to pass to the method
-   * @returns {*} Response from the API
-   */
-  async octokit(methodPath, options) {
-    // Instanciate Octokit if not available
-    if (!this.__cache.octokit) {
-      const githubToken = this.token();
-      this.__cache.octokit = this.__Octokit({
-        auth: githubToken,
-        log: {
-          debug: this.__noOp,
-          info: this.__noOp,
-          warn: this.__noOp,
-          error: this.__noOp,
-        },
-      });
+    if (!__.cache.repository) {
+      __.cache.repository = new Gilmore(hostGitRoot());
     }
 
-    const octokit = this.__cache.octokit;
-    const method = _.get(octokit, methodPath);
-    const response = await method(options);
-    return response.data;
+    const repository = __.cache.repository;
+    return await repository.getConfig(key);
   },
-  __run: run,
-  __Octokit(...args) {
+  /**
+   * Creates a new Octokit instance
+   * @param {...any} args - Arguments to pass to the Octokit constructor
+   * @returns {Octokit} A new Octokit instance
+   */
+  newOctokit(...args) {
     return new Octokit(...args);
   },
-  __cache: {},
-  __noOp: () => {},
+  run,
 };

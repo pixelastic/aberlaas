@@ -217,7 +217,6 @@ export const __ = {
 
 // Named exports of public methods, but wrapped in dynamic method so we can
 // still mock the inner methods in tests
-//
 export const addConfigFiles = wrap(__, 'addConfigFiles');
 export const addDefaultScripts = wrap(__, 'addDefaultScripts');
 export const addDocsScripts = wrap(__, 'addDocsScripts');

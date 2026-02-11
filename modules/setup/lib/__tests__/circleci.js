@@ -1,6 +1,4 @@
 import { __, enable } from '../circleci.js';
-import circleciHelper from '../helpers/circleci.js';
-import githubHelper from '../helpers/github.js';
 
 describe('setup/circleci', () => {
   describe('enable', () => {
@@ -8,18 +6,18 @@ describe('setup/circleci', () => {
       vi.spyOn(__, 'consoleSuccess').mockReturnValue();
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
       vi.spyOn(__, 'consoleError').mockReturnValue();
-      vi.spyOn(githubHelper, 'repoData').mockReturnValue({});
+      vi.spyOn(__, 'getRepoData').mockReturnValue({});
       vi.spyOn(__, 'followRepo').mockReturnValue();
     });
     it('when no token available', async () => {
-      vi.spyOn(circleciHelper, 'hasToken').mockReturnValue(false);
+      vi.spyOn(__, 'hasToken').mockReturnValue(false);
       const actual = await enable();
       expect(actual).toBe(false);
       expect(__.consoleError).toHaveBeenCalled();
       expect(__.consoleSuccess).not.toHaveBeenCalled();
     });
     it('when already enabled', async () => {
-      vi.spyOn(circleciHelper, 'hasToken').mockReturnValue(true);
+      vi.spyOn(__, 'hasToken').mockReturnValue(true);
       vi.spyOn(__, 'isEnabled').mockReturnValue(true);
       const actual = await enable();
       expect(actual).toBe(true);
@@ -28,7 +26,7 @@ describe('setup/circleci', () => {
     });
     it('with a token', async () => {
       vi.spyOn(__, 'isEnabled').mockReturnValue(false);
-      vi.spyOn(circleciHelper, 'hasToken').mockReturnValue(true);
+      vi.spyOn(__, 'hasToken').mockReturnValue(true);
       const actual = await enable();
       expect(actual).toBe(true);
       expect(__.consoleError).not.toHaveBeenCalled();
@@ -38,25 +36,25 @@ describe('setup/circleci', () => {
   });
   describe('isEnabled', () => {
     beforeEach(async () => {
-      vi.spyOn(githubHelper, 'repoData').mockReturnValue({
+      vi.spyOn(__, 'getRepoData').mockReturnValue({
         username: 'pixelastic',
         repo: 'aberlaas',
       });
-      vi.spyOn(circleciHelper, 'api').mockReturnValue();
+      vi.spyOn(__, 'api').mockReturnValue();
     });
     it('should call the API', async () => {
       await __.isEnabled();
-      expect(circleciHelper.api).toHaveBeenCalledWith('projects');
+      expect(__.api).toHaveBeenCalledWith('projects');
     });
     it('should return true if found in the list', async () => {
-      circleciHelper.api.mockReturnValue([
+      __.api.mockReturnValue([
         { username: 'pixelastic', reponame: 'aberlaas' },
       ]);
       const actual = await __.isEnabled();
       expect(actual).toBe(true);
     });
     it('should return false if not found in the list', async () => {
-      circleciHelper.api.mockReturnValue([
+      __.api.mockReturnValue([
         { username: 'pixelastic', reponame: 'another-project' },
       ]);
       const actual = await __.isEnabled();
@@ -65,14 +63,14 @@ describe('setup/circleci', () => {
   });
   describe('followRepo', () => {
     it('should call the API', async () => {
-      vi.spyOn(githubHelper, 'repoData').mockReturnValue({
+      vi.spyOn(__, 'getRepoData').mockReturnValue({
         username: 'pixelastic',
         repo: 'aberlaas',
       });
-      vi.spyOn(circleciHelper, 'api').mockReturnValue();
+      vi.spyOn(__, 'api').mockReturnValue();
 
       await __.followRepo();
-      expect(circleciHelper.api).toHaveBeenCalledWith(
+      expect(__.api).toHaveBeenCalledWith(
         'project/github/pixelastic/aberlaas/follow',
         {
           method: 'post',

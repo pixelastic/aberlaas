@@ -73,6 +73,12 @@ __ = {
 
     return __.parseNpmPublishOutput(stdout);
   },
+
+  /**
+   * Parses npm publish command output to extract sorted file paths
+   * @param {string} stdout - The JSON string output from npm publish command
+   * @returns {string[]} Array of sorted file paths from the published package
+   */
   parseNpmPublishOutput(stdout) {
     const parsedOutput = JSON.parse(stdout);
 
@@ -83,6 +89,7 @@ __ = {
 
     return _.chain(root).get('files').map('path').sort().value();
   },
+
   /**
    * Gets the list of files that would be published to npm for a package using yarn
    * @param {object} packageData - Package data object containing file information

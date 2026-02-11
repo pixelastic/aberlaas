@@ -1,9 +1,7 @@
 import { consoleError, consoleInfo, consoleSuccess } from 'firost';
-import githubHelper from './helpers/github.js';
+import { getRepoData, hasToken, octokit } from './helpers/github.js';
 
 export let __;
-
-const RENOVATE_ID = 2471197;
 
 /**
  * Attempt to automatically add the current repo to renovate, otherwise
@@ -11,12 +9,12 @@ const RENOVATE_ID = 2471197;
  * @returns {boolean} True if enabled, false otherwise
  */
 export async function enable() {
-  const { username, repo } = await githubHelper.repoData();
-  const manualUrl = `https://github.com/settings/installations/${RENOVATE_ID}`;
+  const { username, repo } = await __.getRepoData();
+  const manualUrl = `https://github.com/settings/installations/${__.renovateId}`;
   const renovateDashboardUrl = `https://developer.mend.io/github/${username}/${repo}`;
 
   // Fail early if no token available
-  if (!githubHelper.hasToken()) {
+  if (!__.hasToken()) {
     __.consoleError(
       'Renovate: ABERLAAS_GITHUB_TOKEN environment variable must be set',
     );
@@ -34,8 +32,8 @@ export async function enable() {
 
   try {
     const repositoryId = await __.getRepositoryId();
-    await githubHelper.octokit('apps.addRepoToInstallation', {
-      installation_id: RENOVATE_ID,
+    await __.octokit('apps.addRepoToInstallation', {
+      installation_id: __.renovateId,
       repository_id: repositoryId,
     });
   } catch (_err) {
@@ -51,13 +49,14 @@ export async function enable() {
 }
 
 __ = {
+  renovateId: 2471197,
   /**
    * Returns the GitHub repository Id
    * @returns {number} Repository Id
    */
   async getRepositoryId() {
-    const { username, repo } = await githubHelper.repoData();
-    const { id } = await githubHelper.octokit('repos.get', {
+    const { username, repo } = await __.getRepoData();
+    const { id } = await __.octokit('repos.get', {
       owner: username,
       repo,
     });
@@ -69,17 +68,16 @@ __ = {
    */
   async isAlreadyEnabled() {
     try {
-      const { username, repo } = await githubHelper.repoData();
-      const installations = await githubHelper.octokit(
+      const { username, repo } = await __.getRepoData();
+      const installations = await __.octokit(
         'apps.listReposAccessibleToInstallation',
         {
-          installation_id: RENOVATE_ID,
+          installation_id: __.renovateId,
         },
       );
 
       return installations.repositories.some(
-        (repoData) =>
-          repoData.owner.login === username && repoData.name === repo,
+        (item) => item.owner.login === username && item.name === repo,
       );
     } catch {
       // API call fails if Renovate app is not installed - treat as not enabled
@@ -89,6 +87,9 @@ __ = {
   consoleSuccess,
   consoleInfo,
   consoleError,
+  getRepoData,
+  hasToken,
+  octokit,
 };
 
 export default { enable };

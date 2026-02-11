@@ -1,30 +1,41 @@
-import current from '../github.js';
+import { __, getRepoData, octokit } from '../github.js';
 
-describe('setup/github', () => {
+describe('setup/helpers/github', () => {
   beforeEach(async () => {
-    current.__cache = {};
+    __.clearCache();
   });
-  describe('repoData', () => {
+  describe('getRepoData', () => {
+    const manifest = {
+      'user.email': 'something@email.com',
+      'remote.origin.url': 'git@github.com:user/project.git',
+    };
     it('should return .username and .repo', async () => {
-      vi.spyOn(current, '__run').mockReturnValue({
-        stdout: 'git@github.com:pixelastic/aberlaas.git',
+      vi.spyOn(__, 'config').mockImplementation((key) => {
+        return manifest[key];
       });
-      const actual = await current.repoData();
-      expect(actual).toHaveProperty('username', 'pixelastic');
-      expect(actual).toHaveProperty('repo', 'aberlaas');
+      const actual = await getRepoData();
+      expect(actual).toEqual({
+        username: 'user',
+        repo: 'project',
+        email: 'something@email.com',
+      });
     });
-  });
-  describe('config', () => {
-    it('should return the config value', async () => {
-      vi.spyOn(current, '__run').mockReturnValue({
-        stdout: 'name@provider.com',
+    it('should use caching', async () => {
+      vi.spyOn(__, 'config').mockImplementation((key) => {
+        return manifest[key];
       });
-      const actual = await current.config('user.email');
-      expect(current.__run).toHaveBeenCalledWith(
-        'git config user.email',
-        expect.anything(),
-      );
-      expect(actual).toBe('name@provider.com');
+      await getRepoData();
+
+      vi.spyOn(__, 'config').mockImplementation(() => {
+        return 'Always return this';
+      });
+
+      const actual = await getRepoData();
+      expect(actual).toEqual({
+        username: 'user',
+        repo: 'project',
+        email: 'something@email.com',
+      });
     });
   });
   describe('octokit', () => {
@@ -34,25 +45,25 @@ describe('setup/github', () => {
           return {};
         },
       };
-      vi.spyOn(current, '__Octokit').mockReturnValue(mockOctokit);
-      vi.spyOn(current, 'token').mockReturnValue('TOKEN');
+      vi.spyOn(__, 'newOctokit').mockReturnValue(mockOctokit);
+      vi.spyOn(__, 'token').mockReturnValue('TOKEN');
 
-      await current.octokit('methodName', {});
-      await current.octokit('methodName', {});
+      await octokit('methodName', {});
+      await octokit('methodName', {});
 
-      expect(current.__cache.octokit).toEqual(mockOctokit);
-      expect(current.__Octokit).toHaveBeenCalledTimes(1);
+      expect(__.cache.octokit).toEqual(mockOctokit);
+      expect(__.newOctokit).toHaveBeenCalledTimes(1);
     });
     it('should pass the correct auth token', async () => {
       const mockOctokit = {
         methodName: vi.fn().mockReturnValue({}),
       };
-      vi.spyOn(current, 'token').mockReturnValue('TOKEN');
-      current.__Octokit = vi.fn().mockReturnValue(mockOctokit);
+      vi.spyOn(__, 'token').mockReturnValue('TOKEN');
+      __.newOctokit = vi.fn().mockReturnValue(mockOctokit);
 
-      await current.octokit('methodName', {});
+      await octokit('methodName', {});
 
-      expect(current.__Octokit).toHaveBeenCalledWith(
+      expect(__.newOctokit).toHaveBeenCalledWith(
         expect.objectContaining({ auth: 'TOKEN' }),
       );
     });
@@ -60,24 +71,24 @@ describe('setup/github', () => {
       const mockOctokit = {
         methodName: vi.fn().mockReturnValue({}),
       };
-      vi.spyOn(current, 'token').mockReturnValue('TOKEN');
-      current.__Octokit = vi.fn().mockReturnValue(mockOctokit);
+      vi.spyOn(__, 'token').mockReturnValue('TOKEN');
+      __.Octokit = vi.fn().mockReturnValue(mockOctokit);
 
-      await current.octokit('methodName', {});
+      await octokit('methodName', {});
 
-      const callArgs = current.__Octokit.mock.calls[0][0];
-      expect(callArgs.log.debug).toBe(current.__noOp);
-      expect(callArgs.log.info).toBe(current.__noOp);
-      expect(callArgs.log.warn).toBe(current.__noOp);
-      expect(callArgs.log.error).toBe(current.__noOp);
+      const callArgs = __.newOctokit.mock.calls[0][0];
+      expect(callArgs.log.debug).toBe(__.noOp);
+      expect(callArgs.log.info).toBe(__.noOp);
+      expect(callArgs.log.warn).toBe(__.noOp);
+      expect(callArgs.log.error).toBe(__.noOp);
     });
     it('should call the Octokit method with passed options', async () => {
       const mockOctokit = {
         methodName: vi.fn().mockReturnValue({}),
       };
-      vi.spyOn(current, '__Octokit').mockReturnValue(mockOctokit);
+      vi.spyOn(__, 'newOctokit').mockReturnValue(mockOctokit);
 
-      await current.octokit('methodName', { mode: 'test' });
+      await octokit('methodName', { mode: 'test' });
 
       expect(mockOctokit.methodName).toHaveBeenCalledWith({ mode: 'test' });
     });
@@ -87,10 +98,21 @@ describe('setup/github', () => {
           return { data: 'result' };
         },
       };
-      vi.spyOn(current, '__Octokit').mockReturnValue(mockOctokit);
+      vi.spyOn(__, 'newOctokit').mockReturnValue(mockOctokit);
 
-      const actual = await current.octokit('methodName');
+      const actual = await octokit('methodName');
       expect(actual).toBe('result');
+    });
+  });
+  describe('config', () => {
+    it('should return the config value', async () => {
+      __.cache.repository = {
+        getConfig: vi.fn().mockReturnValue('name@provider.com'),
+      };
+
+      const actual = await __.config('user.email');
+
+      expect(actual).toBe('name@provider.com');
     });
   });
 });

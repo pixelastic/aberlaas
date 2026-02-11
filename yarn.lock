@@ -4729,6 +4729,7 @@ __metadata:
     "@octokit/rest": "npm:22.0.1"
     aberlaas-helper: "workspace:*"
     firost: "npm:5.5.2"
+    gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
     parse-github-repo-url: "npm:1.4.1"
   languageName: unknown

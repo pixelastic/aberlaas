@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { consoleError, consoleInfo, consoleSuccess } from 'firost';
-import githubHelper from './helpers/github.js';
+import { getRepoData, hasToken, octokit } from './helpers/github.js';
 
 export let __;
 
@@ -18,11 +18,11 @@ const gitHubSettings = {
  * @returns {boolean} True if enabled, false otherwise
  */
 export async function enable() {
-  const { username, repo } = await githubHelper.repoData();
+  const { username, repo } = await __.getRepoData();
   const settingsUrl = `https://github.com/${username}/${repo}/settings`;
 
   // Fail early if no token available
-  if (!githubHelper.hasToken()) {
+  if (!__.hasToken()) {
     __.consoleError(
       'GitHub: ABERLAAS_GITHUB_TOKEN environment variable must be set',
     );
@@ -48,7 +48,7 @@ export async function enable() {
     throw error;
   }
 
-  await githubHelper.octokit('repos.update', {
+  await __.octokit('repos.update', {
     owner: username,
     repo,
     ...gitHubSettings,
@@ -65,8 +65,8 @@ __ = {
    * @returns {boolean} True if already configured, false otherwise
    */
   async isAlreadyConfigured() {
-    const { username, repo } = await githubHelper.repoData();
-    const repoData = await githubHelper.octokit('repos.get', {
+    const { username, repo } = await __.getRepoData();
+    const repoData = await __.octokit('repos.get', {
       owner: username,
       repo,
     });
@@ -76,6 +76,9 @@ __ = {
   consoleSuccess,
   consoleInfo,
   consoleError,
+  getRepoData,
+  hasToken,
+  octokit,
 };
 
 export default { enable };
