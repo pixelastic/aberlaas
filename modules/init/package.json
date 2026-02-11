@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-init",
-  "version": "2.22.3",
+  "version": "2.23.0",
   "type": "module",
   "description": "aberlaas init command: Setup the repository with all needed config",
   "author": "Tim Carry <tim@pixelastic.com>",

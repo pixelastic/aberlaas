@@ -1,3 +1,17 @@
+## v2.23.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.22.3...v2.23.0)
+
+### Features
+
+- **test:** Rename --failFast to --fail-fast for consistency ([ae642d3](https://github.com/pixelastic/aberlaas/commit/ae642d3))
+- **test:** Add describeName global variable ([3a1e008](https://github.com/pixelastic/aberlaas/commit/3a1e008))
+- **test:** Make describeName available in describe() body ([9c80153](https://github.com/pixelastic/aberlaas/commit/9c80153))
+
+### Bug Fixes
+
+- **release:** Add links to commits in changelog ([ced5cdb](https://github.com/pixelastic/aberlaas/commit/ced5cdb))
+
 ## v2.22.3
 
 Use .env rather than .envrc for storing npm auth token
