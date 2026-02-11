@@ -4,12 +4,12 @@ import { slowPrefix, slowTimeout } from '../../configs/slow.js';
 
 // Wrapper for it.slow()
 globalThis.it.slow = (name, callback, timeout = slowTimeout) => {
-  return globalThis.it(`${slowPrefix} ${name}`, callback, timeout);
+  return globalThis.it(`${slowPrefix}${name}`, callback, timeout);
 };
 
 // Wrapper for describe.slow()
 globalThis.describe.slow = (name, callback) => {
-  return globalThis.describe(`${slowPrefix} ${name}`, () => {
+  return globalThis.describe(`${slowPrefix}${name}`, () => {
     vi.setConfig({ testTimeout: slowTimeout });
     callback();
   });

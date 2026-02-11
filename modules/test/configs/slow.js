@@ -6,4 +6,4 @@
 export const slowTimeout = 30_000;
 
 // Prefix of slow tests
-export const slowPrefix = '[slow]';
+export const slowPrefix = 'slow/';

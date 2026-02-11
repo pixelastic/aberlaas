@@ -2,7 +2,9 @@ import { _ } from 'golgoth';
 import {
   absolute,
   copy,
+  gitRoot,
   mkdirp,
+  move,
   readJson,
   remove,
   run,
@@ -22,6 +24,13 @@ export async function setupFixture(rootPath, fixtureType) {
   const repoFixturePath = absolute(`../fixtures/${fixtureType}`);
   await copy(repoFixturePath, rootPath);
 
+  // Rename _node_modules to node_modules
+  // Note: We named it _node_modules because node_modules is gitignored
+  await move(
+    absolute(rootPath, '_node_modules'),
+    absolute(rootPath, 'node_modules'),
+  );
+
   // Set the exact yarn version used by aberlaas
   const packagePath = absolute(rootPath, 'package.json');
   const packageContent = await readJson(packagePath);
@@ -36,7 +45,7 @@ export async function setupFixture(rootPath, fixtureType) {
   // Note: We don't put it in the fixture as we need the absolute path
   await symlink(
     absolute(rootPath, 'node_modules/.bin/aberlaas'),
-    absolute('<gitRoot>/modules/lib/bin/aberlaas.js'),
+    absolute(gitRoot(), 'modules/lib/bin/aberlaas.js'),
   );
 }
 
