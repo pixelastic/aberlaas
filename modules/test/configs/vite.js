@@ -1,7 +1,7 @@
 import { dirname } from 'firost';
 import { defaultExclude, defineConfig } from 'vitest/config';
 
-const aberlaasVitestExclude = [...defaultExclude, '**/tmp/**'];
+const aberlaasVitestExclude = [...defaultExclude, '**/tmp/**', '**/*.bench.js'];
 
 const configDir = dirname();
 
