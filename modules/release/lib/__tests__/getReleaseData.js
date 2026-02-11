@@ -4,7 +4,7 @@ import Gilmore from 'gilmore';
 import { __, getReleaseData } from '../getReleaseData.js';
 
 describe('release/getReleaseData', () => {
-  const testDirectory = tmpDirectory('aberlaas/release/getReleaseData');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

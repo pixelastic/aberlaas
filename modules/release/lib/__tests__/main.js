@@ -3,7 +3,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../main.js';
 
 describe('release/main', () => {
-  const testDirectory = tmpDirectory('aberlaas/release/main');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

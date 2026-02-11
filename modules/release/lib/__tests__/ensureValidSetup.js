@@ -4,7 +4,7 @@ import Gilmore from 'gilmore';
 import { __, ensureValidSetup } from '../ensureValidSetup.js';
 
 describe('release/ensureValidSetup', () => {
-  const testDirectory = tmpDirectory('aberlaas/release/ensureValidSetup');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   let repo;
 
   describe('ensureCorrectBumpType', () => {

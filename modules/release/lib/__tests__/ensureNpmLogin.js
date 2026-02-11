@@ -3,7 +3,7 @@ import { __ as helper, mockHelperPaths } from 'aberlaas-helper';
 import { __, ensureNpmLogin } from '../ensureNpmLogin.js';
 
 describe('release/ensureNpmLogin', () => {
-  const testDirectory = tmpDirectory('aberlaas/release/ensureNpmLogin');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
     vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(testDirectory);

@@ -4,7 +4,7 @@ import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
 describe('precommit/main', () => {
-  const testDirectory = tmpDirectory('aberlaas/precommit');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   let repo;
 
   beforeEach(async () => {

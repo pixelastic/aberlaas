@@ -3,7 +3,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import { prettierFix } from '../prettierFix.js';
 
 describe('lint/prettierFix', () => {
-  const testDirectory = tmpDirectory('aberlaas/lint/prettierFix');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
 
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

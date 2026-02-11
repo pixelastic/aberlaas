@@ -5,7 +5,7 @@ import { __ as initHelper } from '../../helper.js';
 import { __, run } from '../module.js';
 
 describe('init/module', () => {
-  const testDirectory = tmpDirectory('aberlaas/init/module');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
 

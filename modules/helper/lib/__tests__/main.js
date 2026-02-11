@@ -8,7 +8,7 @@ import {
 } from '../main.js';
 
 describe('helper/main', () => {
-  const testDirectory = tmpDirectory('aberlaas/helper/main');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
 
   beforeEach(async () => {
     mockHelperPaths(testDirectory);

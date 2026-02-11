@@ -41,7 +41,7 @@ export async function setupFixture(rootPath, fixtureType) {
 }
 
 describe.slow('helper/yarnRun', () => {
-  const testDirectory = tmpDirectory('aberlaas/helper/yarnRun');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   afterAll(async () => {
     await remove(testDirectory);
   });

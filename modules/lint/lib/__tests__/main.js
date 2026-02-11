@@ -3,7 +3,7 @@ import { mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../main.js';
 
 describe('lint/main', () => {
-  const testDirectory = tmpDirectory('aberlaas/lint/root');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}/root`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
     vi.spyOn(__, 'consoleError').mockReturnValue();

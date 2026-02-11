@@ -4,7 +4,7 @@ import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, run } from '../png.js';
 
 describe('compress/png', () => {
-  const testDirectory = tmpDirectory('aberlaas/compress/png');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

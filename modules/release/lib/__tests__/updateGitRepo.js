@@ -4,7 +4,7 @@ import Gilmore from 'gilmore';
 import { __, updateGitRepo } from '../updateGitRepo.js';
 
 describe('release/updateGitRepo', () => {
-  const testDirectory = tmpDirectory('aberlaas/release/updateGitRepo/repo');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}/repo`);
   let repo;
 
   beforeEach(async () => {
@@ -70,9 +70,7 @@ describe('release/updateGitRepo', () => {
   });
 
   describe.slow('commitTagAndPush', () => {
-    const testDirectoryRemote = tmpDirectory(
-      'aberlaas/release/updateGitRepo/remote',
-    );
+    const testDirectoryRemote = tmpDirectory(`aberlaas/${describeName}/remote`);
     let remote;
     beforeEach(async () => {
       // configure remote

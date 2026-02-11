@@ -9,7 +9,7 @@ import {
 import { __, fix, run } from '../circleci.js';
 
 describe('lint/circleci', () => {
-  const testDirectory = tmpDirectory('aberlaas/lint/circleci');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
     vi.spyOn(__, 'isRunningOnCircleCi').mockReturnValue(false);

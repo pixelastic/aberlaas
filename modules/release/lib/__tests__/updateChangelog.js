@@ -6,7 +6,7 @@ import Gilmore from 'gilmore';
 import { __, updateChangelog } from '../updateChangelog.js';
 
 describe('release/updateChangelog', () => {
-  const testDirectory = tmpDirectory('aberlaas/release/updateChangelog');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   let repo;
 
   beforeEach(async () => {

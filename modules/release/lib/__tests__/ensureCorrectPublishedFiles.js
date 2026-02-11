@@ -5,9 +5,7 @@ import {
 } from '../ensureCorrectPublishedFiles.js';
 
 describe('release/ensureCorrectPublishedFiles', () => {
-  const testDirectory = tmpDirectory(
-    'aberlaas/release/ensureCorrectPublishedFiles',
-  );
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
 
   beforeAll(async () => {
     const fixturePath = absolute('../fixtures/repo/');
@@ -18,7 +16,7 @@ describe('release/ensureCorrectPublishedFiles', () => {
     await remove(testDirectory);
   });
 
-  describe('ensureCorrectPublishedFiles', () => {
+  describe.slow('ensureCorrectPublishedFiles', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
       vi.spyOn(__, 'ensureSameFilesPublishedWithYarnOrNpm').mockImplementation(

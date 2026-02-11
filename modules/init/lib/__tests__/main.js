@@ -12,7 +12,7 @@ import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
 describe('init/main', () => {
-  const testDirectory = tmpDirectory('aberlaas/init/main');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

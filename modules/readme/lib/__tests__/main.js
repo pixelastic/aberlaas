@@ -5,7 +5,7 @@ import Gilmore from 'gilmore';
 import { __, run } from '../main.js';
 
 describe('readme', () => {
-  const testDirectory = tmpDirectory('aberlaas/readme');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

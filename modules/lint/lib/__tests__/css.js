@@ -4,7 +4,7 @@ import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../css.js';
 
 describe('lint/css', () => {
-  const testDirectory = tmpDirectory('aberlaas/lint/css');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

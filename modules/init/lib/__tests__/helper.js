@@ -23,7 +23,7 @@ import {
 } from '../helper.js';
 
 describe('init/helper', () => {
-  const testDirectory = tmpDirectory('aberlaas/init/helper');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });

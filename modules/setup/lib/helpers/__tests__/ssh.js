@@ -4,12 +4,12 @@ import githubHelper from '../github.js';
 import current from '../ssh.js';
 
 describe('setup/ssh', () => {
-  const tmpDir = tmpDirectory('aberlaas/setup/helpers/ssh');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
-    mockHelperPaths(tmpDir);
+    mockHelperPaths(testDirectory);
   });
   afterEach(async () => {
-    await remove(tmpDir);
+    await remove(testDirectory);
   });
   describe('hasBinary', () => {
     it('should check if ssh-keygen is available', async () => {
@@ -36,12 +36,12 @@ describe('setup/ssh', () => {
       });
     });
     it('should create the key directory', async () => {
-      const input = `${tmpDir}/newdir/key`;
+      const input = `${testDirectory}/newdir/key`;
       await current.generateKeys(input);
-      expect(await exists(`${tmpDir}/newdir`)).toBe(true);
+      expect(await exists(`${testDirectory}/newdir`)).toBe(true);
     });
     it('should call ssh-keygen with the right arguments', async () => {
-      const input = `${tmpDir}/newdir/key`;
+      const input = `${testDirectory}/newdir/key`;
       await current.generateKeys(input);
       expect(current.__run).toHaveBeenCalledWith(
         `ssh-keygen -m PEM -t rsa -C user@provider.com -f ${input} -N ''`,
@@ -49,7 +49,7 @@ describe('setup/ssh', () => {
       );
     });
     it('should run ssh-keygen in shell mode', async () => {
-      const input = `${tmpDir}/newdir/key`;
+      const input = `${testDirectory}/newdir/key`;
       await current.generateKeys(input);
       expect(current.__run).toHaveBeenCalledWith(
         expect.anything(),
@@ -60,7 +60,7 @@ describe('setup/ssh', () => {
   describe('getKey', () => {
     beforeEach(async () => {
       vi.spyOn(current, 'generateKeys').mockReturnValue();
-      vi.spyOn(helper, 'hostGitRoot').mockReturnValue(tmpDir);
+      vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
       vi.spyOn(current, 'getFingerprint').mockReturnValue();
     });
     it('should return the public, private and fingerprint of the keys', async () => {

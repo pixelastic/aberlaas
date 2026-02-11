@@ -33,7 +33,7 @@ export async function run(cliArgs = {}) {
   }
 
   // Throw error if can't commit
-  throw __.firostError('ABERLAAS_PRECOMMIT_LINT_FAILED', errors);
+  throw __.firostError('ABERLAAS_PRECOMMIT_LINT_FAILED', errors.join('\n'));
 }
 
 __ = {

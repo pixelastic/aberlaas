@@ -4,7 +4,7 @@ import { hostGitPath, hostPackagePath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../yml.js';
 
 describe('lint/yml', () => {
-  const testDirectory = tmpDirectory('aberlaas/lint/yml');
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   beforeEach(async () => {
     mockHelperPaths(testDirectory);
   });
