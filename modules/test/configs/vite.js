@@ -31,6 +31,7 @@ export default defineConfig({
     globals: true,
     // Run before each test file
     setupFiles: [
+      `${configDir}/setupFiles/bench.js`,
       `${configDir}/setupFiles/captureOutput.js`,
       `${configDir}/setupFiles/dedent.js`,
       `${configDir}/setupFiles/describeName.js`,
