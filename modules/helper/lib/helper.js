@@ -131,7 +131,6 @@ export const __ = {
           `Provided config file (${userConfigPath}) not found`,
         );
       }
-      // TODO: Add a test for that
 
       return await firostImport(configPath, { forceReload: true });
     }

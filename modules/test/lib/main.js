@@ -118,7 +118,6 @@ __ = {
     }
     // --exclude arguments should be added to the existing list of exclude
     // patterns
-    // TODO: Add test for that
     if (cliArgs.exclude) {
       optionsFromAberlaas.exclude = [
         ...optionsFromConfig.exclude,

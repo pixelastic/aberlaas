@@ -175,73 +175,123 @@ describe('helper/main', () => {
   });
 
   describe('getConfig', () => {
-    beforeAll(async () => {
-      // The package.json with type: module is required so I can import with
-      // the export default syntax
-      await writeJson({ type: 'module' }, `${testDirectory}/package.json`);
-      await write(
-        "export default { name: 'tool' }",
-        `${testDirectory}/tool.config.js`,
-      );
-      await write(
-        "export default { name: 'custom' }",
-        `${testDirectory}/configs/custom.config.js`,
-      );
+    describe('happy path', () => {
+      beforeEach(async () => {
+        // The package.json with type: module is required so I can import with
+        // the export default syntax
+        await writeJson({ type: 'module' }, `${testDirectory}/package.json`);
+        await write(
+          "export default { name: 'tool' }",
+          `${testDirectory}/tool.config.js`,
+        );
+        await write(
+          "export default { name: 'custom' }",
+          `${testDirectory}/configs/custom.config.js`,
+        );
+      });
+      afterEach(async () => {
+        await remove(testDirectory);
+      });
+      it.each([
+        // User-provided
+        {
+          title: 'Priority to user-provided',
+          input: ['configs/custom.config.js', 'tool.config.js'],
+          expected: 'custom',
+        },
+        {
+          title: 'Works with absolute paths',
+          input: [
+            `${testDirectory}/configs/custom.config.js`,
+            'tool.config.js',
+          ],
+          expected: 'custom',
+        },
+        // Host default
+        {
+          title: 'Fallback to host default if no user-provided',
+          input: [null, 'tool.config.js'],
+          expected: 'tool',
+        },
+        {
+          title: 'Fallback to absolute host default if no user-provided',
+          input: [null, `${testDirectory}/tool.config.js`],
+          expected: 'tool',
+        },
+        // Aberlaas fallback
+        {
+          title: 'Final fallback to aberlaas if none are passed',
+          input: [null, null],
+          expected: 'aberlaas',
+        },
+        {
+          title: 'Final fallback to aberlaas if host file is missing',
+          input: [null, 'missing.config.js'],
+          expected: 'aberlaas',
+        },
+      ])('$title', async ({ input, expected }) => {
+        const actual = await getConfig(...input, { name: 'aberlaas' });
+        expect(actual).toHaveProperty('name', expected);
+      });
     });
-    afterAll(async () => {
-      await remove(testDirectory);
-    });
-    it.each([
-      // User-provided
-      {
-        title: 'Priority to user-provided',
-        input: ['configs/custom.config.js', 'tool.config.js'],
-        expected: 'custom',
-      },
-      {
-        title: 'Works with absolute paths',
-        input: [`${testDirectory}/configs/custom.config.js`, 'tool.config.js'],
-        expected: 'custom',
-      },
-      // Host default
-      {
-        title: 'Fallback to host default if no user-provided',
-        input: [null, 'tool.config.js'],
-        expected: 'tool',
-      },
-      {
-        title: 'Fallback to absolute host default if no user-provided',
-        input: [null, `${testDirectory}/tool.config.js`],
-        expected: 'tool',
-      },
-      // Aberlaas fallback
-      {
-        title: 'Final fallback to aberlaas if none are passed',
-        input: [null, null],
-        expected: 'aberlaas',
-      },
-      {
-        title: 'Final fallback to aberlaas if host file is missing',
-        input: [null, 'missing.config.js'],
-        expected: 'aberlaas',
-      },
-    ])('$title', async ({ input, expected }) => {
-      const actual = await getConfig(...input, { name: 'aberlaas' });
-      expect(actual).toHaveProperty('name', expected);
-    });
-    it('should throw an error if user config does not exist', async () => {
-      let actual = null;
-      try {
-        await getConfig('config/missing.config.js', 'tool.config.js', {
-          name: 'aberlaas',
-        });
-      } catch (err) {
-        actual = err;
-      }
-      expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_HELPER_GET_CONFIG_USER_PROVIDED_NOT_FOUND',
-      );
+    describe('edge cases', () => {
+      afterEach(async () => {
+        await remove(testDirectory);
+      });
+      it('should throw an error if user config does not exist', async () => {
+        let actual = null;
+        try {
+          await getConfig('config/missing.config.js', 'tool.config.js', {
+            name: 'aberlaas',
+          });
+        } catch (err) {
+          actual = err;
+        }
+        expect(actual).toHaveProperty(
+          'code',
+          'ABERLAAS_HELPER_GET_CONFIG_USER_PROVIDED_NOT_FOUND',
+        );
+      });
+      it('should reload user-provided config file on each call', async () => {
+        await writeJson({ type: 'module' }, `${testDirectory}/package.json`);
+        await write(
+          "export default { value: 'initial user value' }",
+          `${testDirectory}/tool.config.js`,
+        );
+
+        // Load the config once
+        await getConfig('tool.config.js');
+
+        // Update the config
+        await write(
+          "export default { value: 'updated user value' }",
+          `${testDirectory}/tool.config.js`,
+        );
+
+        // Second call: Should get the updated
+        const actual = await getConfig('tool.config.js');
+        expect(actual).toHaveProperty('value', 'updated user value');
+      });
+      it('should reload host config file on each call', async () => {
+        await writeJson({ type: 'module' }, `${testDirectory}/package.json`);
+        await write(
+          "export default { value: 'initial host value' }",
+          `${testDirectory}/tool.config.js`,
+        );
+
+        // Load the config once
+        await getConfig(null, 'tool.config.js');
+
+        // Update the config
+        await write(
+          "export default { value: 'updated host value' }",
+          `${testDirectory}/tool.config.js`,
+        );
+
+        // Second call: Should get the updated
+        const actual = await getConfig(null, 'tool.config.js');
+        expect(actual).toHaveProperty('value', 'updated host value');
+      });
     });
   });
 });

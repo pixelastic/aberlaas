@@ -23,7 +23,7 @@
   "dependencies": {
     "aberlaas-helper": "workspace:*",
     "dedent": "1.7.1",
-    "firost": "5.5.1",
+    "firost": "5.6.0",
     "globals": "17.2.0",
     "golgoth": "3.1.0",
     "jest-extended": "4.0.2",
