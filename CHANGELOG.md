@@ -1,3 +1,19 @@
+## v2.24.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.23.0...v2.24.0)
+
+### Features
+
+- **test:** Add support for bench in vitest ([ef80865](https://github.com/pixelastic/aberlaas/commit/ef80865))
+- **mockStdin:** Add global test helper for stdin mocking ([5527ca4](https://github.com/pixelastic/aberlaas/commit/5527ca4))
+
+### Bug Fixes
+
+- **test:** Exclude benchmark files from vitest execution ([76b7892](https://github.com/pixelastic/aberlaas/commit/76b7892))
+- **test:** Use gitRoot() and rename _node_modules to node_modules ([07e371e](https://github.com/pixelastic/aberlaas/commit/07e371e))
+- **test:** Replace template string with gitRoot() function call ([f4a79ad](https://github.com/pixelastic/aberlaas/commit/f4a79ad))
+- **init:** Add leading ./ to package.json files patterns ([ff0d631](https://github.com/pixelastic/aberlaas/commit/ff0d631))
+
 ## v2.23.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.22.3...v2.23.0)
