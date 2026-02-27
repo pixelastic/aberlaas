@@ -21,6 +21,7 @@ export default [
         fdescribe: false,
         fit: false,
         it: false,
+        mockStdin: false,
         testName: false,
         test: false,
         vitest: false,

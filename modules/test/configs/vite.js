@@ -37,6 +37,7 @@ export default defineConfig({
       `${configDir}/setupFiles/describeName.js`,
       `${configDir}/setupFiles/focus.js`,
       `${configDir}/setupFiles/matchers.js`,
+      `${configDir}/setupFiles/mockStdin.js`,
       `${configDir}/setupFiles/skip.js`,
       `${configDir}/setupFiles/slow.js`,
       `${configDir}/setupFiles/testName.js`,
