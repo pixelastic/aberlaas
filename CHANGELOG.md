@@ -1,3 +1,11 @@
+## v2.24.1
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.24.0...v2.24.1)
+
+### Bug Fixes
+
+- **lint:** Add Tailwind/Vite plugins to ESLint import ignore list ([e69fb34](https://github.com/pixelastic/aberlaas/commit/e69fb34))
+
 ## v2.24.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.23.0...v2.24.0)
