@@ -4,11 +4,13 @@ import configJson from './json.js';
 import configReact from './react.js';
 import configScripts from './scripts.js';
 import configVitest from './vitest.js';
+import configVue from './vue.js';
 
 export default [
   ...configJs,
   ...configVitest,
   ...configReact,
+  ...configVue,
   ...configJson,
   ...configScripts,
   ...configDocs,

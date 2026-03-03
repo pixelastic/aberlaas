@@ -40,8 +40,10 @@ __ = {
    * @returns {Array} Array of files
    */
   async getInputFiles(userPatterns) {
-    const filePatterns = _.isEmpty(userPatterns) ? ['./**/*.js'] : userPatterns;
-    const allowedExtensions = ['.js', '.jsx', '.ts', '.tsx'];
+    const filePatterns = _.isEmpty(userPatterns)
+      ? ['./**/*.{js,jsx,ts,tsx,vue}']
+      : userPatterns;
+    const allowedExtensions = ['.js', '.jsx', '.ts', '.tsx', '.vue'];
 
     return await findHostPackageFiles(filePatterns, allowedExtensions);
   },

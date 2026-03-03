@@ -9,7 +9,7 @@ import globals from 'globals';
 export default [
   {
     name: 'aberlaas/base',
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{js,jsx,ts,tsx,vue}'],
     ignores: ['node_modules/*', '.yarn/*'],
     languageOptions: {
       ecmaVersion: 'latest',

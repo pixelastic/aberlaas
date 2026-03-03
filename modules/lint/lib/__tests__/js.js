@@ -33,6 +33,8 @@ describe('lint/js', () => {
         ['lib/src/script.js', false],
 
         ['lib/demo/script.js', true],
+        ['lib/demo/App.jsx', true],
+        ['lib/demo/App.vue', true],
         ['lib/demo/subdir/script.js', true],
 
         ['lib/demo/script.txt', false],
@@ -143,6 +145,73 @@ describe('lint/js', () => {
       const actual = await fix();
 
       expect(actual).toBe(true);
+    });
+  });
+  describe('vue', () => {
+    describe('run', () => {
+      it('should pass with valid Vue component', async () => {
+        await write(
+          `<script setup>
+const message = 'Hello Vue';
+</script>
+
+<template>
+  <div>{{ message }}</div>
+</template>
+`,
+          hostPackagePath('App.vue'),
+        );
+
+        const actual = await run();
+
+        expect(actual).toBe(true);
+      });
+      it('should fail with invalid Vue component', async () => {
+        await write(
+          `<script setup>
+const message = 'Hello Vue';
+</script>
+
+<template>
+  <div>{{ missingVariable }}</div>
+</template>
+`,
+          hostPackagePath('App.vue'),
+        );
+
+        let actual = null;
+        try {
+          await run();
+        } catch (error) {
+          actual = error;
+        }
+
+        expect(actual.code).toBe('ABERLAAS_LINT_JS');
+      });
+    });
+    describe('fix', () => {
+      it('should fix Vue component', async () => {
+        await write(
+          `<script setup>
+const message = "bad quotes";
+</script>
+
+<template> <div>{{ message }}</div> </template>
+`,
+          hostPackagePath('App.vue'),
+        );
+
+        await fix();
+
+        const actual = await read(hostPackagePath('App.vue'));
+        expect(actual).toEqual(`<script setup>
+const message = 'bad quotes';
+</script>
+
+<template>
+  <div>{{ message }}</div>
+</template>`);
+      });
     });
   });
 });
