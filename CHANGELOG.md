@@ -1,3 +1,11 @@
+## v2.25.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.24.1...v2.25.0)
+
+### Features
+
+- **lint:** Add Vue.js linting support ([c5674b7](https://github.com/pixelastic/aberlaas/commit/c5674b7))
+
 ## v2.24.1
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.24.0...v2.24.1)
