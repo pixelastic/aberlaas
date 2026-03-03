@@ -154,7 +154,14 @@ export default [
       'import/no-unresolved': [
         'error',
         {
-          ignore: ['changelogen', 'lint-staged', '@octokit/rest', 'stylelint'],
+          ignore: [
+            'changelogen',
+            'lint-staged',
+            'stylelint',
+            '@octokit/rest',
+            '@tailwindcss/vite',
+            '@vitejs/plugin-vue',
+          ],
         },
       ],
 
