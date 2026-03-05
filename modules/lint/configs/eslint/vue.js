@@ -19,6 +19,7 @@ export default [
     processor: 'vue/vue',
     rules: {
       ...rules,
+      'vue/attribute-hyphenation': ['error', 'never'],
       'vue/component-api-style': ['error', ['script-setup']],
       'vue/define-macros-order': ['error'],
 
