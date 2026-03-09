@@ -55,6 +55,7 @@ __ = {
   linters: {
     circleci: './circleci.js',
     css: './css.js',
+    html: './html.js',
     json: './json.js',
     js: './js.js',
     yml: './yml.js',

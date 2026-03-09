@@ -2,6 +2,7 @@ import { _, pMap } from 'golgoth';
 import { firostError, read, write } from 'firost';
 import { getConfig } from 'aberlaas-helper';
 import { format as prettierFormat } from 'prettier';
+import * as prettierTailwindPlugin from 'prettier-plugin-tailwindcss';
 import prettierConfig from '../../configs/prettier.js';
 
 /**
@@ -12,6 +13,9 @@ export async function prettierFix(inputFiles) {
   // Config file
   const config = await getConfig(null, 'prettier.config.js', prettierConfig);
 
+  // Plugins
+  const plugins = [prettierTailwindPlugin];
+
   const errors = [];
 
   // Read all files, run them through the formatter and save them back to disk
@@ -21,7 +25,7 @@ export async function prettierFix(inputFiles) {
     async (filepath) => {
       try {
         const content = await read(filepath);
-        const options = { ...config, filepath };
+        const options = { ...config, plugins, filepath };
         const result = await prettierFormat(content, options);
         await write(result, filepath);
       } catch (error) {

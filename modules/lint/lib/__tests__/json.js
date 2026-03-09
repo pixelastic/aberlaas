@@ -23,26 +23,36 @@ describe('lint/json', () => {
     await remove(testDirectory);
   });
   describe('getInputFiles', () => {
-    describe('tools/**/*', () => {
-      it.each([
-        ['config.json', false],
-        ['lib/config.json', false],
-        ['lib/src/config.json', false],
+    it.each([
+      // Default find
+      { filepath: 'package.json', expected: true, userPatterns: null },
+      { filepath: 'data/config.json', expected: true, userPatterns: null },
+      {
+        filepath: 'src/config/api.json',
+        expected: true,
+        userPatterns: null,
+      },
+      // Default exclude
+      { filepath: 'src/index.jsonl', expected: false, userPatterns: null },
+      { filepath: 'dist/script.json', expected: false, userPatterns: null },
+      // Focused folder
+      {
+        filepath: 'package.json',
+        expected: false,
+        userPatterns: './data/**/*',
+      },
+      {
+        filepath: 'lib/src/debug.json',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+    ])('$filepath', async ({ filepath, expected, userPatterns }) => {
+      const absolutePath = hostGitPath(filepath);
+      await newFile(absolutePath);
 
-        ['lib/tools/config.json', true],
-        ['lib/tools/subdir/config.json', true],
-
-        ['lib/tools/config.txt', false],
-        ['lib/tools-backup/config.json', false],
-        ['lib/tools/dist/config.json', false],
-      ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = hostGitPath(filepath);
-        await newFile(absolutePath);
-
-        const actual = await __.getInputFiles('tools/**/*');
-        const hasFile = _.includes(actual, absolutePath);
-        expect(hasFile).toEqual(expected);
-      });
+      const actual = await __.getInputFiles(userPatterns);
+      const hasFile = _.includes(actual, absolutePath);
+      expect(hasFile).toEqual(expected);
     });
   });
   describe('run', () => {

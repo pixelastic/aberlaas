@@ -1,5 +1,5 @@
 // Helper
-export { findHostPackageFiles } from './helper.js';
+export { findHostFiles } from './helper.js';
 export { getConfig } from './helper.js';
 export { hostGitPath } from './helper.js';
 export { hostGitRoot } from './helper.js';

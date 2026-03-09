@@ -1,6 +1,6 @@
 import { newFile, remove, tmpDirectory, write, writeJson } from 'firost';
 import {
-  findHostPackageFiles,
+  findHostFiles,
   getConfig,
   hostGitPath,
   hostPackagePath,
@@ -67,7 +67,7 @@ describe('helper/main', () => {
     });
   });
 
-  describe('findHostPackageFiles', () => {
+  describe('findHostFiles', () => {
     beforeAll(async () => {
       await newFile(`${testDirectory}/lib/__tests__/module.js`);
       await newFile(`${testDirectory}/lib/.nvmrc`);
@@ -93,18 +93,18 @@ describe('helper/main', () => {
     it.each([
       {
         title: 'Specific path',
-        pattern: '__tests__/module.js',
+        pattern: 'lib/__tests__/module.js',
         expected: [`${testDirectory}/lib/__tests__/module.js`],
       },
       {
         title: 'Glob pattern',
-        pattern: '__tests__/**/*.js',
+        pattern: './lib/**/*.js',
         expected: [`${testDirectory}/lib/__tests__/module.js`],
       },
       {
         title: 'One dir',
-        pattern: '__tests__',
-        expected: [`${testDirectory}/lib/__tests__/module.js`],
+        pattern: 'lib/assets',
+        expected: [`${testDirectory}/lib/assets/style.css`],
       },
       {
         title: 'All files (no arg)',
@@ -169,7 +169,7 @@ describe('helper/main', () => {
         expected: [`${testDirectory}/lib/.nvmrc`],
       },
     ])('$title', async ({ pattern, expected, safeExtensions }) => {
-      const actual = await findHostPackageFiles(pattern, safeExtensions);
+      const actual = await findHostFiles(pattern, safeExtensions);
       expect(actual).toEqual(expected);
     });
   });

@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { findHostPackageFiles, getConfig } from 'aberlaas-helper';
+import { findHostFiles, getConfig } from 'aberlaas-helper';
 import stylelint from 'stylelint';
 import stylelintConfig from '../configs/stylelint.js';
 import { prettierFix } from './helpers/prettierFix.js';
@@ -72,7 +72,7 @@ __ = {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.css']
       : userPatterns;
-    return await findHostPackageFiles(filePatterns, ['.css']);
+    return await findHostFiles(filePatterns, ['.css']);
   },
 
   prettierFix,

@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { findHostPackageFiles } from 'aberlaas-helper';
+import { findHostFiles } from 'aberlaas-helper';
 import { eslintRun } from './helpers/eslintRun.js';
 
 export let __;
@@ -45,7 +45,7 @@ __ = {
       : userPatterns;
     const allowedExtensions = ['.js', '.jsx', '.ts', '.tsx', '.vue'];
 
-    return await findHostPackageFiles(filePatterns, allowedExtensions);
+    return await findHostFiles(filePatterns, allowedExtensions);
   },
 };
 

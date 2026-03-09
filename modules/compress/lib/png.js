@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError, run as firostRun, which } from 'firost';
-import { findHostPackageFiles } from 'aberlaas-helper';
+import { findHostFiles } from 'aberlaas-helper';
 
 export let __;
 
@@ -40,7 +40,7 @@ __ = {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.png']
       : userPatterns;
-    return await findHostPackageFiles(filePatterns, ['.png']);
+    return await findHostFiles(filePatterns, ['.png']);
   },
 
   /**

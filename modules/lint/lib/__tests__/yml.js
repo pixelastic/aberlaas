@@ -12,28 +12,37 @@ describe('lint/yml', () => {
     await remove(testDirectory);
   });
   describe('getInputFiles', () => {
-    describe('tools/**/*', () => {
-      it.each([
-        ['config.yml', false],
-        ['lib/config.yml', false],
-        ['lib/src/config.yml', false],
+    it.each([
+      // Default find
+      { filepath: '.yarnrc.yml', expected: true, userPatterns: null },
+      { filepath: '.circleci/config.yml', expected: true, userPatterns: null },
+      { filepath: 'data/something.yaml', expected: true, userPatterns: null },
+      {
+        filepath: 'src/config/data.yml',
+        expected: true,
+        userPatterns: null,
+      },
+      // Default exclude
+      { filepath: 'src/index.json', expected: false, userPatterns: null },
+      { filepath: 'dist/script.yml', expected: false, userPatterns: null },
+      // Focused folder
+      {
+        filepath: '.yarnrc.yml',
+        expected: false,
+        userPatterns: './data/**/*',
+      },
+      {
+        filepath: 'lib/src/data.yml',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+    ])('$filepath', async ({ filepath, expected, userPatterns }) => {
+      const absolutePath = hostGitPath(filepath);
+      await newFile(absolutePath);
 
-        ['lib/tools/config.yml', true],
-        ['lib/tools/config.yaml', true],
-        ['lib/tools/subdir/config.yml', true],
-        ['lib/tools/subdir/config.yaml', true],
-
-        ['lib/tools/config.txt', false],
-        ['lib/tools-backup/config.yml', false],
-        ['lib/tools/dist/config.yml', false],
-      ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = hostGitPath(filepath);
-        await newFile(absolutePath);
-
-        const actual = await __.getInputFiles('tools/**/*');
-        const hasFile = _.includes(actual, absolutePath);
-        expect(hasFile).toEqual(expected);
-      });
+      const actual = await __.getInputFiles(userPatterns);
+      const hasFile = _.includes(actual, absolutePath);
+      expect(hasFile).toEqual(expected);
     });
   });
 

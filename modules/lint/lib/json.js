@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { findHostPackageFiles } from 'aberlaas-helper';
+import { findHostFiles } from 'aberlaas-helper';
 import { eslintRun } from './helpers/eslintRun.js';
 import { prettierFix } from './helpers/prettierFix.js';
 
@@ -57,7 +57,7 @@ __ = {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.json']
       : userPatterns;
-    return await findHostPackageFiles(filePatterns, ['.json']);
+    return await findHostFiles(filePatterns, ['.json']);
   },
 
   prettierFix,

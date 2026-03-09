@@ -24,26 +24,32 @@ describe('compress/png', () => {
       expect(actual).toContain(goodPath);
       expect(actual).not.toContain(badPath);
     });
-    describe('assets/**/*', () => {
-      it.each([
-        ['image.png', false],
-        ['lib/image.png', false],
-        ['lib/src/image.png', false],
+    it.each([
+      // Default find
+      { filepath: 'logo.png', expected: true, userPatterns: null },
+      { filepath: 'src/header.png', expected: true, userPatterns: null },
+      { filepath: 'src/team/tim.png', expected: true, userPatterns: null },
+      // Default exclude
+      { filepath: 'src/picture.gif', expected: false, userPatterns: null },
+      { filepath: 'dist/logo.png', expected: false, userPatterns: null },
+      // Focused folder
+      {
+        filepath: 'picture.png',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+      {
+        filepath: 'lib/src/picture.png',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+    ])('$filepath', async ({ filepath, expected, userPatterns }) => {
+      const absolutePath = hostGitPath(filepath);
+      await newFile(absolutePath);
 
-        ['lib/assets/image.png', true],
-        ['lib/assets/subdir/image.png', true],
-
-        ['lib/assets/image.gif', false],
-        ['lib/assets-backup/image.png', false],
-        ['lib/assets/dist/image.png', false],
-      ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = hostGitPath(filepath);
-        await newFile(absolutePath);
-
-        const actual = await __.getInputFiles('assets/**/*');
-        const hasFile = _.includes(actual, absolutePath);
-        expect(hasFile).toEqual(expected);
-      });
+      const actual = await __.getInputFiles(userPatterns);
+      const hasFile = _.includes(actual, absolutePath);
+      expect(hasFile).toEqual(expected);
     });
   });
 

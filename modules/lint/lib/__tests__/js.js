@@ -26,28 +26,44 @@ describe('lint/js', () => {
     );
   });
   describe('getInputFiles', () => {
-    describe('demo/**/*', () => {
-      it.each([
-        ['script.js', false],
-        ['lib/script.js', false],
-        ['lib/src/script.js', false],
+    it.each([
+      // Default find
+      { filepath: 'script.js', expected: true, userPatterns: null },
+      { filepath: 'eslint.config.js', expected: true, userPatterns: null },
+      {
+        filepath: '__meta_tests__/subfolder/test.js',
+        expected: true,
+        userPatterns: null,
+      },
+      { filepath: 'src/script.js', expected: true, userPatterns: null },
+      {
+        filepath: 'src/theme/component.js',
+        expected: true,
+        userPatterns: null,
+      },
+      { filepath: 'src/App.jsx', expected: true, userPatterns: null },
+      { filepath: 'src/App.vue', expected: true, userPatterns: null },
+      // Default exclude
+      { filepath: 'src/index.json', expected: false, userPatterns: null },
+      { filepath: 'dist/script.js', expected: false, userPatterns: null },
+      // Focused folder
+      {
+        filepath: 'script.js',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+      {
+        filepath: 'lib/src/script.js',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+    ])('$filepath', async ({ filepath, expected, userPatterns }) => {
+      const absolutePath = hostGitPath(filepath);
+      await newFile(absolutePath);
 
-        ['lib/demo/script.js', true],
-        ['lib/demo/App.jsx', true],
-        ['lib/demo/App.vue', true],
-        ['lib/demo/subdir/script.js', true],
-
-        ['lib/demo/script.txt', false],
-        ['lib/demo-backup/script.js', false],
-        ['lib/demo/dist/script.js', false],
-      ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = hostGitPath(filepath);
-        await newFile(absolutePath);
-
-        const actual = await __.getInputFiles('demo/**/*');
-        const hasFile = _.includes(actual, absolutePath);
-        expect(hasFile).toEqual(expected);
-      });
+      const actual = await __.getInputFiles(userPatterns);
+      const hasFile = _.includes(actual, absolutePath);
+      expect(hasFile).toEqual(expected);
     });
   });
   describe('run', () => {

@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { _, pMap } from 'golgoth';
 import { firostError, read } from 'firost';
-import { findHostPackageFiles, hostGitRoot } from 'aberlaas-helper';
+import { findHostFiles, hostGitRoot } from 'aberlaas-helper';
 import yamlLint from 'yaml-lint';
 import { prettierFix } from './helpers/prettierFix.js';
 
@@ -61,7 +61,7 @@ __ = {
     const filePatterns = _.isEmpty(userPatterns)
       ? ['./**/*.yml', './**/*.yaml']
       : userPatterns;
-    return await findHostPackageFiles(filePatterns, ['.yml', '.yaml']);
+    return await findHostFiles(filePatterns, ['.yml', '.yaml']);
   },
 
   prettierFix,

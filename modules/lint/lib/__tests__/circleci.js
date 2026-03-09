@@ -1,11 +1,5 @@
-import { _ } from 'golgoth';
 import { newFile, read, remove, tmpDirectory, write } from 'firost';
-import {
-  __ as helper,
-  hostGitPath,
-  hostPackagePath,
-  mockHelperPaths,
-} from 'aberlaas-helper';
+import { __ as helper, hostGitPath, mockHelperPaths } from 'aberlaas-helper';
 import { __, fix, run } from '../circleci.js';
 
 describe('lint/circleci', () => {
@@ -19,46 +13,21 @@ describe('lint/circleci', () => {
   });
 
   describe('getInputFile', () => {
-    describe('from git root', () => {
-      beforeEach(() => {
-        vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(testDirectory);
-      });
-      it.each([
-        ['.circleci/config.yml', true],
-        ['.circleci/config.yaml', false],
-        ['.circleci/something-else.yml', false],
-        ['circleci.yml', false],
-        ['circleci/config.yml', false],
-      ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = hostGitPath(filepath);
-        await newFile(absolutePath);
-
-        const actual = await __.getInputFile();
-        const hasFile = _.includes(actual, absolutePath);
-        expect(hasFile).toEqual(expected);
-      });
+    beforeEach(() => {
+      vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(testDirectory);
     });
-    describe('from inside package', () => {
-      beforeEach(() => {
-        vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(
-          `${testDirectory}/lib`,
-        );
-      });
+    it.each([
+      { filepath: '.circleci/config.yml', expected: true },
+      { filepath: '.circleci/config.yaml', expected: false },
+      { filepath: '.circleci/something.yml', expected: false },
+      { filepath: 'circleci.yml', expected: false },
+      { filepath: 'circleci/config.yml', expected: false },
+    ])('$filepath: $expected', async ({ filepath, expected }) => {
+      const absolutePath = hostGitPath(filepath);
+      await newFile(absolutePath);
 
-      it.each([
-        ['.circleci/config.yml', false],
-        ['.circleci/config.yaml', false],
-        ['.circleci/something-else.yml', false],
-        ['circleci.yml', false],
-        ['circleci/config.yml', false],
-      ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = hostPackagePath(filepath);
-        await newFile(absolutePath);
-
-        const actual = await __.getInputFile();
-        const hasFile = _.includes(actual, absolutePath);
-        expect(hasFile).toEqual(expected);
-      });
+      const actual = !!(await __.getInputFile());
+      expect(actual).toEqual(expected);
     });
   });
   describe('run', () => {

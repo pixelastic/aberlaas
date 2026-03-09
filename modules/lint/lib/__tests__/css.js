@@ -12,26 +12,32 @@ describe('lint/css', () => {
     await remove(testDirectory);
   });
   describe('getInputFiles', () => {
-    describe('theme/**/*', () => {
-      it.each([
-        ['style.css', false],
-        ['lib/style.css', false],
-        ['lib/src/style.css', false],
+    it.each([
+      // Default find
+      { filepath: 'style.css', expected: true, userPatterns: null },
+      { filepath: 'lib/style.css', expected: true, userPatterns: null },
+      { filepath: 'lib/src/style.css', expected: true, userPatterns: null },
+      // Default exclude
+      { filepath: 'lib/theme/style.txt', expected: false, userPatterns: null },
+      { filepath: 'dist/build.css', expected: false, userPatterns: null },
+      // Focused folder
+      {
+        filepath: 'style.css',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+      {
+        filepath: 'lib/src/style.css',
+        expected: false,
+        userPatterns: './src/**/*',
+      },
+    ])('$filepath', async ({ filepath, expected, userPatterns }) => {
+      const absolutePath = hostGitPath(filepath);
+      await newFile(absolutePath);
 
-        ['lib/theme/style.css', true],
-        ['lib/theme/subdir/style.css', true],
-
-        ['lib/theme/style.txt', false],
-        ['lib/theme-backup/style.css', false],
-        ['lib/theme/dist/style.css', false],
-      ])('%s : %s', async (filepath, expected) => {
-        const absolutePath = hostGitPath(filepath);
-        await newFile(absolutePath);
-
-        const actual = await __.getInputFiles('theme/**/*');
-        const hasFile = _.includes(actual, absolutePath);
-        expect(hasFile).toEqual(expected);
-      });
+      const actual = await __.getInputFiles(userPatterns);
+      const hasFile = _.includes(actual, absolutePath);
+      expect(hasFile).toEqual(expected);
     });
   });
   describe('run', () => {

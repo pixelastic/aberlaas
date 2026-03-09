@@ -46,7 +46,7 @@ export const __ = {
   },
 
   /**
-   * Find files in host package directory following glob patterns.
+   * Find files in host directory following glob patterns.
    * Will exclude some directories by default, and allow specifying only
    * specific file extensions
    * @param {Array} userPattern Patterns to match
@@ -54,7 +54,7 @@ export const __ = {
    * set, only files of this extensions will be returned
    * @returns {Array} Array of files matching the patterns
    */
-  async findHostPackageFiles(userPattern, safeExtensions = []) {
+  async findHostFiles(userPattern, safeExtensions = []) {
     const patterns = [
       ..._.castArray(userPattern),
       // Exclude folders that shouldn't be included
@@ -74,7 +74,7 @@ export const __ = {
     // Expanding globs
     let allFiles = await glob(patterns, {
       directories: false,
-      cwd: __.hostPackageRoot(),
+      cwd: __.hostGitRoot(),
     });
 
     if (_.isEmpty(safeExtensions)) {
@@ -186,7 +186,7 @@ export const __ = {
 export const hostWorkingDirectory = wrap(__, 'hostWorkingDirectory');
 export const hostPackageRoot = wrap(__, 'hostPackageRoot');
 export const hostPackagePath = wrap(__, 'hostPackagePath');
-export const findHostPackageFiles = wrap(__, 'findHostPackageFiles');
+export const findHostFiles = wrap(__, 'findHostFiles');
 export const hostGitRoot = wrap(__, 'hostGitRoot');
 export const hostGitPath = wrap(__, 'hostGitPath');
 export const getConfig = wrap(__, 'getConfig');

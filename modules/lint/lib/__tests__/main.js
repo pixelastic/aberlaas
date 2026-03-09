@@ -18,6 +18,7 @@ describe('lint/main', () => {
       mockedLinters = {
         circleci: { run: vi.fn(), fix: vi.fn() },
         css: { run: vi.fn(), fix: vi.fn() },
+        html: { run: vi.fn(), fix: vi.fn() },
         json: { run: vi.fn(), fix: vi.fn() },
         js: { run: vi.fn(), fix: vi.fn() },
         yml: { run: vi.fn(), fix: vi.fn() },
@@ -34,6 +35,7 @@ describe('lint/main', () => {
 
       expect(mockedLinters.circleci.run).toHaveBeenCalled();
       expect(mockedLinters.css.run).toHaveBeenCalled();
+      expect(mockedLinters.html.run).toHaveBeenCalled();
       expect(mockedLinters.json.run).toHaveBeenCalled();
       expect(mockedLinters.js.run).toHaveBeenCalled();
       expect(mockedLinters.yml.run).toHaveBeenCalled();
@@ -45,6 +47,7 @@ describe('lint/main', () => {
 
       expect(mockedLinters.circleci.run).not.toHaveBeenCalled();
       expect(mockedLinters.css.run).not.toHaveBeenCalled();
+      expect(mockedLinters.html.run).not.toHaveBeenCalled();
       expect(mockedLinters.json.run).not.toHaveBeenCalled();
       expect(mockedLinters.js.run).toHaveBeenCalled();
       expect(mockedLinters.yml.run).toHaveBeenCalled();
