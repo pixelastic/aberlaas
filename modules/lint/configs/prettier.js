@@ -8,7 +8,7 @@ const tailwindcssPlugin = fileURLToPath(
 
 export default {
   bracketSameLine: true,
-  plugins: [tailwindcssPlugin],
   printWidth: 80,
   singleQuote: true,
+  plugins: [tailwindcssPlugin],
 };
