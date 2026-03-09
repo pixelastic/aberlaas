@@ -129,11 +129,12 @@ describe('lint/css', () => {
     });
 
     it('should fix files end-to-end', async () => {
-      await write('body{color:       red;}', hostPackagePath('style.css'));
+      const filepath = hostPackagePath('foo.css');
+      await write('body{color:       red;}', filepath);
 
       await fix();
 
-      const actual = await read(hostPackagePath('style.css'));
+      const actual = await read(filepath);
 
       expect(actual).toBe('body {\n  color: red;\n}');
     });
