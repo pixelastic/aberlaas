@@ -1,3 +1,15 @@
+## v2.26.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.25.0...v2.26.0)
+
+### Feature
+
+- **lint**: Adding fixing of HTML files (no linting yet)
+
+### Bug Fixes
+
+- **lint:** Enforce camelCase attributes in Vue and add Tailwind theme support ([b97f5fd](https://github.com/pixelastic/aberlaas/commit/b97f5fd))
+
 ## v2.25.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.24.1...v2.25.0)
