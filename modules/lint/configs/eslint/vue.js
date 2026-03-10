@@ -22,9 +22,11 @@ export default [
       'vue/attribute-hyphenation': ['error', 'never'],
       'vue/component-api-style': ['error', ['script-setup']],
       'vue/define-macros-order': ['error'],
+      'vue/no-undef-components': ['error'],
 
       // Rules that conflict with Pretttier
       'vue/html-indent': ['off'],
+      'vue/html-closing-bracket-newline': ['off'],
       'vue/html-self-closing': [
         'error',
         {
