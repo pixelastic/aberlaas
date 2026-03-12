@@ -1,3 +1,16 @@
+## v2.27.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.26.0...v2.27.0)
+
+### Features
+
+- **lint:** Add Tailwind CSS sorting to Prettier config ([97be3bd](https://github.com/pixelastic/aberlaas/commit/97be3bd))
+
+### Bug Fixes
+
+- **lint:** Update Prettier HTML config and simplify tests ([90a6e1f](https://github.com/pixelastic/aberlaas/commit/90a6e1f))
+- **lint:** Add clsx to Tailwind function list for class sorting ([a0bf39e](https://github.com/pixelastic/aberlaas/commit/a0bf39e))
+
 ## v2.26.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.25.0...v2.26.0)
