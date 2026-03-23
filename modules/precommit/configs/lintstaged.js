@@ -15,7 +15,7 @@ export default {
   '**/*.{yml,yaml}': [commands.lintYml],
   '.circleci/config.yml': [commands.lintCircleci],
   '**/*.json': [commands.lintJson],
-  '**/*.js': [commands.lintJs],
+  '**/*.{js,vue}': [commands.lintJs],
 
   // Test
   '**/lib/**/*.js': [commands.testJs],
