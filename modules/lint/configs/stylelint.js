@@ -5,7 +5,7 @@ export default {
     'at-rule-no-unknown': [
       true,
       {
-        ignoreAtRules: ['screen', 'tailwind', 'theme'],
+        ignoreAtRules: ['screen', 'source', 'tailwind', 'theme'],
       },
     ],
     'block-no-empty': true,
