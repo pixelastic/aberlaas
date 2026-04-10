@@ -1,3 +1,12 @@
+## v2.27.1
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.0...v2.27.1)
+
+### Bug Fixes
+
+- **precommit:** Add Vue file linting to staged file checks ([17b3b7b](https://github.com/pixelastic/aberlaas/commit/17b3b7b))
+- **lint:** Allow @source at-rule in Stylelint config ([a2b8cc3](https://github.com/pixelastic/aberlaas/commit/a2b8cc3))
+
 ## v2.27.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.26.0...v2.27.0)
