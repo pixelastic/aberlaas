@@ -1,4 +1,3 @@
-import { Readable } from 'node:stream';
 import { _ } from 'golgoth';
 import { captureOutput, read, remove, tmpDirectory, write } from 'firost';
 import { mockHelperPaths } from 'aberlaas-helper';
@@ -114,10 +113,7 @@ describe('release/updateChangelog', () => {
   });
 
   describe('confirmOrEditChangelog', () => {
-    let mockStdin;
-
     beforeEach(() => {
-      mockStdin = new Readable({ read() {} });
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
       vi.spyOn(__, 'consoleLog').mockReturnValue();
       vi.spyOn(__, 'cliMarkdown').mockImplementation((input) => {
@@ -142,15 +138,15 @@ describe('release/updateChangelog', () => {
     it('should return changelog when user approves', async () => {
       const changelog = 'Changelog';
 
-      await captureOutput(async () => {
-        const promise = __.confirmOrEditChangelog(changelog, {
-          input: mockStdin,
+      mockStdin(async (stdin) => {
+        await captureOutput(async () => {
+          const promise = __.confirmOrEditChangelog(changelog);
+
+          stdin.push('\n'); // Enter
+          const actual = await promise;
+
+          await expect(actual).toEqual(changelog);
         });
-
-        mockStdin.push('\n'); // Enter
-        const actual = await promise;
-
-        await expect(actual).toEqual(changelog);
       });
     });
 
@@ -206,21 +202,21 @@ describe('release/updateChangelog', () => {
     it('should throw error on Ctrl-C', async () => {
       const changelog = 'Changelog';
 
-      await captureOutput(async () => {
-        let actual = null;
-        try {
-          const promise = __.confirmOrEditChangelog(changelog, {
-            input: mockStdin,
-          });
+      mockStdin(async (stdin) => {
+        await captureOutput(async () => {
+          let actual = null;
+          try {
+            const promise = __.confirmOrEditChangelog(changelog);
 
-          mockStdin.push(''); // Ctrl-C
+            stdin.push(''); // Ctrl-C
 
-          await promise;
-        } catch (err) {
-          actual = err;
-        }
+            await promise;
+          } catch (err) {
+            actual = err;
+          }
 
-        expect(actual).toHaveProperty('code', 'FIROST_SELECT_CTRL_C');
+          expect(actual).toHaveProperty('code', 'FIROST_SELECT_CTRL_C');
+        });
       });
     });
   });
