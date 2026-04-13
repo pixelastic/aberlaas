@@ -1,3 +1,12 @@
+## v2.27.2
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.1...v2.27.2)
+
+### Bug Fixes
+
+- **lint:** Expand Stylelint config for Tailwind v4 at-rules ([86b1a38](https://github.com/pixelastic/aberlaas/commit/86b1a38))
+- **lint:** Allow legacy Tailwind v3 at-rules in Stylelint config ([c16e867](https://github.com/pixelastic/aberlaas/commit/c16e867))
+
 ## v2.27.1
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.0...v2.27.1)
