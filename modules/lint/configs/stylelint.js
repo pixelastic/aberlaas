@@ -5,7 +5,17 @@ export default {
     'at-rule-no-unknown': [
       true,
       {
-        ignoreAtRules: ['screen', 'source', 'tailwind', 'theme'],
+        ignoreAtRules: [
+          // Tailwind v4 at-rules
+          'apply',
+          'custom-variant',
+          'import',
+          'reference',
+          'source',
+          'theme',
+          'utility',
+          'variant',
+        ],
       },
     ],
     'block-no-empty': true,
