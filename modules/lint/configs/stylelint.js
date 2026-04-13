@@ -15,6 +15,11 @@ export default {
           'theme',
           'utility',
           'variant',
+          // Legacy Tailwind v3 at-rules
+          'config',
+          'plugin',
+          'screen',
+          'tailwind',
         ],
       },
     ],
