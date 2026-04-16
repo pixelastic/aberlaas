@@ -20,7 +20,7 @@
   "main": "./lib/main.js",
   "dependencies": {
     "aberlaas-versions": "workspace:*",
-    "firost": "5.7.0",
+    "firost": "5.8.0",
     "golgoth": "3.1.0"
   },
   "scripts": {
