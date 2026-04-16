@@ -1,3 +1,7 @@
+## v2.27.4
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.3...v2.27.4)
+
 ## v2.27.3
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.2...v2.27.3)
