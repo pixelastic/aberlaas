@@ -4,7 +4,7 @@
   "type": "module",
   "description": "A fake package to test the release module",
   "license": "MIT",
-  "packageManager": "yarn@4.12.0",
+  "packageManager": "yarn@4.14.1",
   "files": [
     "lib/main.js",
     "lib/helpers/",
