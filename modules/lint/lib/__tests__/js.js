@@ -66,7 +66,7 @@ describe('lint/js', () => {
       expect(hasFile).toEqual(expected);
     });
   });
-  describe('run', () => {
+  describe.slow('run', () => {
     it('should throw if a file errors', async () => {
       await write(
         "const foo = 'bar';\nalert(foo);\n",
