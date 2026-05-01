@@ -69,6 +69,11 @@ export const __ = {
       '!**/.next/**',
       '!**/.turbo/**',
       '!**/.yarn/**',
+      // NOTE: This is temporary. I know my ./docs folders are using commonjs,
+      // old tailwind and various stuff that don't work well with aberlaas, so
+      // the best thing I can do right now is completely ignore linting of those
+      // dirs until I know what to replace them with
+      '!**/docs/**',
     ];
 
     // Expanding globs
