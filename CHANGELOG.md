@@ -1,3 +1,11 @@
+## v2.27.5
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.4...v2.27.5)
+
+### Bug Fixes
+
+- **release:** Improve error message for published files mismatch ([35f33dc](https://github.com/pixelastic/aberlaas/commit/35f33dc))
+
 ## v2.27.4
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.3...v2.27.4)
