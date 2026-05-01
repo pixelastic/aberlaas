@@ -49,7 +49,8 @@ __ = {
       message.push('Only in yarn:');
       message.push(' - ' + onlyInYarn.join('\n - '));
     }
-    message.push('\nPlease check your .files key in package.json');
+    message.push('\nPlease check your .files key in package.json.');
+    message.push('You might need to prefix your patterns with ./');
     throw firostError(
       'ABERLAAS_RELEASE_NPM_YARN_DIFFERENT_PUBLISHED_FILES',
       message.join('\n'),
