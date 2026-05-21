@@ -1,3 +1,11 @@
+## v2.28.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.6...v2.28.0)
+
+### Features
+
+- **test:** Add .isEmpty custom matcher ([ef8b226](https://github.com/pixelastic/aberlaas/commit/ef8b226))
+
 ## v2.27.6
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.5...v2.27.6)
