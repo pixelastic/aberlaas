@@ -40,4 +40,12 @@ expect.extend({
           : `expected to end with ${expected}`,
     };
   },
+
+  toBeEmpty(received) {
+    return {
+      pass: _.isEmpty(received),
+      message: () =>
+        this.isNot ? 'expected not to be empty' : 'expected to be empty',
+    };
+  },
 });
