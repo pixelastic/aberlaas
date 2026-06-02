@@ -20,10 +20,10 @@
   "main": "./lib/main.js",
   "dependencies": {
     "aberlaas-helper": "workspace:*",
-    "dedent": "1.7.1",
+    "dedent": "1.7.2",
     "firost": "5.8.0",
     "front-matter": "4.0.2",
-    "gilmore": "1.2.0",
+    "gilmore": "1.2.1",
     "golgoth": "3.1.0"
   },
   "scripts": {
