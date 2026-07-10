@@ -1,3 +1,11 @@
+## v2.29.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.28.0...v2.29.0)
+
+### Features
+
+- **lint:** Add custom ESLint rule to ban .test.js and .spec.js suffixes ([a09e1ec](https://github.com/pixelastic/aberlaas/commit/a09e1ec))
+
 ## v2.28.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.27.6...v2.28.0)
