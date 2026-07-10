@@ -5,6 +5,7 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import ruleTestFileNaming from './rules/test-file-naming.js';
 
 export default [
   {
@@ -24,6 +25,7 @@ export default [
       reportUnusedDisableDirectives: 'warn',
     },
     plugins: {
+      aberlaas: { rules: { 'test-file-naming': ruleTestFileNaming } },
       import: pluginImport.flatConfigs.recommended.plugins.import,
       jsdoc: pluginJsdoc.configs['flat/recommended'].plugins.jsdoc,
       n: pluginN.configs['flat/recommended'].plugins.n,
@@ -191,6 +193,9 @@ export default [
       // Prettier doesn't do that, so we need to make eslint do it
       quotes: ['error', 'single', { avoidEscape: true }],
       'prettier/prettier': ['error', { singleQuote: true }],
+
+      // Aberlaas custom rules
+      'aberlaas/test-file-naming': ['error'],
     },
     settings: {
       // eslint-plugin-import doesn't currently support the "exports" syntax in
