@@ -57,13 +57,29 @@ export default {
             const shorthands = _.filter(properties, (p) => p.shorthand);
 
             const reordered = [...nonShorthands, ...shorthands];
-            const newText = _.map(reordered, (p) => sourceCode.getText(p)).join(
-              ', ',
+
+            // Start of a property, including its leading comments (JSDoc)
+            const fullText = sourceCode.getText();
+            const propStart = (p) => {
+              const comments = sourceCode.getCommentsBefore(p);
+              return comments.length ? comments[0].range[0] : p.range[0];
+            };
+            // Keep leading comments attached when moving each property
+            const getTextWithComments = (p) =>
+              fullText.slice(propStart(p), p.range[1]);
+
+            // Derive separator from original code (e.g. ",\n  " or ", ")
+            const separator = fullText.slice(
+              properties[0].range[1],
+              propStart(properties[1]),
+            );
+            const newText = _.map(reordered, getTextWithComments).join(
+              separator,
             );
 
             return fixer.replaceTextRange(
               [
-                properties[0].range[0],
+                propStart(properties[0]),
                 properties[properties.length - 1].range[1],
               ],
               newText,

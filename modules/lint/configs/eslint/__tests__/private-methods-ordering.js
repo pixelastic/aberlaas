@@ -40,5 +40,27 @@ ruleTester.run('aberlaas/private-methods-ordering', rule, {
         '__ = { fetch(url) { return fetch(url); }, save: () => save(), alpha, beta };',
       errors: [{ messageId: 'ordering' }],
     },
+    {
+      name: 'Multiline: preserves commas, newlines, and comments when reordering',
+      code: [
+        '__ = {',
+        '  /** doc A */',
+        '  fetchA() { return 1; },',
+        '  refX,',
+        '  /** doc B */',
+        '  fetchB() { return 2; },',
+        '};',
+      ].join('\n'),
+      output: [
+        '__ = {',
+        '  /** doc A */',
+        '  fetchA() { return 1; },',
+        '  /** doc B */',
+        '  fetchB() { return 2; },',
+        '  refX,',
+        '};',
+      ].join('\n'),
+      errors: [{ messageId: 'ordering' }],
+    },
   ],
 });
