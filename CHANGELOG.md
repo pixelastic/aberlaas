@@ -1,3 +1,18 @@
+## v2.30.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.29.0...v2.30.0)
+
+### Features
+
+- **lint:** Add ESLint rule to detect verbose wrappers in private method objects ([5aaf50c](https://github.com/pixelastic/aberlaas/commit/5aaf50c))
+- **lint:** Enable private-methods-no-wrapper rule in ESLint config ([f31e73e](https://github.com/pixelastic/aberlaas/commit/f31e73e))
+- **lint:** Enforce non-shorthand properties before shorthands in `__ = {}` ([bb0b0a8](https://github.com/pixelastic/aberlaas/commit/bb0b0a8))
+- **lint:** Add private-methods-no-rename ESLint rule ([9cd2ea7](https://github.com/pixelastic/aberlaas/commit/9cd2ea7))
+
+### Bug Fixes
+
+- **lint:** Reorder shorthand properties to satisfy private-methods-ordering rule ([7428b2e](https://github.com/pixelastic/aberlaas/commit/7428b2e))
+
 ## v2.29.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.28.0...v2.29.0)
