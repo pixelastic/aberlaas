@@ -1,0 +1,32 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-no-wrapper.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-ordering.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-no-rename.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-register-rules.md",
+    "done": false,
+    "blocked_by": ["01", "02", "03"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-relint-codebase.md",
+    "done": false,
+    "blocked_by": ["04"]
+  }
+]
