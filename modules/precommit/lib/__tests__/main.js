@@ -7,7 +7,15 @@ describe('precommit/main', () => {
   const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   let repo;
 
+  const savedGitDir = process.env.GIT_DIR;
+  const savedGitWorkTree = process.env.GIT_WORK_TREE;
+  const savedGitIndexFile = process.env.GIT_INDEX_FILE;
   beforeEach(async () => {
+    // Clear git env vars that leak from pre-commit hooks into lint-staged
+    delete process.env.GIT_DIR;
+    delete process.env.GIT_WORK_TREE;
+    delete process.env.GIT_INDEX_FILE;
+
     mockHelperPaths(testDirectory);
 
     __.clearOptions();
@@ -21,6 +29,10 @@ describe('precommit/main', () => {
   });
   afterEach(async () => {
     await remove(testDirectory);
+    // Restore git env vars
+    process.env.GIT_DIR = savedGitDir;
+    process.env.GIT_WORK_TREE = savedGitWorkTree;
+    process.env.GIT_INDEX_FILE = savedGitIndexFile;
   });
 
   describe('run', () => {

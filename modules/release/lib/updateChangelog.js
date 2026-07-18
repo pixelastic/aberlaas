@@ -157,10 +157,10 @@ __ = {
     await write(updatedChangelog, changelogPath);
   },
 
-  consoleInfo,
   consoleLog(input) {
     console.log(input);
   },
+  consoleInfo,
   select,
   cliMarkdown,
   run,

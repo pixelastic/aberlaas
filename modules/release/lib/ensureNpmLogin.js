@@ -27,7 +27,6 @@ export async function ensureNpmLogin() {
 }
 
 __ = {
-  ensureNpmLogin,
   /**
    * Checks if the user is authenticated with npm by running 'yarn npm whoami' command
    * @returns {boolean} Promise that resolves to true if authenticated, false otherwise
@@ -151,6 +150,7 @@ __ = {
     const npmToken = await __.prompt('Enter you new token here:');
     await __.setNpmAuthToken(npmToken);
   },
+  ensureNpmLogin,
   getNpmAuthToken,
   setNpmAuthToken,
   run,

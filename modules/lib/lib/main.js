@@ -61,10 +61,10 @@ __ = {
     }
     return await firostImport(commandModuleName);
   },
-  env,
   setEnv(key, value) {
     process.env[key] = value;
   },
+  env,
   consoleError,
   consoleInfo,
   exit,

@@ -56,8 +56,6 @@ __ = {
       ...additionalOptions, // Additional overrides from tests
     };
   },
-  lintStaged,
-  firostError,
   // Internal methods to pass additional options to lint-staged, for tests
   addOption(key, value) {
     additionalOptions[key] = value;
@@ -65,6 +63,8 @@ __ = {
   clearOptions() {
     additionalOptions = {};
   },
+  lintStaged,
+  firostError,
 };
 
 export default { run };

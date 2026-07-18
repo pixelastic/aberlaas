@@ -23,8 +23,9 @@
   {
     "id": "02b",
     "issue": "issues/02b-register-ordering.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Fixed 4 ordering violations in codebase: moved shorthand properties after non-shorthand methods in __ objects"
   },
   {
     "id": "03",
