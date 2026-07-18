@@ -5,6 +5,7 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import rulePrivateMethodsNoWrapper from './rules/private-methods-no-wrapper.js';
 import ruleTestFileNaming from './rules/test-file-naming.js';
 
 export default [
@@ -25,7 +26,12 @@ export default [
       reportUnusedDisableDirectives: 'warn',
     },
     plugins: {
-      aberlaas: { rules: { 'test-file-naming': ruleTestFileNaming } },
+      aberlaas: {
+        rules: {
+          'private-methods-no-wrapper': rulePrivateMethodsNoWrapper,
+          'test-file-naming': ruleTestFileNaming,
+        },
+      },
       import: pluginImport.flatConfigs.recommended.plugins.import,
       jsdoc: pluginJsdoc.configs['flat/recommended'].plugins.jsdoc,
       n: pluginN.configs['flat/recommended'].plugins.n,
@@ -195,6 +201,7 @@ export default [
       'prettier/prettier': ['error', { singleQuote: true }],
 
       // Aberlaas custom rules
+      'aberlaas/private-methods-no-wrapper': ['error'],
       'aberlaas/test-file-naming': ['error'],
     },
     settings: {
