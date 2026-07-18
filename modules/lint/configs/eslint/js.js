@@ -5,6 +5,7 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import rulePrivateMethodsNoRename from './rules/private-methods-no-rename.js';
 import rulePrivateMethodsNoWrapper from './rules/private-methods-no-wrapper.js';
 import rulePrivateMethodsOrdering from './rules/private-methods-ordering.js';
 import ruleTestFileNaming from './rules/test-file-naming.js';
@@ -29,6 +30,7 @@ export default [
     plugins: {
       aberlaas: {
         rules: {
+          'private-methods-no-rename': rulePrivateMethodsNoRename,
           'private-methods-no-wrapper': rulePrivateMethodsNoWrapper,
           'private-methods-ordering': rulePrivateMethodsOrdering,
           'test-file-naming': ruleTestFileNaming,
@@ -203,6 +205,7 @@ export default [
       'prettier/prettier': ['error', { singleQuote: true }],
 
       // Aberlaas custom rules
+      'aberlaas/private-methods-no-rename': ['error'],
       'aberlaas/private-methods-no-wrapper': ['error'],
       'aberlaas/private-methods-ordering': ['error'],
       'aberlaas/test-file-naming': ['error'],

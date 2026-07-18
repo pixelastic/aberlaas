@@ -30,8 +30,9 @@
   {
     "id": "03",
     "issue": "issues/03-no-rename.md",
-    "done": false,
-    "blocked_by": ["02b"]
+    "done": true,
+    "blocked_by": ["02b"],
+    "recap": "ESLint rule warning on renamed identifier references in __ = { ... } with no autofix; registered in js.js config"
   },
   {
     "id": "03b",
