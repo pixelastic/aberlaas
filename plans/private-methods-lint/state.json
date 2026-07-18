@@ -16,8 +16,9 @@
   {
     "id": "02",
     "issue": "issues/02-ordering.md",
-    "done": false,
-    "blocked_by": ["01b"]
+    "done": true,
+    "blocked_by": ["01b"],
+    "recap": "ESLint rule enforcing shorthand properties after non-shorthand in __ = { ... } with autofix reordering; registered in js.js config"
   },
   {
     "id": "02b",
