@@ -9,6 +9,10 @@
 
 ## Discoveries
 
+### Issue 03b — register-no-rename
+- Registration was already done as part of issue 03 — no separate registration step was needed
+- Full lint pass produced zero violations for this rule in the codebase
+
 ### Issue 01 — no-wrapper
 - Async arrows can have expression-body `await` (`async () => await fn()`), which is an `AwaitExpression` not a `CallExpression` — handle both in expression body detection
 - `export default` is the correct pattern for ESLint rules in this repo (matches `test-file-naming.js`), despite `modules.md` preferring named exports

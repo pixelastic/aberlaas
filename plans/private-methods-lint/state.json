@@ -37,7 +37,8 @@
   {
     "id": "03b",
     "issue": "issues/03b-register-no-rename.md",
-    "done": false,
-    "blocked_by": ["03"]
+    "done": true,
+    "blocked_by": ["03"],
+    "recap": "Verified private-methods-no-rename registration and ran full lint pass; no violations found in codebase"
   }
 ]
