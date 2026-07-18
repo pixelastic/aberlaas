@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-no-wrapper.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "ESLint rule detecting wrapper functions in __ = { ... } with autofix to shorthand when key matches callee, warn-only when different"
   },
   {
     "id": "02",
