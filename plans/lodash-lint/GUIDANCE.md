@@ -1,6 +1,6 @@
 ## Guidance
 
-- **Testing:** `yarn vitest run` from repo root, or target specific test files with `yarn vitest run modules/lint/configs/eslint/__tests__/<test-file>.js`
+- **Testing:** `yarn run test <filepath>` to run specific test files
 - **Rule files:** `modules/lint/configs/eslint/rules/`
 - **Helper files:** `modules/lint/configs/eslint/rules/helpers/`
 - **Test files:** `modules/lint/configs/eslint/__tests__/`
