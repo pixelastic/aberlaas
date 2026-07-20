@@ -16,7 +16,8 @@
     "lib/helpers/*.js",
     "configs/*.js",
     "configs/eslint/*.js",
-    "configs/eslint/rules/*.js"
+    "configs/eslint/rules/*.js",
+    "configs/eslint/rules/helpers/*.js"
   ],
   "exports": {
     ".": "./lib/main.js",

@@ -10,3 +10,6 @@
 - **Convention:** Rules fire unconditionally (no `_` import check). Severity `error`. Each rule file keeps full scaffolding.
 
 ## Discoveries
+
+### Issue 01 — prefer-lodash-object-methods
+- `package.json` `files` array must include `configs/eslint/rules/helpers/*.js` for `n/no-unpublished-import` to pass on helper imports
