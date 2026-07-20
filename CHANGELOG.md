@@ -1,3 +1,12 @@
+## v2.31.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.30.0...v2.31.0)
+
+### Features
+
+- **lint:** Add prefer-lodash-keys/values/entries ESLint rules ([56da559](https://github.com/pixelastic/aberlaas/commit/56da559))
+- **lint:** Add prefer-lodash-is-empty ESLint rule ([aca415d](https://github.com/pixelastic/aberlaas/commit/aca415d))
+
 ## v2.30.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.29.0...v2.30.0)
