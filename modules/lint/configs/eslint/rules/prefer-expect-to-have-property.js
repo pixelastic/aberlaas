@@ -1,3 +1,5 @@
+import { _ } from 'golgoth';
+
 export default {
   meta: {
     type: 'suggestion',
@@ -52,18 +54,62 @@ export default {
 
         const arg = expectCall.arguments[0];
 
-        // Argument must be a member expression (a.foo)
-        if (
-          arg.type !== 'MemberExpression' ||
-          arg.computed ||
-          arg.property.type !== 'Identifier'
-        ) {
+        // Argument must be a member expression
+        if (arg.type !== 'MemberExpression') {
+          return;
+        }
+
+        // Walk the member expression chain to extract segments
+        const segments = [];
+        let current = arg;
+        while (current.type === 'MemberExpression') {
+          if (current.computed) {
+            // a[key] or a['foo']
+            if (current.property.type === 'Literal') {
+              segments.unshift({
+                type: 'static',
+                value: current.property.value,
+              });
+            } else if (current.property.type === 'Identifier') {
+              segments.unshift({
+                type: 'computed',
+                value: current.property.name,
+              });
+            } else {
+              return;
+            }
+          } else if (current.property.type === 'Identifier') {
+            // a.foo
+            segments.unshift({ type: 'static', value: current.property.name });
+          } else {
+            return;
+          }
+          current = current.object;
+        }
+
+        if (_.isEmpty(segments)) {
           return;
         }
 
         const sourceCode = context.sourceCode || context.getSourceCode();
-        const objectText = sourceCode.getText(arg.object);
-        const propertyName = arg.property.name;
+        const objectText = sourceCode.getText(current);
+        const hasComputed = segments.some((s) => s.type === 'computed');
+
+        // Build property path argument
+        let propertyArg;
+        if (hasComputed && segments.length === 1) {
+          // Single computed variable: key
+          propertyArg = segments[0].value;
+        } else if (hasComputed) {
+          // Array format: [key, 'foo']
+          const items = segments.map((s) =>
+            s.type === 'computed' ? s.value : `'${s.value}'`,
+          );
+          propertyArg = `[${items.join(', ')}]`;
+        } else {
+          // String format: 'foo.bar'
+          propertyArg = `'${segments.map((s) => s.value).join('.')}'`;
+        }
 
         // toBeDefined → no value argument; toBe/toEqual → pass value through
         const valuePart =
@@ -77,7 +123,7 @@ export default {
           fix(fixer) {
             return fixer.replaceText(
               node,
-              `expect(${objectText}).toHaveProperty('${propertyName}'${valuePart})`,
+              `expect(${objectText}).toHaveProperty(${propertyArg}${valuePart})`,
             );
           },
         });

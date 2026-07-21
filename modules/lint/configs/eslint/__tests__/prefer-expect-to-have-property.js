@@ -51,5 +51,41 @@ ruleTester.run('aberlaas/prefer-expect-to-have-property', rule, {
       output: "expect(a).toHaveProperty('foo')",
       errors: [{ messageId: 'preferToHaveProperty' }],
     },
+    {
+      name: 'Flags expect(a.foo.bar).toEqual(baz) with nested dot path',
+      code: 'expect(a.foo.bar).toEqual(baz)',
+      output: "expect(a).toHaveProperty('foo.bar', baz)",
+      errors: [{ messageId: 'preferToHaveProperty' }],
+    },
+    {
+      name: "Flags expect(a['foo']).toEqual(bar) with bracket string literal",
+      code: "expect(a['foo']).toEqual(bar)",
+      output: "expect(a).toHaveProperty('foo', bar)",
+      errors: [{ messageId: 'preferToHaveProperty' }],
+    },
+    {
+      name: 'Flags expect(a[key]).toEqual(bar) with bracket variable',
+      code: 'expect(a[key]).toEqual(bar)',
+      output: 'expect(a).toHaveProperty(key, bar)',
+      errors: [{ messageId: 'preferToHaveProperty' }],
+    },
+    {
+      name: 'Flags expect(a[key].foo).toBe(bar) with mixed chain (array format)',
+      code: 'expect(a[key].foo).toBe(bar)',
+      output: "expect(a).toHaveProperty([key, 'foo'], bar)",
+      errors: [{ messageId: 'preferToHaveProperty' }],
+    },
+    {
+      name: 'Flags expect(a.foo[key]).toEqual(bar) with mixed chain (array format)',
+      code: 'expect(a.foo[key]).toEqual(bar)',
+      output: "expect(a).toHaveProperty(['foo', key], bar)",
+      errors: [{ messageId: 'preferToHaveProperty' }],
+    },
+    {
+      name: 'Flags expect(a.foo.bar.baz).toEqual(x) with deeply nested dot path',
+      code: 'expect(a.foo.bar.baz).toEqual(x)',
+      output: "expect(a).toHaveProperty('foo.bar.baz', x)",
+      errors: [{ messageId: 'preferToHaveProperty' }],
+    },
   ],
 });

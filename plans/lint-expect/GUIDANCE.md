@@ -12,3 +12,7 @@
 - Property path: string format (`'foo.bar'`) for static segments, array format (`[key, 'foo']`) only when a computed variable is in the chain
 
 ## Discoveries
+
+### Issue 03 — Nested paths & bracket notation
+- Linter auto-converts `array.length === 0` to `_.isEmpty(array)`, requiring `import { _ } from 'golgoth'` in rule files
+- ESLint rule `export default` is required by the ESLint rule API — the `modules.md` "no default export" standard doesn't apply here
