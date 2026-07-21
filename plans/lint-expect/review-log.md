@@ -14,3 +14,11 @@ fix(fixer) {
 ```
 **Problem:** `style.md` requires JSDoc on all functions
 **Reason skipped:** Inline anonymous callback inside config object — all sibling rules follow same pattern, judgement call
+
+## Issue 02 — Matchers toBe / toBeDefined
+### Short lambda parameter name
+```js
+.map((a) => sourceCode.getText(a))
+```
+**Problem:** `style.md` says no abbreviated variable names
+**Reason skipped:** Pre-existing code not introduced by this diff, trivial arrow parameter in a short inline callback

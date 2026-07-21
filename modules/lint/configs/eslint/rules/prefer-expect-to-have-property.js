@@ -18,17 +18,21 @@ export default {
   create(context) {
     return {
       CallExpression(node) {
-        // Match: expect(a.foo).toEqual(bar)
+        // Match: expect(a.foo).<matcher>(bar)
         // Shape: CallExpression[callee=MemberExpression]
         //   callee.object = CallExpression (the expect() call)
-        //   callee.property = Identifier (toEqual)
+        //   callee.property = Identifier (toEqual, toBe, toBeDefined)
+        const handledMatchers = new Set(['toEqual', 'toBe', 'toBeDefined']);
+
         if (
           node.callee.type !== 'MemberExpression' ||
           node.callee.property.type !== 'Identifier' ||
-          node.callee.property.name !== 'toEqual'
+          !handledMatchers.has(node.callee.property.name)
         ) {
           return;
         }
+
+        const matcherName = node.callee.property.name;
 
         const expectCall = node.callee.object;
 
@@ -60,9 +64,12 @@ export default {
         const sourceCode = context.sourceCode || context.getSourceCode();
         const objectText = sourceCode.getText(arg.object);
         const propertyName = arg.property.name;
-        const matcherArgs = node.arguments
-          .map((a) => sourceCode.getText(a))
-          .join(', ');
+
+        // toBeDefined → no value argument; toBe/toEqual → pass value through
+        const valuePart =
+          matcherName === 'toBeDefined'
+            ? ''
+            : `, ${node.arguments.map((a) => sourceCode.getText(a)).join(', ')}`;
 
         context.report({
           node,
@@ -70,7 +77,7 @@ export default {
           fix(fixer) {
             return fixer.replaceText(
               node,
-              `expect(${objectText}).toHaveProperty('${propertyName}', ${matcherArgs})`,
+              `expect(${objectText}).toHaveProperty('${propertyName}'${valuePart})`,
             );
           },
         });
