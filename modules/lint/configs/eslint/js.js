@@ -5,6 +5,7 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import rulePreferLodashChain from './rules/prefer-lodash-chain.js';
 import rulePreferLodashEntries from './rules/prefer-lodash-entries.js';
 import rulePreferLodashIsEmpty from './rules/prefer-lodash-is-empty.js';
 import rulePreferLodashKeys from './rules/prefer-lodash-keys.js';
@@ -34,6 +35,7 @@ export default [
     plugins: {
       aberlaas: {
         rules: {
+          'prefer-lodash-chain': rulePreferLodashChain,
           'prefer-lodash-entries': rulePreferLodashEntries,
           'prefer-lodash-is-empty': rulePreferLodashIsEmpty,
           'prefer-lodash-keys': rulePreferLodashKeys,
@@ -213,6 +215,7 @@ export default [
       'prettier/prettier': ['error', { singleQuote: true }],
 
       // Aberlaas custom rules
+      'aberlaas/prefer-lodash-chain': ['error'],
       'aberlaas/prefer-lodash-entries': ['error'],
       'aberlaas/prefer-lodash-is-empty': ['error'],
       'aberlaas/prefer-lodash-keys': ['error'],
