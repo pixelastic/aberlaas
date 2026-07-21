@@ -12,7 +12,7 @@ export let __;
  */
 export async function run(cliArgs) {
   const allTypesKeys = _.keys(__.types);
-  const userTypes = _.intersection(_.keys(cliArgs), allTypesKeys);
+  const userTypes = _.chain(cliArgs).keys().intersection(allTypesKeys).value();
   const typesToCompress = _.isEmpty(userTypes) ? allTypesKeys : userTypes;
 
   let hasErrors = false;

@@ -73,9 +73,10 @@ export default {
               properties[0].range[1],
               propStart(properties[1]),
             );
-            const newText = _.map(reordered, getTextWithComments).join(
-              separator,
-            );
+            const newText = _.chain(reordered)
+              .map(getTextWithComments)
+              .join(separator)
+              .value();
 
             return fixer.replaceTextRange(
               [
