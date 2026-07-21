@@ -1,3 +1,10 @@
+## v2.32.1
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.32.0...v2.32.1)
+
+fix(lint): exclude NaN, Infinity and undefined from private-methods-no-rename
+rule
+
 ## v2.32.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.31.0...v2.32.0)
