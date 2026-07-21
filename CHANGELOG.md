@@ -1,3 +1,19 @@
+## v2.32.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.31.0...v2.32.0)
+
+### Features
+
+- **lint:** Add prefer-lodash-chain ESLint rule ([d6ce7d8](https://github.com/pixelastic/aberlaas/commit/d6ce7d8))
+- **lint:** Detect nested lodash calls in prefer-lodash-chain ([2d6b6ca](https://github.com/pixelastic/aberlaas/commit/2d6b6ca))
+- **lint:** Add nested lodash call detection to prefer-lodash-chain ([b199d08](https://github.com/pixelastic/aberlaas/commit/b199d08))
+- **lint:** Add prefer-expect-to-have-property ESLint rule ([22f678c](https://github.com/pixelastic/aberlaas/commit/22f678c))
+- **lint:** Add toBe and toBeDefined matchers to prefer-expect-to-have-property ([97d30d3](https://github.com/pixelastic/aberlaas/commit/97d30d3))
+- **lint:** Add nested path and bracket notation support to prefer-expect-to-have-property ([6cda6ad](https://github.com/pixelastic/aberlaas/commit/6cda6ad))
+- **lint:** Add method call and resolves/rejects exclusions to prefer-expect-to-have-property ([af0aced](https://github.com/pixelastic/aberlaas/commit/af0aced))
+- **lint:** Add method call and resolves/rejects exclusions to prefer-expect-to-have-property ([af51889](https://github.com/pixelastic/aberlaas/commit/af51889))
+- **lint:** Add method call and resolves/rejects exclusions to prefer-expect-to-have-property ([84d30a2](https://github.com/pixelastic/aberlaas/commit/84d30a2))
+
 ## v2.31.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.30.0...v2.31.0)
