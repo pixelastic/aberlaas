@@ -46,6 +46,17 @@ export default {
           return;
         }
 
+        // Inner-nesting guard: skip if this call is the first argument
+        // of another lodash call (the outer call handles the full chain)
+        if (
+          node.parent &&
+          node.parent.type === 'CallExpression' &&
+          isLodashCall(node.parent) &&
+          node.parent.arguments[0] === node
+        ) {
+          return;
+        }
+
         // Top-of-chain guard: skip if this node's result is used
         // as the object of another method call
         const { parent } = node;
@@ -83,31 +94,35 @@ export default {
           return;
         }
 
-        // Must have at least one link after the root lodash call
-        // (the root itself is not in links — it's `current`)
-        if (_.isEmpty(links)) {
-          return;
-        }
-
         // _.chain() exclusion — already chaining
-        const rootMethod = current.callee.property.name;
-        if (rootMethod === 'chain') {
+        if (isLodashCall(current) && current.callee.property.name === 'chain') {
           return;
         }
 
-        // Nesting guard: if root lodash call's first argument is
-        // itself a _.xxx() call, skip (deferred to issue 02)
-        if (
-          !_.isEmpty(current.arguments) &&
-          isLodashCall(current.arguments[0])
+        // Unwrap nested lodash calls from root's first argument
+        const nestedMethods = [];
+        let innermost = current;
+        while (
+          !_.isEmpty(innermost.arguments) &&
+          isLodashCall(innermost.arguments[0])
         ) {
+          nestedMethods.unshift({
+            method: innermost.callee.property.name,
+            args: innermost.arguments.slice(1),
+          });
+          innermost = innermost.arguments[0];
+        }
+
+        // Must have at least one post-chain link or nested method
+        if (_.isEmpty(links) && _.isEmpty(nestedMethods)) {
           return;
         }
 
         const sourceCode = context.sourceCode || context.getSourceCode();
 
-        // Build the fix: _.chain(collection).rootMethod(restArgs).links...value()
-        const rootArgs = current.arguments;
+        // Build fix from innermost lodash call outward
+        const rootMethod = innermost.callee.property.name;
+        const rootArgs = innermost.arguments;
 
         const collection = !_.isEmpty(rootArgs)
           ? sourceCode.getText(rootArgs[0])
@@ -122,7 +137,15 @@ export default {
           ? `.${rootMethod}(${restArgsText})`
           : `.${rootMethod}()`;
 
-        // Build chain links
+        // Build nested method segments (inner to outer)
+        const nestedSegments = nestedMethods.map((nested) => {
+          const argsText = nested.args
+            .map((arg) => sourceCode.getText(arg))
+            .join(', ');
+          return `.${nested.method}(${argsText})`;
+        });
+
+        // Build post-chain link segments
         const chainSegments = links.map((link) => {
           const argsText = link.args
             .map((arg) => sourceCode.getText(arg))
@@ -130,7 +153,7 @@ export default {
           return `.${link.method}(${argsText})`;
         });
 
-        const fixed = `_.chain(${collection})${rootSegment}${chainSegments.join('')}.value()`;
+        const fixed = `_.chain(${collection})${rootSegment}${nestedSegments.join('')}${chainSegments.join('')}.value()`;
 
         context.report({
           node,

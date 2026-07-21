@@ -29,10 +29,6 @@ ruleTester.run('aberlaas/prefer-lodash-chain', rule, {
       name: 'Does not flag _.map(arr, fn).length — property access, not method call',
       code: '_.map(arr, fn).length',
     },
-    {
-      name: 'Does not flag _.map(_.filter(arr, pred), fn).join(sep) — nesting guard defers to issue 02',
-      code: '_.map(_.filter(arr, pred), fn).join(sep)',
-    },
   ],
   invalid: [
     {
@@ -57,6 +53,24 @@ ruleTester.run('aberlaas/prefer-lodash-chain', rule, {
       name: "Flags _.uniqueId().padStart(5, '0') → _.chain().uniqueId().padStart(5, '0').value()",
       code: "_.uniqueId().padStart(5, '0')",
       output: "_.chain().uniqueId().padStart(5, '0').value()",
+      errors: [{ messageId: 'preferChain' }],
+    },
+    {
+      name: 'Flags _.map(_.filter(arr, pred), fn) → _.chain(arr).filter(pred).map(fn).value()',
+      code: '_.map(_.filter(arr, pred), fn)',
+      output: '_.chain(arr).filter(pred).map(fn).value()',
+      errors: [{ messageId: 'preferChain' }],
+    },
+    {
+      name: 'Flags _.map(_.filter(_.sortBy(arr, sort), pred), fn) → _.chain(arr).sortBy(sort).filter(pred).map(fn).value()',
+      code: '_.map(_.filter(_.sortBy(arr, sort), pred), fn)',
+      output: '_.chain(arr).sortBy(sort).filter(pred).map(fn).value()',
+      errors: [{ messageId: 'preferChain' }],
+    },
+    {
+      name: 'Flags _.map(_.filter(arr, pred), fn).join(sep) → _.chain(arr).filter(pred).map(fn).join(sep).value()',
+      code: '_.map(_.filter(arr, pred), fn).join(sep)',
+      output: '_.chain(arr).filter(pred).map(fn).join(sep).value()',
       errors: [{ messageId: 'preferChain' }],
     },
   ],

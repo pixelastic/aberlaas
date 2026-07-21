@@ -15,3 +15,7 @@
 ### Issue 01 — post-chain detection
 - Rule files that use `.length` checks should `import { _ } from 'golgoth'` so `prefer-lodash-is-empty` auto-fix works (3 existing rules already do this)
 - Run tests with `yarn run test`, not `yarn vitest run`
+
+### Issue 02 — nesting detection
+- Inner nested lodash calls need a guard to prevent duplicate reports — check if node is first arg of a parent lodash call
+- Nesting unwrap collects methods from outer to inner via `unshift`, then innermost call provides the collection arg
