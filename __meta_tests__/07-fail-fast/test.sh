@@ -11,6 +11,6 @@ actual() {
 }
 
 expect_to_fail &&
-	expect_to_contain "one: pass" &&
-	expect_to_contain "two: fail" &&
-	expect_not_to_contain "three: pass"
+	expect_to_contain "EXECUTED: one" &&
+	expect_to_contain "EXECUTED: two" &&
+	expect_not_to_contain "EXECUTED: three"
