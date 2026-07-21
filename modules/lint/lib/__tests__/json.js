@@ -67,7 +67,7 @@ describe('lint/json', () => {
         actual = error;
       }
 
-      expect(actual.code).toBe('ABERLAAS_LINT_JSON');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JSON');
       expect(actual).toHaveProperty('message');
     });
     it('should run on all .json files and return true if all passes', async () => {

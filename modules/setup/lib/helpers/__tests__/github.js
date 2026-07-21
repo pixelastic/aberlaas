@@ -51,7 +51,7 @@ describe('setup/helpers/github', () => {
       await octokit('methodName', {});
       await octokit('methodName', {});
 
-      expect(__.cache.octokit).toEqual(mockOctokit);
+      expect(__).toHaveProperty('cache.octokit', mockOctokit);
       expect(__.newOctokit).toHaveBeenCalledTimes(1);
     });
     it('should pass the correct auth token', async () => {
@@ -77,10 +77,10 @@ describe('setup/helpers/github', () => {
       await octokit('methodName', {});
 
       const callArgs = __.newOctokit.mock.calls[0][0];
-      expect(callArgs.log.debug).toBe(__.noOp);
-      expect(callArgs.log.info).toBe(__.noOp);
-      expect(callArgs.log.warn).toBe(__.noOp);
-      expect(callArgs.log.error).toBe(__.noOp);
+      expect(callArgs).toHaveProperty('log.debug', __.noOp);
+      expect(callArgs).toHaveProperty('log.info', __.noOp);
+      expect(callArgs).toHaveProperty('log.warn', __.noOp);
+      expect(callArgs).toHaveProperty('log.error', __.noOp);
     });
     it('should call the Octokit method with passed options', async () => {
       const mockOctokit = {

@@ -38,7 +38,7 @@ describe('lint/prettierFix', () => {
         actual = error;
       }
 
-      expect(actual.code).toBe('ABERLAAS_LINT_PRETTIER_FIX');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_PRETTIER_FIX');
       expect(actual.message).toContain('broken1.json');
       expect(actual.message).toContain('broken2.json');
     });
@@ -60,7 +60,7 @@ describe('lint/prettierFix', () => {
       const goodContent = await read(goodFile);
       expect(goodContent).toBe('{ "foo": "bar" }');
 
-      expect(actual.code).toBe('ABERLAAS_LINT_PRETTIER_FIX');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_PRETTIER_FIX');
       expect(actual.message).toContain('broken.json');
       expect(actual.message).not.toContain('good.json');
     });

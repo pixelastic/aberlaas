@@ -45,7 +45,7 @@ describe('lint/circleci', () => {
           actual = error;
         }
 
-        expect(actual.code).toBe('ABERLAAS_LINT_YML');
+        expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_YML');
         expect(actual).toHaveProperty('message');
       });
       it('should return true if file is valid yml', async () => {
@@ -75,7 +75,7 @@ describe('lint/circleci', () => {
           actual = error;
         }
 
-        expect(actual.code).toBe('ABERLAAS_LINT_YML');
+        expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_YML');
         expect(actual).toHaveProperty('message');
       });
       it('should stop early if no file found', async () => {
@@ -96,7 +96,7 @@ describe('lint/circleci', () => {
           actual = error;
         }
 
-        expect(actual.code).toBe('ABERLAAS_LINT_CIRCLECI');
+        expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_CIRCLECI');
         expect(actual).toHaveProperty(
           'message',
           expect.stringMatching('foo bar'),
@@ -152,7 +152,7 @@ describe('lint/circleci', () => {
         actual = err;
       }
 
-      expect(actual.code).toBe('ABERLAAS_LINT_CIRCLECI');
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_CIRCLECI');
       expect(actual).toHaveProperty(
         'message',
         expect.stringMatching('foo bar'),
