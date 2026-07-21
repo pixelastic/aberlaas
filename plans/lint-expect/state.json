@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-core-rule-dot-access-to-equal.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created prefer-expect-to-have-property rule handling expect(a.foo).toEqual(bar) → toHaveProperty, registered in js.js config"
   },
   {
     "id": "02",

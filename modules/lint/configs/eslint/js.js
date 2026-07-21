@@ -5,7 +5,11 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+<<<<<<< HEAD
 import rulePreferLodashChain from './rules/prefer-lodash-chain.js';
+=======
+import rulePreferExpectToHaveProperty from './rules/prefer-expect-to-have-property.js';
+>>>>>>> 8103e55 (feat(lint): add prefer-expect-to-have-property ESLint rule)
 import rulePreferLodashEntries from './rules/prefer-lodash-entries.js';
 import rulePreferLodashIsEmpty from './rules/prefer-lodash-is-empty.js';
 import rulePreferLodashKeys from './rules/prefer-lodash-keys.js';
@@ -35,6 +39,7 @@ export default [
     plugins: {
       aberlaas: {
         rules: {
+          'prefer-expect-to-have-property': rulePreferExpectToHaveProperty,
           'prefer-lodash-chain': rulePreferLodashChain,
           'prefer-lodash-entries': rulePreferLodashEntries,
           'prefer-lodash-is-empty': rulePreferLodashIsEmpty,
@@ -215,7 +220,11 @@ export default [
       'prettier/prettier': ['error', { singleQuote: true }],
 
       // Aberlaas custom rules
+<<<<<<< HEAD
       'aberlaas/prefer-lodash-chain': ['error'],
+=======
+      'aberlaas/prefer-expect-to-have-property': ['error'],
+>>>>>>> 8103e55 (feat(lint): add prefer-expect-to-have-property ESLint rule)
       'aberlaas/prefer-lodash-entries': ['error'],
       'aberlaas/prefer-lodash-is-empty': ['error'],
       'aberlaas/prefer-lodash-keys': ['error'],
