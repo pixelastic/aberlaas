@@ -25,6 +25,22 @@ ruleTester.run('aberlaas/prefer-expect-to-have-property', rule, {
       name: 'Accepts expect(a.foo).toHaveLength(3) (unhandled matcher)',
       code: 'expect(a.foo).toHaveLength(3)',
     },
+    {
+      name: 'Accepts expect(a.foo().bar).toEqual(baz) (method call in chain)',
+      code: 'expect(a.foo().bar).toEqual(baz)',
+    },
+    {
+      name: 'Accepts expect(a.getB().c).toEqual(d) (method call in chain)',
+      code: 'expect(a.getB().c).toEqual(d)',
+    },
+    {
+      name: 'Accepts expect(a.foo).resolves.toEqual(bar) (resolves chain)',
+      code: 'expect(a.foo).resolves.toEqual(bar)',
+    },
+    {
+      name: 'Accepts expect(a.foo).rejects.toEqual(bar) (rejects chain)',
+      code: 'expect(a.foo).rejects.toEqual(bar)',
+    },
   ],
   invalid: [
     {

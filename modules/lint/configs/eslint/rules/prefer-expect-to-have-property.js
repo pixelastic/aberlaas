@@ -36,7 +36,17 @@ export default {
 
         const matcherName = node.callee.property.name;
 
-        const expectCall = node.callee.object;
+        let expectCall = node.callee.object;
+
+        // Skip resolves/rejects chains (e.g. expect(a.foo).resolves.toEqual(bar))
+        if (
+          expectCall.type === 'MemberExpression' &&
+          expectCall.property.type === 'Identifier' &&
+          (expectCall.property.name === 'resolves' ||
+            expectCall.property.name === 'rejects')
+        ) {
+          return;
+        }
 
         // Must be expect(...) direct call — skip .not chains
         if (
@@ -87,7 +97,8 @@ export default {
           current = current.object;
         }
 
-        if (_.isEmpty(segments)) {
+        // Bail if the chain contains a method call (e.g. a.foo().bar)
+        if (_.isEmpty(segments) || current.type === 'CallExpression') {
           return;
         }
 
