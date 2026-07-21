@@ -29,6 +29,18 @@ ruleTester.run('aberlaas/private-methods-no-rename', rule, {
       name: 'Properties outside __ = { ... } are not flagged',
       code: 'const obj = { readGamelist: readRemoteGamelist };',
     },
+    {
+      name: 'undefined value is not flagged',
+      code: '__ = { useRam: undefined };',
+    },
+    {
+      name: 'NaN value is not flagged',
+      code: '__ = { useRam: NaN };',
+    },
+    {
+      name: 'Infinity value is not flagged',
+      code: '__ = { useRam: Infinity };',
+    },
   ],
   invalid: [
     {

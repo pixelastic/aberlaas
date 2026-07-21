@@ -16,6 +16,8 @@ export default {
    * @returns {import('eslint').Rule.RuleListener} Rule visitor object
    */
   create(context) {
+    const globalIdentifiers = new Set(['undefined', 'NaN', 'Infinity']);
+
     return {
       AssignmentExpression(node) {
         if (
@@ -44,6 +46,10 @@ export default {
           }
 
           if (property.key.name === property.value.name) {
+            return;
+          }
+
+          if (globalIdentifiers.has(property.value.name)) {
             return;
           }
 
