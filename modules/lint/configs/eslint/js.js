@@ -12,6 +12,7 @@ import rulePreferLodashEntries from './rules/prefer-lodash-entries.js';
 import rulePreferLodashIsEmpty from './rules/prefer-lodash-is-empty.js';
 import rulePreferLodashKeys from './rules/prefer-lodash-keys.js';
 import rulePreferLodashValues from './rules/prefer-lodash-values.js';
+import rulePreferMockReturnValue from './rules/prefer-mock-return-value.js';
 import rulePrivateMethodsNoRename from './rules/private-methods-no-rename.js';
 import rulePrivateMethodsNoWrapper from './rules/private-methods-no-wrapper.js';
 import rulePrivateMethodsOrdering from './rules/private-methods-ordering.js';
@@ -39,6 +40,7 @@ export default [
         rules: {
           'no-manual-mock-cleanup': ruleNoManualMockCleanup,
           'prefer-expect-to-have-property': rulePreferExpectToHaveProperty,
+          'prefer-mock-return-value': rulePreferMockReturnValue,
           'prefer-lodash-chain': rulePreferLodashChain,
           'prefer-lodash-entries': rulePreferLodashEntries,
           'prefer-lodash-is-empty': rulePreferLodashIsEmpty,

@@ -98,7 +98,7 @@ describe('lint/yml', () => {
   });
   describe('fix', () => {
     it('should call prettierFix with the correct files', async () => {
-      vi.spyOn(__, 'prettierFix').mockResolvedValue();
+      vi.spyOn(__, 'prettierFix').mockReturnValue();
 
       await write('foo: bar', hostPackagePath('test.yml'));
 

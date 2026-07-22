@@ -65,6 +65,7 @@ export default [
 
       // Aberlaas custom rules
       'aberlaas/no-manual-mock-cleanup': ['error'],
+      'aberlaas/prefer-mock-return-value': ['error'],
     },
   },
 ];

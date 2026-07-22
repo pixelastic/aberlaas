@@ -52,7 +52,7 @@ describe('lint/html', () => {
 
   describe('fix', () => {
     it('should call prettierFix with the correct files', async () => {
-      vi.spyOn(__, 'prettierFix').mockResolvedValue();
+      vi.spyOn(__, 'prettierFix').mockReturnValue();
 
       await write(
         '<html><body>Test</body></html>',

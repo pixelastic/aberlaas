@@ -104,7 +104,7 @@ describe('release/ensureNpmLogin', () => {
   describe('saveNpmToken', () => {
     it('should prompt for token and save it using helper', async () => {
       vi.spyOn(__, 'prompt').mockReturnValue('npm_mySecretToken123');
-      vi.spyOn(__, 'setNpmAuthToken').mockResolvedValue();
+      vi.spyOn(__, 'setNpmAuthToken').mockReturnValue();
 
       await __.saveNpmToken();
 

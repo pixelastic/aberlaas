@@ -116,8 +116,8 @@ describe('lint/css', () => {
   });
   describe('fix', () => {
     it('should call prettierFix with the correct files', async () => {
-      vi.spyOn(__, 'prettierFix').mockResolvedValue();
-      vi.spyOn({ run }, 'run').mockResolvedValue(true);
+      vi.spyOn(__, 'prettierFix').mockReturnValue();
+      vi.spyOn({ run }, 'run').mockReturnValue(true);
 
       await write('body{color: red;}', hostPackagePath('test.css'));
 

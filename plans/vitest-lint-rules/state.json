@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-prefer-mock-return-value.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created prefer-mock-return-value ESLint rule that autofixes mockResolvedValue/mockRejectedValue to mockReturnValue, migrated 5 violations in 4 files"
   },
   {
     "id": "03",
