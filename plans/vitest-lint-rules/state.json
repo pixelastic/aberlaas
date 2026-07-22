@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-no-importing-vitest-globals.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Enabled vitest/no-importing-vitest-globals rule in vitest ESLint config, no existing violations"
   }
 ]
