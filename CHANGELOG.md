@@ -1,3 +1,13 @@
+## v2.33.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.32.1...v2.33.0)
+
+### Features
+
+- **lint:** Add no-manual-mock-cleanup ESLint rule ([9cace94](https://github.com/pixelastic/aberlaas/commit/9cace94))
+- **lint:** Add prefer-mock-return-value ESLint rule ([311687b](https://github.com/pixelastic/aberlaas/commit/311687b))
+- **lint:** Enable vitest/no-importing-vitest-globals ESLint rule ([c9654e7](https://github.com/pixelastic/aberlaas/commit/c9654e7))
+
 ## v2.32.1
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.32.0...v2.32.1)
