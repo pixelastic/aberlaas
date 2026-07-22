@@ -62,6 +62,9 @@ export default [
       // See: https://github.com/veritem/eslint-plugin-vitest/issues/310
       'vitest/no-identical-title': ['off'],
       'vitest/prefer-to-contain': ['error'],
+
+      // Aberlaas custom rules
+      'aberlaas/no-manual-mock-cleanup': ['error'],
     },
   },
 ];

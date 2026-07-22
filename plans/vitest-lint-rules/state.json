@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-no-manual-mock-cleanup.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created no-manual-mock-cleanup ESLint rule that errors on redundant vi.restoreAllMocks/clearAllMocks/resetAllMocks calls with config-specific messages"
   },
   {
     "id": "02",

@@ -5,6 +5,7 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import ruleNoManualMockCleanup from './rules/no-manual-mock-cleanup.js';
 import rulePreferExpectToHaveProperty from './rules/prefer-expect-to-have-property.js';
 import rulePreferLodashChain from './rules/prefer-lodash-chain.js';
 import rulePreferLodashEntries from './rules/prefer-lodash-entries.js';
@@ -36,6 +37,7 @@ export default [
     plugins: {
       aberlaas: {
         rules: {
+          'no-manual-mock-cleanup': ruleNoManualMockCleanup,
           'prefer-expect-to-have-property': rulePreferExpectToHaveProperty,
           'prefer-lodash-chain': rulePreferLodashChain,
           'prefer-lodash-entries': rulePreferLodashEntries,
