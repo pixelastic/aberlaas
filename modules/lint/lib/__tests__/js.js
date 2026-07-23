@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import {
   absolute,
-  emptyDir,
+  emptyDirectory,
   gitRoot,
   newFile,
   read,
@@ -17,7 +17,7 @@ describe('lint/js', () => {
   // This is an ESLint technical constraint, not a choice.
   const testDirectory = absolute(gitRoot(), '/tmp/lint/js');
   beforeEach(async () => {
-    await emptyDir(testDirectory);
+    await emptyDirectory(testDirectory);
 
     vi.spyOn(helper, 'hostGitRoot').mockReturnValue(testDirectory);
     vi.spyOn(helper, 'hostPackageRoot').mockReturnValue(`${testDirectory}/lib`);

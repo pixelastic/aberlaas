@@ -3,7 +3,7 @@ import { defaultExclude, defineConfig } from 'vitest/config';
 
 const aberlaasVitestExclude = [...defaultExclude, '**/tmp/**', '**/*.bench.js'];
 
-const configDir = dirname();
+const configDirectory = dirname();
 
 export default defineConfig({
   test: {
@@ -31,16 +31,16 @@ export default defineConfig({
     globals: true,
     // Run before each test file
     setupFiles: [
-      `${configDir}/setupFiles/bench.js`,
-      `${configDir}/setupFiles/captureOutput.js`,
-      `${configDir}/setupFiles/dedent.js`,
-      `${configDir}/setupFiles/describeName.js`,
-      `${configDir}/setupFiles/focus.js`,
-      `${configDir}/setupFiles/matchers.js`,
-      `${configDir}/setupFiles/mockStdin.js`,
-      `${configDir}/setupFiles/skip.js`,
-      `${configDir}/setupFiles/slow.js`,
-      `${configDir}/setupFiles/testName.js`,
+      `${configDirectory}/setupFiles/bench.js`,
+      `${configDirectory}/setupFiles/captureOutput.js`,
+      `${configDirectory}/setupFiles/dedent.js`,
+      `${configDirectory}/setupFiles/describeName.js`,
+      `${configDirectory}/setupFiles/focus.js`,
+      `${configDirectory}/setupFiles/matchers.js`,
+      `${configDirectory}/setupFiles/mockStdin.js`,
+      `${configDirectory}/setupFiles/skip.js`,
+      `${configDirectory}/setupFiles/slow.js`,
+      `${configDirectory}/setupFiles/testName.js`,
     ],
   },
   server: {

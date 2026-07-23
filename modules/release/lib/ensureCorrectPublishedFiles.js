@@ -65,9 +65,9 @@ __ = {
    */
   async getNpmPublishedFiles(packageData) {
     const packageJsonPath = packageData.filepath;
-    const packageJsonDir = path.dirname(packageJsonPath);
+    const packageJsonDirectory = path.dirname(packageJsonPath);
     const { stdout } = await __.firostRun('npm publish --dry-run --json', {
-      cwd: packageJsonDir,
+      cwd: packageJsonDirectory,
       stdout: false,
       stderr: false,
     });
@@ -99,9 +99,9 @@ __ = {
    */
   async getYarnPublishedFiles(packageData) {
     const packageJsonPath = packageData.filepath;
-    const packageJsonDir = path.dirname(packageJsonPath);
+    const packageJsonDirectory = path.dirname(packageJsonPath);
     const { stdout } = await __.firostRun('yarn npm publish --dry-run --json', {
-      cwd: packageJsonDir,
+      cwd: packageJsonDirectory,
       stdout: false,
       stderr: false,
     });

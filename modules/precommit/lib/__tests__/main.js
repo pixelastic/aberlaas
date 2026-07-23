@@ -7,7 +7,7 @@ describe('precommit/main', () => {
   const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
   let repo;
 
-  const savedGitDir = process.env.GIT_DIR;
+  const savedGitDirectory = process.env.GIT_DIR;
   const savedGitWorkTree = process.env.GIT_WORK_TREE;
   const savedGitIndexFile = process.env.GIT_INDEX_FILE;
   beforeEach(async () => {
@@ -30,7 +30,7 @@ describe('precommit/main', () => {
   afterEach(async () => {
     await remove(testDirectory);
     // Restore git env vars
-    process.env.GIT_DIR = savedGitDir;
+    process.env.GIT_DIR = savedGitDirectory;
     process.env.GIT_WORK_TREE = savedGitWorkTree;
     process.env.GIT_INDEX_FILE = savedGitIndexFile;
   });
