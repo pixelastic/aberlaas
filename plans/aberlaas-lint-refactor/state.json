@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-split-plugins.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Split monolithic aberlaas plugin into aberlaas (10 JS rules in js.js) and aberlaas-test (3 test rules in vitest.js), each self-contained"
   },
   {
     "id": "03",

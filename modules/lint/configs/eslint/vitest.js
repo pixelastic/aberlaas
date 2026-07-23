@@ -1,6 +1,9 @@
 // @vitest/plugins requires @typescript-eslint/utils and typescripts as deps
 // See: https://github.com/vitest-dev/eslint-plugin-vitest/issues/543
 import pluginVitest from '@vitest/eslint-plugin';
+import ruleNoManualMockCleanup from './rules/test/no-manual-mock-cleanup.js';
+import rulePreferExpectToHaveProperty from './rules/test/prefer-expect-to-have-property.js';
+import rulePreferMockReturnValue from './rules/test/prefer-mock-return-value.js';
 
 export default [
   {
@@ -31,6 +34,13 @@ export default [
       },
     },
     plugins: {
+      'aberlaas-test': {
+        rules: {
+          'no-manual-mock-cleanup': ruleNoManualMockCleanup,
+          'prefer-expect-to-have-property': rulePreferExpectToHaveProperty,
+          'prefer-mock-return-value': rulePreferMockReturnValue,
+        },
+      },
       vitest: pluginVitest,
     },
     rules: {
@@ -65,8 +75,9 @@ export default [
       'vitest/no-importing-vitest-globals': ['error'],
 
       // Aberlaas custom rules
-      'aberlaas/no-manual-mock-cleanup': ['error'],
-      'aberlaas/prefer-mock-return-value': ['error'],
+      'aberlaas-test/no-manual-mock-cleanup': ['error'],
+      'aberlaas-test/prefer-expect-to-have-property': ['error'],
+      'aberlaas-test/prefer-mock-return-value': ['error'],
     },
   },
 ];

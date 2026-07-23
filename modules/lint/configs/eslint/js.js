@@ -15,9 +15,6 @@ import rulePrivateMethodsNoRename from './rules/js/private-methods-no-rename.js'
 import rulePrivateMethodsNoWrapper from './rules/js/private-methods-no-wrapper.js';
 import rulePrivateMethodsOrdering from './rules/js/private-methods-ordering.js';
 import ruleTestFileNaming from './rules/js/test-file-naming.js';
-import ruleNoManualMockCleanup from './rules/test/no-manual-mock-cleanup.js';
-import rulePreferExpectToHaveProperty from './rules/test/prefer-expect-to-have-property.js';
-import rulePreferMockReturnValue from './rules/test/prefer-mock-return-value.js';
 
 export default [
   {
@@ -40,9 +37,6 @@ export default [
       aberlaas: {
         rules: {
           'no-abbreviated-names': ruleNoAbbreviatedNames,
-          'no-manual-mock-cleanup': ruleNoManualMockCleanup,
-          'prefer-expect-to-have-property': rulePreferExpectToHaveProperty,
-          'prefer-mock-return-value': rulePreferMockReturnValue,
           'prefer-lodash-chain': rulePreferLodashChain,
           'prefer-lodash-entries': rulePreferLodashEntries,
           'prefer-lodash-is-empty': rulePreferLodashIsEmpty,
@@ -224,7 +218,6 @@ export default [
 
       // Aberlaas custom rules
       'aberlaas/no-abbreviated-names': ['error'],
-      'aberlaas/prefer-expect-to-have-property': ['error'],
       'aberlaas/prefer-lodash-chain': ['error'],
       'aberlaas/prefer-lodash-entries': ['error'],
       'aberlaas/prefer-lodash-is-empty': ['error'],
