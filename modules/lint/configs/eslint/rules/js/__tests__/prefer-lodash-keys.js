@@ -1,11 +1,5 @@
-import { RuleTester } from 'eslint';
+import ruleTester from '../../helpers/ruleTester.js';
 import rule from '../prefer-lodash-keys.js';
-
-// Wire RuleTester to vitest's test runner
-RuleTester.describe = describe;
-RuleTester.it = it;
-
-const ruleTester = new RuleTester();
 
 ruleTester.run('aberlaas/prefer-lodash-keys', rule, {
   valid: [

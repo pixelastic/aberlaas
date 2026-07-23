@@ -1,11 +1,5 @@
-import { RuleTester } from 'eslint';
+import ruleTester from '../../helpers/ruleTester.js';
 import rule from '../no-manual-mock-cleanup.js';
-
-// Wire RuleTester to vitest's test runner
-RuleTester.describe = describe;
-RuleTester.it = it;
-
-const ruleTester = new RuleTester();
 
 ruleTester.run('aberlaas/no-manual-mock-cleanup', rule, {
   valid: [
