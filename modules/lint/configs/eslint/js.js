@@ -5,6 +5,7 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import ruleNoAbbreviatedNames from './rules/no-abbreviated-names.js';
 import ruleNoManualMockCleanup from './rules/no-manual-mock-cleanup.js';
 import rulePreferExpectToHaveProperty from './rules/prefer-expect-to-have-property.js';
 import rulePreferLodashChain from './rules/prefer-lodash-chain.js';
@@ -38,6 +39,7 @@ export default [
     plugins: {
       aberlaas: {
         rules: {
+          'no-abbreviated-names': ruleNoAbbreviatedNames,
           'no-manual-mock-cleanup': ruleNoManualMockCleanup,
           'prefer-expect-to-have-property': rulePreferExpectToHaveProperty,
           'prefer-mock-return-value': rulePreferMockReturnValue,
@@ -221,6 +223,7 @@ export default [
       'prettier/prettier': ['error', { singleQuote: true }],
 
       // Aberlaas custom rules
+      'aberlaas/no-abbreviated-names': ['error'],
       'aberlaas/prefer-expect-to-have-property': ['error'],
       'aberlaas/prefer-lodash-chain': ['error'],
       'aberlaas/prefer-lodash-entries': ['error'],
