@@ -6,6 +6,7 @@ import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import ruleNoAbbreviatedNames from './rules/js/no-abbreviated-names.js';
+import ruleNoExclusionaryTerms from './rules/js/no-exclusionary-terms.js';
 import rulePreferLodashChain from './rules/js/prefer-lodash-chain.js';
 import rulePreferLodashEntries from './rules/js/prefer-lodash-entries.js';
 import rulePreferLodashIsEmpty from './rules/js/prefer-lodash-is-empty.js';
@@ -37,6 +38,7 @@ export default [
       aberlaas: {
         rules: {
           'no-abbreviated-names': ruleNoAbbreviatedNames,
+          'no-exclusionary-terms': ruleNoExclusionaryTerms,
           'prefer-lodash-chain': rulePreferLodashChain,
           'prefer-lodash-entries': rulePreferLodashEntries,
           'prefer-lodash-is-empty': rulePreferLodashIsEmpty,
@@ -218,6 +220,7 @@ export default [
 
       // Aberlaas custom rules
       'aberlaas/no-abbreviated-names': ['error'],
+      'aberlaas/no-exclusionary-terms': ['error'],
       'aberlaas/prefer-lodash-chain': ['error'],
       'aberlaas/prefer-lodash-entries': ['error'],
       'aberlaas/prefer-lodash-is-empty': ['error'],

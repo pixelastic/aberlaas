@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-identifier-detection.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created no-exclusionary-terms ESLint rule with identifier detection, case-preserving autofix, and registration in js.js"
   },
   {
     "id": "02",

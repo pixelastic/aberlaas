@@ -10,3 +10,7 @@
 - **Convention:** All custom rules use `schema: []`, `type: 'suggestion'`, and are enabled at `['error']`
 
 ## Discoveries
+
+### Issue 01 — identifier detection
+- Rule file needs `eslint-disable aberlaas/no-exclusionary-terms` at top — the rule's own term map triggers itself
+- Linter auto-converts `Object.keys` to `_.keys` (prefer-lodash-keys rule), so import `{ _ } from 'golgoth'`
