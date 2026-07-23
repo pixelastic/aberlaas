@@ -102,7 +102,7 @@ export default {
           return;
         }
 
-        const sourceCode = context.sourceCode || context.getSourceCode();
+        const sourceCode = context.sourceCode;
         const objectText = sourceCode.getText(current);
         const hasComputed = segments.some((s) => s.type === 'computed');
 

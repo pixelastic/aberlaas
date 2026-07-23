@@ -43,7 +43,7 @@ export default {
           return;
         }
 
-        const sourceCode = context.sourceCode || context.getSourceCode();
+        const sourceCode = context.sourceCode;
         const objectText = sourceCode.getText(left.object);
         const isEmpty = emptyOperators.includes(operator);
         const fix = isEmpty

@@ -118,7 +118,7 @@ export default {
           return;
         }
 
-        const sourceCode = context.sourceCode || context.getSourceCode();
+        const sourceCode = context.sourceCode;
 
         // Build fix from innermost lodash call outward
         const rootMethod = innermost.callee.property.name;

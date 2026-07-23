@@ -47,7 +47,7 @@ export default {
           return;
         }
 
-        const sourceCode = context.sourceCode || context.getSourceCode();
+        const sourceCode = context.sourceCode;
 
         context.report({
           node: node.right,
