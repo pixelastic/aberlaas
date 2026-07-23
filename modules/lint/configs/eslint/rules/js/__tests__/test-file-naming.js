@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule from '../rules/test-file-naming.js';
+import rule from '../test-file-naming.js';
 
 // Wire RuleTester to vitest's test runner
 RuleTester.describe = describe;

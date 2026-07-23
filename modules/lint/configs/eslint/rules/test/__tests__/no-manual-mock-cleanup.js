@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule from '../rules/no-manual-mock-cleanup.js';
+import rule from '../no-manual-mock-cleanup.js';
 
 // Wire RuleTester to vitest's test runner
 RuleTester.describe = describe;

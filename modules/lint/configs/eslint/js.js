@@ -5,19 +5,19 @@ import pluginJsdoc from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
-import ruleNoAbbreviatedNames from './rules/no-abbreviated-names.js';
-import ruleNoManualMockCleanup from './rules/no-manual-mock-cleanup.js';
-import rulePreferExpectToHaveProperty from './rules/prefer-expect-to-have-property.js';
-import rulePreferLodashChain from './rules/prefer-lodash-chain.js';
-import rulePreferLodashEntries from './rules/prefer-lodash-entries.js';
-import rulePreferLodashIsEmpty from './rules/prefer-lodash-is-empty.js';
-import rulePreferLodashKeys from './rules/prefer-lodash-keys.js';
-import rulePreferLodashValues from './rules/prefer-lodash-values.js';
-import rulePreferMockReturnValue from './rules/prefer-mock-return-value.js';
-import rulePrivateMethodsNoRename from './rules/private-methods-no-rename.js';
-import rulePrivateMethodsNoWrapper from './rules/private-methods-no-wrapper.js';
-import rulePrivateMethodsOrdering from './rules/private-methods-ordering.js';
-import ruleTestFileNaming from './rules/test-file-naming.js';
+import ruleNoAbbreviatedNames from './rules/js/no-abbreviated-names.js';
+import rulePreferLodashChain from './rules/js/prefer-lodash-chain.js';
+import rulePreferLodashEntries from './rules/js/prefer-lodash-entries.js';
+import rulePreferLodashIsEmpty from './rules/js/prefer-lodash-is-empty.js';
+import rulePreferLodashKeys from './rules/js/prefer-lodash-keys.js';
+import rulePreferLodashValues from './rules/js/prefer-lodash-values.js';
+import rulePrivateMethodsNoRename from './rules/js/private-methods-no-rename.js';
+import rulePrivateMethodsNoWrapper from './rules/js/private-methods-no-wrapper.js';
+import rulePrivateMethodsOrdering from './rules/js/private-methods-ordering.js';
+import ruleTestFileNaming from './rules/js/test-file-naming.js';
+import ruleNoManualMockCleanup from './rules/test/no-manual-mock-cleanup.js';
+import rulePreferExpectToHaveProperty from './rules/test/prefer-expect-to-have-property.js';
+import rulePreferMockReturnValue from './rules/test/prefer-mock-return-value.js';
 
 export default [
   {

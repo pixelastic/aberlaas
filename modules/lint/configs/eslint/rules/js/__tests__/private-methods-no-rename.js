@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule from '../rules/private-methods-no-rename.js';
+import rule from '../private-methods-no-rename.js';
 
 // Wire RuleTester to vitest's test runner
 RuleTester.describe = describe;

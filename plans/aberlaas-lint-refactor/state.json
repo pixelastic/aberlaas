@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-relocate-rule-files.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Moved rule files into rules/js/ and rules/test/ subdirs, relocated tests and helper, updated all imports and package.json files glob"
   },
   {
     "id": "02",

@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule from '../rules/no-abbreviated-names.js';
+import rule from '../no-abbreviated-names.js';
 
 // Wire RuleTester to vitest's test runner
 RuleTester.describe = describe;

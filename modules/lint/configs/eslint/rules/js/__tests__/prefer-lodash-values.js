@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule from '../rules/prefer-lodash-values.js';
+import rule from '../prefer-lodash-values.js';
 
 // Wire RuleTester to vitest's test runner
 RuleTester.describe = describe;

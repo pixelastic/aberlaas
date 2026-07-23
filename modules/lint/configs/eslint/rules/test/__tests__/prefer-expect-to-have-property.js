@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule from '../rules/prefer-expect-to-have-property.js';
+import rule from '../prefer-expect-to-have-property.js';
 
 // Wire RuleTester to vitest's test runner
 RuleTester.describe = describe;

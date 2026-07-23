@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule from '../rules/prefer-mock-return-value.js';
+import rule from '../prefer-mock-return-value.js';
 
 // Wire RuleTester to vitest's test runner
 RuleTester.describe = describe;
