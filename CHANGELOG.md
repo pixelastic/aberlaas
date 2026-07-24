@@ -1,3 +1,16 @@
+## v2.34.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.33.0...v2.34.0)
+
+### Features
+
+- **lint:** Add no-abbreviated-names ESLint rule ([a7abafe](https://github.com/pixelastic/aberlaas/commit/a7abafe))
+- **lint:** Add no-exclusionary-terms ESLint rule ([3b6c85f](https://github.com/pixelastic/aberlaas/commit/3b6c85f))
+- **lint:** Extend no-exclusionary-terms rule to flag comments ([cf284bf](https://github.com/pixelastic/aberlaas/commit/cf284bf))
+- **lint:** Flag exclusionary terms inside string and template literals ([5c1dda5](https://github.com/pixelastic/aberlaas/commit/5c1dda5))
+- **lint:** Ban Set and WeakSet, enforce arrays with _.uniq() ([d32a8fe](https://github.com/pixelastic/aberlaas/commit/d32a8fe))
+- **lint:** Add ESLint rule to ban JSDoc on shorthand proxies in `__ = { ... }` ([a269478](https://github.com/pixelastic/aberlaas/commit/a269478))
+
 ## v2.33.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.32.1...v2.33.0)
