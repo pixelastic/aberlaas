@@ -10,3 +10,7 @@
 - lodash is imported from `golgoth` (`import { _ } from 'golgoth'`)
 
 ## Discoveries
+
+### Issue 02 — no-jsdoc-on-proxy
+- `fixer.remove(comment)` leaves trailing whitespace/newline; need `fixer.removeRange()` to also consume trailing whitespace
+- ESLint rule files in this repo use `export default`, not named exports (unlike general JS convention)

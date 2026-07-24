@@ -12,6 +12,7 @@ import rulePreferLodashEntries from './rules/js/prefer-lodash-entries.js';
 import rulePreferLodashIsEmpty from './rules/js/prefer-lodash-is-empty.js';
 import rulePreferLodashKeys from './rules/js/prefer-lodash-keys.js';
 import rulePreferLodashValues from './rules/js/prefer-lodash-values.js';
+import rulePrivateMethodsNoJsdocOnProxy from './rules/js/private-methods-no-jsdoc-on-proxy.js';
 import rulePrivateMethodsNoRename from './rules/js/private-methods-no-rename.js';
 import rulePrivateMethodsNoWrapper from './rules/js/private-methods-no-wrapper.js';
 import rulePrivateMethodsOrdering from './rules/js/private-methods-ordering.js';
@@ -44,6 +45,7 @@ export default [
           'prefer-lodash-is-empty': rulePreferLodashIsEmpty,
           'prefer-lodash-keys': rulePreferLodashKeys,
           'prefer-lodash-values': rulePreferLodashValues,
+          'private-methods-no-jsdoc-on-proxy': rulePrivateMethodsNoJsdocOnProxy,
           'private-methods-no-rename': rulePrivateMethodsNoRename,
           'private-methods-no-wrapper': rulePrivateMethodsNoWrapper,
           'private-methods-ordering': rulePrivateMethodsOrdering,
@@ -253,6 +255,7 @@ export default [
       'aberlaas/prefer-lodash-is-empty': ['error'],
       'aberlaas/prefer-lodash-keys': ['error'],
       'aberlaas/prefer-lodash-values': ['error'],
+      'aberlaas/private-methods-no-jsdoc-on-proxy': ['error'],
       'aberlaas/private-methods-no-rename': ['error'],
       'aberlaas/private-methods-no-wrapper': ['error'],
       'aberlaas/private-methods-ordering': ['error'],

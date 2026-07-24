@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-no-jsdoc-on-proxy.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added private-methods-no-jsdoc-on-proxy rule that flags and autofixes JSDoc @tag comments on shorthand proxies in __ = { ... }"
   }
 ]
