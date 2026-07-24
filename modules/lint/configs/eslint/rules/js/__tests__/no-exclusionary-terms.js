@@ -21,7 +21,7 @@ ruleTester.run('aberlaas/no-exclusionary-terms', rule, {
     },
   ],
   invalid: [
-    // whitelist identifiers
+    // allowlist identifiers
     {
       name: 'Flags "whitelist" and fixes to "allowlist"',
       code: 'const whitelist = [];',
@@ -59,7 +59,7 @@ ruleTester.run('aberlaas/no-exclusionary-terms', rule, {
       errors: [{ messageId: 'noExclusionaryTerm' }],
     },
 
-    // blacklist identifiers
+    // blocklist identifiers
     {
       name: 'Flags "blacklist" and fixes to "blocklist"',
       code: 'const blacklist = [];',
@@ -76,6 +76,34 @@ ruleTester.run('aberlaas/no-exclusionary-terms', rule, {
       name: 'Flags "addToBlacklist" and fixes to "addToBlocklist"',
       code: 'const addToBlacklist = null;',
       output: 'const addToBlocklist = null;',
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+
+    // line comments
+    {
+      name: 'Flags "whitelist" in line comment and fixes to "allowlist"',
+      code: '// whitelist this',
+      output: '// allowlist this',
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+    {
+      name: 'Flags "BLACKLIST" in line comment and fixes to "BLOCKLIST"',
+      code: '// add to BLACKLIST',
+      output: '// add to BLOCKLIST',
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+
+    // block comments
+    {
+      name: 'Flags "blacklisted" in block comment and fixes to "blocklisted"',
+      code: '/* blacklisted */',
+      output: '/* blocklisted */',
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+    {
+      name: 'Flags "Whitelisted" in block comment and fixes to "Allowlisted"',
+      code: '/* Whitelisted users */',
+      output: '/* Allowlisted users */',
       errors: [{ messageId: 'noExclusionaryTerm' }],
     },
 

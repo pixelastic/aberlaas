@@ -84,6 +84,46 @@ export default {
           return;
         }
       },
+
+      /**
+       * Scan all comments for exclusionary terms.
+       */
+      Program() {
+        const comments = context.sourceCode.getAllComments();
+
+        _.each(comments, (comment) => {
+          const text = comment.value;
+          const lower = text.toLowerCase();
+
+          _.each(termKeys, (term) => {
+            const index = lower.indexOf(term);
+            if (index === -1) {
+              return;
+            }
+
+            const matchedPart = text.slice(index, index + term.length);
+            const replacement = replacePreservingCase(matchedPart, terms[term]);
+            const fixed =
+              text.slice(0, index) +
+              replacement +
+              text.slice(index + term.length);
+
+            // Both // and /* prefixes are 2 chars; */ suffix is 2 chars
+            const rangeStart = comment.range[0] + 2;
+            const rangeEnd =
+              comment.range[1] - (comment.type === 'Block' ? 2 : 0);
+
+            context.report({
+              loc: comment.loc,
+              messageId: 'noExclusionaryTerm',
+              data: { original: matchedPart, fixed: replacement },
+              fix(fixer) {
+                return fixer.replaceTextRange([rangeStart, rangeEnd], fixed);
+              },
+            });
+          });
+        });
+      },
     };
   },
 };
