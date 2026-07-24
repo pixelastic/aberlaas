@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-ban-set-weakset.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-no-jsdoc-on-proxy.md",
+    "done": false,
+    "blocked_by": []
+  }
+]
