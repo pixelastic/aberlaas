@@ -24,12 +24,12 @@ export default {
         // Shape: CallExpression[callee=MemberExpression]
         //   callee.object = CallExpression (the expect() call)
         //   callee.property = Identifier (toEqual, toBe, toBeDefined)
-        const handledMatchers = new Set(['toEqual', 'toBe', 'toBeDefined']);
+        const handledMatchers = ['toEqual', 'toBe', 'toBeDefined'];
 
         if (
           node.callee.type !== 'MemberExpression' ||
           node.callee.property.type !== 'Identifier' ||
-          !handledMatchers.has(node.callee.property.name)
+          !handledMatchers.includes(node.callee.property.name)
         ) {
           return;
         }

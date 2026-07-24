@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-ban-set-weakset.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Banned Set/WeakSet via no-restricted-syntax and refactored three rule files to use arrays with .includes()"
   },
   {
     "id": "02",

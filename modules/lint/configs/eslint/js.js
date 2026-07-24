@@ -106,6 +106,33 @@ export default [
           message: 'Typo: Use _.padStart instead',
         },
       ],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "NewExpression[callee.name='Set']",
+          message: 'Use arrays; use _.uniq() for deduplication',
+        },
+        {
+          selector: "CallExpression[callee.name='Set']",
+          message: 'Use arrays; use _.uniq() for deduplication',
+        },
+        {
+          selector: "MemberExpression[object.name='Set']",
+          message: 'Use arrays; use _.uniq() for deduplication',
+        },
+        {
+          selector: "NewExpression[callee.name='WeakSet']",
+          message: 'Use arrays; use _.uniq() for deduplication',
+        },
+        {
+          selector: "CallExpression[callee.name='WeakSet']",
+          message: 'Use arrays; use _.uniq() for deduplication',
+        },
+        {
+          selector: "MemberExpression[object.name='WeakSet']",
+          message: 'Use arrays; use _.uniq() for deduplication',
+        },
+      ],
       'no-shadow': ['error'],
       'no-unused-vars': [
         'error',

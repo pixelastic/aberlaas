@@ -1,8 +1,4 @@
-const bannedMethods = new Set([
-  'restoreAllMocks',
-  'clearAllMocks',
-  'resetAllMocks',
-]);
+const bannedMethods = ['restoreAllMocks', 'clearAllMocks', 'resetAllMocks'];
 
 export default {
   meta: {
@@ -36,7 +32,7 @@ export default {
           return;
         }
         const methodName = callee.property.name;
-        if (!bannedMethods.has(methodName)) {
+        if (!bannedMethods.includes(methodName)) {
           return;
         }
         context.report({
