@@ -1,3 +1,4 @@
+/* eslint-disable aberlaas/no-exclusionary-terms */
 import ruleTester from '../../helpers/ruleTester.js';
 import rule from '../no-exclusionary-terms.js';
 
@@ -128,6 +129,40 @@ ruleTester.run('aberlaas/no-exclusionary-terms', rule, {
         { messageId: 'noExclusionaryTerm' },
         { messageId: 'noExclusionaryTerm' },
       ],
+    },
+
+    // string literals (report-only, no fix)
+    {
+      name: 'Flags "whitelist" in string literal with no fix',
+      code: "const x = 'whitelist';",
+      output: null,
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+    {
+      name: 'Flags "add to blacklist" in string literal with no fix',
+      code: 'const x = "add to blacklist";',
+      output: null,
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+    {
+      name: 'Flags "Whitelisted" in string literal with no fix',
+      code: "const x = 'Whitelisted';",
+      output: null,
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+
+    // template literals (report-only, no fix)
+    {
+      name: 'Flags "blacklist" in template literal with no fix',
+      code: 'const x = `blacklist`;',
+      output: null,
+      errors: [{ messageId: 'noExclusionaryTerm' }],
+    },
+    {
+      name: 'Flags "add to whitelist" in template literal with no fix',
+      code: 'const x = `add to whitelist`;',
+      output: null,
+      errors: [{ messageId: 'noExclusionaryTerm' }],
     },
   ],
 });

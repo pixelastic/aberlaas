@@ -86,6 +86,63 @@ export default {
       },
 
       /**
+       * Flag exclusionary terms in string literals (no auto-fix).
+       * @param {import('estree').Literal} node - AST Literal node
+       */
+      Literal(node) {
+        if (typeof node.value !== 'string') {
+          return;
+        }
+
+        const lower = node.value.toLowerCase();
+
+        _.each(termKeys, (term) => {
+          const index = lower.indexOf(term);
+          if (index === -1) {
+            return;
+          }
+
+          const matchedPart = node.value.slice(index, index + term.length);
+          const replacement = replacePreservingCase(matchedPart, terms[term]);
+
+          context.report({
+            node,
+            messageId: 'noExclusionaryTerm',
+            data: { original: matchedPart, fixed: replacement },
+          });
+          return false;
+        });
+      },
+
+      /**
+       * Flag exclusionary terms in template literal quasis (no auto-fix).
+       * @param {import('estree').TemplateLiteral} node - AST TemplateLiteral node
+       */
+      TemplateLiteral(node) {
+        _.each(node.quasis, (quasi) => {
+          const raw = quasi.value.raw;
+          const lower = raw.toLowerCase();
+
+          _.each(termKeys, (term) => {
+            const index = lower.indexOf(term);
+            if (index === -1) {
+              return;
+            }
+
+            const matchedPart = raw.slice(index, index + term.length);
+            const replacement = replacePreservingCase(matchedPart, terms[term]);
+
+            context.report({
+              node: quasi,
+              messageId: 'noExclusionaryTerm',
+              data: { original: matchedPart, fixed: replacement },
+            });
+            return false;
+          });
+        });
+      },
+
+      /**
        * Scan all comments for exclusionary terms.
        */
       Program() {
