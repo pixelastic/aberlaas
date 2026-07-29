@@ -8,10 +8,8 @@ import globals from 'globals';
 import ruleNoAbbreviatedNames from './rules/js/no-abbreviated-names.js';
 import ruleNoExclusionaryTerms from './rules/js/no-exclusionary-terms.js';
 import rulePreferLodashChain from './rules/js/prefer-lodash-chain.js';
-import rulePreferLodashEntries from './rules/js/prefer-lodash-entries.js';
 import rulePreferLodashIsEmpty from './rules/js/prefer-lodash-is-empty.js';
-import rulePreferLodashKeys from './rules/js/prefer-lodash-keys.js';
-import rulePreferLodashValues from './rules/js/prefer-lodash-values.js';
+import rulePreferLodashMethods from './rules/js/prefer-lodash-methods.js';
 import rulePrivateMethodsNoJsdocOnProxy from './rules/js/private-methods-no-jsdoc-on-proxy.js';
 import rulePrivateMethodsNoRename from './rules/js/private-methods-no-rename.js';
 import rulePrivateMethodsNoWrapper from './rules/js/private-methods-no-wrapper.js';
@@ -41,10 +39,8 @@ export default [
           'no-abbreviated-names': ruleNoAbbreviatedNames,
           'no-exclusionary-terms': ruleNoExclusionaryTerms,
           'prefer-lodash-chain': rulePreferLodashChain,
-          'prefer-lodash-entries': rulePreferLodashEntries,
           'prefer-lodash-is-empty': rulePreferLodashIsEmpty,
-          'prefer-lodash-keys': rulePreferLodashKeys,
-          'prefer-lodash-values': rulePreferLodashValues,
+          'prefer-lodash-methods': rulePreferLodashMethods,
           'private-methods-no-jsdoc-on-proxy': rulePrivateMethodsNoJsdocOnProxy,
           'private-methods-no-rename': rulePrivateMethodsNoRename,
           'private-methods-no-wrapper': rulePrivateMethodsNoWrapper,
@@ -251,10 +247,8 @@ export default [
       'aberlaas/no-abbreviated-names': ['error'],
       'aberlaas/no-exclusionary-terms': ['error'],
       'aberlaas/prefer-lodash-chain': ['error'],
-      'aberlaas/prefer-lodash-entries': ['error'],
       'aberlaas/prefer-lodash-is-empty': ['error'],
-      'aberlaas/prefer-lodash-keys': ['error'],
-      'aberlaas/prefer-lodash-values': ['error'],
+      'aberlaas/prefer-lodash-methods': ['error'],
       'aberlaas/private-methods-no-jsdoc-on-proxy': ['error'],
       'aberlaas/private-methods-no-rename': ['error'],
       'aberlaas/private-methods-no-wrapper': ['error'],
