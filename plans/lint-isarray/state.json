@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-consolidate-prefer-lodash-methods.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Consolidated prefer-lodash-keys/values/entries + helper into single prefer-lodash-methods rule with Array.isArray ban, wired in js.js, deleted old files"
-  }
-]
