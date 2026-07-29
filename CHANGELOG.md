@@ -1,3 +1,11 @@
+## v2.35.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.34.0...v2.35.0)
+
+### Features
+
+- **lint:** Consolidate prefer-lodash rules and add Array.isArray ban ([3e4fe12](https://github.com/pixelastic/aberlaas/commit/3e4fe12))
+
 ## v2.34.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.33.0...v2.34.0)
