@@ -1,3 +1,11 @@
+## v2.36.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.35.0...v2.36.0)
+
+### Features
+
+- **lint:** Add TOML ESLint config with formatting and ordering rules ([e8733ca](https://github.com/pixelastic/aberlaas/commit/e8733ca))
+
 ## v2.35.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.34.0...v2.35.0)
