@@ -3,6 +3,7 @@ import configJs from './js.js';
 import configJson from './json.js';
 import configReact from './react.js';
 import configScripts from './scripts.js';
+import configToml from './toml.js';
 import configVitest from './vitest.js';
 import configVue from './vue.js';
 
@@ -12,6 +13,7 @@ export default [
   ...configReact,
   ...configVue,
   ...configJson,
+  ...configToml,
   ...configScripts,
   ...configDocs,
 ];

@@ -212,6 +212,7 @@ export default [
             '@octokit/rest',
             '@tailwindcss/vite',
             '@vitejs/plugin-vue',
+            'eslint-plugin-toml',
           ],
         },
       ],

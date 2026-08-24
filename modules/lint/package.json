@@ -43,6 +43,7 @@
     "eslint-plugin-package-json": "0.88.2",
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-toml": "1.5.0",
     "eslint-plugin-vue": "10.8.0",
     "firost": "5.10.0",
     "globals": "17.3.0",
