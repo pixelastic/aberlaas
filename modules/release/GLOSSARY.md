@@ -17,15 +17,19 @@ A **Publish** mode where the user publishes from their local machine, authentica
 _Avoid_: Manual publish, local publish, OTP publish
 
 **Trusted Publish**:
-A **Publish** mode where the CI publishes via OIDC, with no secret and no **OTP**.
+A **Publish** mode where the CI publishes via OIDC, with no secret and no **OTP**. Requires a **Trusted Publisher** to be registered on the package.
 _Avoid_: CI publish, OIDC publish, automated publish
 
+**Trusted Publisher**:
+A configuration registered on npm that links a CI provider (e.g., CircleCI) to a package, enabling **Trusted Publish**. Registering a **Trusted Publisher** requires an **OTP**.
+_Avoid_: CI link, trust config, publisher config
+
 **First Publish**:
-The first **Publish** of a package on npm, which requires a **Direct Publish** because **Trusted Publish** can only be configured for packages that already exist on the registry.
+The first **Publish** of a package on npm, which requires a **Direct Publish** because a **Trusted Publisher** can only be registered for packages that already exist on the registry.
 _Avoid_: Initial publish, bootstrap publish
 
 **OTP**:
-A One-Time Password from an authenticator app, required by npm for a **Direct Publish**.
+A One-Time Password from an authenticator app, required by npm for a **Direct Publish** and for registering a **Trusted Publisher**.
 _Avoid_: 2FA code, TOTP, one-time password
 
 ## Relationships
@@ -34,6 +38,8 @@ _Avoid_: 2FA code, TOTP, one-time password
 - A **First Publish** is always a **Direct Publish**
 - A **Direct Publish** requires exactly one **OTP** (re-prompted if expired)
 - A **Trusted Publish** requires zero **OTP**
+- A **Trusted Publisher** enables **Trusted Publish** for a given package
+- Registering a **Trusted Publisher** requires an **OTP** (one-time cost per package)
 
 ## Flagged ambiguities
 
