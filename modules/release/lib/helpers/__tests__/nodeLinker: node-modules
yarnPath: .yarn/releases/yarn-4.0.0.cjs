@@ -1,0 +1,1 @@
+/dev/shm/firost/aberlaas/removeLegacyNpmAuth/z9G0yrNZBFTdDECLx4_MH/.yarnrc.yml
