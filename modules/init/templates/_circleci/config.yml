@@ -1,5 +1,13 @@
 version: 2.1
 
+parameters:
+  trusted_publish:
+    type: boolean
+    default: false
+  packages:
+    type: string
+    default: ''
+
 aliases:
   - &defaults
     docker:
@@ -34,9 +42,25 @@ jobs:
       - *save_cache
       - run: 'yarn run ci'
 
+  trusted-publish:
+    <<: *defaults
+    steps:
+      - checkout
+      - *restore_cache
+      - *install_yarn
+      - *install_dependencies
+      - *save_cache
+      - run: 'yarn run ci --trusted-publish "<< pipeline.parameters.packages >>"'
+
 workflows:
   version: 2
   # On every commit
   commit:
+    when: not << pipeline.parameters.trusted_publish >>
     jobs:
       - ci
+  # Triggered by API for trusted publishing
+  trusted-publish:
+    when: << pipeline.parameters.trusted_publish >>
+    jobs:
+      - trusted-publish
