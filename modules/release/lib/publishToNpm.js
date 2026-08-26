@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { pMap } from 'golgoth';
+import { _, pMap } from 'golgoth';
 import { firostError, run, spinner } from 'firost';
 
 export let __;
@@ -31,18 +31,16 @@ export async function publishToNpm(releaseData) {
 }
 
 __ = {
+  /**
+   * Publishes a single package, wrapping pushToRegistry with error handling
+   * @param {object} packageData - Package object with filepath and content
+   * @returns {Promise<boolean>} True if publish succeeded
+   */
   async publishPackage(packageData) {
-    const { filepath, content } = packageData;
+    const { content } = packageData;
 
     try {
-      // Note:
-      // ✘ npm publish <= Keeps workspace:* in dependencies
-      // ✔ yarn npm publish <= Replaces workspace:* with actual versions
-      await __.run('yarn npm publish --access public', {
-        cwd: path.dirname(filepath),
-        stdout: false,
-        stderr: false,
-      });
+      await __.pushToRegistry(packageData);
       return true;
     } catch (err) {
       const packageName = content.name;
@@ -51,6 +49,34 @@ __ = {
         `Failed to publish ${packageName} to npm:\n${err.message}`,
       );
     }
+  },
+  /**
+   * Runs `yarn npm publish --access public` for a single package
+   * @param {object} packageData - Package object with filepath and content
+   * @param {string} packageData.filepath - Path to the package.json file
+   * @param {object} options - Additional flags to pass to the command
+   * @param {string} options.otp - One-time password for npm authentication
+   * @returns {Promise<void>}
+   */
+  async pushToRegistry(packageData, options = {}) {
+    const { filepath } = packageData;
+
+    // { otp: '123456' } → 'yarn npm publish --access public --otp 123456'
+    const command = _.chain(options)
+      .map((value, key) => `--${key} ${value}`)
+      .thru((flags) => ['yarn npm publish --access public', ...flags])
+      .join(' ')
+      .value();
+
+    // Note:
+    // ✘ npm publish <= Keeps workspace:* in dependencies
+    // ✔ yarn npm publish <= Replaces workspace:* with actual versions
+    // This is why we use yarn npm publish and not npm publish directly
+    await __.run(command, {
+      cwd: path.dirname(filepath),
+      stdout: false,
+      stderr: false,
+    });
   },
   run,
   spinner,
