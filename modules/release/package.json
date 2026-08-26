@@ -13,7 +13,8 @@
   "license": "MIT",
   "files": [
     "lib/*.js",
-    "lib/helpers/*.js"
+    "lib/helpers/*.js",
+    "lib/helpers/circleci/*.js"
   ],
   "exports": {
     ".": "./lib/main.js"

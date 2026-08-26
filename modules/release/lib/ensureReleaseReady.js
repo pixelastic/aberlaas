@@ -1,6 +1,7 @@
 import { consoleInfo, firostError } from 'firost';
 import { yarnRun } from 'aberlaas-helper';
 import { ensureCorrectPublishedFiles } from './ensureCorrectPublishedFiles.js';
+import { ensureTrustedPublishing } from './ensureTrustedPublishing.js';
 
 export let __;
 
@@ -19,6 +20,9 @@ export async function ensureReleaseReady(cliArgs = {}, releaseData = {}) {
     lint: true,
     ...cliArgs,
   };
+
+  // Ensure trusted publishing is configured
+  await __.ensureTrustedPublishing(releaseData);
 
   // Check tests are passing
   await __.ensureTestsArePassing(options);
@@ -72,5 +76,6 @@ __ = {
 
   consoleInfo,
   ensureCorrectPublishedFiles,
+  ensureTrustedPublishing,
   yarnRun,
 };

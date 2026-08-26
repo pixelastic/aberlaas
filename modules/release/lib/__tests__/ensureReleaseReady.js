@@ -80,6 +80,7 @@ describe('release/ensureReleaseReady', () => {
 
   describe('ensureReleaseReady', () => {
     beforeEach(() => {
+      vi.spyOn(__, 'ensureTrustedPublishing').mockReturnValue();
       vi.spyOn(__, 'ensureTestsArePassing').mockReturnValue(true);
       vi.spyOn(__, 'ensureLintIsPassing').mockReturnValue(true);
       vi.spyOn(__, 'ensureCorrectPublishedFiles').mockReturnValue();
@@ -91,6 +92,7 @@ describe('release/ensureReleaseReady', () => {
 
       await ensureReleaseReady(cliArgs, releaseData);
 
+      expect(__.ensureTrustedPublishing).toHaveBeenCalledWith(releaseData);
       expect(__.ensureTestsArePassing).toHaveBeenCalled();
       expect(__.ensureLintIsPassing).toHaveBeenCalled();
       expect(__.ensureCorrectPublishedFiles).toHaveBeenCalledWith(releaseData);
