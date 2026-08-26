@@ -17,30 +17,12 @@ const CONFIG_PATH = '.circleci/config.yml';
 export let __;
 
 /**
- * Check if the CircleCI config already has a trusted-publish workflow
- * @returns {boolean} True if trusted-publish workflow exists
- */
-export async function hasPublishWorkflow() {
-  const content = await read(hostGitPath(CONFIG_PATH));
-  const doc = YAML.parseDocument(content);
-  const workflows = doc.get('workflows');
-  return workflows.has('trusted-publish');
-}
-
-/**
  * Add the trusted-publish workflow to the CircleCI config
  */
 export async function addPublishWorkflow() {
   const configPath = hostGitPath(CONFIG_PATH);
   const originalContent = await read(configPath);
-  const doc = YAML.parseDocument(originalContent);
-
-  __.addParameters(doc);
-  __.addPublishJob(doc);
-  __.addPublishWorkflow(doc);
-  __.addCommitWorkflowGuard(doc);
-
-  const modifiedContent = doc.toString();
+  const modifiedContent = __.buildPublishConfig(originalContent);
   const approvedContent = await __.confirmOrEditConfig(
     originalContent,
     modifiedContent,
@@ -50,6 +32,22 @@ export async function addPublishWorkflow() {
 }
 
 __ = {
+  /**
+   * Pure transformation: add trusted-publish parameters, job, workflow, and guard
+   * @param {string} content - Original YAML content
+   * @returns {string} Modified YAML content
+   */
+  buildPublishConfig(content) {
+    const doc = YAML.parseDocument(content);
+
+    __.addParameters(doc);
+    __.addPublishJob(doc);
+    __.addPublishWorkflow(doc);
+    __.addCommitWorkflowGuard(doc);
+
+    return doc.toString();
+  },
+
   /**
    * Add parameters block to config:
    *
@@ -229,8 +227,16 @@ __ = {
    * Commit the config changes
    */
   async commitConfig() {
-    const repo = new Gilmore(hostGitRoot());
+    const repo = __.createRepo();
     await repo.commitAll('chore(ci): add trusted-publish workflow');
+  },
+
+  /**
+   * Create a Gilmore repo instance for the host git root
+   * @returns {object} Gilmore instance
+   */
+  createRepo() {
+    return new Gilmore(hostGitRoot());
   },
 
   consoleInfo,

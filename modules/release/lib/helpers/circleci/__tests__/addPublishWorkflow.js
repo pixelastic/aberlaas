@@ -1,15 +1,39 @@
 import { firostError, read, remove, tmpDirectory, write } from 'firost';
 import { mockHelperPaths } from 'aberlaas-helper';
 import YAML from 'yaml';
-import {
-  __,
-  addPublishWorkflow,
-  hasPublishWorkflow,
-} from '../../helpers/circleci.js';
+import { __, addPublishWorkflow } from '../addPublishWorkflow.js';
 
-describe('release/helpers/circleci', () => {
+describe('addPublishWorkflow', () => {
   const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
-  const configPath = `${testDirectory}/.circleci/config.yml`;
+
+  const minimalConfig = dedent`
+    version: 2.1
+
+    aliases:
+      - &defaults
+        docker: []
+      - &restore_cache
+        run: noop
+      # Shared setup
+      - &install_yarn
+        run: noop
+      - &install_dependencies
+        run: noop
+      - &save_cache
+        run: noop
+
+    jobs:
+      ci:
+        <<: *defaults
+        steps:
+          - checkout
+
+    workflows:
+      # Main workflow
+      commit:
+        jobs:
+          - ci
+  `;
 
   beforeEach(() => {
     mockHelperPaths(testDirectory);
@@ -18,132 +42,34 @@ describe('release/helpers/circleci', () => {
     await remove(testDirectory);
   });
 
-  // Minimal config WITHOUT publish workflow (existing project)
-  const minimalConfig = [
-    'version: 2.1',
-    '',
-    'aliases:',
-    '  - &defaults',
-    '    docker:',
-    '      - image: cimg/node:22.14',
-    '  - &restore_cache',
-    '    restore_cache:',
-    '      key: yarn-cache-{{ checksum "yarn.lock" }}',
-    '  # Setup steps',
-    '  - &install_yarn',
-    '    run:',
-    "      name: 'Installing correct yarn version'",
-    '      command: |',
-    '        corepack enable --install-directory="/home/circleci/bin"',
-    '        yarn set version 4.7.0',
-    '  - &install_dependencies',
-    '    run:',
-    "      name: 'Installing dependencies'",
-    "      command: 'yarn install'",
-    '  - &save_cache',
-    '    save_cache:',
-    '      key: yarn-cache-{{ checksum "yarn.lock" }}',
-    '      paths:',
-    '        - ~/.cache/yarn',
-    '',
-    'jobs:',
-    '  ci:',
-    '    <<: *defaults',
-    '    steps:',
-    '      - checkout',
-    '      - *restore_cache',
-    '      - *install_yarn',
-    '      - *install_dependencies',
-    '      - *save_cache',
-    "      - run: 'yarn run ci'",
-    '',
-    'workflows:',
-    '  version: 2',
-    '  # On every commit',
-    '  commit:',
-    '    jobs:',
-    '      - ci',
-  ].join('\n');
+  describe('addPublishWorkflow', () => {
+    const configPath = `${testDirectory}/.circleci/config.yml`;
 
-  // Config WITH publish workflow already present
-  const fullConfig = [
-    'version: 2.1',
-    '',
-    'parameters:',
-    '  trusted_publish:',
-    '    type: boolean',
-    '    default: false',
-    '  packages:',
-    '    type: string',
-    "    default: ''",
-    '',
-    'aliases:',
-    '  - &defaults',
-    '    docker:',
-    '      - image: cimg/node:22.14',
-    '',
-    'jobs:',
-    '  ci:',
-    '    <<: *defaults',
-    '    steps:',
-    '      - checkout',
-    "      - run: 'yarn run ci'",
-    '  trusted-publish:',
-    '    <<: *defaults',
-    '    steps:',
-    '      - checkout',
-    '      - run: \'yarn run ci --trusted-publish "<< pipeline.parameters.packages >>"\'',
-    '',
-    'workflows:',
-    '  version: 2',
-    '  commit:',
-    '    when: not << pipeline.parameters.trusted_publish >>',
-    '    jobs:',
-    '      - ci',
-    '  trusted-publish:',
-    '    when: << pipeline.parameters.trusted_publish >>',
-    '    jobs:',
-    '      - trusted-publish',
-  ].join('\n');
+    beforeEach(async () => {
+      await write('original content', configPath);
+      vi.spyOn(__, 'buildPublishConfig').mockReturnValue('modified content');
+      vi.spyOn(__, 'confirmOrEditConfig').mockReturnValue('approved content');
+      vi.spyOn(__, 'commitConfig').mockReturnValue();
+    });
 
-  describe('hasPublishWorkflow', () => {
-    it.each([
-      {
-        title: 'should return true when trusted-publish workflow exists',
-        input: fullConfig,
-        expected: true,
-      },
-      {
-        title: 'should return false when only commit workflow exists',
-        input: minimalConfig,
-        expected: false,
-      },
-    ])('$title', async ({ input, expected }) => {
-      await write(input, configPath);
+    it('should read config, transform, confirm, write, and commit', async () => {
+      await addPublishWorkflow();
 
-      const actual = await hasPublishWorkflow();
-
-      expect(actual).toEqual(expected);
+      expect(__.buildPublishConfig).toHaveBeenCalledWith('original content');
+      expect(__.confirmOrEditConfig).toHaveBeenCalledWith(
+        'original content',
+        'modified content',
+      );
+      const actual = await read(configPath);
+      expect(actual).toEqual('approved content');
+      expect(__.commitConfig).toHaveBeenCalled();
     });
   });
 
-  describe('addPublishWorkflow', () => {
-    let modifiedContent;
-
-    beforeEach(async () => {
-      await write(minimalConfig, configPath);
-      vi.spyOn(__, 'confirmOrEditConfig').mockImplementation(
-        (_original, modified) => modified,
-      );
-      vi.spyOn(__, 'commitConfig').mockReturnValue();
-
-      await addPublishWorkflow();
-
-      modifiedContent = __.confirmOrEditConfig.mock.calls[0][1];
-    });
-
+  describe('buildPublishConfig', () => {
     it('should add parameters block to config', () => {
-      const parsed = YAML.parse(modifiedContent);
+      const actual = __.buildPublishConfig(minimalConfig);
+      const parsed = YAML.parse(actual);
 
       expect(parsed).toHaveProperty('parameters.trusted_publish', {
         type: 'boolean',
@@ -156,31 +82,35 @@ describe('release/helpers/circleci', () => {
     });
 
     it('should add trusted-publish job with correct steps', () => {
-      const parsed = YAML.parse(modifiedContent, { merge: true });
+      const actual = __.buildPublishConfig(minimalConfig);
+      const parsed = YAML.parse(actual, { merge: true });
       const job = parsed.jobs['trusted-publish'];
 
       expect(job).toBeTruthy();
       expect(job).toHaveProperty('steps.0', 'checkout');
 
       const lastStep = job.steps[job.steps.length - 1];
-      expect(lastStep.run).toContain('--trusted-publish');
-      expect(lastStep.run).toContain('<< pipeline.parameters.packages >>');
+      expect(lastStep).toHaveProperty(
+        'run',
+        'yarn run ci --trusted-publish "<< pipeline.parameters.packages >>"',
+      );
     });
 
     it('should add trusted-publish workflow with when condition', () => {
-      const parsed = YAML.parse(modifiedContent);
+      const actual = __.buildPublishConfig(minimalConfig);
+      const parsed = YAML.parse(actual);
       const workflow = parsed.workflows['trusted-publish'];
 
-      expect(workflow).toBeTruthy();
       expect(workflow).toHaveProperty(
         'when',
         '<< pipeline.parameters.trusted_publish >>',
       );
-      expect(workflow.jobs).toContain('trusted-publish');
+      expect(workflow).toHaveProperty('jobs', ['trusted-publish']);
     });
 
     it('should add when-not condition to commit workflow', () => {
-      const parsed = YAML.parse(modifiedContent);
+      const actual = __.buildPublishConfig(minimalConfig);
+      const parsed = YAML.parse(actual);
 
       expect(parsed).toHaveProperty(
         'workflows.commit.when',
@@ -189,14 +119,12 @@ describe('release/helpers/circleci', () => {
     });
 
     it('should preserve existing YAML comments and anchors', () => {
-      expect(modifiedContent).toContain('# Setup steps');
-      expect(modifiedContent).toContain('# On every commit');
-      expect(modifiedContent).toContain('&defaults');
-      expect(modifiedContent).toContain('*defaults');
-    });
+      const actual = __.buildPublishConfig(minimalConfig);
 
-    it('should commit on approval', () => {
-      expect(__.commitConfig).toHaveBeenCalled();
+      expect(actual).toContain('# Shared setup');
+      expect(actual).toContain('# Main workflow');
+      expect(actual).toContain('&defaults');
+      expect(actual).toContain('*defaults');
     });
   });
 
@@ -285,6 +213,19 @@ describe('release/helpers/circleci', () => {
       }
 
       expect(actual).toHaveProperty('code', 'FIROST_SELECT_CTRL_C');
+    });
+  });
+
+  describe('commitConfig', () => {
+    it('should commit all changes with the correct message', async () => {
+      const mockRepo = { commitAll: vi.fn() };
+      vi.spyOn(__, 'createRepo').mockReturnValue(mockRepo);
+
+      await __.commitConfig();
+
+      expect(mockRepo.commitAll).toHaveBeenCalledWith(
+        'chore(ci): add trusted-publish workflow',
+      );
     });
   });
 });
