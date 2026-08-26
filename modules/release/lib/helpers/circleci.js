@@ -181,8 +181,8 @@ __ = {
 
     const originalPath = hostGitPath('./tmp/config.original.yml');
     const modifiedPath = hostGitPath('./tmp/config.modified.yml');
-    await write(originalContent, originalPath);
-    await write(modifiedContent, modifiedPath);
+    await __.write(originalContent, originalPath);
+    await __.write(modifiedContent, modifiedPath);
 
     // firost's run() always throws on non-zero exit codes (no option to
     // suppress), and diff exits with 1 when files differ — try/catch required
@@ -192,11 +192,18 @@ __ = {
       // Expected: files differ
     }
 
-    const nextStep = await __.select('What to do?', [
-      { name: '✅ Approve', value: 'approve' },
-      { name: '📝 Edit', value: 'edit' },
-      { name: '⛔️ Cancel', value: 'cancel' },
-    ]);
+    let nextStep;
+    try {
+      nextStep = await __.select('What to do?', [
+        { name: '✅ Approve', value: 'approve' },
+        { name: '📝 Edit', value: 'edit' },
+        { name: '⛔️ Cancel', value: 'cancel' },
+      ]);
+    } catch (err) {
+      // Ctrl-C: clean up temp files before propagating
+      await remove([originalPath, modifiedPath]);
+      throw err;
+    }
 
     if (nextStep === 'cancel') {
       await remove([originalPath, modifiedPath]);
@@ -212,9 +219,9 @@ __ = {
     }
 
     // Edit: write modified to temp, open editor, re-read, loop
-    await write(modifiedContent, modifiedPath);
+    await __.write(modifiedContent, modifiedPath);
     await __.run(`$EDITOR ${modifiedPath}`, { stdin: true, shell: true });
-    const editedContent = await read(modifiedPath);
+    const editedContent = await __.read(modifiedPath);
     return await __.confirmOrEditConfig(originalContent, editedContent);
   },
 
@@ -227,8 +234,8 @@ __ = {
   },
 
   consoleInfo,
-
-  select,
-
+  read,
   run,
+  select,
+  write,
 };

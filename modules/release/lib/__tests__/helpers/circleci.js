@@ -1,4 +1,4 @@
-import { read, remove, tmpDirectory, write } from 'firost';
+import { firostError, read, remove, tmpDirectory, write } from 'firost';
 import { mockHelperPaths } from 'aberlaas-helper';
 import YAML from 'yaml';
 import {
@@ -203,7 +203,20 @@ describe('release/helpers/circleci', () => {
   describe('confirmOrEditConfig', () => {
     beforeEach(() => {
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'write').mockReturnValue();
       vi.spyOn(__, 'run').mockReturnValue();
+    });
+
+    it('should show diff between original and modified', async () => {
+      vi.spyOn(__, 'select').mockReturnValue('approve');
+
+      await __.confirmOrEditConfig('original', 'modified');
+
+      const originalPath = `${testDirectory}/tmp/config.original.yml`;
+      const modifiedPath = `${testDirectory}/tmp/config.modified.yml`;
+      expect(__.run).toHaveBeenCalledWith(
+        `diff -u ${originalPath} ${modifiedPath}`,
+      );
     });
 
     it('should return modified content when user approves', async () => {
@@ -215,6 +228,9 @@ describe('release/helpers/circleci', () => {
     });
 
     it('should handle the edit action', async () => {
+      // Use real write for this test (edit branch needs files on disk)
+      __.write.mockImplementation(write);
+
       vi.spyOn(__, 'select')
         .mockReturnValueOnce('edit')
         .mockReturnValueOnce('approve');
@@ -254,6 +270,21 @@ describe('release/helpers/circleci', () => {
         'code',
         'ABERLAAS_RELEASE_CONFIG_CANCELLED',
       );
+    });
+
+    it('should throw error on Ctrl-C', async () => {
+      vi.spyOn(__, 'select').mockImplementation(() => {
+        throw firostError('FIROST_SELECT_CTRL_C', 'Ctrl-C');
+      });
+
+      let actual = null;
+      try {
+        await __.confirmOrEditConfig('original', 'modified');
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty('code', 'FIROST_SELECT_CTRL_C');
     });
   });
 });
