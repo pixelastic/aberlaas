@@ -1,6 +1,45 @@
-import { __, isTrustedPublisherRegistered } from '../npm.js';
+import { npmVersion } from 'aberlaas-versions';
+import {
+  __,
+  isTrustedPublisherRegistered,
+  registerTrustedPublisher,
+} from '../npm.js';
 
 describe('release/helpers/npm', () => {
+  describe('registerTrustedPublisher', () => {
+    it('should run npm trust circleci with all flags', async () => {
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await registerTrustedPublisher({
+        packageName: '@scope/my-package',
+        otp: '654321',
+        circleciOrgId: 'org-uuid',
+        circleciProjectId: 'proj-uuid',
+        circleciPipelineDefinitionId: 'pipe-uuid',
+        vcsOrigin: 'gh/owner/repo',
+      });
+
+      expect(__.run).toHaveBeenCalledWith([
+        'npx',
+        `npm@${npmVersion}`,
+        'trust',
+        'circleci',
+        '@scope/my-package',
+        '--org-id',
+        'org-uuid',
+        '--project-id',
+        'proj-uuid',
+        '--pipeline-definition-id',
+        'pipe-uuid',
+        '--vcs-origin',
+        'gh/owner/repo',
+        '--allow-publish',
+        '--otp',
+        '654321',
+      ]);
+    });
+  });
+
   describe('isTrustedPublisherRegistered', () => {
     const matchingProjectId = 'abc-123-def';
 

@@ -36,6 +36,47 @@ export async function isTrustedPublisherRegistered(packageName, projectId) {
   });
 }
 
+/**
+ * Register a CircleCI trusted publisher on npm for a package
+ * @param {object} options - Registration options
+ * @param {string} options.packageName - npm package name (may be scoped)
+ * @param {string} options.otp - One-time password for npm
+ * @param {string} options.circleciOrgId - CircleCI organization UUID
+ * @param {string} options.circleciProjectId - CircleCI project UUID
+ * @param {string} options.circleciPipelineDefinitionId - CircleCI pipeline definition UUID
+ * @param {string} options.vcsOrigin - VCS origin (e.g. gh/owner/repo)
+ * @returns {Promise<void>}
+ */
+export async function registerTrustedPublisher({
+  packageName,
+  otp,
+  circleciOrgId,
+  circleciProjectId,
+  circleciPipelineDefinitionId,
+  vcsOrigin,
+}) {
+  const command = [
+    'npx',
+    `npm@${npmVersion}`,
+    'trust',
+    'circleci',
+    packageName,
+    '--org-id',
+    circleciOrgId,
+    '--project-id',
+    circleciProjectId,
+    '--pipeline-definition-id',
+    circleciPipelineDefinitionId,
+    '--vcs-origin',
+    vcsOrigin,
+    '--allow-publish',
+    '--otp',
+    otp,
+  ];
+
+  await __.run(command);
+}
+
 __ = {
   /**
    * Check if the user is authenticated with npm via npx npm whoami
