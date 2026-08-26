@@ -1,9 +1,9 @@
-import { _, pMap } from 'golgoth';
-import { glob, readJson } from 'firost';
-import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
+import { _ } from 'golgoth';
+import { hostGitRoot } from 'aberlaas-helper';
 import { getGitDiff, parseCommits } from 'changelogen';
 import semver from 'semver';
 import { getLastReleasePoint } from './helpers/git.js';
+import { getAllPublicPackages } from './helpers/yarn.js';
 
 export let __;
 
@@ -19,7 +19,7 @@ export async function getReleaseData(cliArgs) {
     ...cliArgs,
   };
 
-  const allPackages = await __.getAllPackagesToRelease();
+  const allPackages = await getAllPublicPackages();
   const currentVersion = allPackages[0].content.version;
 
   const bumpType = await __.getBumpType(cliArgs, currentVersion);
@@ -36,49 +36,6 @@ export async function getReleaseData(cliArgs) {
 }
 
 __ = {
-  /**
-   * Gets all packages that need to be released
-   * @returns {Array<{filepath: string, content: object}>} Array of packages with their filepath and content
-   */
-  async getAllPackagesToRelease() {
-    const rootPackagePath = hostGitPath('package.json');
-    const rootPackageContent = await readJson(rootPackagePath);
-    const workspaces = rootPackageContent.workspaces;
-
-    // If no workspaces, this is the package to publish
-    if (!workspaces) {
-      if (rootPackageContent.private) {
-        return [];
-      }
-      return [
-        {
-          filepath: rootPackagePath,
-          content: rootPackageContent,
-        },
-      ];
-    }
-
-    // If workspaces, we get the packages of all those workspaces
-    const rootPath = hostGitRoot();
-    const rawList = await pMap(workspaces, async (workspacePattern) => {
-      const packagesPath = await glob(
-        `${rootPath}/${workspacePattern}/package.json`,
-      );
-      const packagesData = await pMap(packagesPath, async (filepath) => {
-        const content = await readJson(filepath);
-        if (content.private) {
-          return false;
-        }
-        return {
-          filepath,
-          content,
-        };
-      });
-      return _.compact(packagesData);
-    });
-
-    return _.flatten(rawList);
-  },
   /**
    * Determines the appropriate semantic version bump type based on CLI arguments or git commit analysis
    * @param {object} [cliArgs={}] - Command line arguments object containing potential bump type
