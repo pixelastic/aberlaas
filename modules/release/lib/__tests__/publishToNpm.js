@@ -1,114 +1,118 @@
-import { firostError } from 'firost';
+import { pMap } from 'golgoth';
 import { __, publishToNpm } from '../publishToNpm.js';
 
 describe('release/publishToNpm', () => {
-  describe('publishPackage', () => {
-    beforeEach(async () => {
+  let mockProgress;
+
+  const firstPublishA = {
+    filepath: '/path/to/package-a/package.json',
+    content: { name: 'package-a', version: '1.0.0' },
+    isFirstPublish: true,
+  };
+  const firstPublishB = {
+    filepath: '/path/to/package-b/package.json',
+    content: { name: 'package-b', version: '1.0.0' },
+    isFirstPublish: true,
+  };
+  const trustedPublish = {
+    filepath: '/path/to/package-c/package.json',
+    content: { name: 'package-c', version: '1.0.0' },
+    isFirstPublish: false,
+  };
+
+  const releaseData = {
+    newVersion: '2.0.0',
+    allPackages: [firstPublishA, trustedPublish, firstPublishB],
+  };
+
+  beforeEach(() => {
+    mockProgress = { tick: vi.fn(), success: vi.fn() };
+    vi.spyOn(__, 'spinner').mockReturnValue(mockProgress);
+    vi.spyOn(__, 'ensureYarnNpmLogin').mockReturnValue();
+    vi.spyOn(__, 'pushToRegistry').mockReturnValue();
+    vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
+      await pMap(items, async (item) => {
+        await callback(item, '123456');
+      });
+    });
+  });
+
+  describe('publishToNpm', () => {
+    it('should publish first-publish packages with --otp flag', async () => {
+      await publishToNpm(releaseData);
+
+      expect(__.pushToRegistry).toHaveBeenCalledWith(firstPublishA, {
+        otp: '123456',
+      });
+      expect(__.pushToRegistry).toHaveBeenCalledWith(firstPublishB, {
+        otp: '123456',
+      });
+      expect(__.pushToRegistry).not.toHaveBeenCalledWith(
+        trustedPublish,
+        expect.anything(),
+      );
+    });
+
+    it('should call ensureYarnNpmLogin before publishing', async () => {
+      let loginCalledBeforePublish = false;
+      __.ensureYarnNpmLogin.mockImplementation(() => {
+        loginCalledBeforePublish = !__.withOtpRetry.mock.calls.length;
+      });
+
+      await publishToNpm(releaseData);
+
+      expect(__.ensureYarnNpmLogin).toHaveBeenCalled();
+      expect(loginCalledBeforePublish).toEqual(true);
+    });
+
+    it('should retry on OTP expiry via withOtpRetry', async () => {
+      await publishToNpm(releaseData);
+
+      expect(__.withOtpRetry).toHaveBeenCalledWith(
+        [firstPublishA, firstPublishB],
+        expect.any(Function),
+      );
+    });
+
+    it('should skip trusted-publish packages', async () => {
+      const onlyTrusted = {
+        ...releaseData,
+        allPackages: [trustedPublish],
+      };
+      await publishToNpm(onlyTrusted);
+
+      expect(__.ensureYarnNpmLogin).not.toHaveBeenCalled();
+      expect(__.withOtpRetry).not.toHaveBeenCalled();
+      expect(__.pushToRegistry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('pushToRegistry', () => {
+    beforeEach(() => {
+      __.pushToRegistry.mockRestore();
       vi.spyOn(__, 'run').mockReturnValue();
     });
-    const packageData = {
-      filepath: '/path/to/package/package.json',
-      content: {
-        name: 'my-package',
-      },
-    };
 
     it('should run yarn npm publish correctly', async () => {
-      const actual = await __.publishPackage(packageData);
+      await __.pushToRegistry(firstPublishA);
 
-      expect(actual).toEqual(true);
       expect(__.run).toHaveBeenCalledWith('yarn npm publish --access public', {
-        cwd: '/path/to/package',
+        cwd: '/path/to/package-a',
         stdout: false,
         stderr: false,
       });
     });
 
-    it('should throw error if publish fails', async () => {
-      vi.spyOn(__, 'run').mockImplementation(() => {
-        throw firostError('NPM_FAIL', 'npm publish failed');
-      });
+    it('should pass otp flag when provided', async () => {
+      await __.pushToRegistry(firstPublishA, { otp: '654321' });
 
-      let actual = null;
-      try {
-        await __.publishPackage(packageData);
-      } catch (err) {
-        actual = err;
-      }
-
-      expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_RELEASE_NPM_PUBLISH_FAILED',
-      );
-      expect(actual.message).toContain('Failed to publish my-package');
-      expect(actual.message).toContain('npm publish failed');
-    });
-  });
-
-  describe('publishToNpm', () => {
-    let mockProgress;
-    const releaseData = {
-      newVersion: '2.0.0',
-      allPackages: [
+      expect(__.run).toHaveBeenCalledWith(
+        'yarn npm publish --access public --otp 654321',
         {
-          filepath: '/path/to/package-a/package.json',
-          content: { name: 'package-a', version: '1.0.0' },
+          cwd: '/path/to/package-a',
+          stdout: false,
+          stderr: false,
         },
-        {
-          filepath: '/path/to/package-b/package.json',
-          content: { name: 'package-b', version: '1.0.0' },
-        },
-        {
-          filepath: '/path/to/package-c/package.json',
-          content: { name: 'package-c', version: '1.0.0' },
-        },
-      ],
-    };
-
-    beforeEach(() => {
-      mockProgress = {
-        tick: vi.fn(),
-        success: vi.fn(),
-      };
-
-      vi.spyOn(__, 'spinner').mockReturnValue(mockProgress);
-      vi.spyOn(__, 'publishPackage').mockReturnValue();
-    });
-
-    it('should create spinner with correct package count', async () => {
-      await publishToNpm(releaseData);
-
-      expect(__.spinner).toHaveBeenCalledWith(3);
-      expect(mockProgress.tick).toHaveBeenCalledTimes(3);
-      expect(mockProgress.tick).toHaveBeenCalledWith(
-        'Publishing package-a@2.0.0',
-      );
-      expect(mockProgress.tick).toHaveBeenCalledWith(
-        'Publishing package-b@2.0.0',
-      );
-      expect(mockProgress.tick).toHaveBeenCalledWith(
-        'Publishing package-c@2.0.0',
-      );
-    });
-
-    it('should throw error when publishPackage fails', async () => {
-      vi.spyOn(__, 'publishPackage').mockImplementation(() => {
-        throw firostError(
-          'ABERLAAS_RELEASE_NPM_PUBLISH_FAILED',
-          'Failed to publish package-a',
-        );
-      });
-
-      let actual = null;
-      try {
-        await publishToNpm(releaseData);
-      } catch (err) {
-        actual = err;
-      }
-
-      expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_RELEASE_NPM_PUBLISH_FAILED',
       );
     });
   });
