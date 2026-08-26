@@ -20,6 +20,7 @@
   "main": "./lib/main.js",
   "dependencies": {
     "aberlaas-helper": "workspace:*",
+    "aberlaas-release": "workspace:*",
     "ci-info": "4.4.0",
     "firost": "5.10.0"
   },

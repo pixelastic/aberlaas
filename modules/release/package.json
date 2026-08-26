@@ -17,7 +17,8 @@
     "lib/helpers/circleci/*.js"
   ],
   "exports": {
-    ".": "./lib/main.js"
+    ".": "./lib/main.js",
+    "./trustedPublish": "./lib/trustedPublish.js"
   },
   "main": "./lib/main.js",
   "dependencies": {

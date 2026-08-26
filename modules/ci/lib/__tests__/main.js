@@ -6,6 +6,7 @@ describe('ci', () => {
       vi.spyOn(__, 'yarnRunTest').mockReturnValue();
       vi.spyOn(__, 'yarnRunLint').mockReturnValue();
       vi.spyOn(__, 'displayVersions').mockReturnValue();
+      vi.spyOn(__, 'trustedPublish').mockReturnValue();
     });
 
     it('should fail if not on a CI server', async () => {
@@ -21,6 +22,39 @@ describe('ci', () => {
       expect(__.yarnRunLint).not.toHaveBeenCalled();
       expect(__.displayVersions).not.toHaveBeenCalled();
       expect(actual).toHaveProperty('code', 'ABERLAAS_CI_NOT_CI_ENVIRONMENT');
+    });
+
+    describe('--trusted-publish', () => {
+      beforeEach(async () => {
+        vi.spyOn(__, 'isCI').mockReturnValue(true);
+      });
+
+      it('should route to trustedPublish when --trusted-publish is set', async () => {
+        await run({ 'trusted-publish': true, _: ['pkg-a,pkg-b'] });
+
+        expect(__.trustedPublish).toHaveBeenCalledWith('pkg-a,pkg-b');
+      });
+
+      it('should throw when --trusted-publish has no packages list', async () => {
+        let actual = null;
+        try {
+          await run({ 'trusted-publish': true, _: [] });
+        } catch (error) {
+          actual = error;
+        }
+
+        expect(actual).toHaveProperty(
+          'code',
+          'ABERLAAS_CI_TRUSTED_PUBLISH_NO_PACKAGES',
+        );
+      });
+
+      it('should skip test and lint when --trusted-publish is set', async () => {
+        await run({ 'trusted-publish': true, _: ['pkg-a'] });
+
+        expect(__.yarnRunTest).not.toHaveBeenCalled();
+        expect(__.yarnRunLint).not.toHaveBeenCalled();
+      });
     });
 
     describe('on CI server', () => {

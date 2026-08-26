@@ -14,7 +14,7 @@ describe('release/publishToNpm', () => {
     content: { name: 'package-b', version: '1.0.0' },
     isFirstPublish: true,
   };
-  const trustedPublish = {
+  const trustedPublishPkg = {
     filepath: '/path/to/package-c/package.json',
     content: { name: 'package-c', version: '1.0.0' },
     isFirstPublish: false,
@@ -22,7 +22,7 @@ describe('release/publishToNpm', () => {
 
   const releaseData = {
     newVersion: '2.0.0',
-    allPackages: [firstPublishA, trustedPublish, firstPublishB],
+    allPackages: [firstPublishA, trustedPublishPkg, firstPublishB],
   };
 
   beforeEach(() => {
@@ -48,7 +48,7 @@ describe('release/publishToNpm', () => {
         otp: '123456',
       });
       expect(__.pushToRegistry).not.toHaveBeenCalledWith(
-        trustedPublish,
+        trustedPublishPkg,
         expect.anything(),
       );
     });
@@ -77,7 +77,7 @@ describe('release/publishToNpm', () => {
     it('should skip trusted-publish packages', async () => {
       const onlyTrusted = {
         ...releaseData,
-        allPackages: [trustedPublish],
+        allPackages: [trustedPublishPkg],
       };
       await publishToNpm(onlyTrusted);
 

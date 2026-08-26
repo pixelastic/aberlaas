@@ -4611,6 +4611,7 @@ __metadata:
   resolution: "aberlaas-ci@workspace:modules/ci"
   dependencies:
     aberlaas-helper: "workspace:*"
+    aberlaas-release: "workspace:*"
     ci-info: "npm:4.4.0"
     firost: "npm:5.10.0"
   languageName: unknown

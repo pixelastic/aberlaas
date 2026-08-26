@@ -1,5 +1,6 @@
 import { consoleInfo, firostError, run as firostRun } from 'firost';
 import { yarnRun } from 'aberlaas-helper';
+import { trustedPublish } from 'aberlaas-release/trustedPublish';
 import ciInfo from 'ci-info';
 
 export let __;
@@ -23,6 +24,19 @@ export async function run(cliArgs = {}) {
       'ABERLAAS_CI_NOT_CI_ENVIRONMENT',
       'Current system is not a CI. Use CI=1 to force',
     );
+  }
+
+  // Trusted publish mode: publish packages via OIDC, skip test/lint
+  if (args['trusted-publish']) {
+    const packagesString = args._?.[0];
+    if (!packagesString) {
+      throw firostError(
+        'ABERLAAS_CI_TRUSTED_PUBLISH_NO_PACKAGES',
+        'No packages list provided for trusted publish',
+      );
+    }
+    await __.trustedPublish(packagesString);
+    return true;
   }
 
   await __.displayVersions();
@@ -83,6 +97,7 @@ __ = {
   },
   consoleInfo,
   firostRun,
+  trustedPublish,
   yarnRun,
 };
 

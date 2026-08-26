@@ -213,6 +213,7 @@ export default [
             '@tailwindcss/vite',
             '@vitejs/plugin-vue',
             'eslint-plugin-toml',
+            'aberlaas-release/trustedPublish',
           ],
         },
       ],
