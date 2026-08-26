@@ -39,6 +39,10 @@ describe('release/getReleaseData', () => {
 
       const cliArgs = { _: ['major'], changelog: false };
 
+      vi.spyOn(__, 'isFirstPublish')
+        .mockReturnValueOnce(true)
+        .mockReturnValueOnce(false);
+
       const actual = await getReleaseData(cliArgs);
 
       expect(actual).toEqual({
@@ -47,10 +51,12 @@ describe('release/getReleaseData', () => {
           {
             filepath: `${testDirectory}/packages/a/package.json`,
             content: { name: 'package-a', version: '1.5.9' },
+            isFirstPublish: true,
           },
           {
             filepath: `${testDirectory}/packages/b/package.json`,
             content: { name: 'package-b', version: '1.5.9' },
+            isFirstPublish: false,
           },
         ],
         currentVersion: '1.5.9',

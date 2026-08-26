@@ -80,6 +80,19 @@ export async function registerTrustedPublisher({
 }
 
 /**
+ * Check if a package has never been published to npm
+ * @param {string} packageName - npm package name (may be scoped)
+ * @returns {Promise<boolean>} True if the package has never been published
+ */
+export async function isFirstPublish(packageName) {
+  const encodedName = packageName.replace('/', '%2f');
+  const url = `https://registry.npmjs.org/${encodedName}`;
+  const response = await __.fetch(url, { method: 'HEAD' });
+
+  return response.status === 404;
+}
+
+/**
  * Remove legacy npm auth artifacts from the host project
  * Removes npmAuthToken line from .yarnrc.yml (and commits), deletes .env
  * @deprecated Temporary cleanup — remove once all downstream projects have migrated

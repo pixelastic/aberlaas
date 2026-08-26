@@ -1,8 +1,9 @@
-import { _ } from 'golgoth';
+import { _, pMap } from 'golgoth';
 import { hostGitRoot } from 'aberlaas-helper';
 import { getGitDiff, parseCommits } from 'changelogen';
 import semver from 'semver';
 import { getLastReleasePoint } from './helpers/git.js';
+import { isFirstPublish } from './helpers/npm.js';
 import { getAllPublicPackages } from './helpers/yarn.js';
 
 export let __;
@@ -26,9 +27,22 @@ export async function getReleaseData(cliArgs) {
 
   const newVersion = semver.inc(currentVersion, bumpType);
 
+  // Enrich each package with isFirstPublish from the npm registry
+  const enrichedPackages = await pMap(
+    allPackages,
+    async (packageEntry) => {
+      const packageName = packageEntry.content.name;
+      return {
+        ...packageEntry,
+        isFirstPublish: await __.isFirstPublish(packageName),
+      };
+    },
+    { concurrency: 5 },
+  );
+
   return {
     bumpType,
-    allPackages,
+    allPackages: enrichedPackages,
     currentVersion,
     newVersion,
     changelog: options.changelog,
@@ -75,4 +89,5 @@ __ = {
     // Anything else: patch
     return 'patch';
   },
+  isFirstPublish,
 };
