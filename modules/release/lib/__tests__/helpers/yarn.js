@@ -29,13 +29,13 @@ describe('release/helpers/yarn', () => {
       });
     });
 
-    it('should re-check whoami after login', async () => {
+    it('should retry recursively after login', async () => {
       vi.spyOn(__, 'run')
         .mockImplementationOnce(() => {
           throw new Error('not logged in');
         })
         .mockReturnValueOnce() // yarn npm login
-        .mockReturnValueOnce(); // re-check whoami
+        .mockReturnValueOnce(); // recursive whoami check succeeds
 
       await ensureYarnNpmLogin();
 

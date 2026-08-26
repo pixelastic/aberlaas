@@ -13,7 +13,7 @@ export async function ensureYarnNpmLogin() {
   }
 
   await __.run('yarn npm login', { stdin: true });
-  await __.isAuthenticated();
+  await __.ensureYarnNpmLogin();
 }
 
 __ = {
@@ -29,5 +29,6 @@ __ = {
       return false;
     }
   },
+  ensureYarnNpmLogin,
   run,
 };

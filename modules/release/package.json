@@ -23,6 +23,7 @@
     "aberlaas-helper": "workspace:*",
     "aberlaas-lint": "workspace:*",
     "aberlaas-test": "workspace:*",
+    "aberlaas-versions": "workspace:*",
     "changelogen": "0.6.2",
     "cli-markdown": "3.5.1",
     "firost": "5.10.0",
