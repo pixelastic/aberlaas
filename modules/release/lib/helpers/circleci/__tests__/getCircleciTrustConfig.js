@@ -6,14 +6,14 @@ describe('getCircleciTrustConfig', () => {
       org: 'myorg',
       repo: 'myrepo',
     });
-    vi.spyOn(__, 'api').mockImplementation((path) => {
-      if (path === 'gh/myorg/myrepo') {
+    vi.spyOn(__, 'callApi').mockImplementation((path) => {
+      if (path === 'project/gh/myorg/myrepo') {
         return {
           organization_id: 'org-uuid-123',
           id: 'proj-uuid-456',
         };
       }
-      if (path === 'proj-uuid-456/pipeline-definitions') {
+      if (path === 'project/proj-uuid-456/pipeline-definitions') {
         return {
           items: [{ id: 'pipeline-def-789' }],
         };
@@ -32,43 +32,12 @@ describe('getCircleciTrustConfig', () => {
     });
   });
 
-  it('should call api with correct paths', async () => {
+  it('should call callApi with correct paths', async () => {
     await getCircleciTrustConfig();
 
-    expect(__.api).toHaveBeenCalledWith('gh/myorg/myrepo');
-    expect(__.api).toHaveBeenCalledWith('proj-uuid-456/pipeline-definitions');
-  });
-
-  describe('api', () => {
-    const originalEnv = process.env.ABERLAAS_CIRCLECI_TOKEN;
-
-    beforeEach(() => {
-      process.env.ABERLAAS_CIRCLECI_TOKEN = 'test-token';
-      __.api.mockRestore();
-      vi.spyOn(__, 'fetch').mockReturnValue({
-        json: () => ({ result: 'ok' }),
-      });
-    });
-    afterEach(() => {
-      if (originalEnv === undefined) {
-        delete process.env.ABERLAAS_CIRCLECI_TOKEN;
-      } else {
-        process.env.ABERLAAS_CIRCLECI_TOKEN = originalEnv;
-      }
-    });
-
-    it('should call fetch with full URL and auth header', async () => {
-      const actual = await __.api('gh/myorg/myrepo');
-
-      expect(actual).toEqual({ result: 'ok' });
-      expect(__.fetch).toHaveBeenCalledWith(
-        'https://circleci.com/api/v2/project/gh/myorg/myrepo',
-        {
-          headers: {
-            Authorization: 'Circle-Token test-token',
-          },
-        },
-      );
-    });
+    expect(__.callApi).toHaveBeenCalledWith('project/gh/myorg/myrepo');
+    expect(__.callApi).toHaveBeenCalledWith(
+      'project/proj-uuid-456/pipeline-definitions',
+    );
   });
 });

@@ -1,13 +1,15 @@
 import path from 'node:path';
 import { _ } from 'golgoth';
 import { run, spinner } from 'firost';
+import { pollPipelineStatus } from './helpers/circleci/pollPipelineStatus.js';
+import { triggerPipeline } from './helpers/circleci/triggerPipeline.js';
 import { withOtpRetry } from './helpers/otp.js';
 import { ensureYarnNpmLogin } from './helpers/yarn.js';
 
 export let __;
 
 /**
- * Publishes first-publish packages to npm with OTP via direct publish
+ * Publishes packages to npm: direct publish for first-publish, CI for trusted-publish
  * Follows plan/ensure/execute: all ensures run before any publish
  * @param {object} releaseData - The release data containing package information
  * @param {Array<object>} releaseData.allPackages - Array of package objects to publish
@@ -18,23 +20,30 @@ export async function publishToNpm(releaseData) {
   const { allPackages, newVersion } = releaseData;
 
   // Plan — split by publish strategy
-  const firstPublishPackages = _.filter(allPackages, { isFirstPublish: true });
+  const [firstPublishPackages, trustedPublishPackages] = _.partition(
+    allPackages,
+    { isFirstPublish: true },
+  );
 
-  if (_.isEmpty(firstPublishPackages)) {
-    return;
+  // Direct publish runs first (trusted-publish packages may depend on newly-published ones)
+  if (!_.isEmpty(firstPublishPackages)) {
+    await __.ensureYarnNpmLogin();
+
+    const progress = __.spinner(firstPublishPackages.length);
+    await __.withOtpRetry(firstPublishPackages, async (packageData, otp) => {
+      const packageName = packageData.content.name;
+      progress.tick(`Publishing ${packageName}@${newVersion}`);
+      await __.pushToRegistry(packageData, { otp });
+    });
+    progress.success('All first-publish packages published to npm');
   }
 
-  // Ensure — fail fast before any publish
-  await __.ensureYarnNpmLogin();
-
-  // Execute — publish with OTP retry
-  const progress = __.spinner(firstPublishPackages.length);
-  await __.withOtpRetry(firstPublishPackages, async (packageData, otp) => {
-    const packageName = packageData.content.name;
-    progress.tick(`Publishing ${packageName}@${newVersion}`);
-    await __.pushToRegistry(packageData, { otp });
-  });
-  progress.success('All packages published to npm');
+  // Trusted publish via CircleCI pipeline
+  if (!_.isEmpty(trustedPublishPackages)) {
+    const packageNames = _.map(trustedPublishPackages, 'content.name');
+    const pipelineId = await __.triggerPipeline(`v${newVersion}`, packageNames);
+    await __.pollPipelineStatus(pipelineId);
+  }
 }
 
 __ = {
@@ -67,6 +76,8 @@ __ = {
     });
   },
   ensureYarnNpmLogin,
+  triggerPipeline,
+  pollPipelineStatus,
   withOtpRetry,
   run,
   spinner,

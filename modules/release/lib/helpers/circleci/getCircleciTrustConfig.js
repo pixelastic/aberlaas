@@ -1,4 +1,4 @@
-import { getEnvToken } from './getEnvToken.js';
+import { callApi } from './callApi.js';
 import { getOrgAndRepo } from './getOrgAndRepo.js';
 
 export let __;
@@ -10,12 +10,12 @@ export let __;
 export async function getCircleciTrustConfig() {
   const { org, repo } = await __.getOrgAndRepo();
 
-  const projectData = await __.api(`gh/${org}/${repo}`);
+  const projectData = await __.callApi(`project/gh/${org}/${repo}`);
   const circleciOrgId = projectData.organization_id;
   const circleciProjectId = projectData.id;
 
-  const pipelineData = await __.api(
-    `${circleciProjectId}/pipeline-definitions`,
+  const pipelineData = await __.callApi(
+    `project/${circleciProjectId}/pipeline-definitions`,
   );
   const circleciPipelineDefinitionId = pipelineData.items[0].id;
 
@@ -30,20 +30,6 @@ export async function getCircleciTrustConfig() {
 }
 
 __ = {
-  /**
-   * Call the CircleCI API v2 project endpoint
-   * @param {string} path - Path after /api/v2/project/
-   * @returns {object} Parsed JSON response
-   */
-  async api(path) {
-    const token = getEnvToken();
-    const response = await __.fetch(
-      `https://circleci.com/api/v2/project/${path}`,
-      { headers: { Authorization: `Circle-Token ${token}` } },
-    );
-    return await response.json();
-  },
-
+  callApi,
   getOrgAndRepo,
-  fetch,
 };

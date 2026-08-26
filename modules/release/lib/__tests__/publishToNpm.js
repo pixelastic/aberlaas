@@ -19,10 +19,20 @@ describe('release/publishToNpm', () => {
     content: { name: 'package-c', version: '1.0.0' },
     isFirstPublish: false,
   };
+  const trustedPublishPkgD = {
+    filepath: '/path/to/package-d/package.json',
+    content: { name: 'package-d', version: '1.0.0' },
+    isFirstPublish: false,
+  };
 
   const releaseData = {
     newVersion: '2.0.0',
-    allPackages: [firstPublishA, trustedPublishPkg, firstPublishB],
+    allPackages: [
+      firstPublishA,
+      trustedPublishPkg,
+      firstPublishB,
+      trustedPublishPkgD,
+    ],
   };
 
   beforeEach(() => {
@@ -30,6 +40,8 @@ describe('release/publishToNpm', () => {
     vi.spyOn(__, 'spinner').mockReturnValue(mockProgress);
     vi.spyOn(__, 'ensureYarnNpmLogin').mockReturnValue();
     vi.spyOn(__, 'pushToRegistry').mockReturnValue();
+    vi.spyOn(__, 'triggerPipeline').mockReturnValue('pipeline-uuid');
+    vi.spyOn(__, 'pollPipelineStatus').mockReturnValue();
     vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
       await pMap(items, async (item) => {
         await callback(item, '123456');
@@ -74,16 +86,56 @@ describe('release/publishToNpm', () => {
       );
     });
 
-    it('should skip trusted-publish packages', async () => {
+    it('should publish first-publish packages then trigger CI for trusted-publish', async () => {
+      let directPublishDone = false;
+      __.withOtpRetry.mockImplementation(async (items, callback) => {
+        await pMap(items, async (item) => {
+          await callback(item, '123456');
+        });
+        directPublishDone = true;
+      });
+      __.triggerPipeline.mockImplementation(() => {
+        if (!directPublishDone) {
+          throw new Error('triggerPipeline called before direct publish');
+        }
+        return 'pipeline-uuid';
+      });
+
+      await publishToNpm(releaseData);
+
+      expect(__.triggerPipeline).toHaveBeenCalledWith('v2.0.0', [
+        'package-c',
+        'package-d',
+      ]);
+      expect(__.pollPipelineStatus).toHaveBeenCalledWith('pipeline-uuid');
+    });
+
+    it('should skip CI trigger when all packages are first-publish', async () => {
+      const onlyFirstPublish = {
+        ...releaseData,
+        allPackages: [firstPublishA, firstPublishB],
+      };
+      await publishToNpm(onlyFirstPublish);
+
+      expect(__.triggerPipeline).not.toHaveBeenCalled();
+      expect(__.pollPipelineStatus).not.toHaveBeenCalled();
+    });
+
+    it('should skip direct publish when no packages are first-publish', async () => {
       const onlyTrusted = {
         ...releaseData,
-        allPackages: [trustedPublishPkg],
+        allPackages: [trustedPublishPkg, trustedPublishPkgD],
       };
       await publishToNpm(onlyTrusted);
 
       expect(__.ensureYarnNpmLogin).not.toHaveBeenCalled();
       expect(__.withOtpRetry).not.toHaveBeenCalled();
       expect(__.pushToRegistry).not.toHaveBeenCalled();
+      expect(__.triggerPipeline).toHaveBeenCalledWith('v2.0.0', [
+        'package-c',
+        'package-d',
+      ]);
+      expect(__.pollPipelineStatus).toHaveBeenCalled();
     });
   });
 
