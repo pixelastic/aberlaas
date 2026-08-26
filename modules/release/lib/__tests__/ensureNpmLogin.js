@@ -36,11 +36,7 @@ describe('release/ensureNpmLogin', () => {
   });
 
   describe('isAuthenticated', () => {
-    beforeEach(async () => {
-      vi.spyOn(__, 'getNpmAuthToken').mockReturnValue();
-    });
-    it('should all yarn npm whoami with the right npm token', async () => {
-      vi.spyOn(__, 'getNpmAuthToken').mockReturnValue('test_token_123');
+    it('should call yarn npm whoami', async () => {
       vi.spyOn(__, 'run').mockReturnValue();
 
       await __.isAuthenticated();
@@ -48,9 +44,6 @@ describe('release/ensureNpmLogin', () => {
       expect(__.run).toHaveBeenCalledWith('yarn npm whoami', {
         stderr: false,
         stdout: false,
-        env: {
-          ABERLAAS_RELEASE_NPM_AUTH_TOKEN: 'test_token_123',
-        },
       });
     });
     it('should return true if yarn npm login suceeds', async () => {
@@ -102,13 +95,12 @@ describe('release/ensureNpmLogin', () => {
   });
 
   describe('saveNpmToken', () => {
-    it('should prompt for token and save it using helper', async () => {
+    it('should prompt for token', async () => {
       vi.spyOn(__, 'prompt').mockReturnValue('npm_mySecretToken123');
-      vi.spyOn(__, 'setNpmAuthToken').mockReturnValue();
 
       await __.saveNpmToken();
 
-      expect(__.setNpmAuthToken).toHaveBeenCalledWith('npm_mySecretToken123');
+      expect(__.prompt).toHaveBeenCalledWith('Enter you new token here:');
     });
   });
 

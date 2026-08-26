@@ -9,7 +9,6 @@ import {
   sleep,
 } from 'firost';
 import { hostPackagePath } from 'aberlaas-helper';
-import { getNpmAuthToken, setNpmAuthToken } from './helper.js';
 
 export let __;
 
@@ -32,15 +31,10 @@ __ = {
    * @returns {boolean} Promise that resolves to true if authenticated, false otherwise
    */
   async isAuthenticated() {
-    const npmAuthToken = await __.getNpmAuthToken();
-
     try {
       await __.run('yarn npm whoami', {
         stderr: false,
         stdout: false,
-        env: {
-          ABERLAAS_RELEASE_NPM_AUTH_TOKEN: npmAuthToken,
-        },
       });
       return true;
     } catch (_err) {
@@ -147,12 +141,9 @@ __ = {
    * Saves the npm token to .env file
    */
   async saveNpmToken() {
-    const npmToken = await __.prompt('Enter you new token here:');
-    await __.setNpmAuthToken(npmToken);
+    await __.prompt('Enter you new token here:');
   },
   ensureNpmLogin,
-  getNpmAuthToken,
-  setNpmAuthToken,
   run,
   env,
   prompt,

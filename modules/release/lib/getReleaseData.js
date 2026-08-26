@@ -3,7 +3,7 @@ import { glob, readJson } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { getGitDiff, parseCommits } from 'changelogen';
 import semver from 'semver';
-import { getLastReleasePoint } from './helper.js';
+import { getLastReleasePoint } from './helpers/git.js';
 
 export let __;
 

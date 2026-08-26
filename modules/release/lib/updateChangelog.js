@@ -12,7 +12,7 @@ import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import cliMarkdown from 'cli-markdown';
 import Gilmore from 'gilmore';
-import { getLastReleasePoint } from './helper.js';
+import { getLastReleasePoint } from './helpers/git.js';
 
 export let __;
 
