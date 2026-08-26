@@ -1,4 +1,5 @@
 import { _, pMap } from 'golgoth';
+import { consoleInfo } from 'firost';
 import { hostGitRoot } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import {
@@ -41,16 +42,19 @@ export async function ensureTrustedPublishing(releaseData) {
   const commitHashBefore = await repo.currentCommit();
 
   // Auto-cleanup of old npm token saved in repo
+  __.consoleInfo('Removing legacy npm auth from repo');
   await __.removeLegacyNpmAuth();
 
   // Add the CircleCI workflow if it doesn't exist yet
   if (!(await __.hasPublishWorkflow())) {
+    __.consoleInfo('Adding trusted-publish workflow to CircleCI config');
     await __.addPublishWorkflow();
   }
 
   // If we created commits doing so, push them
   const commitHashAfter = await repo.currentCommit();
   if (commitHashBefore !== commitHashAfter) {
+    __.consoleInfo('Pushing commits to remote');
     await repo.push();
   }
 
@@ -58,6 +62,7 @@ export async function ensureTrustedPublishing(releaseData) {
   const trustConfig = await __.getCircleciTrustConfig();
 
   // Check which packages need trusted publisher registration
+  __.consoleInfo('Checking trusted publisher registration');
   const unregisteredPackages = [];
   await pMap(
     alreadyPublishedPackages,
@@ -77,6 +82,7 @@ export async function ensureTrustedPublishing(releaseData) {
   if (!_.isEmpty(unregisteredPackages)) {
     await __.ensureNpmLogin();
     await __.withOtpRetry(unregisteredPackages, (packageName, otp) => {
+      __.consoleInfo(`Registering trusted publisher for ${packageName}`);
       return registerTrustedPublisher({
         packageName,
         otp,
@@ -94,6 +100,7 @@ __ = {
   createRepo() {
     return new Gilmore(hostGitRoot());
   },
+  consoleInfo,
   ensureCircleciToken,
   removeLegacyNpmAuth,
   hasPublishWorkflow,
