@@ -73,6 +73,23 @@ export default [
       'vitest/no-identical-title': ['off'],
       'vitest/prefer-to-contain': ['error'],
       'vitest/no-importing-vitest-globals': ['error'],
+      // Ban weak matchers
+      'vitest/no-restricted-matchers': [
+        'error',
+        {
+          toBeTruthy: 'Use `toBe(true)` or assert the exact expected value',
+          toBeFalsy: 'Use `toBe(false)` or assert the exact expected value',
+          toBeDefined:
+            'Assert the exact expected value instead of using `toBeDefined`',
+        },
+      ],
+      // I never use vi.mock
+      'vitest/no-restricted-vi-methods': [
+        'error',
+        {
+          mock: "Use `vi.spyOn(__, 'method')` instead of `vi.mock()`",
+        },
+      ],
 
       // Aberlaas custom rules
       'aberlaas-test/no-manual-mock-cleanup': ['error'],
