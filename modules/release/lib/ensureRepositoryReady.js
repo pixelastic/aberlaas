@@ -1,26 +1,16 @@
 import { _ } from 'golgoth';
-import { consoleInfo, firostError, run as firostRun } from 'firost';
-import { hostGitRoot, yarnRun } from 'aberlaas-helper';
+import { firostError } from 'firost';
+import { hostGitRoot } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
-import { ensureNpmLogin } from './ensureNpmLogin.js';
 
 export let __;
 
 /**
- * Validate all pre-conditions before starting the release
+ * Validate cheap pre-flight checks before starting the release
  * @param {object} cliArgs Release options
- * @param {boolean} [cliArgs.test=true] Run test execution
- * @param {boolean} [cliArgs.lint=true] Run lint execution
  * @returns {Promise<void>}
  */
-export async function ensureValidSetup(cliArgs = {}) {
-  // Default options: test and lint enabled unless explicitly disabled via CLI
-  const options = {
-    test: true,
-    lint: true,
-    ...cliArgs,
-  };
-
+export async function ensureRepositoryReady(cliArgs = {}) {
   __.ensureCorrectBumpType(cliArgs);
 
   const repo = new Gilmore(hostGitRoot());
@@ -30,15 +20,6 @@ export async function ensureValidSetup(cliArgs = {}) {
 
   // Need to have a clean directory
   await __.ensureCleanRepository(repo);
-
-  // Check npm login
-  await __.ensureNpmLogin();
-
-  // Check tests are passing
-  await __.ensureTestsArePassing(options);
-
-  // Check lint is passing
-  await __.ensureLintIsPassing(options);
 }
 
 __ = {
@@ -101,48 +82,4 @@ __ = {
       'Your working directory must be clean, with no uncommitted changes.',
     );
   },
-
-  /**
-   * Ensures that all tests are passing before proceeding with a release
-   * @param {object} options Release options
-   * @param {boolean} [options.test=true] Run tests
-   * @returns {Promise<void>} A promise that resolves if tests pass, rejects with ABERLAAS_RELEASE_TESTS_FAILING error if tests fail
-   */
-  async ensureTestsArePassing(options = {}) {
-    if (!options.test) {
-      return false;
-    }
-    __.consoleInfo('Running tests...');
-    try {
-      await __.yarnRun('test --fail-fast');
-      return true;
-    } catch (err) {
-      throw firostError('ABERLAAS_RELEASE_TESTS_FAILING', err.message);
-    }
-  },
-
-  /**
-   * Ensures that linting passes by running the lint process and throwing an error if it fails
-   * @param {object} options Release options
-   * @param {boolean} [options.lint=true] Run lint
-   * @returns {Promise<void>} A promise that resolves if linting passes
-   * @throws {Error} Throws ABERLAAS_RELEASE_LINT_FAILING error if linting fails
-   */
-  async ensureLintIsPassing(options = {}) {
-    if (!options.lint) {
-      return false;
-    }
-    __.consoleInfo('Running lint...');
-    try {
-      await __.yarnRun('lint');
-      return true;
-    } catch (err) {
-      throw firostError('ABERLAAS_RELEASE_LINT_FAILING', err.message);
-    }
-  },
-
-  consoleInfo,
-  ensureNpmLogin,
-  firostRun,
-  yarnRun,
 };

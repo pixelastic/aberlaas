@@ -1,6 +1,6 @@
 import { consoleInfo, run as firostRun } from 'firost';
-import { ensureCorrectPublishedFiles } from './ensureCorrectPublishedFiles.js';
-import { ensureValidSetup } from './ensureValidSetup.js';
+import { ensureReleaseReady } from './ensureReleaseReady.js';
+import { ensureRepositoryReady } from './ensureRepositoryReady.js';
 import { getReleaseData } from './getReleaseData.js';
 import { publishToNpm } from './publishToNpm.js';
 import { updateGitRepo } from './updateGitRepo.js';
@@ -13,10 +13,11 @@ export let __;
  * @returns {boolean} True on success
  */
 export async function run(cliArgs = {}) {
-  await __.ensureValidSetup(cliArgs);
-
+  // Repository-level checks (on main, clean, etc)
+  await __.ensureRepositoryReady(cliArgs);
+  // Release-dependent checks (loggued in to npm if needed, test, lint, correct files, etc)
   const releaseData = await __.getReleaseData(cliArgs);
-  await __.ensureCorrectPublishedFiles(releaseData);
+  await __.ensureReleaseReady(cliArgs, releaseData);
 
   __.consoleInfo(`Release new version ${releaseData.newVersion}`);
 
@@ -26,8 +27,8 @@ export async function run(cliArgs = {}) {
 }
 
 __ = {
-  ensureValidSetup,
-  ensureCorrectPublishedFiles,
+  ensureRepositoryReady,
+  ensureReleaseReady,
   getReleaseData,
   publishToNpm,
   updateGitRepo,
