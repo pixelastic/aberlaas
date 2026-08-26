@@ -1,7 +1,6 @@
 import { consoleInfo, firostError } from 'firost';
 import { yarnRun } from 'aberlaas-helper';
 import { ensureCorrectPublishedFiles } from './ensureCorrectPublishedFiles.js';
-import { ensureNpmLogin } from './ensureNpmLogin.js';
 
 export let __;
 
@@ -20,9 +19,6 @@ export async function ensureReleaseReady(cliArgs = {}, releaseData = {}) {
     lint: true,
     ...cliArgs,
   };
-
-  // Check npm login
-  await __.ensureNpmLogin();
 
   // Check tests are passing
   await __.ensureTestsArePassing(options);
@@ -75,7 +71,6 @@ __ = {
   },
 
   consoleInfo,
-  ensureNpmLogin,
   ensureCorrectPublishedFiles,
   yarnRun,
 };

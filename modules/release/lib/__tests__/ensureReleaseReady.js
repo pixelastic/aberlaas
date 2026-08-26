@@ -80,7 +80,6 @@ describe('release/ensureReleaseReady', () => {
 
   describe('ensureReleaseReady', () => {
     beforeEach(() => {
-      vi.spyOn(__, 'ensureNpmLogin').mockReturnValue();
       vi.spyOn(__, 'ensureTestsArePassing').mockReturnValue(true);
       vi.spyOn(__, 'ensureLintIsPassing').mockReturnValue(true);
       vi.spyOn(__, 'ensureCorrectPublishedFiles').mockReturnValue();
@@ -92,7 +91,6 @@ describe('release/ensureReleaseReady', () => {
 
       await ensureReleaseReady(cliArgs, releaseData);
 
-      expect(__.ensureNpmLogin).toHaveBeenCalled();
       expect(__.ensureTestsArePassing).toHaveBeenCalled();
       expect(__.ensureLintIsPassing).toHaveBeenCalled();
       expect(__.ensureCorrectPublishedFiles).toHaveBeenCalledWith(releaseData);
@@ -101,8 +99,8 @@ describe('release/ensureReleaseReady', () => {
     it('should stop execution when a validation fails', async () => {
       const cliArgs = { _: ['patch'] };
       const releaseData = { newVersion: '2.0.0' };
-      vi.spyOn(__, 'ensureNpmLogin').mockImplementation(() => {
-        throw firostError('BAD_NPM', 'Bad npm');
+      vi.spyOn(__, 'ensureTestsArePassing').mockImplementation(() => {
+        throw firostError('BAD_TESTS', 'Tests failing');
       });
 
       let actual = null;
@@ -112,9 +110,8 @@ describe('release/ensureReleaseReady', () => {
         actual = err;
       }
 
-      expect(actual).toHaveProperty('code', 'BAD_NPM');
-      expect(__.ensureNpmLogin).toHaveBeenCalled();
-      expect(__.ensureTestsArePassing).not.toHaveBeenCalled();
+      expect(actual).toHaveProperty('code', 'BAD_TESTS');
+      expect(__.ensureTestsArePassing).toHaveBeenCalled();
       expect(__.ensureLintIsPassing).not.toHaveBeenCalled();
     });
   });
