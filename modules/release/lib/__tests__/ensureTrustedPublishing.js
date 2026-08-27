@@ -29,7 +29,7 @@ describe('release/ensureTrustedPublishing', () => {
     vi.spyOn(__, 'consoleInfo').mockReturnValue();
     vi.spyOn(__, 'createRepo').mockReturnValue(mockRepo);
     vi.spyOn(__, 'ensureCircleciToken').mockReturnValue();
-    vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue();
+    vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue(false);
     vi.spyOn(__, 'hasPublishWorkflow').mockReturnValue(true);
     vi.spyOn(__, 'addPublishWorkflow').mockReturnValue();
     vi.spyOn(__, 'getCircleciTrustConfig').mockReturnValue(trustConfig);
@@ -64,10 +64,22 @@ describe('release/ensureTrustedPublishing', () => {
     expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_NO_CIRCLECI_TOKEN');
   });
 
-  it('should call removeLegacyNpmAuth', async () => {
+  it('should log when legacy npm auth was cleaned up', async () => {
+    vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue(true);
+
     await ensureTrustedPublishing(releaseData);
 
-    expect(__.removeLegacyNpmAuth).toHaveBeenCalled();
+    expect(__.consoleInfo).toHaveBeenCalledWith(
+      'Removed legacy npm auth from repo',
+    );
+  });
+
+  it('should not log when no legacy npm auth cleanup was needed', async () => {
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.consoleInfo).not.toHaveBeenCalledWith(
+      'Removed legacy npm auth from repo',
+    );
   });
 
   it('should call addPublishWorkflow when workflow is missing', async () => {

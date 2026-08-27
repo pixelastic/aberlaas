@@ -42,8 +42,10 @@ export async function ensureTrustedPublishing(releaseData) {
   const commitHashBefore = await repo.currentCommit();
 
   // Auto-cleanup of old npm token saved in repo
-  __.consoleInfo('Removing legacy npm auth from repo');
-  await __.removeLegacyNpmAuth();
+  const didCleanup = await __.removeLegacyNpmAuth();
+  if (didCleanup) {
+    __.consoleInfo('Removed legacy npm auth from repo');
+  }
 
   // Add the CircleCI workflow if it doesn't exist yet
   if (!(await __.hasPublishWorkflow())) {

@@ -170,8 +170,9 @@ describe('release/helpers/npm', () => {
     await repo.commit('add yarnrc');
     await write('NPM_TOKEN=legacy-token', `${testDirectory}/.env`);
 
-    await removeLegacyNpmAuth();
+    const actual = await removeLegacyNpmAuth();
 
+    expect(actual).toEqual(true);
     const yarnrcContent = await read(`${testDirectory}/.yarnrc.yml`);
     expect(yarnrcContent).toEqual(dedent`
       nodeLinker: node-modules
