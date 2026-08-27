@@ -132,6 +132,20 @@ describe('release/ensureTrustedPublishing', () => {
     );
   });
 
+  it('should show context before OTP prompt with package count', async () => {
+    vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(
+      (packageName) => {
+        return packageName === 'pkg-b';
+      },
+    );
+
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.consoleInfo).toHaveBeenCalledWith(
+      'Registering trusted publishers for 1 package(s) (requires OTP)',
+    );
+  });
+
   it('should skip registration when all packages are registered', async () => {
     await ensureTrustedPublishing(releaseData);
 

@@ -23,7 +23,7 @@ describe('release/helpers/npm', () => {
       expect(__.run).not.toHaveBeenCalled();
     });
 
-    it('should explain that login is needed for trusted publisher registration', async () => {
+    it('should explain why npm login is needed', async () => {
       vi.spyOn(__, 'isAuthenticated')
         .mockReturnValueOnce(false)
         .mockReturnValueOnce(true);
@@ -33,20 +33,8 @@ describe('release/helpers/npm', () => {
       await ensureNpmLogin();
 
       expect(__.consoleInfo).toHaveBeenCalledWith(
-        'Registering trusted publishers requires npm authentication.',
+        'Opening npm login (required for trusted publisher registration)...',
       );
-    });
-
-    it('should tell user npm login is starting', async () => {
-      vi.spyOn(__, 'isAuthenticated')
-        .mockReturnValueOnce(false)
-        .mockReturnValueOnce(true);
-      vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'run').mockReturnValue();
-
-      await ensureNpmLogin();
-
-      expect(__.consoleInfo).toHaveBeenCalledWith('Opening npm login...');
     });
 
     it('should run npm login interactively', async () => {
