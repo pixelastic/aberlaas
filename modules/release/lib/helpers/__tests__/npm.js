@@ -23,6 +23,16 @@ describe('release/helpers/npm', () => {
       expect(__.run).not.toHaveBeenCalled();
     });
 
+    it('should confirm authentication regardless of login path', async () => {
+      vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await ensureNpmLogin();
+
+      expect(__.consoleInfo).toHaveBeenCalledWith('Authenticated to npm');
+    });
+
     it('should explain why npm login is needed', async () => {
       vi.spyOn(__, 'isAuthenticated')
         .mockReturnValueOnce(false)

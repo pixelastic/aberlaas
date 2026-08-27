@@ -23,6 +23,7 @@ export function encodePackageName(packageName) {
  */
 export async function ensureNpmLogin() {
   if (await __.isAuthenticated()) {
+    __.consoleInfo('Authenticated to npm');
     return;
   }
 
