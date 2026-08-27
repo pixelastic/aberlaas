@@ -16,12 +16,10 @@ describe('release/helpers/npm', () => {
     it('should skip login when already authenticated', async () => {
       vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'prompt').mockReturnValue();
       vi.spyOn(__, 'run').mockReturnValue();
 
       await ensureNpmLogin();
 
-      expect(__.prompt).not.toHaveBeenCalled();
       expect(__.run).not.toHaveBeenCalled();
     });
 
@@ -30,7 +28,6 @@ describe('release/helpers/npm', () => {
         .mockReturnValueOnce(false)
         .mockReturnValueOnce(true);
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'prompt').mockReturnValue();
       vi.spyOn(__, 'run').mockReturnValue();
 
       await ensureNpmLogin();
@@ -40,34 +37,30 @@ describe('release/helpers/npm', () => {
       );
     });
 
-    it('should prompt user before running npm login', async () => {
+    it('should tell user npm login is starting', async () => {
       vi.spyOn(__, 'isAuthenticated')
         .mockReturnValueOnce(false)
         .mockReturnValueOnce(true);
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'prompt').mockReturnValue();
       vi.spyOn(__, 'run').mockReturnValue();
 
       await ensureNpmLogin();
 
-      expect(__.prompt).toHaveBeenCalledWith(
-        'Press Enter to open npm login in your browser',
-      );
+      expect(__.consoleInfo).toHaveBeenCalledWith('Opening npm login...');
     });
 
-    it('should run npm login with auto-enter and suppressed output', async () => {
+    it('should run npm login interactively', async () => {
       vi.spyOn(__, 'isAuthenticated')
         .mockReturnValueOnce(false)
         .mockReturnValueOnce(true);
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'prompt').mockReturnValue();
       vi.spyOn(__, 'run').mockReturnValue();
 
       await ensureNpmLogin();
 
       expect(__.run).toHaveBeenCalledWith(
-        `echo | npx npm@${npmVersion} login --loglevel=warn`,
-        { shell: true, stdout: false },
+        `npx npm@${npmVersion} login --loglevel=warn`,
+        { stdin: true },
       );
     });
   });
