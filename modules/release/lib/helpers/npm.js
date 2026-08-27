@@ -89,11 +89,13 @@ export async function registerTrustedPublisher({
     '--vcs-origin',
     vcsOrigin,
     '--allow-publish',
-    '--otp',
-    otp,
+    // Skip the "Do you want to proceed? (y/N)"
+    '--yes',
   ];
 
-  await __.run(command);
+  // npm doesn't have a --otp, but reads its values from ENV var named
+  // npm_config_*
+  await __.run(command, { env: { npm_config_otp: otp } });
 }
 
 /**

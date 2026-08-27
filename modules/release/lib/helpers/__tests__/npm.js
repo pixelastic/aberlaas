@@ -98,7 +98,7 @@ describe('release/helpers/npm', () => {
   });
 
   describe('registerTrustedPublisher', () => {
-    it('should run npm trust circleci with all flags', async () => {
+    it('should run npm trust circleci with --yes and OTP via env var', async () => {
       vi.spyOn(__, 'run').mockReturnValue();
 
       await registerTrustedPublisher({
@@ -110,24 +110,26 @@ describe('release/helpers/npm', () => {
         vcsOrigin: 'gh/owner/repo',
       });
 
-      expect(__.run).toHaveBeenCalledWith([
-        'npx',
-        `npm@${npmVersion}`,
-        'trust',
-        'circleci',
-        '@scope/my-package',
-        '--org-id',
-        'org-uuid',
-        '--project-id',
-        'proj-uuid',
-        '--pipeline-definition-id',
-        'pipe-uuid',
-        '--vcs-origin',
-        'gh/owner/repo',
-        '--allow-publish',
-        '--otp',
-        '654321',
-      ]);
+      expect(__.run).toHaveBeenCalledWith(
+        [
+          'npx',
+          `npm@${npmVersion}`,
+          'trust',
+          'circleci',
+          '@scope/my-package',
+          '--org-id',
+          'org-uuid',
+          '--project-id',
+          'proj-uuid',
+          '--pipeline-definition-id',
+          'pipe-uuid',
+          '--vcs-origin',
+          'gh/owner/repo',
+          '--allow-publish',
+          '--yes',
+        ],
+        { env: { npm_config_otp: '654321' } },
+      );
     });
   });
 
