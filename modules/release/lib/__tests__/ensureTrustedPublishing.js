@@ -138,6 +138,22 @@ describe('release/ensureTrustedPublishing', () => {
     );
   });
 
+  it('should show context message before OTP prompt', async () => {
+    vi.spyOn(__, 'isTrustedPublisherRegistered').mockReturnValue(false);
+    vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
+    vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
+      for (const item of items) {
+        await callback(item, '123456');
+      }
+    });
+
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.consoleInfo).toHaveBeenCalledWith(
+      'Registering trusted publishers for 2 package(s) (requires OTP)',
+    );
+  });
+
   it('should show registration progress with spinner', async () => {
     const mockRegistrationSpinner = { tick: vi.fn(), success: vi.fn() };
     let spinnerCallCount = 0;

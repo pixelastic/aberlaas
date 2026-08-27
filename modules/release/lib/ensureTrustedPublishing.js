@@ -126,6 +126,9 @@ __ = {
     }
 
     await __.ensureNpmLogin();
+    __.consoleInfo(
+      `Registering trusted publishers for ${packageNames.length} package(s) (requires OTP)`,
+    );
 
     let progress;
     await __.withOtpRetry(packageNames, async (packageName, otp) => {
