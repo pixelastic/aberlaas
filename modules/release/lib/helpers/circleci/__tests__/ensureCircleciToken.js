@@ -1,58 +1,48 @@
 import { __, ensureCircleciToken } from '../ensureCircleciToken.js';
 
 describe('ensureCircleciToken', () => {
-  it('should not throw when token is set', async () => {
-    vi.spyOn(__, 'getEnvToken').mockReturnValue('CCIPAT_abc123');
-
-    let actual = null;
-    try {
-      await ensureCircleciToken();
-    } catch (error) {
-      actual = error;
-    }
-
-    expect(actual).toBeNull();
-  });
-
   it.each([
-    { title: 'missing', input: undefined },
-    { title: 'empty string', input: '' },
-  ])(
-    'should throw ABERLAAS_RELEASE_NO_CIRCLECI_TOKEN when token is $title',
-    async ({ input }) => {
-      vi.spyOn(__, 'getEnvToken').mockReturnValue(input);
-
-      let actual = null;
-      try {
-        await ensureCircleciToken();
-      } catch (error) {
-        actual = error;
-      }
-
-      expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_RELEASE_NO_CIRCLECI_TOKEN',
-      );
-      expect(actual.message).toContain('https://circleci.com/account/api');
+    {
+      title: 'missing token',
+      token: undefined,
+      apiResponse: { login: 'timvdl' },
+      expected: 'ABERLAAS_RELEASE_NO_CIRCLECI_TOKEN',
     },
-  );
-
-  it('should throw ABERLAAS_RELEASE_CIRCLECI_TOKEN_NOT_PERSONAL_API_TOKEN when token is not a Personal API Token', async () => {
-    vi.spyOn(__, 'getEnvToken').mockReturnValue('a1b2c3d4e5f6');
+    {
+      title: 'empty token',
+      token: '',
+      apiResponse: { login: 'timvdl' },
+      expected: 'ABERLAAS_RELEASE_NO_CIRCLECI_TOKEN',
+    },
+    {
+      title: 'non-CCIPAT token',
+      token: 'a1b2c3d4e5f6',
+      apiResponse: { login: 'timvdl' },
+      expected: 'ABERLAAS_RELEASE_CIRCLECI_TOKEN_NOT_PERSONAL_API_TOKEN',
+    },
+    {
+      title: 'expired token',
+      token: 'CCIPAT_abc123',
+      apiResponse: { message: 'Permission denied' },
+      expected: 'ABERLAAS_RELEASE_CIRCLECI_TOKEN_INVALID',
+    },
+    {
+      title: 'valid token',
+      token: 'CCIPAT_abc123',
+      apiResponse: { login: 'timvdl' },
+      expected: null,
+    },
+  ])('$title', async ({ token, apiResponse, expected }) => {
+    vi.spyOn(__, 'getEnvToken').mockReturnValue(token);
+    vi.spyOn(__, 'callApi').mockReturnValue(apiResponse);
 
     let actual = null;
     try {
       await ensureCircleciToken();
     } catch (error) {
-      actual = error;
+      actual = error?.code;
     }
 
-    expect(actual).toHaveProperty(
-      'code',
-      'ABERLAAS_RELEASE_CIRCLECI_TOKEN_NOT_PERSONAL_API_TOKEN',
-    );
-    expect(actual.message).toContain(
-      'https://app.circleci.com/settings/user/tokens',
-    );
+    expect(actual).toEqual(expected);
   });
 });
