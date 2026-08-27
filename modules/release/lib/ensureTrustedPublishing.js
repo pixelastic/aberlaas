@@ -126,17 +126,17 @@ __ = {
     }
 
     await __.ensureNpmLogin();
-    __.consoleInfo(
-      `Registering trusted publishers for ${packageNames.length} package(s) (requires OTP)`,
-    );
-    await __.withOtpRetry(packageNames, (packageName, otp) => {
-      __.consoleInfo(`Registering trusted publisher for ${packageName}`);
-      return registerTrustedPublisher({
+
+    const progress = __.spinner(packageNames.length);
+    await __.withOtpRetry(packageNames, async (packageName, otp) => {
+      progress.tick(`Registering trusted publisher: ${packageName}`);
+      await registerTrustedPublisher({
         packageName,
         otp,
         ...trustConfig,
       });
     });
+    progress.success('All trusted publishers registered');
   },
 
   consoleInfo,

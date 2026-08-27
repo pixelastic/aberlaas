@@ -1,5 +1,6 @@
 import { firostError } from 'firost';
 import { __, ensureTrustedPublishing } from '../ensureTrustedPublishing.js';
+import * as npmHelpers from '../helpers/npm.js';
 
 describe('release/ensureTrustedPublishing', () => {
   const trustConfig = {
@@ -132,17 +133,35 @@ describe('release/ensureTrustedPublishing', () => {
     );
   });
 
-  it('should show context before OTP prompt with package count', async () => {
-    vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(
-      (packageName) => {
-        return packageName === 'pkg-b';
-      },
-    );
+  it('should show registration progress with spinner', async () => {
+    const mockRegistrationSpinner = { tick: vi.fn(), success: vi.fn() };
+    let spinnerCallCount = 0;
+    vi.spyOn(__, 'spinner').mockImplementation(() => {
+      spinnerCallCount++;
+      // Second spinner() call is from registerTrustedPublishers
+      if (spinnerCallCount === 2) {
+        return mockRegistrationSpinner;
+      }
+      return { tick: vi.fn(), success: vi.fn() };
+    });
+    vi.spyOn(__, 'isTrustedPublisherRegistered').mockReturnValue(false);
+    vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
+    vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
+      for (const item of items) {
+        await callback(item, '123456');
+      }
+    });
 
     await ensureTrustedPublishing(releaseData);
 
-    expect(__.consoleInfo).toHaveBeenCalledWith(
-      'Registering trusted publishers for 1 package(s) (requires OTP)',
+    expect(mockRegistrationSpinner.tick).toHaveBeenCalledWith(
+      'Registering trusted publisher: pkg-a',
+    );
+    expect(mockRegistrationSpinner.tick).toHaveBeenCalledWith(
+      'Registering trusted publisher: pkg-b',
+    );
+    expect(mockRegistrationSpinner.success).toHaveBeenCalledWith(
+      'All trusted publishers registered',
     );
   });
 
