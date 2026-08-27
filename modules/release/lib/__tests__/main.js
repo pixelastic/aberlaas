@@ -68,5 +68,23 @@ describe('release/main', () => {
       expect(__.updateGitRepo).not.toHaveBeenCalled();
       expect(__.publishToNpm).not.toHaveBeenCalled();
     });
+
+    it.each([
+      { title: 'prompt Ctrl-C', code: 'FIROST_PROMPT_CTRL_C' },
+      { title: 'select Ctrl-C', code: 'FIROST_SELECT_CTRL_C' },
+    ])('should throw "Release cancelled" on $title', async ({ code }) => {
+      vi.spyOn(__, 'ensureReleaseReady').mockImplementation(() => {
+        throw firostError(code, 'User pressed Ctrl-C');
+      });
+
+      let actual = null;
+      try {
+        await run();
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty('message', 'Release cancelled');
+    });
   });
 });

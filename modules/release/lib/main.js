@@ -1,4 +1,5 @@
-import { consoleInfo, run as firostRun } from 'firost';
+import { _ } from 'golgoth';
+import { consoleInfo, firostError, run as firostRun } from 'firost';
 import { ensureReleaseReady } from './ensureReleaseReady.js';
 import { ensureRepositoryReady } from './ensureRepositoryReady.js';
 import { getReleaseData } from './getReleaseData.js';
@@ -13,17 +14,25 @@ export let __;
  * @returns {boolean} True on success
  */
 export async function run(cliArgs = {}) {
-  // Repository-level checks (on main, clean, etc)
-  await __.ensureRepositoryReady(cliArgs);
-  // Release-dependent checks (logged in to npm if needed, test, lint, correct files, etc)
-  const releaseData = await __.getReleaseData(cliArgs);
-  await __.ensureReleaseReady(cliArgs, releaseData);
+  try {
+    // Repository-level checks (on main, clean, etc)
+    await __.ensureRepositoryReady(cliArgs);
+    // Release-dependent checks (logged in to npm if needed, test, lint, correct files, etc)
+    const releaseData = await __.getReleaseData(cliArgs);
+    await __.ensureReleaseReady(cliArgs, releaseData);
 
-  __.consoleInfo(`Release new version ${releaseData.newVersion}`);
+    __.consoleInfo(`Release new version ${releaseData.newVersion}`);
 
-  await __.updateGitRepo(releaseData);
+    await __.updateGitRepo(releaseData);
 
-  await __.publishToNpm(releaseData);
+    await __.publishToNpm(releaseData);
+  } catch (err) {
+    const ctrlCCodes = ['FIROST_PROMPT_CTRL_C', 'FIROST_SELECT_CTRL_C'];
+    if (_.includes(ctrlCCodes, err.code)) {
+      throw firostError(err.code, 'Release cancelled');
+    }
+    throw err;
+  }
 }
 
 __ = {
