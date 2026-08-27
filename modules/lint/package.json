@@ -37,6 +37,7 @@
     "ci-info": "4.4.0",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-exports": "1.0.0-beta.5",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsdoc": "62.5.4",
     "eslint-plugin-n": "17.23.2",

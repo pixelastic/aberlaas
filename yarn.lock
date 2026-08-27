@@ -4671,6 +4671,7 @@ __metadata:
     ci-info: "npm:4.4.0"
     eslint: "npm:9.39.2"
     eslint-config-prettier: "npm:10.1.8"
+    eslint-import-resolver-exports: "npm:1.0.0-beta.5"
     eslint-plugin-import: "npm:2.32.0"
     eslint-plugin-jsdoc: "npm:62.5.4"
     eslint-plugin-n: "npm:17.23.2"
@@ -9444,6 +9445,18 @@ __metadata:
     "@types/estree":
       optional: true
   checksum: 10c0/093e2967be03786d067fea826c713dc78c7249a170c0e39d9f9f35ecadf25bb8d23245d8ec8b234f9bb808a1892f9ea644669bf9feb761b4f2cc5388e4d31c19
+  languageName: node
+  linkType: hard
+
+"eslint-import-resolver-exports@npm:1.0.0-beta.5":
+  version: 1.0.0-beta.5
+  resolution: "eslint-import-resolver-exports@npm:1.0.0-beta.5"
+  dependencies:
+    resolve.exports: "npm:^2.0.0"
+  peerDependencies:
+    eslint: "*"
+    eslint-plugin-import: "*"
+  checksum: 10c0/e67f78ed28bd99f36f46e06be4c2628b8ac18e2e2c7d2cb35d77d19ff2566875be1e1969465f24f81712a65e14a5a45e2282431a22aec64142fb1183447ac3c4
   languageName: node
   linkType: hard
 
@@ -19505,6 +19518,13 @@ __metadata:
   version: 0.2.1
   resolution: "resolve-url@npm:0.2.1"
   checksum: 10c0/c285182cfcddea13a12af92129ce0569be27fb0074ffaefbd3ba3da2eac2acecdfc996d435c4982a9fa2b4708640e52837c9153a5ab9255886a00b0b9e8d2a54
+  languageName: node
+  linkType: hard
+
+"resolve.exports@npm:^2.0.0":
+  version: 2.0.3
+  resolution: "resolve.exports@npm:2.0.3"
+  checksum: 10c0/1ade1493f4642a6267d0a5e68faeac20b3d220f18c28b140343feb83694d8fed7a286852aef43689d16042c61e2ddb270be6578ad4a13990769e12065191200d
   languageName: node
   linkType: hard
 

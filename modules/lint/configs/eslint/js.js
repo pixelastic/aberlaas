@@ -199,25 +199,7 @@ export default [
         },
       ],
       'import/newline-after-import': ['error'],
-      // import/no-unresolved can only check for .main fields, not the more
-      // modern .exports fields.
-      // We keep here a list of exceptions for packages we use that don't have a .main field.
-      // See: https://github.com/import-js/eslint-plugin-import/issues/2132
-      'import/no-unresolved': [
-        'error',
-        {
-          ignore: [
-            'changelogen',
-            'lint-staged',
-            'stylelint',
-            '@octokit/rest',
-            '@tailwindcss/vite',
-            '@vitejs/plugin-vue',
-            'eslint-plugin-toml',
-            'aberlaas-release/trustedPublish',
-          ],
-        },
-      ],
+      'import/no-unresolved': ['error'],
 
       // JSDoc
       'jsdoc/check-param-names': ['warn'],
@@ -259,17 +241,8 @@ export default [
       'aberlaas/test-file-naming': ['error'],
     },
     settings: {
-      // eslint-plugin-import doesn't currently support the "exports" syntax in
-      // package.json. This is supposed to allow mapping between custom
-      // entrypoints and files on disk.
-      // For example, it doesn't understand "import * from 'vitest/config';" as
-      // "vitest/config/" isn't really an existing filepath, but a mapping defined
-      // in vitest package.json
-      //
-      // Until this is fixed (see
-      // https://github.com/import-js/eslint-plugin-import/issues/2430)
-      // we manually define all common extensions including React/TypeScript
       'import/resolver': {
+        exports: {},
         node: {
           extensions: ['.js', '.cjs', '.mjs', '.d.ts', '.jsx', '.ts', '.tsx'],
         },
