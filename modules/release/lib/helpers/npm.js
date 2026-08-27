@@ -28,7 +28,10 @@ export async function ensureNpmLogin() {
 
   __.consoleInfo('Registering trusted publishers requires npm authentication.');
   await __.prompt('Press Enter to open npm login in your browser');
-  await __.run(`npx npm@${npmVersion} login --loglevel=warn`, { stdin: true });
+  await __.run(`echo | npx npm@${npmVersion} login --loglevel=warn`, {
+    shell: true,
+    stdout: false,
+  });
   await __.ensureNpmLogin();
 }
 

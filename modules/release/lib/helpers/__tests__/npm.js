@@ -55,7 +55,7 @@ describe('release/helpers/npm', () => {
       );
     });
 
-    it('should run npm login with suppressed notices', async () => {
+    it('should run npm login with auto-enter and suppressed output', async () => {
       vi.spyOn(__, 'isAuthenticated')
         .mockReturnValueOnce(false)
         .mockReturnValueOnce(true);
@@ -66,9 +66,40 @@ describe('release/helpers/npm', () => {
       await ensureNpmLogin();
 
       expect(__.run).toHaveBeenCalledWith(
-        `npx npm@${npmVersion} login --loglevel=warn`,
-        { stdin: true },
+        `echo | npx npm@${npmVersion} login --loglevel=warn`,
+        { shell: true, stdout: false },
       );
+    });
+  });
+
+  describe('isAuthenticated', () => {
+    it('should call npm whoami with suppressed output', async () => {
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await __.isAuthenticated();
+
+      expect(__.run).toHaveBeenCalledWith(`npx npm@${npmVersion} whoami`, {
+        stderr: false,
+        stdout: false,
+      });
+    });
+
+    it('should return true when whoami succeeds', async () => {
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      const actual = await __.isAuthenticated();
+
+      expect(actual).toEqual(true);
+    });
+
+    it('should return false when whoami fails', async () => {
+      vi.spyOn(__, 'run').mockImplementation(() => {
+        throw new Error('not logged in');
+      });
+
+      const actual = await __.isAuthenticated();
+
+      expect(actual).toEqual(false);
     });
   });
 

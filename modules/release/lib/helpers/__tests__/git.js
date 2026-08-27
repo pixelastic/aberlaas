@@ -1,7 +1,7 @@
 import { remove, tmpDirectory } from 'firost';
 import { mockHelperPaths } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
-import { getLastReleasePoint } from '../../helpers/git.js';
+import { getLastReleasePoint } from '../git.js';
 
 describe('release/helpers/git', () => {
   let testDirectory;
