@@ -27,6 +27,10 @@ describe('release/ensureTrustedPublishing', () => {
     };
 
     vi.spyOn(__, 'consoleInfo').mockReturnValue();
+    vi.spyOn(__, 'spinner').mockReturnValue({
+      tick: vi.fn(),
+      success: vi.fn(),
+    });
     vi.spyOn(__, 'createRepo').mockReturnValue(mockRepo);
     vi.spyOn(__, 'ensureCircleciToken').mockReturnValue();
     vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue(false);

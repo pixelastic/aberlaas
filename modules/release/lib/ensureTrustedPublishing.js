@@ -1,5 +1,5 @@
 import { _, pMap } from 'golgoth';
-import { consoleInfo } from 'firost';
+import { consoleInfo, spinner } from 'firost';
 import { hostGitRoot } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import {
@@ -37,8 +37,6 @@ export async function ensureTrustedPublishing(releaseData) {
   await __.ensureCircleciToken();
 
   const repo = __.createRepo();
-
-  // Cleanup legacy auth and add workflow if needed
   const commitHashBefore = await repo.currentCommit();
 
   // Auto-cleanup of old npm token saved in repo
@@ -62,36 +60,16 @@ export async function ensureTrustedPublishing(releaseData) {
 
   // Fetch CircleCI trust config
   const trustConfig = await __.getCircleciTrustConfig();
+  const { circleciProjectId } = trustConfig;
 
   // Check which packages need trusted publisher registration
-  __.consoleInfo('Checking trusted publisher registration');
-  const unregisteredPackages = [];
-  await pMap(
+  const unregisteredPackages = await __.findPackagesWithoutTrustedPublisher(
     alreadyPublishedPackages,
-    async (pkg) => {
-      const registered = await __.isTrustedPublisherRegistered(
-        pkg.content.name,
-        trustConfig.circleciProjectId,
-      );
-      if (!registered) {
-        unregisteredPackages.push(pkg.content.name);
-      }
-    },
-    { concurrency: 5 },
+    circleciProjectId,
   );
 
   // Register unregistered packages with OTP
-  if (!_.isEmpty(unregisteredPackages)) {
-    await __.ensureNpmLogin();
-    await __.withOtpRetry(unregisteredPackages, (packageName, otp) => {
-      __.consoleInfo(`Registering trusted publisher for ${packageName}`);
-      return registerTrustedPublisher({
-        packageName,
-        otp,
-        ...trustConfig,
-      });
-    });
-  }
+  await __.registerTrustedPublishers(unregisteredPackages, trustConfig);
 }
 
 __ = {
@@ -102,7 +80,59 @@ __ = {
   createRepo() {
     return new Gilmore(hostGitRoot());
   },
+
+  /**
+   * Find packages that don't have a trusted publisher registered
+   * @param {Array<object>} packages - Already published package objects
+   * @param {string} projectId - CircleCI project UUID
+   * @returns {Promise<string[]>} Names of unregistered packages
+   */
+  async findPackagesWithoutTrustedPublisher(packages, projectId) {
+    const progress = __.spinner(packages.length);
+    const unregistered = [];
+    await pMap(
+      packages,
+      async (pkg) => {
+        const packageName = pkg.content.name;
+        progress.tick(`Checking trusted publisher: ${packageName}`);
+        const registered = await __.isTrustedPublisherRegistered(
+          packageName,
+          projectId,
+        );
+        if (!registered) {
+          unregistered.push(packageName);
+        }
+      },
+      { concurrency: 5 },
+    );
+    progress.success('Trusted publisher registration checked');
+    return unregistered;
+  },
+
+  /**
+   * Register unregistered packages as trusted publishers with OTP
+   * @param {string[]} packageNames - Names of packages to register
+   * @param {object} trustConfig - CircleCI trust config
+   * @returns {Promise<void>}
+   */
+  async registerTrustedPublishers(packageNames, trustConfig) {
+    if (_.isEmpty(packageNames)) {
+      return;
+    }
+
+    await __.ensureNpmLogin();
+    await __.withOtpRetry(packageNames, (packageName, otp) => {
+      __.consoleInfo(`Registering trusted publisher for ${packageName}`);
+      return registerTrustedPublisher({
+        packageName,
+        otp,
+        ...trustConfig,
+      });
+    });
+  },
+
   consoleInfo,
+  spinner,
   ensureCircleciToken,
   removeLegacyNpmAuth,
   hasPublishWorkflow,

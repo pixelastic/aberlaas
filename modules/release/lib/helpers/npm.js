@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { exists, read, remove, run, write } from 'firost';
+import { consoleInfo, exists, read, remove, run, write } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { npmVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
@@ -18,7 +18,7 @@ export function encodePackageName(packageName) {
 
 /**
  * Ensure the user is logged in to npm via npx npm login
- * Checks whoami, runs interactive login if needed, then re-checks
+ * Checks whoami, prompts for browser login if needed, then re-checks
  * @returns {Promise<void>}
  */
 export async function ensureNpmLogin() {
@@ -26,6 +26,9 @@ export async function ensureNpmLogin() {
     return;
   }
 
+  __.consoleInfo(
+    'You are not logged in to npm. A browser window will open for authentication.',
+  );
   await __.run(`npx npm@${npmVersion} login`, { stdin: true });
   await __.ensureNpmLogin();
 }
@@ -155,6 +158,7 @@ __ = {
       return false;
     }
   },
+  consoleInfo,
   ensureNpmLogin,
   run,
   fetch,
