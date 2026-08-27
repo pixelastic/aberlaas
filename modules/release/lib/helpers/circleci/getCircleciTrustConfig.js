@@ -15,7 +15,7 @@ export async function getCircleciTrustConfig() {
   const circleciProjectId = projectData.id;
 
   const pipelineData = await __.callApi(
-    `project/${circleciProjectId}/pipeline-definitions`,
+    `projects/${circleciProjectId}/pipeline-definitions`,
   );
   const circleciPipelineDefinitionId = pipelineData.items[0].id;
 

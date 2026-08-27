@@ -13,7 +13,7 @@ describe('getCircleciTrustConfig', () => {
           id: 'proj-uuid-456',
         };
       }
-      if (path === 'project/proj-uuid-456/pipeline-definitions') {
+      if (path === 'projects/proj-uuid-456/pipeline-definitions') {
         return {
           items: [{ id: 'pipeline-def-789' }],
         };
@@ -37,7 +37,7 @@ describe('getCircleciTrustConfig', () => {
 
     expect(__.callApi).toHaveBeenCalledWith('project/gh/myorg/myrepo');
     expect(__.callApi).toHaveBeenCalledWith(
-      'project/proj-uuid-456/pipeline-definitions',
+      'projects/proj-uuid-456/pipeline-definitions',
     );
   });
 });
