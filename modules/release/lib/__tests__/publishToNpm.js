@@ -138,34 +138,4 @@ describe('release/publishToNpm', () => {
       expect(__.pollPipelineStatus).toHaveBeenCalled();
     });
   });
-
-  describe('pushToRegistry', () => {
-    beforeEach(() => {
-      __.pushToRegistry.mockRestore();
-      vi.spyOn(__, 'run').mockReturnValue();
-    });
-
-    it('should run yarn npm publish correctly', async () => {
-      await __.pushToRegistry(firstPublishA);
-
-      expect(__.run).toHaveBeenCalledWith('yarn npm publish --access public', {
-        cwd: '/path/to/package-a',
-        stdout: false,
-        stderr: false,
-      });
-    });
-
-    it('should pass otp flag when provided', async () => {
-      await __.pushToRegistry(firstPublishA, { otp: '654321' });
-
-      expect(__.run).toHaveBeenCalledWith(
-        'yarn npm publish --access public --otp 654321',
-        {
-          cwd: '/path/to/package-a',
-          stdout: false,
-          stderr: false,
-        },
-      );
-    });
-  });
 });

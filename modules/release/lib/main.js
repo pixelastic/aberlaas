@@ -15,7 +15,7 @@ export let __;
 export async function run(cliArgs = {}) {
   // Repository-level checks (on main, clean, etc)
   await __.ensureRepositoryReady(cliArgs);
-  // Release-dependent checks (loggued in to npm if needed, test, lint, correct files, etc)
+  // Release-dependent checks (logged in to npm if needed, test, lint, correct files, etc)
   const releaseData = await __.getReleaseData(cliArgs);
   await __.ensureReleaseReady(cliArgs, releaseData);
 

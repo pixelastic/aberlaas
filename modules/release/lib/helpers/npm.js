@@ -7,6 +7,16 @@ import Gilmore from 'gilmore';
 export let __;
 
 /**
+ * Encode a package name for use in npm registry URLs
+ * Scoped packages need the slash encoded but not the @
+ * @param {string} packageName - npm package name (may be scoped, e.g. @scope/name)
+ * @returns {string} Encoded package name safe for registry URLs
+ */
+export function encodePackageName(packageName) {
+  return packageName.replace('/', '%2f');
+}
+
+/**
  * Ensure the user is logged in to npm via npx npm login
  * Checks whoami, runs interactive login if needed, then re-checks
  * @returns {Promise<void>}
@@ -27,7 +37,7 @@ export async function ensureNpmLogin() {
  * @returns {Promise<boolean>} True if a matching trusted publisher exists
  */
 export async function isTrustedPublisherRegistered(packageName, projectId) {
-  const encodedName = encodeURIComponent(packageName);
+  const encodedName = encodePackageName(packageName);
   const url = `https://registry.npmjs.org/-/package/${encodedName}/trust`;
   const response = await __.fetch(url);
   const entries = await response.json();
@@ -85,7 +95,7 @@ export async function registerTrustedPublisher({
  * @returns {Promise<boolean>} True if the package has never been published
  */
 export async function isFirstPublish(packageName) {
-  const encodedName = packageName.replace('/', '%2f');
+  const encodedName = encodePackageName(packageName);
   const url = `https://registry.npmjs.org/${encodedName}`;
   const response = await __.fetch(url, { method: 'HEAD' });
 

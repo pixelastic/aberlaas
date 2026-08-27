@@ -86,7 +86,6 @@ describe('addPublishWorkflow', () => {
       const parsed = YAML.parse(actual, { merge: true });
       const job = parsed.jobs['trusted-publish'];
 
-      expect(job).toBeTruthy();
       expect(job).toHaveProperty('steps.0', 'checkout');
 
       const lastStep = job.steps[job.steps.length - 1];

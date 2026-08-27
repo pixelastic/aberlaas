@@ -1,9 +1,11 @@
-import path from 'node:path';
 import { _ } from 'golgoth';
-import { run, spinner } from 'firost';
-import { pollPipelineStatus } from './helpers/circleci/pollPipelineStatus.js';
-import { triggerPipeline } from './helpers/circleci/triggerPipeline.js';
+import { spinner } from 'firost';
+import {
+  pollPipelineStatus,
+  triggerPipeline,
+} from './helpers/circleci/index.js';
 import { withOtpRetry } from './helpers/otp.js';
+import { pushToRegistry } from './helpers/registry.js';
 import { ensureYarnNpmLogin } from './helpers/yarn.js';
 
 export let __;
@@ -47,38 +49,10 @@ export async function publishToNpm(releaseData) {
 }
 
 __ = {
-  /**
-   * Runs `yarn npm publish --access public` for a single package
-   * @param {object} packageData - Package object with filepath and content
-   * @param {string} packageData.filepath - Path to the package.json file
-   * @param {object} options - Additional flags to pass to the command
-   * @param {string} options.otp - One-time password for npm authentication
-   * @returns {Promise<void>}
-   */
-  async pushToRegistry(packageData, options = {}) {
-    const { filepath } = packageData;
-
-    // { otp: '123456' } → 'yarn npm publish --access public --otp 123456'
-    const command = _.chain(options)
-      .map((value, key) => `--${key} ${value}`)
-      .thru((flags) => ['yarn npm publish --access public', ...flags])
-      .join(' ')
-      .value();
-
-    // Note:
-    // ✘ npm publish <= Keeps workspace:* in dependencies
-    // ✔ yarn npm publish <= Replaces workspace:* with actual versions
-    // This is why we use yarn npm publish and not npm publish directly
-    await __.run(command, {
-      cwd: path.dirname(filepath),
-      stdout: false,
-      stderr: false,
-    });
-  },
   ensureYarnNpmLogin,
+  pushToRegistry,
   triggerPipeline,
   pollPipelineStatus,
   withOtpRetry,
-  run,
   spinner,
 };

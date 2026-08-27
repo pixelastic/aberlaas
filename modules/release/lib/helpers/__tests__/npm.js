@@ -112,7 +112,7 @@ describe('release/helpers/npm', () => {
       );
 
       expect(__.fetch).toHaveBeenCalledWith(
-        'https://registry.npmjs.org/-/package/%40scope%2Fmy-package/trust',
+        'https://registry.npmjs.org/-/package/@scope%2fmy-package/trust',
       );
     });
   });

@@ -72,39 +72,4 @@ describe('release/trustedPublish', () => {
       expect(actual).toEqual('oidc-token-xyz');
     });
   });
-
-  describe('pushToRegistry', () => {
-    beforeEach(() => {
-      __.pushToRegistry.mockRestore();
-      vi.spyOn(__, 'run').mockReturnValue();
-    });
-
-    it('should run yarn npm publish correctly', async () => {
-      await __.pushToRegistry({
-        filepath: '/path/to/alpha/package.json',
-        content: { name: 'alpha' },
-      });
-
-      expect(__.run).toHaveBeenCalledWith('yarn npm publish --access public', {
-        cwd: '/path/to/alpha',
-        env: expect.objectContaining({}),
-        stdout: false,
-        stderr: false,
-      });
-    });
-
-    it('should pass env variables to the child process', async () => {
-      await __.pushToRegistry(
-        { filepath: '/path/to/alpha/package.json', content: { name: 'alpha' } },
-        { env: { NPM_ID_TOKEN: 'my-token' } },
-      );
-
-      expect(__.run).toHaveBeenCalledWith('yarn npm publish --access public', {
-        cwd: '/path/to/alpha',
-        env: expect.objectContaining({ NPM_ID_TOKEN: 'my-token' }),
-        stdout: false,
-        stderr: false,
-      });
-    });
-  });
 });
