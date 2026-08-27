@@ -2,7 +2,7 @@ import { __, ensureCircleciToken } from '../ensureCircleciToken.js';
 
 describe('ensureCircleciToken', () => {
   it('should not throw when token is set', async () => {
-    vi.spyOn(__, 'getEnvToken').mockReturnValue('my-token');
+    vi.spyOn(__, 'getEnvToken').mockReturnValue('CCIPAT_abc123');
 
     let actual = null;
     try {
@@ -36,4 +36,23 @@ describe('ensureCircleciToken', () => {
       expect(actual.message).toContain('https://circleci.com/account/api');
     },
   );
+
+  it('should throw ABERLAAS_RELEASE_CIRCLECI_TOKEN_NOT_PERSONAL_API_TOKEN when token is not a Personal API Token', async () => {
+    vi.spyOn(__, 'getEnvToken').mockReturnValue('a1b2c3d4e5f6');
+
+    let actual = null;
+    try {
+      await ensureCircleciToken();
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty(
+      'code',
+      'ABERLAAS_RELEASE_CIRCLECI_TOKEN_NOT_PERSONAL_API_TOKEN',
+    );
+    expect(actual.message).toContain(
+      'https://app.circleci.com/settings/user/tokens',
+    );
+  });
 });
