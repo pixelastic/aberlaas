@@ -127,8 +127,12 @@ __ = {
 
     await __.ensureNpmLogin();
 
-    const progress = __.spinner(packageNames.length);
+    let progress;
     await __.withOtpRetry(packageNames, async (packageName, otp) => {
+      // Start a progress on first loop
+      if (!progress) {
+        progress = __.spinner(packageNames.length);
+      }
       progress.tick(`Registering trusted publisher: ${packageName}`);
       await registerTrustedPublisher({
         packageName,

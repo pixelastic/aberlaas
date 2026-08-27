@@ -123,13 +123,18 @@ describe('release/ensureTrustedPublishing', () => {
         return packageName === 'pkg-b';
       },
     );
+    vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
+    vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
+      for (const item of items) {
+        await callback(item, '123456');
+      }
+    });
 
     await ensureTrustedPublishing(releaseData);
 
     expect(__.ensureNpmLogin).toHaveBeenCalled();
-    expect(__.withOtpRetry).toHaveBeenCalledWith(
-      ['pkg-a'],
-      expect.any(Function),
+    expect(npmHelpers.registerTrustedPublisher).toHaveBeenCalledWith(
+      expect.objectContaining({ packageName: 'pkg-a' }),
     );
   });
 
@@ -191,6 +196,14 @@ describe('release/ensureTrustedPublishing', () => {
       vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(
         (packageName) => {
           return packageName === 'pkg-b';
+        },
+      );
+      vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
+      vi.spyOn(__, 'withOtpRetry').mockImplementation(
+        async (items, callback) => {
+          for (const item of items) {
+            await callback(item, '123456');
+          }
         },
       );
 
