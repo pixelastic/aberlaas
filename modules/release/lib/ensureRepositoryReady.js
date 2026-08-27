@@ -57,7 +57,7 @@ __ = {
    */
   async ensureCorrectBranch(repo) {
     const currentBranch = await repo.currentBranchName();
-    if (currentBranch == 'main') {
+    if (currentBranch === 'main') {
       return true;
     }
     throw firostError(

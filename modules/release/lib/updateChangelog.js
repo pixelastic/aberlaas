@@ -116,7 +116,7 @@ __ = {
       selectOptions,
     );
 
-    if (nextStep == 'cancel') {
+    if (nextStep === 'cancel') {
       throw firostError(
         'ABERLAAS_RELEASE_CHANGELOG_CANCELLED',
         'Release cancelled by user',

@@ -59,6 +59,7 @@ export default [
       ...pluginJsdoc.configs['flat/recommended'].plugins.rules,
       ...pluginN.configs['flat/recommended'].plugins.rules,
       'dot-notation': ['error'],
+      eqeqeq: ['error'],
       'max-len': [
         'error',
         {

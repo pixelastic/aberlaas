@@ -42,7 +42,7 @@ export async function eslintRun(files, userConfigFile, userOptions = {}) {
 
   // All good, we can stop
   const errorCount = _.chain(results).map('errorCount').sum().value();
-  if (errorCount == 0) {
+  if (errorCount === 0) {
     return true;
   }
 

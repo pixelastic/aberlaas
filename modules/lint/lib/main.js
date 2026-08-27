@@ -29,7 +29,7 @@ export async function run(cliArgs = {}) {
         errors.push(error);
 
         if (shouldFailFast) {
-          if (errors.length == 1) {
+          if (errors.length === 1) {
             __.consoleError(error.message);
           }
           throw firostError('ABERLAAS_LINT_FAIL_FAST', 'Fail to lint files');

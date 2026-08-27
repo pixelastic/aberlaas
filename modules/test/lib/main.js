@@ -48,12 +48,12 @@ export async function run(cliArgs = {}) {
   } catch (err) {
     // We can safely swallow the VITEST_FILES_NOT_FOUND error. It's ok to
     // continue if no files are found
-    if (err.code != 'VITEST_FILES_NOT_FOUND') {
+    if (err.code !== 'VITEST_FILES_NOT_FOUND') {
       throw err;
     }
   }
 
-  const testsAreFailing = process.exitCode == 1;
+  const testsAreFailing = process.exitCode === 1;
   process.exitCode = initialExitCode;
 
   if (isWatchMode) {
