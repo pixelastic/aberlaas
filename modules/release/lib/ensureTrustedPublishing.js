@@ -105,7 +105,12 @@ __ = {
       },
       { concurrency: 5 },
     );
-    progress.success('Trusted publisher registration checked');
+
+    const successMessage = _.isEmpty(unregistered)
+      ? 'All trusted publishers registered'
+      : `${unregistered.length} package(s) need trusted publisher registration`;
+    progress.success(successMessage);
+
     return unregistered;
   },
 

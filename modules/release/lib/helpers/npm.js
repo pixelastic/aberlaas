@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { consoleInfo, exists, read, remove, run, write } from 'firost';
+import { consoleInfo, exists, prompt, read, remove, run, write } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { npmVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
@@ -26,10 +26,9 @@ export async function ensureNpmLogin() {
     return;
   }
 
-  __.consoleInfo(
-    'You are not logged in to npm. A browser window will open for authentication.',
-  );
-  await __.run(`npx npm@${npmVersion} login`, { stdin: true });
+  __.consoleInfo('Registering trusted publishers requires npm authentication.');
+  await __.prompt('Press Enter to open npm login in your browser');
+  await __.run(`npx npm@${npmVersion} login --loglevel=warn`, { stdin: true });
   await __.ensureNpmLogin();
 }
 
@@ -160,6 +159,7 @@ __ = {
   },
   consoleInfo,
   ensureNpmLogin,
+  prompt,
   run,
   fetch,
 };

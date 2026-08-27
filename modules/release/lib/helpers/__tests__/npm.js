@@ -4,6 +4,7 @@ import { npmVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
 import {
   __,
+  ensureNpmLogin,
   isFirstPublish,
   isTrustedPublisherRegistered,
   registerTrustedPublisher,
@@ -11,6 +12,66 @@ import {
 } from '../npm.js';
 
 describe('release/helpers/npm', () => {
+  describe('ensureNpmLogin', () => {
+    it('should skip login when already authenticated', async () => {
+      vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'prompt').mockReturnValue();
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await ensureNpmLogin();
+
+      expect(__.prompt).not.toHaveBeenCalled();
+      expect(__.run).not.toHaveBeenCalled();
+    });
+
+    it('should explain that login is needed for trusted publisher registration', async () => {
+      vi.spyOn(__, 'isAuthenticated')
+        .mockReturnValueOnce(false)
+        .mockReturnValueOnce(true);
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'prompt').mockReturnValue();
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await ensureNpmLogin();
+
+      expect(__.consoleInfo).toHaveBeenCalledWith(
+        'Registering trusted publishers requires npm authentication.',
+      );
+    });
+
+    it('should prompt user before running npm login', async () => {
+      vi.spyOn(__, 'isAuthenticated')
+        .mockReturnValueOnce(false)
+        .mockReturnValueOnce(true);
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'prompt').mockReturnValue();
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await ensureNpmLogin();
+
+      expect(__.prompt).toHaveBeenCalledWith(
+        'Press Enter to open npm login in your browser',
+      );
+    });
+
+    it('should run npm login with suppressed notices', async () => {
+      vi.spyOn(__, 'isAuthenticated')
+        .mockReturnValueOnce(false)
+        .mockReturnValueOnce(true);
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'prompt').mockReturnValue();
+      vi.spyOn(__, 'run').mockReturnValue();
+
+      await ensureNpmLogin();
+
+      expect(__.run).toHaveBeenCalledWith(
+        `npx npm@${npmVersion} login --loglevel=warn`,
+        { stdin: true },
+      );
+    });
+  });
+
   describe('registerTrustedPublisher', () => {
     it('should run npm trust circleci with all flags', async () => {
       vi.spyOn(__, 'run').mockReturnValue();

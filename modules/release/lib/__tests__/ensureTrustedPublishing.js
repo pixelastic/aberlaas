@@ -138,4 +138,34 @@ describe('release/ensureTrustedPublishing', () => {
     expect(__.ensureNpmLogin).not.toHaveBeenCalled();
     expect(__.withOtpRetry).not.toHaveBeenCalled();
   });
+
+  describe('spinner message', () => {
+    let mockSpinner;
+    beforeEach(() => {
+      mockSpinner = { tick: vi.fn(), success: vi.fn() };
+      vi.spyOn(__, 'spinner').mockReturnValue(mockSpinner);
+    });
+
+    it('should report all registered when no packages need registration', async () => {
+      await ensureTrustedPublishing(releaseData);
+
+      expect(mockSpinner.success).toHaveBeenCalledWith(
+        'All trusted publishers registered',
+      );
+    });
+
+    it('should report count when some packages need registration', async () => {
+      vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(
+        (packageName) => {
+          return packageName === 'pkg-b';
+        },
+      );
+
+      await ensureTrustedPublishing(releaseData);
+
+      expect(mockSpinner.success).toHaveBeenCalledWith(
+        '1 package(s) need trusted publisher registration',
+      );
+    });
+  });
 });
