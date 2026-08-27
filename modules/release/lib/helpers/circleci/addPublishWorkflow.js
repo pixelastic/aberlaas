@@ -176,20 +176,12 @@ __ = {
    * @returns {string} Approved YAML content
    */
   async confirmOrEditConfig(originalContent, modifiedContent) {
-    __.consoleInfo('CircleCI config changes:');
-
     const originalPath = hostGitPath('./tmp/config.original.yml');
     const modifiedPath = hostGitPath('./tmp/config.modified.yml');
     await __.write(originalContent, originalPath);
     await __.write(modifiedContent, modifiedPath);
 
-    // firost's run() always throws on non-zero exit codes (no option to
-    // suppress), and diff exits with 1 when files differ — try/catch required
-    try {
-      await __.run(`diff -u ${originalPath} ${modifiedPath}`);
-    } catch {
-      // Expected: files differ
-    }
+    await __.showColoredDiff(originalContent, modifiedContent);
 
     let nextStep;
     try {

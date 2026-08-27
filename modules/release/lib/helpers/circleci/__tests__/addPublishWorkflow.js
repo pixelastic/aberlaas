@@ -129,7 +129,7 @@ describe('addPublishWorkflow', () => {
 
   describe('confirmOrEditConfig', () => {
     beforeEach(() => {
-      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'showColoredDiff').mockReturnValue();
       vi.spyOn(__, 'write').mockReturnValue();
       vi.spyOn(__, 'run').mockReturnValue();
     });
@@ -139,11 +139,7 @@ describe('addPublishWorkflow', () => {
 
       await __.confirmOrEditConfig('original', 'modified');
 
-      const originalPath = `${testDirectory}/tmp/config.original.yml`;
-      const modifiedPath = `${testDirectory}/tmp/config.modified.yml`;
-      expect(__.run).toHaveBeenCalledWith(
-        `diff -u ${originalPath} ${modifiedPath}`,
-      );
+      expect(__.showColoredDiff).toHaveBeenCalledWith('original', 'modified');
     });
 
     it('should return modified content when user approves', async () => {
