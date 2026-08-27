@@ -227,4 +227,51 @@ describe('addPublishWorkflow', () => {
       );
     });
   });
+
+  describe('showColoredDiff', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'consoleInfo').mockReturnValue();
+      vi.spyOn(__, 'consoleLog').mockReturnValue();
+    });
+
+    it('should color added lines in green and removed lines in red', () => {
+      __.showColoredDiff('line one\nline two\n', 'line one\nline THREE\n');
+
+      const allOutput = __.consoleLog.mock.calls.map((c) => c[0]).join('\n');
+      // Added lines should use green
+      expect(allOutput).toContain('\u001b[32m');
+      // Removed lines should use red
+      expect(allOutput).toContain('\u001b[31m');
+    });
+
+    it('should dim context lines', () => {
+      __.showColoredDiff('context\nold line\n', 'context\nnew line\n');
+
+      const allOutput = __.consoleLog.mock.calls.map((c) => c[0]).join('\n');
+      // Context lines should use dim
+      expect(allOutput).toContain('\u001b[2m');
+    });
+
+    it('should show separator lines around the diff', () => {
+      __.showColoredDiff('a\n', 'b\n');
+
+      const calls = __.consoleLog.mock.calls.map((c) => c[0]);
+      const separator = '━'.repeat(60);
+      expect(calls).toHaveProperty('0', separator);
+      expect(calls[calls.length - 1]).toEqual(separator);
+    });
+
+    it('should show header via consoleInfo', () => {
+      __.showColoredDiff('a\n', 'b\n');
+
+      expect(__.consoleInfo).toHaveBeenCalledWith('CircleCI config changes:');
+    });
+
+    it('should do nothing when strings are identical', () => {
+      __.showColoredDiff('same\n', 'same\n');
+
+      expect(__.consoleInfo).not.toHaveBeenCalled();
+      expect(__.consoleLog).not.toHaveBeenCalled();
+    });
+  });
 });

@@ -4738,6 +4738,7 @@ __metadata:
     aberlaas-versions: "workspace:*"
     changelogen: "npm:0.6.2"
     cli-markdown: "npm:3.5.1"
+    diff: "npm:9.0.0"
     firost: "npm:5.10.0"
     gilmore: "npm:1.2.2"
     golgoth: "npm:4.0.0"
@@ -8518,6 +8519,13 @@ __metadata:
     readable-stream: "npm:1.1.x"
     streamsearch: "npm:0.1.2"
   checksum: 10c0/c0520cee8c4d8c7e2db4f8fe30c0fdbf96d9623d53a65b54f4e0d9a89b76c3e0c397de54a1530c1d4b1788d1e87ff3ca5800e3ba93c748e0cd24827b505fb5e7
+  languageName: node
+  linkType: hard
+
+"diff@npm:9.0.0":
+  version: 9.0.0
+  resolution: "diff@npm:9.0.0"
+  checksum: 10c0/a971cc88f66071a33bd3942db2f51b57d484e9856265ae45cf44fb28ab2fde91f132d9c26d8be0fb6082d2be94d29e1295c1adb251b7461935d6a2dd304cd161
   languageName: node
   linkType: hard
 

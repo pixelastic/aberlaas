@@ -1,4 +1,4 @@
-import { _ } from 'golgoth';
+import { _, yoctocolors as colors } from 'golgoth';
 import {
   consoleInfo,
   firostError,
@@ -9,6 +9,7 @@ import {
   write,
 } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
+import { diffLines } from 'diff';
 import Gilmore from 'gilmore';
 import YAML, { Alias, Pair, Scalar } from 'yaml';
 
@@ -237,6 +238,47 @@ __ = {
    */
   createRepo() {
     return new Gilmore(hostGitRoot());
+  },
+
+  /**
+   * Display a colored unified diff between two strings
+   * @param {string} originalContent - Original content
+   * @param {string} modifiedContent - Modified content
+   */
+  showColoredDiff(originalContent, modifiedContent) {
+    const changes = diffLines(originalContent, modifiedContent);
+
+    const hasChanges = _.some(changes, (part) => part.added || part.removed);
+    if (!hasChanges) {
+      return;
+    }
+
+    __.consoleInfo('CircleCI config changes:');
+
+    const separator = '━'.repeat(60);
+    __.consoleLog(separator);
+
+    _.each(changes, (part) => {
+      const text = part.value.replace(/\n$/, '');
+      if (part.added) {
+        __.consoleLog(colors.green(text));
+        return;
+      }
+      if (part.removed) {
+        __.consoleLog(colors.red(text));
+        return;
+      }
+      __.consoleLog(colors.dim(text));
+    });
+
+    __.consoleLog(separator);
+  },
+
+  /**
+   * @param {string} input - Text to log
+   */
+  consoleLog(input) {
+    console.log(input);
   },
 
   consoleInfo,

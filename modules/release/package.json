@@ -28,6 +28,7 @@
     "aberlaas-versions": "workspace:*",
     "changelogen": "0.6.2",
     "cli-markdown": "3.5.1",
+    "diff": "9.0.0",
     "firost": "5.10.0",
     "gilmore": "1.2.2",
     "golgoth": "4.0.0",
