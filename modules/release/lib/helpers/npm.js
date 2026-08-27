@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { consoleInfo, exists, read, remove, run, write } from 'firost';
+import { consoleInfo, exists, read, remove, run, spinner, write } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import { npmVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
@@ -22,12 +22,15 @@ export function encodePackageName(packageName) {
  * @returns {Promise<void>}
  */
 export async function ensureNpmLogin() {
+  const progress = __.spinner();
+  progress.tick('Checking npm authentication...');
+
   if (await __.isAuthenticated()) {
-    __.consoleInfo('Authenticated to npm');
+    progress.success('Authenticated to npm');
     return;
   }
 
-  __.consoleInfo(
+  progress.info(
     'Opening npm login (required for trusted publisher registration)...',
   );
   await __.run(`npx npm@${npmVersion} login --loglevel=warn`, { stdin: true });
@@ -161,6 +164,7 @@ __ = {
   },
   consoleInfo,
   ensureNpmLogin,
+  spinner,
   run,
   fetch,
 };

@@ -13,36 +13,41 @@ import {
 
 describe('release/helpers/npm', () => {
   describe('ensureNpmLogin', () => {
-    it('should skip login when already authenticated', async () => {
-      vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
+    let mockProgress;
+    beforeEach(() => {
+      mockProgress = { tick: vi.fn(), success: vi.fn(), info: vi.fn() };
+      vi.spyOn(__, 'spinner').mockReturnValue(mockProgress);
       vi.spyOn(__, 'consoleInfo').mockReturnValue();
       vi.spyOn(__, 'run').mockReturnValue();
+    });
+
+    it('should show spinner while checking authentication', async () => {
+      vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
 
       await ensureNpmLogin();
 
+      expect(mockProgress.tick).toHaveBeenCalledWith(
+        'Checking npm authentication...',
+      );
+    });
+
+    it('should show success when already authenticated', async () => {
+      vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
+
+      await ensureNpmLogin();
+
+      expect(mockProgress.success).toHaveBeenCalledWith('Authenticated to npm');
       expect(__.run).not.toHaveBeenCalled();
     });
 
-    it('should confirm authentication regardless of login path', async () => {
-      vi.spyOn(__, 'isAuthenticated').mockReturnValue(true);
-      vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'run').mockReturnValue();
-
-      await ensureNpmLogin();
-
-      expect(__.consoleInfo).toHaveBeenCalledWith('Authenticated to npm');
-    });
-
-    it('should explain why npm login is needed', async () => {
+    it('should stop spinner with info before npm login', async () => {
       vi.spyOn(__, 'isAuthenticated')
         .mockReturnValueOnce(false)
         .mockReturnValueOnce(true);
-      vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'run').mockReturnValue();
 
       await ensureNpmLogin();
 
-      expect(__.consoleInfo).toHaveBeenCalledWith(
+      expect(mockProgress.info).toHaveBeenCalledWith(
         'Opening npm login (required for trusted publisher registration)...',
       );
     });
@@ -51,8 +56,6 @@ describe('release/helpers/npm', () => {
       vi.spyOn(__, 'isAuthenticated')
         .mockReturnValueOnce(false)
         .mockReturnValueOnce(true);
-      vi.spyOn(__, 'consoleInfo').mockReturnValue();
-      vi.spyOn(__, 'run').mockReturnValue();
 
       await ensureNpmLogin();
 
