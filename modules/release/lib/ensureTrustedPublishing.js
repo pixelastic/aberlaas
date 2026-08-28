@@ -36,27 +36,12 @@ export async function ensureTrustedPublishing(releaseData) {
   // Fail fast if no CircleCI token
   await __.ensureCircleciToken();
 
-  const repo = __.createRepo();
-  const commitHashBefore = await repo.currentCommit();
+  // Fail fast if not loggued in to npm
+  // npm login is required to know which packages have trusted publisher registered
+  await __.ensureNpmLogin();
 
-  // Auto-cleanup of old npm token saved in repo
-  const didCleanup = await __.removeLegacyNpmAuth();
-  if (didCleanup) {
-    __.consoleInfo('Removed legacy npm auth from repo');
-  }
-
-  // Add the CircleCI workflow if it doesn't exist yet
-  if (!(await __.hasPublishWorkflow())) {
-    __.consoleInfo('Adding trusted-publish workflow to CircleCI config');
-    await __.addPublishWorkflow();
-  }
-
-  // If we created commits doing so, push them
-  const commitHashAfter = await repo.currentCommit();
-  if (commitHashBefore !== commitHashAfter) {
-    __.consoleInfo('Pushing commits to remote');
-    await repo.push();
-  }
+  // Cleanup legacy npm auth and add CircleCI workflow if needed
+  await __.ensureRepoConfig();
 
   // Fetch CircleCI trust config
   const trustConfig = await __.getCircleciTrustConfig();
@@ -79,6 +64,35 @@ __ = {
    */
   createRepo() {
     return new Gilmore(hostGitRoot());
+  },
+
+  /**
+   * Cleanup legacy npm auth and ensure CircleCI workflow exists
+   * Pushes any resulting commits to remote
+   * @returns {Promise<void>}
+   */
+  async ensureRepoConfig() {
+    const repo = __.createRepo();
+    const commitHashBefore = await repo.currentCommit();
+
+    // Auto-cleanup of old npm token saved in repo
+    const didCleanup = await __.removeLegacyNpmAuth();
+    if (didCleanup) {
+      __.consoleInfo('Removed legacy npm auth from repo');
+    }
+
+    // Add the CircleCI workflow if it doesn't exist yet
+    if (!(await __.hasPublishWorkflow())) {
+      __.consoleInfo('Adding trusted-publish workflow to CircleCI config');
+      await __.addPublishWorkflow();
+    }
+
+    // If we created commits doing so, push them
+    const commitHashAfter = await repo.currentCommit();
+    if (commitHashBefore !== commitHashAfter) {
+      __.consoleInfo('Pushing commits to remote');
+      await repo.push();
+    }
   },
 
   /**
@@ -125,7 +139,6 @@ __ = {
       return;
     }
 
-    await __.ensureNpmLogin();
     __.consoleInfo(
       `Registering trusted publishers for ${packageNames.length} package(s) (requires OTP)`,
     );

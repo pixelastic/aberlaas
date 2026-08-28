@@ -44,10 +44,17 @@ export async function ensureNpmLogin() {
  * @returns {Promise<boolean>} True if a matching trusted publisher exists
  */
 export async function isTrustedPublisherRegistered(packageName, projectId) {
-  const encodedName = encodePackageName(packageName);
-  const url = `https://registry.npmjs.org/-/package/${encodedName}/trust`;
-  const response = await __.fetch(url);
-  const entries = await response.json();
+  const command = [
+    'npx',
+    `npm@${npmVersion}`,
+    'trust',
+    'list',
+    packageName,
+    '--json',
+  ];
+
+  const { stdout } = await __.run(command, { stdout: false, stderr: false });
+  const entries = JSON.parse(stdout);
 
   return _.some(entries, {
     type: 'circleci',

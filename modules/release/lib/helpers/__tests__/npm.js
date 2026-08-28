@@ -137,8 +137,8 @@ describe('release/helpers/npm', () => {
     const matchingProjectId = 'abc-123-def';
 
     beforeEach(() => {
-      vi.spyOn(__, 'fetch').mockReturnValue({
-        json: () => [
+      vi.spyOn(__, 'run').mockReturnValue({
+        stdout: JSON.stringify([
           {
             type: 'circleci',
             claims: { 'oidc.circleci.com/project-id': matchingProjectId },
@@ -151,8 +151,17 @@ describe('release/helpers/npm', () => {
             type: 'circleci',
             claims: { 'oidc.circleci.com/project-id': 'other-id' },
           },
-        ],
+        ]),
       });
+    });
+
+    it('should call npm trust list with --json', async () => {
+      await isTrustedPublisherRegistered('my-package', matchingProjectId);
+
+      expect(__.run).toHaveBeenCalledWith(
+        ['npx', `npm@${npmVersion}`, 'trust', 'list', 'my-package', '--json'],
+        { stdout: false, stderr: false },
+      );
     });
 
     it.each([
@@ -168,21 +177,23 @@ describe('release/helpers/npm', () => {
       },
       {
         title: 'empty array',
-        fetchResponse: [],
+        runOutput: [],
         projectId: matchingProjectId,
         expected: false,
       },
       {
         title: 'only GitHub publishers',
-        fetchResponse: [
+        runOutput: [
           { type: 'github-actions', claims: { repository: 'owner/repo' } },
         ],
         projectId: matchingProjectId,
         expected: false,
       },
-    ])('$title', async ({ projectId, fetchResponse, expected }) => {
-      if (fetchResponse) {
-        vi.spyOn(__, 'fetch').mockReturnValue({ json: () => fetchResponse });
+    ])('$title', async ({ projectId, runOutput, expected }) => {
+      if (runOutput) {
+        vi.spyOn(__, 'run').mockReturnValue({
+          stdout: JSON.stringify(runOutput),
+        });
       }
 
       const actual = await isTrustedPublisherRegistered(
@@ -191,17 +202,6 @@ describe('release/helpers/npm', () => {
       );
 
       expect(actual).toEqual(expected);
-    });
-
-    it('should encode scoped package names', async () => {
-      await isTrustedPublisherRegistered(
-        '@scope/my-package',
-        matchingProjectId,
-      );
-
-      expect(__.fetch).toHaveBeenCalledWith(
-        'https://registry.npmjs.org/-/package/@scope%2fmy-package/trust',
-      );
     });
   });
 

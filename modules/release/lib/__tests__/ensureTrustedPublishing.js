@@ -32,11 +32,8 @@ describe('release/ensureTrustedPublishing', () => {
       tick: vi.fn(),
       success: vi.fn(),
     });
-    vi.spyOn(__, 'createRepo').mockReturnValue(mockRepo);
     vi.spyOn(__, 'ensureCircleciToken').mockReturnValue();
-    vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue(false);
-    vi.spyOn(__, 'hasPublishWorkflow').mockReturnValue(true);
-    vi.spyOn(__, 'addPublishWorkflow').mockReturnValue();
+    vi.spyOn(__, 'ensureRepoConfig').mockReturnValue();
     vi.spyOn(__, 'getCircleciTrustConfig').mockReturnValue(trustConfig);
     vi.spyOn(__, 'isTrustedPublisherRegistered').mockReturnValue(true);
     vi.spyOn(__, 'ensureNpmLogin').mockReturnValue();
@@ -69,52 +66,62 @@ describe('release/ensureTrustedPublishing', () => {
     expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_NO_CIRCLECI_TOKEN');
   });
 
-  it('should log when legacy npm auth was cleaned up', async () => {
-    vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue(true);
+  describe('ensureRepoConfig', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'ensureRepoConfig').mockRestore();
+      vi.spyOn(__, 'createRepo').mockReturnValue(mockRepo);
+      vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue(false);
+      vi.spyOn(__, 'hasPublishWorkflow').mockReturnValue(true);
+      vi.spyOn(__, 'addPublishWorkflow').mockReturnValue();
+    });
 
-    await ensureTrustedPublishing(releaseData);
+    it('should log when legacy npm auth was cleaned up', async () => {
+      vi.spyOn(__, 'removeLegacyNpmAuth').mockReturnValue(true);
 
-    expect(__.consoleInfo).toHaveBeenCalledWith(
-      'Removed legacy npm auth from repo',
-    );
-  });
+      await __.ensureRepoConfig();
 
-  it('should not log when no legacy npm auth cleanup was needed', async () => {
-    await ensureTrustedPublishing(releaseData);
+      expect(__.consoleInfo).toHaveBeenCalledWith(
+        'Removed legacy npm auth from repo',
+      );
+    });
 
-    expect(__.consoleInfo).not.toHaveBeenCalledWith(
-      'Removed legacy npm auth from repo',
-    );
-  });
+    it('should not log when no legacy npm auth cleanup was needed', async () => {
+      await __.ensureRepoConfig();
 
-  it('should call addPublishWorkflow when workflow is missing', async () => {
-    vi.spyOn(__, 'hasPublishWorkflow').mockReturnValue(false);
+      expect(__.consoleInfo).not.toHaveBeenCalledWith(
+        'Removed legacy npm auth from repo',
+      );
+    });
 
-    await ensureTrustedPublishing(releaseData);
+    it('should call addPublishWorkflow when workflow is missing', async () => {
+      vi.spyOn(__, 'hasPublishWorkflow').mockReturnValue(false);
 
-    expect(__.addPublishWorkflow).toHaveBeenCalled();
-  });
+      await __.ensureRepoConfig();
 
-  it('should skip addPublishWorkflow when workflow exists', async () => {
-    await ensureTrustedPublishing(releaseData);
+      expect(__.addPublishWorkflow).toHaveBeenCalled();
+    });
 
-    expect(__.addPublishWorkflow).not.toHaveBeenCalled();
-  });
+    it('should skip addPublishWorkflow when workflow exists', async () => {
+      await __.ensureRepoConfig();
 
-  it('should push after commits from removeLegacyNpmAuth and/or addPublishWorkflow', async () => {
-    mockRepo.currentCommit
-      .mockReturnValueOnce('sha-before')
-      .mockReturnValueOnce('sha-after');
+      expect(__.addPublishWorkflow).not.toHaveBeenCalled();
+    });
 
-    await ensureTrustedPublishing(releaseData);
+    it('should push after commits from removeLegacyNpmAuth and/or addPublishWorkflow', async () => {
+      mockRepo.currentCommit
+        .mockReturnValueOnce('sha-before')
+        .mockReturnValueOnce('sha-after');
 
-    expect(mockRepo.push).toHaveBeenCalled();
-  });
+      await __.ensureRepoConfig();
 
-  it('should skip push when no commits were created', async () => {
-    await ensureTrustedPublishing(releaseData);
+      expect(mockRepo.push).toHaveBeenCalled();
+    });
 
-    expect(mockRepo.push).not.toHaveBeenCalled();
+    it('should skip push when no commits were created', async () => {
+      await __.ensureRepoConfig();
+
+      expect(mockRepo.push).not.toHaveBeenCalled();
+    });
   });
 
   it('should register only unregistered packages', async () => {
@@ -186,10 +193,25 @@ describe('release/ensureTrustedPublishing', () => {
     );
   });
 
+  it('should ensure npm login before checking trusted publishers', async () => {
+    const callOrder = [];
+    vi.spyOn(__, 'ensureNpmLogin').mockImplementation(() => {
+      callOrder.push('login');
+    });
+    vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(() => {
+      callOrder.push('check');
+      return true;
+    });
+
+    await ensureTrustedPublishing(releaseData);
+
+    expect(callOrder).toHaveProperty('0', 'login');
+    expect(callOrder).toHaveProperty('1', 'check');
+  });
+
   it('should skip registration when all packages are registered', async () => {
     await ensureTrustedPublishing(releaseData);
 
-    expect(__.ensureNpmLogin).not.toHaveBeenCalled();
     expect(__.withOtpRetry).not.toHaveBeenCalled();
   });
 
