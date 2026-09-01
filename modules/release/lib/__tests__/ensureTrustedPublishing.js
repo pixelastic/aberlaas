@@ -14,11 +14,24 @@ describe('release/ensureTrustedPublishing', () => {
   let mockRepo;
 
   beforeEach(() => {
+    // Rich context: mix of first-publish, registered, and unregistered
     releaseData = {
       allPackages: [
-        { content: { name: 'pkg-a' }, isFirstPublish: false },
-        { content: { name: 'pkg-b' }, isFirstPublish: false },
-        { content: { name: 'pkg-c' }, isFirstPublish: true },
+        {
+          content: { name: 'pkg-a' },
+          isFirstPublish: false,
+          hasTrustedPublisher: true,
+        },
+        {
+          content: { name: 'pkg-b' },
+          isFirstPublish: false,
+          hasTrustedPublisher: false,
+        },
+        {
+          content: { name: 'pkg-c' },
+          isFirstPublish: true,
+          hasTrustedPublisher: false,
+        },
       ],
     };
 
@@ -35,20 +48,99 @@ describe('release/ensureTrustedPublishing', () => {
     vi.spyOn(__, 'ensureCircleciToken').mockReturnValue();
     vi.spyOn(__, 'ensureRepoConfig').mockReturnValue();
     vi.spyOn(__, 'getCircleciTrustConfig').mockReturnValue(trustConfig);
-    vi.spyOn(__, 'isTrustedPublisherRegistered').mockReturnValue(true);
     vi.spyOn(__, 'ensureNpmLogin').mockReturnValue();
-    vi.spyOn(__, 'withOtpRetry').mockReturnValue();
+    vi.spyOn(__, 'registerTrustedPublishers').mockReturnValue();
   });
 
   it('should skip entirely when all packages are first-publish', async () => {
     releaseData.allPackages = [
-      { content: { name: 'pkg-x' }, isFirstPublish: true },
-      { content: { name: 'pkg-y' }, isFirstPublish: true },
+      {
+        content: { name: 'pkg-x' },
+        isFirstPublish: true,
+        hasTrustedPublisher: false,
+      },
+      {
+        content: { name: 'pkg-y' },
+        isFirstPublish: true,
+        hasTrustedPublisher: false,
+      },
     ];
 
     await ensureTrustedPublishing(releaseData);
 
     expect(__.ensureCircleciToken).not.toHaveBeenCalled();
+  });
+
+  it('should not call ensureNpmLogin when all packages have hasTrustedPublisher', async () => {
+    releaseData.allPackages = [
+      {
+        content: { name: 'pkg-a' },
+        isFirstPublish: false,
+        hasTrustedPublisher: true,
+      },
+      {
+        content: { name: 'pkg-b' },
+        isFirstPublish: false,
+        hasTrustedPublisher: true,
+      },
+    ];
+
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.ensureNpmLogin).not.toHaveBeenCalled();
+  });
+
+  it('should not call getCircleciTrustConfig when all packages have hasTrustedPublisher', async () => {
+    releaseData.allPackages = [
+      {
+        content: { name: 'pkg-a' },
+        isFirstPublish: false,
+        hasTrustedPublisher: true,
+      },
+      {
+        content: { name: 'pkg-b' },
+        isFirstPublish: false,
+        hasTrustedPublisher: true,
+      },
+    ];
+
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.getCircleciTrustConfig).not.toHaveBeenCalled();
+  });
+
+  it('should call ensureNpmLogin when some packages lack hasTrustedPublisher', async () => {
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.ensureNpmLogin).toHaveBeenCalled();
+  });
+
+  it('should call ensureRepoConfig even when all packages have hasTrustedPublisher', async () => {
+    releaseData.allPackages = [
+      {
+        content: { name: 'pkg-a' },
+        isFirstPublish: false,
+        hasTrustedPublisher: true,
+      },
+      {
+        content: { name: 'pkg-b' },
+        isFirstPublish: false,
+        hasTrustedPublisher: true,
+      },
+    ];
+
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.ensureRepoConfig).toHaveBeenCalled();
+  });
+
+  it('should only register packages that lack hasTrustedPublisher', async () => {
+    await ensureTrustedPublishing(releaseData);
+
+    expect(__.registerTrustedPublishers).toHaveBeenCalledWith(
+      ['pkg-b'],
+      trustConfig,
+    );
   });
 
   it('should throw when CircleCI token is missing', async () => {
@@ -124,118 +216,9 @@ describe('release/ensureTrustedPublishing', () => {
     });
   });
 
-  it('should register only unregistered packages', async () => {
-    vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(
-      (packageName) => {
-        return packageName === 'pkg-b';
-      },
-    );
-    vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
-    vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
-      for (const item of items) {
-        await callback(item, '123456');
-      }
-    });
-
-    await ensureTrustedPublishing(releaseData);
-
-    expect(__.ensureNpmLogin).toHaveBeenCalled();
-    expect(npmHelpers.registerTrustedPublisher).toHaveBeenCalledWith(
-      expect.objectContaining({ packageName: 'pkg-a' }),
-    );
-  });
-
-  it('should show context message before OTP prompt', async () => {
-    vi.spyOn(__, 'isTrustedPublisherRegistered').mockReturnValue(false);
-    vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
-    vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
-      for (const item of items) {
-        await callback(item, '123456');
-      }
-    });
-
-    await ensureTrustedPublishing(releaseData);
-
-    expect(__.consoleInfo).toHaveBeenCalledWith(
-      'Registering trusted publishers for 2 package(s) (requires OTP)',
-    );
-  });
-
-  it('should show registration progress with spinner', async () => {
-    const mockRegistrationSpinner = { tick: vi.fn(), success: vi.fn() };
-    let spinnerCallCount = 0;
-    vi.spyOn(__, 'spinner').mockImplementation(() => {
-      spinnerCallCount++;
-      // Second spinner() call is from registerTrustedPublishers
-      if (spinnerCallCount === 2) {
-        return mockRegistrationSpinner;
-      }
-      return { tick: vi.fn(), success: vi.fn() };
-    });
-    vi.spyOn(__, 'isTrustedPublisherRegistered').mockReturnValue(false);
-    vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
-    vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
-      for (const item of items) {
-        await callback(item, '123456');
-      }
-    });
-
-    await ensureTrustedPublishing(releaseData);
-
-    expect(mockRegistrationSpinner.tick).toHaveBeenCalledWith(
-      'Registering trusted publisher: pkg-a',
-    );
-    expect(mockRegistrationSpinner.tick).toHaveBeenCalledWith(
-      'Registering trusted publisher: pkg-b',
-    );
-    expect(mockRegistrationSpinner.success).toHaveBeenCalledWith(
-      'All trusted publishers registered',
-    );
-  });
-
-  it('should ensure npm login before checking trusted publishers', async () => {
-    const callOrder = [];
-    vi.spyOn(__, 'ensureNpmLogin').mockImplementation(() => {
-      callOrder.push('login');
-    });
-    vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(() => {
-      callOrder.push('check');
-      return true;
-    });
-
-    await ensureTrustedPublishing(releaseData);
-
-    expect(callOrder).toHaveProperty('0', 'login');
-    expect(callOrder).toHaveProperty('1', 'check');
-  });
-
-  it('should skip registration when all packages are registered', async () => {
-    await ensureTrustedPublishing(releaseData);
-
-    expect(__.withOtpRetry).not.toHaveBeenCalled();
-  });
-
-  describe('spinner message', () => {
-    let mockSpinner;
+  describe('registerTrustedPublishers', () => {
     beforeEach(() => {
-      mockSpinner = { tick: vi.fn(), success: vi.fn() };
-      vi.spyOn(__, 'spinner').mockReturnValue(mockSpinner);
-    });
-
-    it('should report all registered when no packages need registration', async () => {
-      await ensureTrustedPublishing(releaseData);
-
-      expect(mockSpinner.success).toHaveBeenCalledWith(
-        'All trusted publishers registered',
-      );
-    });
-
-    it('should report count when some packages need registration', async () => {
-      vi.spyOn(__, 'isTrustedPublisherRegistered').mockImplementation(
-        (packageName) => {
-          return packageName === 'pkg-b';
-        },
-      );
+      vi.spyOn(__, 'registerTrustedPublishers').mockRestore();
       vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
       vi.spyOn(__, 'withOtpRetry').mockImplementation(
         async (items, callback) => {
@@ -244,12 +227,37 @@ describe('release/ensureTrustedPublishing', () => {
           }
         },
       );
+    });
 
-      await ensureTrustedPublishing(releaseData);
+    it('should show context message before OTP prompt', async () => {
+      await __.registerTrustedPublishers(['pkg-a', 'pkg-b'], trustConfig);
 
-      expect(mockSpinner.success).toHaveBeenCalledWith(
-        '1 package(s) need trusted publisher registration',
+      expect(__.consoleInfo).toHaveBeenCalledWith(
+        'Registering trusted publishers for 2 package(s) (requires OTP)',
       );
+    });
+
+    it('should show registration progress with spinner', async () => {
+      const mockSpinner = { tick: vi.fn(), success: vi.fn() };
+      vi.spyOn(__, 'spinner').mockReturnValue(mockSpinner);
+
+      await __.registerTrustedPublishers(['pkg-a', 'pkg-b'], trustConfig);
+
+      expect(mockSpinner.tick).toHaveBeenCalledWith(
+        'Registering trusted publisher: pkg-a',
+      );
+      expect(mockSpinner.tick).toHaveBeenCalledWith(
+        'Registering trusted publisher: pkg-b',
+      );
+      expect(mockSpinner.success).toHaveBeenCalledWith(
+        'All trusted publishers registered',
+      );
+    });
+
+    it('should skip when no packages to register', async () => {
+      await __.registerTrustedPublishers([], trustConfig);
+
+      expect(__.withOtpRetry).not.toHaveBeenCalled();
     });
   });
 });

@@ -6,7 +6,6 @@ import {
   __,
   ensureNpmLogin,
   isFirstPublish,
-  isTrustedPublisherRegistered,
   registerTrustedPublisher,
   removeLegacyNpmAuth,
 } from '../npm.js';
@@ -130,78 +129,6 @@ describe('release/helpers/npm', () => {
         ],
         { env: { npm_config_otp: '654321' } },
       );
-    });
-  });
-
-  describe('isTrustedPublisherRegistered', () => {
-    const matchingProjectId = 'abc-123-def';
-
-    beforeEach(() => {
-      vi.spyOn(__, 'run').mockReturnValue({
-        stdout: JSON.stringify([
-          {
-            type: 'circleci',
-            claims: { 'oidc.circleci.com/project-id': matchingProjectId },
-          },
-          {
-            type: 'github-actions',
-            claims: { repository: 'owner/repo' },
-          },
-          {
-            type: 'circleci',
-            claims: { 'oidc.circleci.com/project-id': 'other-id' },
-          },
-        ]),
-      });
-    });
-
-    it('should call npm trust list with --json', async () => {
-      await isTrustedPublisherRegistered('my-package', matchingProjectId);
-
-      expect(__.run).toHaveBeenCalledWith(
-        ['npx', `npm@${npmVersion}`, 'trust', 'list', 'my-package', '--json'],
-        { stdout: false, stderr: false },
-      );
-    });
-
-    it.each([
-      {
-        title: 'matching CircleCI publisher found',
-        projectId: matchingProjectId,
-        expected: true,
-      },
-      {
-        title: 'different projectId',
-        projectId: 'wrong-id',
-        expected: false,
-      },
-      {
-        title: 'empty array',
-        runOutput: [],
-        projectId: matchingProjectId,
-        expected: false,
-      },
-      {
-        title: 'only GitHub publishers',
-        runOutput: [
-          { type: 'github-actions', claims: { repository: 'owner/repo' } },
-        ],
-        projectId: matchingProjectId,
-        expected: false,
-      },
-    ])('$title', async ({ projectId, runOutput, expected }) => {
-      if (runOutput) {
-        vi.spyOn(__, 'run').mockReturnValue({
-          stdout: JSON.stringify(runOutput),
-        });
-      }
-
-      const actual = await isTrustedPublisherRegistered(
-        'my-package',
-        projectId,
-      );
-
-      expect(actual).toEqual(expected);
     });
   });
 

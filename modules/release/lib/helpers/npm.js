@@ -38,31 +38,6 @@ export async function ensureNpmLogin() {
 }
 
 /**
- * Check if a CircleCI trusted publisher is registered for a package
- * @param {string} packageName - npm package name (may be scoped)
- * @param {string} projectId - CircleCI project UUID
- * @returns {Promise<boolean>} True if a matching trusted publisher exists
- */
-export async function isTrustedPublisherRegistered(packageName, projectId) {
-  const command = [
-    'npx',
-    `npm@${npmVersion}`,
-    'trust',
-    'list',
-    packageName,
-    '--json',
-  ];
-
-  const { stdout } = await __.run(command, { stdout: false, stderr: false });
-  const entries = JSON.parse(stdout);
-
-  return _.some(entries, {
-    type: 'circleci',
-    claims: { 'oidc.circleci.com/project-id': projectId },
-  });
-}
-
-/**
  * Register a CircleCI trusted publisher on npm for a package
  * @param {object} options - Registration options
  * @param {string} options.packageName - npm package name (may be scoped)
