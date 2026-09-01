@@ -52,11 +52,13 @@ describe('release/getReleaseData', () => {
             filepath: `${testDirectory}/packages/a/package.json`,
             content: { name: 'package-a', version: '1.5.9' },
             isFirstPublish: true,
+            hasTrustedPublisher: false,
           },
           {
             filepath: `${testDirectory}/packages/b/package.json`,
             content: { name: 'package-b', version: '1.5.9' },
             isFirstPublish: false,
+            hasTrustedPublisher: false,
           },
         ],
         currentVersion: '1.5.9',
@@ -64,6 +66,58 @@ describe('release/getReleaseData', () => {
         changelog: false,
       });
     });
+
+    it.each([
+      {
+        title: 'aberlaas.trustedPublisher is true',
+        packageContent: {
+          name: 'package-a',
+          version: '1.0.0',
+          aberlaas: { trustedPublisher: true },
+        },
+        expected: true,
+      },
+      {
+        title: 'no aberlaas key',
+        packageContent: { name: 'package-a', version: '1.0.0' },
+        expected: false,
+      },
+      {
+        title: 'aberlaas exists but trustedPublisher is not true',
+        packageContent: {
+          name: 'package-a',
+          version: '1.0.0',
+          aberlaas: { trustedPublisher: false },
+        },
+        expected: false,
+      },
+    ])(
+      'should set hasTrustedPublisher to $expected when $title',
+      async ({ packageContent, expected }) => {
+        await writeJson(
+          {
+            name: 'monorepo-root',
+            version: '1.0.0',
+            private: true,
+            workspaces: ['packages/*'],
+          },
+          `${testDirectory}/package.json`,
+        );
+        await writeJson(
+          packageContent,
+          `${testDirectory}/packages/a/package.json`,
+        );
+
+        vi.spyOn(__, 'isFirstPublish').mockReturnValue(false);
+
+        const actual = await getReleaseData({ _: ['patch'] });
+
+        expect(actual).toHaveProperty(
+          'allPackages.0.hasTrustedPublisher',
+          expected,
+        );
+      },
+    );
   });
 
   describe.slow('getBumpType', () => {

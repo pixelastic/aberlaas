@@ -27,7 +27,7 @@ export async function getReleaseData(cliArgs) {
 
   const newVersion = semver.inc(currentVersion, bumpType);
 
-  // Enrich each package with isFirstPublish from the npm registry
+  // Enrich each package with publish metadata
   const enrichedPackages = await pMap(
     allPackages,
     async (packageEntry) => {
@@ -35,6 +35,7 @@ export async function getReleaseData(cliArgs) {
       return {
         ...packageEntry,
         isFirstPublish: await __.isFirstPublish(packageName),
+        hasTrustedPublisher: __.hasTrustedPublisher(packageEntry),
       };
     },
     { concurrency: 5 },
@@ -88,6 +89,14 @@ __ = {
 
     // Anything else: patch
     return 'patch';
+  },
+  /**
+   * Checks if a package has trusted publishing configured
+   * @param {object} packageEntry - Package entry with content from package.json
+   * @returns {boolean} True if aberlaas.trustedPublisher is true
+   */
+  hasTrustedPublisher(packageEntry) {
+    return packageEntry.content.aberlaas?.trustedPublisher === true;
   },
   isFirstPublish,
 };
