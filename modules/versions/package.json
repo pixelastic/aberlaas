@@ -18,6 +18,9 @@
     ".": "./lib/main.js"
   },
   "main": "./lib/main.js",
+  "devDependencies": {
+    "firost": "5.11.0"
+  },
   "scripts": {
     "build": "cd ../docs && yarn run build",
     "build:prod": "cd ../docs && yarn run build:prod",

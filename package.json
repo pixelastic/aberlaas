@@ -13,7 +13,7 @@
     "url": "https://github.com/pixelastic/aberlaas"
   },
   "license": "MIT",
-  "packageManager": "yarn@4.12.0",
+  "packageManager": "yarn@4.18.0",
   "devDependencies": {
     "firost": "5.11.0",
     "golgoth": "4.0.0"

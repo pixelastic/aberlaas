@@ -4776,6 +4776,8 @@ __metadata:
 "aberlaas-versions@workspace:*, aberlaas-versions@workspace:modules/versions":
   version: 0.0.0-use.local
   resolution: "aberlaas-versions@workspace:modules/versions"
+  dependencies:
+    firost: "npm:5.11.0"
   languageName: unknown
   linkType: soft
 
