@@ -42,5 +42,8 @@
     "test": "cd ../.. && ./scripts/test",
     "test:meta": "cd ../.. && ./scripts/test-meta",
     "test:watch": "cd ../.. && ./scripts/test-watch"
+  },
+  "aberlaas": {
+    "trustedPublisher": true
   }
 }
