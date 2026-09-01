@@ -61,7 +61,14 @@ describe('release/trustedPublish', () => {
       await __.getOidcToken();
 
       expect(__.run).toHaveBeenCalledWith(
-        'circleci run oidc get --claims \'{"aud": "npm:registry.npmjs.org"}\'',
+        [
+          'circleci',
+          'run',
+          'oidc',
+          'get',
+          '--claims',
+          '{"aud": "npm:registry.npmjs.org"}',
+        ],
         { stdout: false },
       );
     });

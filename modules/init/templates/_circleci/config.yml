@@ -56,11 +56,11 @@ workflows:
   version: 2
   # On every commit
   commit:
-    when: not << pipeline.parameters.trusted_publish >>
+    when: not pipeline.parameters.trusted_publish
     jobs:
       - ci
   # Triggered by API for trusted publishing
   trusted-publish:
-    when: << pipeline.parameters.trusted_publish >>
+    when: pipeline.parameters.trusted_publish
     jobs:
       - trusted-publish

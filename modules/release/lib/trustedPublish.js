@@ -32,7 +32,14 @@ __ = {
    */
   async getOidcToken() {
     const { stdout } = await __.run(
-      'circleci run oidc get --claims \'{"aud": "npm:registry.npmjs.org"}\'',
+      [
+        'circleci',
+        'run',
+        'oidc',
+        'get',
+        '--claims',
+        '{"aud": "npm:registry.npmjs.org"}',
+      ],
       { stdout: false },
     );
     return stdout;
