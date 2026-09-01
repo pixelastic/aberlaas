@@ -66,7 +66,8 @@ __ = {
    */
   async pollWorkflowStatus(workflow, progress) {
     const jobData = await __.callApi(`workflow/${workflow.id}/job`);
-    const job = jobData.items[0];
+    const items = jobData.items || [];
+    const job = items[0];
     const status = job?.status || 'queued';
 
     progress.tick(`trusted-publish: ${status}`);

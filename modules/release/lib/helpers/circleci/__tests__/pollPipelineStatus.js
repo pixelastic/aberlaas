@@ -106,6 +106,33 @@ describe('circleci/pollPipelineStatus', () => {
     );
   });
 
+  it('should poll as queued when job list is not yet available', async () => {
+    vi.spyOn(__, 'callApi').mockImplementation((path) => {
+      if (path.startsWith('pipeline/')) {
+        return workflowResponse;
+      }
+      jobCallCount++;
+      if (jobCallCount === 1) {
+        return {};
+      }
+      return {
+        items: [
+          {
+            id: 'job-1',
+            name: 'trusted-publish',
+            status: 'success',
+            job_number: 7,
+          },
+        ],
+      };
+    });
+
+    await pollPipelineStatus('pipeline-123');
+
+    expect(mockProgress.tick).toHaveBeenCalledWith('trusted-publish: queued');
+    expect(__.sleep).toHaveBeenCalled();
+  });
+
   it('should display spinner with job status updates', async () => {
     vi.spyOn(__, 'callApi').mockImplementation((path) => {
       if (path.startsWith('pipeline/')) {
