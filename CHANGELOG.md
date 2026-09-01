@@ -1,3 +1,11 @@
+## v2.38.2
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.38.1...v2.38.2)
+
+### Bug Fixes
+
+- **circleci:** Handle missing job list during pipeline polling ([395f5bd](https://github.com/pixelastic/aberlaas/commit/395f5bd))
+
 ## v2.38.1
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.38.0...v2.38.1)
