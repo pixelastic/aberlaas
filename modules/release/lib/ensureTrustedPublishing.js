@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { consoleInfo, spinner } from 'firost';
+import { consoleInfo, readJson, spinner, writeJson } from 'firost';
 import { hostGitRoot } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
 import {
@@ -53,9 +53,17 @@ export async function ensureTrustedPublishing(releaseData) {
   // Fetch CircleCI trust config
   const trustConfig = await __.getCircleciTrustConfig();
 
-  // Register unregistered packages with OTP
-  const unregisteredNames = _.map(unregisteredPackages, 'content.name');
-  await __.registerTrustedPublishers(unregisteredNames, trustConfig);
+  // Register unregistered packages with OTP and save flags
+  await __.registerTrustedPublishers(unregisteredPackages, trustConfig);
+
+  // Commit and push the package.json changes
+  const repo = __.createRepo();
+  const commitHashBefore = await repo.currentCommit();
+  await repo.commitAll('chore: flag trusted publishers in package.json');
+  const commitHashAfter = await repo.currentCommit();
+  if (commitHashBefore !== commitHashAfter) {
+    await repo.push();
+  }
 }
 
 __ = {
@@ -98,37 +106,54 @@ __ = {
 
   /**
    * Register unregistered packages as trusted publishers with OTP
-   * @param {string[]} packageNames - Names of packages to register
+   * Saves the trusted publisher flag to each package.json after registration
+   * @param {object[]} packages - Package objects with filepath and content
    * @param {object} trustConfig - CircleCI trust config
    * @returns {Promise<void>}
    */
-  async registerTrustedPublishers(packageNames, trustConfig) {
-    if (_.isEmpty(packageNames)) {
+  async registerTrustedPublishers(packages, trustConfig) {
+    if (_.isEmpty(packages)) {
       return;
     }
 
     __.consoleInfo(
-      `Registering trusted publishers for ${packageNames.length} package(s) (requires OTP)`,
+      `Registering trusted publishers for ${packages.length} package(s) (requires OTP)`,
     );
 
     let progress;
-    await __.withOtpRetry(packageNames, async (packageName, otp) => {
+    await __.withOtpRetry(packages, async (packageData, otp) => {
       // Start a progress on first loop
       if (!progress) {
-        progress = __.spinner(packageNames.length);
+        progress = __.spinner(packages.length);
       }
-      progress.tick(`Registering trusted publisher: ${packageName}`);
+      progress.tick(
+        `Registering trusted publisher: ${packageData.content.name}`,
+      );
       await registerTrustedPublisher({
-        packageName,
+        packageName: packageData.content.name,
         otp,
         ...trustConfig,
       });
+      await __.saveTrustedPublisherFlag(packageData);
     });
     progress.success('All trusted publishers registered');
   },
 
+  /**
+   * Write aberlaas.trustedPublisher: true to a package's package.json
+   * @param {object} packageData - Package object with filepath and content
+   * @returns {Promise<void>}
+   */
+  async saveTrustedPublisherFlag(packageData) {
+    const content = await __.readJson(packageData.filepath);
+    content.aberlaas = { ...content.aberlaas, trustedPublisher: true };
+    await __.writeJson(content, packageData.filepath, { sort: false });
+  },
+
   consoleInfo,
+  readJson,
   spinner,
+  writeJson,
   ensureCircleciToken,
   removeLegacyNpmAuth,
   hasPublishWorkflow,

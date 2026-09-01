@@ -37,6 +37,7 @@ describe('release/ensureTrustedPublishing', () => {
 
     mockRepo = {
       currentCommit: vi.fn().mockReturnValue('abc123'),
+      commitAll: vi.fn().mockReturnValue(),
       push: vi.fn().mockReturnValue(),
     };
 
@@ -45,6 +46,7 @@ describe('release/ensureTrustedPublishing', () => {
       tick: vi.fn(),
       success: vi.fn(),
     });
+    vi.spyOn(__, 'createRepo').mockReturnValue(mockRepo);
     vi.spyOn(__, 'ensureCircleciToken').mockReturnValue();
     vi.spyOn(__, 'ensureRepoConfig').mockReturnValue();
     vi.spyOn(__, 'getCircleciTrustConfig').mockReturnValue(trustConfig);
@@ -138,7 +140,7 @@ describe('release/ensureTrustedPublishing', () => {
     await ensureTrustedPublishing(releaseData);
 
     expect(__.registerTrustedPublishers).toHaveBeenCalledWith(
-      ['pkg-b'],
+      [releaseData.allPackages[1]],
       trustConfig,
     );
   });
@@ -217,8 +219,14 @@ describe('release/ensureTrustedPublishing', () => {
   });
 
   describe('registerTrustedPublishers', () => {
+    const packages = [
+      { filepath: '/path/a/package.json', content: { name: 'pkg-a' } },
+      { filepath: '/path/b/package.json', content: { name: 'pkg-b' } },
+    ];
+
     beforeEach(() => {
       vi.spyOn(__, 'registerTrustedPublishers').mockRestore();
+      vi.spyOn(__, 'saveTrustedPublisherFlag').mockReturnValue();
       vi.spyOn(npmHelpers, 'registerTrustedPublisher').mockReturnValue();
       vi.spyOn(__, 'withOtpRetry').mockImplementation(
         async (items, callback) => {
@@ -230,7 +238,7 @@ describe('release/ensureTrustedPublishing', () => {
     });
 
     it('should show context message before OTP prompt', async () => {
-      await __.registerTrustedPublishers(['pkg-a', 'pkg-b'], trustConfig);
+      await __.registerTrustedPublishers(packages, trustConfig);
 
       expect(__.consoleInfo).toHaveBeenCalledWith(
         'Registering trusted publishers for 2 package(s) (requires OTP)',
@@ -241,7 +249,7 @@ describe('release/ensureTrustedPublishing', () => {
       const mockSpinner = { tick: vi.fn(), success: vi.fn() };
       vi.spyOn(__, 'spinner').mockReturnValue(mockSpinner);
 
-      await __.registerTrustedPublishers(['pkg-a', 'pkg-b'], trustConfig);
+      await __.registerTrustedPublishers(packages, trustConfig);
 
       expect(mockSpinner.tick).toHaveBeenCalledWith(
         'Registering trusted publisher: pkg-a',
@@ -258,6 +266,98 @@ describe('release/ensureTrustedPublishing', () => {
       await __.registerTrustedPublishers([], trustConfig);
 
       expect(__.withOtpRetry).not.toHaveBeenCalled();
+    });
+
+    it('should save trusted publisher flag after each registration', async () => {
+      await __.registerTrustedPublishers(packages, trustConfig);
+
+      expect(__.saveTrustedPublisherFlag).toHaveBeenCalledWith(packages[0]);
+      expect(__.saveTrustedPublisherFlag).toHaveBeenCalledWith(packages[1]);
+    });
+  });
+
+  describe('saveTrustedPublisherFlag', () => {
+    const packageData = {
+      filepath: '/path/to/package.json',
+      content: { name: 'pkg-a' },
+    };
+
+    beforeEach(() => {
+      vi.spyOn(__, 'readJson').mockReturnValue({
+        name: 'pkg-a',
+        version: '1.0.0',
+        dependencies: { lodash: '^4.0.0' },
+        aberlaas: { existingKey: 'value' },
+      });
+      vi.spyOn(__, 'writeJson').mockReturnValue();
+    });
+
+    it('should write aberlaas.trustedPublisher true to package.json', async () => {
+      await __.saveTrustedPublisherFlag(packageData);
+
+      const writtenContent = __.writeJson.mock.calls[0][0];
+      expect(writtenContent).toHaveProperty('aberlaas.trustedPublisher', true);
+    });
+
+    it('should preserve existing package.json content', async () => {
+      await __.saveTrustedPublisherFlag(packageData);
+
+      const writtenContent = __.writeJson.mock.calls[0][0];
+      expect(writtenContent).toEqual({
+        name: 'pkg-a',
+        version: '1.0.0',
+        dependencies: { lodash: '^4.0.0' },
+        aberlaas: { existingKey: 'value', trustedPublisher: true },
+      });
+    });
+
+    it('should merge with existing aberlaas key if present', async () => {
+      await __.saveTrustedPublisherFlag(packageData);
+
+      const writtenContent = __.writeJson.mock.calls[0][0];
+      expect(writtenContent).toHaveProperty('aberlaas', {
+        existingKey: 'value',
+        trustedPublisher: true,
+      });
+    });
+  });
+
+  describe('commit after registration', () => {
+    beforeEach(() => {
+      mockRepo.commitAll = vi.fn().mockReturnValue();
+      vi.spyOn(__, 'createRepo').mockReturnValue(mockRepo);
+    });
+
+    it('should commit all package.json changes after successful registration', async () => {
+      await ensureTrustedPublishing(releaseData);
+
+      expect(mockRepo.commitAll).toHaveBeenCalled();
+    });
+
+    it('should push the commit to remote', async () => {
+      mockRepo.currentCommit
+        .mockReturnValueOnce('sha-before')
+        .mockReturnValueOnce('sha-after');
+
+      await ensureTrustedPublishing(releaseData);
+
+      expect(mockRepo.push).toHaveBeenCalled();
+    });
+
+    it('should not commit when registration fails mid-batch', async () => {
+      vi.spyOn(__, 'registerTrustedPublishers').mockImplementation(() => {
+        throw new Error('OTP failed');
+      });
+
+      let actual = null;
+      try {
+        await ensureTrustedPublishing(releaseData);
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).not.toBeNull();
+      expect(mockRepo.commitAll).not.toHaveBeenCalled();
     });
   });
 });
