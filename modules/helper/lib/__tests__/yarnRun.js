@@ -50,7 +50,11 @@ export async function setupFixture(rootPath, fixtureType) {
 }
 
 describe.slow('helper/yarnRun', () => {
-  const testDirectory = tmpDirectory(`aberlaas/${describeName}`);
+  // forceDisk: /dev/shm is mounted noexec on CircleCI, and this test
+  // executes scripts from the temp directory
+  const testDirectory = tmpDirectory(`aberlaas/${describeName}`, {
+    forceDisk: true,
+  });
   afterAll(async () => {
     await remove(testDirectory);
   });
