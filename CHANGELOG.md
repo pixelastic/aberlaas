@@ -1,3 +1,11 @@
+## v2.38.1
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.38.0...v2.38.1)
+
+### Bug Fixes
+
+- **release:** Pass circleci oidc command as argument array ([47ecbb7](https://github.com/pixelastic/aberlaas/commit/47ecbb7))
+
 ## v2.38.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.37.0...v2.38.0)
