@@ -43,7 +43,7 @@ export async function publishToNpm(releaseData) {
   // Trusted publish via CircleCI pipeline
   if (!_.isEmpty(trustedPublishPackages)) {
     const packageNames = _.map(trustedPublishPackages, 'content.name');
-    const pipelineId = await __.triggerPipeline(`v${newVersion}`, packageNames);
+    const pipelineId = await __.triggerPipeline(packageNames);
     await __.pollPipelineStatus(pipelineId);
   }
 }

@@ -103,7 +103,7 @@ describe('release/publishToNpm', () => {
 
       await publishToNpm(releaseData);
 
-      expect(__.triggerPipeline).toHaveBeenCalledWith('v2.0.0', [
+      expect(__.triggerPipeline).toHaveBeenCalledWith([
         'package-c',
         'package-d',
       ]);
@@ -131,7 +131,7 @@ describe('release/publishToNpm', () => {
       expect(__.ensureYarnNpmLogin).not.toHaveBeenCalled();
       expect(__.withOtpRetry).not.toHaveBeenCalled();
       expect(__.pushToRegistry).not.toHaveBeenCalled();
-      expect(__.triggerPipeline).toHaveBeenCalledWith('v2.0.0', [
+      expect(__.triggerPipeline).toHaveBeenCalledWith([
         'package-c',
         'package-d',
       ]);

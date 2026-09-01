@@ -23,6 +23,7 @@ describe('circleci/pollPipelineStatus', () => {
     };
     vi.spyOn(__, 'spinner').mockReturnValue(mockProgress);
     vi.spyOn(__, 'sleep').mockReturnValue();
+    vi.spyOn(__, 'consoleInfo').mockReturnValue();
     jobCallCount = 0;
   });
 
@@ -79,6 +80,30 @@ describe('circleci/pollPipelineStatus', () => {
     expect(actual).toHaveProperty('code', 'ABERLAAS_RELEASE_CI_PUBLISH_FAILED');
     expect(actual.message).toContain('https://app.circleci.com');
     expect(mockProgress.failure).toHaveBeenCalled();
+  });
+
+  it('should display the pipeline URL once the workflow is found', async () => {
+    vi.spyOn(__, 'callApi').mockImplementation((path) => {
+      if (path.startsWith('pipeline/')) {
+        return workflowResponse;
+      }
+      return {
+        items: [
+          {
+            id: 'job-1',
+            name: 'trusted-publish',
+            status: 'success',
+            job_number: 7,
+          },
+        ],
+      };
+    });
+
+    await pollPipelineStatus('pipeline-123');
+
+    expect(__.consoleInfo).toHaveBeenCalledWith(
+      'https://app.circleci.com/pipelines/gh/myorg/myrepo/42',
+    );
   });
 
   it('should display spinner with job status updates', async () => {

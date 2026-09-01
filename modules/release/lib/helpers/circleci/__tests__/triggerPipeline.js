@@ -10,7 +10,7 @@ describe('circleci/triggerPipeline', () => {
   });
 
   it('should POST to CircleCI API with correct parameters', async () => {
-    await triggerPipeline('v2.0.0', ['package-a', 'package-b']);
+    await triggerPipeline(['package-a', 'package-b']);
 
     expect(__.callApi).toHaveBeenCalledWith(
       'project/gh/myorg/myrepo/pipeline',
@@ -18,7 +18,7 @@ describe('circleci/triggerPipeline', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          tag: 'v2.0.0',
+          branch: 'main',
           parameters: {
             trusted_publish: true,
             packages: 'package-a,package-b',
@@ -29,7 +29,7 @@ describe('circleci/triggerPipeline', () => {
   });
 
   it('should return pipeline ID', async () => {
-    const actual = await triggerPipeline('v2.0.0', ['package-a']);
+    const actual = await triggerPipeline(['package-a']);
 
     expect(actual).toEqual('pipeline-uuid-123');
   });

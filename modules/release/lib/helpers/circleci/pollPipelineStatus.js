@@ -1,4 +1,4 @@
-import { firostError, sleep, spinner } from 'firost';
+import { consoleInfo, firostError, sleep, spinner } from 'firost';
 import { callApi } from './callApi.js';
 
 const pollInterval = 15 * 1000;
@@ -27,30 +27,44 @@ export let __;
  */
 export async function pollPipelineStatus(pipelineId) {
   const progress = __.spinner();
-  await __.checkOnce(pipelineId, progress);
+  const workflow = await __.waitForWorkflow(pipelineId, progress);
+
+  const pipelineUrl = __.getPipelineUrl(workflow);
+  __.consoleInfo(pipelineUrl);
+
+  await __.pollWorkflowStatus(workflow, progress);
 }
 
 __ = {
   /**
-   * Single poll iteration: check status, resolve if terminal, schedule another check otherwise
+   * Wait until the trusted-publish workflow appears on the pipeline
    * @param {string} pipelineId - CircleCI pipeline UUID
    * @param {object} progress - Spinner instance
-   * @returns {Promise<void>}
+   * @returns {Promise<object>} The workflow object
    */
-  async checkOnce(pipelineId, progress) {
+  async waitForWorkflow(pipelineId, progress) {
+    progress.tick('Waiting for trusted-publish workflow...');
+
     const workflowData = await __.callApi(`pipeline/${pipelineId}/workflow`);
     const workflow = workflowData.items.find(
       (item) => item.name === 'trusted-publish',
     );
 
-    // No workflow yet, wait for it
-    if (!workflow) {
-      progress.tick('Waiting for trusted-publish workflow...');
-      await __.sleep(pollInterval);
-      return await __.checkOnce(pipelineId, progress);
+    if (workflow) {
+      return workflow;
     }
 
-    // Get the job
+    await __.sleep(pollInterval);
+    return await __.waitForWorkflow(pipelineId, progress);
+  },
+
+  /**
+   * Poll the workflow status until it reaches a terminal state
+   * @param {object} workflow - Workflow object from CircleCI API
+   * @param {object} progress - Spinner instance
+   * @returns {Promise<void>}
+   */
+  async pollWorkflowStatus(workflow, progress) {
     const jobData = await __.callApi(`workflow/${workflow.id}/job`);
     const job = jobData.items[0];
     const status = job?.status || 'queued';
@@ -75,7 +89,17 @@ __ = {
 
     // Still going
     await __.sleep(pollInterval);
-    return await __.checkOnce(pipelineId, progress);
+    return await __.pollWorkflowStatus(workflow, progress);
+  },
+
+  /**
+   * Build the CircleCI pipeline URL from workflow data
+   * @param {object} workflow - Workflow object from CircleCI API
+   * @returns {string} URL to the pipeline
+   */
+  getPipelineUrl(workflow) {
+    const { project_slug, pipeline_number } = workflow;
+    return `https://app.circleci.com/pipelines/${project_slug}/${pipeline_number}`;
   },
 
   /**
@@ -90,6 +114,7 @@ __ = {
     return `https://app.circleci.com/pipelines/${project_slug}/${pipeline_number}/workflows/${workflowId}/jobs/${job_number}`;
   },
 
+  consoleInfo,
   callApi,
   sleep,
   spinner,
