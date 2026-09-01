@@ -97,17 +97,19 @@ describe('release/helpers/npm', () => {
   });
 
   describe('registerTrustedPublisher', () => {
+    const registrationOptions = {
+      packageName: '@scope/my-package',
+      otp: '654321',
+      circleciOrgId: 'org-uuid',
+      circleciProjectId: 'proj-uuid',
+      circleciPipelineDefinitionId: 'pipe-uuid',
+      vcsOrigin: 'gh/owner/repo',
+    };
+
     it('should run npm trust circleci with --yes and OTP via env var', async () => {
       vi.spyOn(__, 'run').mockReturnValue();
 
-      await registerTrustedPublisher({
-        packageName: '@scope/my-package',
-        otp: '654321',
-        circleciOrgId: 'org-uuid',
-        circleciProjectId: 'proj-uuid',
-        circleciPipelineDefinitionId: 'pipe-uuid',
-        vcsOrigin: 'gh/owner/repo',
-      });
+      await registerTrustedPublisher(registrationOptions);
 
       expect(__.run).toHaveBeenCalledWith(
         [
@@ -129,6 +131,40 @@ describe('release/helpers/npm', () => {
         ],
         { env: { npm_config_otp: '654321' } },
       );
+    });
+
+    it('should succeed when npm returns "already registered" error', async () => {
+      const error = new Error('Command failed with exit code 1');
+      error.stderr =
+        'npm error code E409\nnpm error 409 Conflict - POST https://registry.npmjs.org/-/package/@scope%2Fmy-package/trust';
+      vi.spyOn(__, 'run').mockImplementation(() => {
+        throw error;
+      });
+
+      let actual = null;
+      try {
+        await registerTrustedPublisher(registrationOptions);
+      } catch (err) {
+        actual = err;
+      }
+      expect(actual).toEqual(null);
+    });
+
+    it('should throw when npm returns a non-registration error', async () => {
+      const error = new Error('Command failed with exit code 1');
+      error.stderr =
+        'npm error code E403\nnpm error 403 Forbidden - POST https://registry.npmjs.org/-/package/@scope%2Fmy-package/trust';
+      vi.spyOn(__, 'run').mockImplementation(() => {
+        throw error;
+      });
+
+      let actual = null;
+      try {
+        await registerTrustedPublisher(registrationOptions);
+      } catch (err) {
+        actual = err;
+      }
+      expect(actual).toEqual(error);
     });
   });
 
