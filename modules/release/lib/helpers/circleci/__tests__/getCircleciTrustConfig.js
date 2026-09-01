@@ -41,7 +41,7 @@ describe('getCircleciTrustConfig', () => {
       circleciOrgId: 'org-uuid-123',
       circleciProjectId: 'proj-uuid-456',
       circleciPipelineDefinitionId: 'pipeline-def-789',
-      vcsOrigin: 'github/myorg/myrepo',
+      vcsOrigin: 'github.com/myorg/myrepo',
     });
   });
 

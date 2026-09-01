@@ -21,7 +21,7 @@ export async function getCircleciTrustConfig() {
   const circleciPipelineDefinitionId =
     await __.waitForPipelineDefinition(circleciProjectId);
 
-  const vcsOrigin = `github/${org}/${repo}`;
+  const vcsOrigin = `github.com/${org}/${repo}`;
 
   return {
     circleciOrgId,

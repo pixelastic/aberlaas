@@ -7,7 +7,7 @@ describe('release/ensureTrustedPublishing', () => {
     circleciOrgId: 'org-123',
     circleciProjectId: 'proj-456',
     circleciPipelineDefinitionId: 'pipe-789',
-    vcsOrigin: 'github/acme/repo',
+    vcsOrigin: 'github.com/acme/repo',
   };
 
   let releaseData;
