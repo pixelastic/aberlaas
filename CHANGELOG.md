@@ -1,3 +1,14 @@
+## v2.37.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.36.0...v2.37.0)
+
+### Features
+
+- **release:** Now uses Trusted Publishers for packages already released
+- **lint:** Ban weak vitest matchers and vi.mock usage ([64f45ca](https://github.com/pixelastic/aberlaas/commit/64f45ca))
+- **init:** Add trusted-publish workflow to CircleCI config template ([05f13c1](https://github.com/pixelastic/aberlaas/commit/05f13c1))
+- **lint:** Enforce strict equality with eqeqeq ESLint rule ([e52a4f1](https://github.com/pixelastic/aberlaas/commit/e52a4f1))
+
 ## v2.36.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.35.0...v2.36.0)
