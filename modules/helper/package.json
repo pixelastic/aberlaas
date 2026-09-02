@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-helper",
-  "version": "2.38.2",
+  "version": "2.39.0",
   "type": "module",
   "description": "aberlaas shared helper: Common methods used by all commands",
   "author": "Tim Carry <tim@pixelastic.com>",

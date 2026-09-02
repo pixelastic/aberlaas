@@ -1,3 +1,11 @@
+## v2.39.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.38.2...v2.39.0)
+
+### Features
+
+- **lint:** Add versions linter to check packageManager field ([94e21dc](https://github.com/pixelastic/aberlaas/commit/94e21dc))
+
 ## v2.38.2
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.38.1...v2.38.2)

@@ -1,6 +1,6 @@
 {
   "name": "aberlaas-lint",
-  "version": "2.38.2",
+  "version": "2.39.0",
   "type": "module",
   "description": "aberlaas lint command: Lint files",
   "author": "Tim Carry <tim@pixelastic.com>",
