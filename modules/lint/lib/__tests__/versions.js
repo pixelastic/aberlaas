@@ -1,7 +1,7 @@
-import { remove, tmpDirectory, write, writeJson } from 'firost';
+import { read, readJson, remove, tmpDirectory, write, writeJson } from 'firost';
 import { hostGitPath, mockHelperPaths } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
-import { run } from '../versions.js';
+import { __, fix, run } from '../versions.js';
 
 describe('lint/versions', () => {
   let testDirectory;
@@ -284,6 +284,214 @@ describe('lint/versions', () => {
         expect(actual.message).toContain('packageManager');
         expect(actual.message).toContain('engines.node');
         expect(actual.message).toContain('.nvmrc');
+      });
+    });
+  });
+
+  describe('fix', () => {
+    describe('package.json fixes', () => {
+      it('should fix packageManager in package.json', async () => {
+        await writeJson(
+          {
+            packageManager: 'yarn@4.5.0',
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+
+        await fix();
+
+        const actual = await readJson(hostGitPath('package.json'));
+        expect(actual).toHaveProperty('packageManager', `yarn@${yarnVersion}`);
+      });
+
+      it('should fix engines.node in package.json', async () => {
+        await writeJson(
+          {
+            packageManager: `yarn@${yarnVersion}`,
+            engines: { node: '>=18.0.0' },
+          },
+          hostGitPath('package.json'),
+        );
+
+        await fix();
+
+        const actual = await readJson(hostGitPath('package.json'));
+        expect(actual).toHaveProperty('engines.node', `>=${nodeVersion}`);
+      });
+    });
+
+    describe('.nvmrc fixes', () => {
+      it('should fix .nvmrc content', async () => {
+        await writeJson(
+          {
+            packageManager: `yarn@${yarnVersion}`,
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+        await write('18.0.0', hostGitPath('.nvmrc'));
+
+        await fix();
+
+        const actual = await read(hostGitPath('.nvmrc'));
+        expect(actual).toEqual(nodeVersion);
+      });
+
+      it('should skip .nvmrc fix when file does not exist', async () => {
+        await writeJson(
+          {
+            packageManager: 'yarn@4.5.0',
+            engines: { node: '>=18.0.0' },
+          },
+          hostGitPath('package.json'),
+        );
+
+        await fix();
+
+        const actual = await readJson(hostGitPath('package.json'));
+        expect(actual).toHaveProperty('packageManager', `yarn@${yarnVersion}`);
+      });
+    });
+
+    describe('.circleci/config.yml fixes', () => {
+      it('should fix cimg/node pattern in circleci config', async () => {
+        await writeJson(
+          {
+            packageManager: `yarn@${yarnVersion}`,
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+        await write(
+          'jobs:\n  build:\n    docker:\n      - image: cimg/node:18.0.0',
+          hostGitPath('.circleci/config.yml'),
+        );
+
+        await fix();
+
+        const actual = await read(hostGitPath('.circleci/config.yml'));
+        expect(actual).toContain(`cimg/node:${nodeVersion}`);
+      });
+
+      it('should fix yarn-set-version pattern in circleci config', async () => {
+        await writeJson(
+          {
+            packageManager: `yarn@${yarnVersion}`,
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+        await write(
+          'steps:\n  - run: yarn set version 4.0.0',
+          hostGitPath('.circleci/config.yml'),
+        );
+
+        await fix();
+
+        const actual = await read(hostGitPath('.circleci/config.yml'));
+        expect(actual).toContain(`yarn set version ${yarnVersion}`);
+      });
+
+      it('should skip circleci fix when file does not exist', async () => {
+        await writeJson(
+          {
+            packageManager: 'yarn@4.5.0',
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+
+        await fix();
+
+        const actual = await readJson(hostGitPath('package.json'));
+        expect(actual).toHaveProperty('packageManager', `yarn@${yarnVersion}`);
+      });
+
+      it('should skip circleci fix when patterns are not found', async () => {
+        await writeJson(
+          {
+            packageManager: `yarn@${yarnVersion}`,
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+        await write(
+          'jobs:\n  build:\n    steps:\n      - run: echo hello',
+          hostGitPath('.circleci/config.yml'),
+        );
+
+        const actual = await fix();
+
+        expect(actual).toBe(true);
+      });
+    });
+
+    describe('idempotency', () => {
+      it('should not modify files when versions already match', async () => {
+        await writeJson(
+          {
+            packageManager: `yarn@${yarnVersion}`,
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+        await write(nodeVersion, hostGitPath('.nvmrc'));
+        await write(
+          `jobs:\n  build:\n    docker:\n      - image: cimg/node:${nodeVersion}\n    steps:\n      - run: yarn set version ${yarnVersion}`,
+          hostGitPath('.circleci/config.yml'),
+        );
+
+        await fix();
+
+        const packageJson = await readJson(hostGitPath('package.json'));
+        expect(packageJson).toHaveProperty(
+          'packageManager',
+          `yarn@${yarnVersion}`,
+        );
+        expect(packageJson).toHaveProperty('engines.node', `>=${nodeVersion}`);
+        const nvmrc = await read(hostGitPath('.nvmrc'));
+        expect(nvmrc).toEqual(nodeVersion);
+        const circleci = await read(hostGitPath('.circleci/config.yml'));
+        expect(circleci).toContain(`cimg/node:${nodeVersion}`);
+        expect(circleci).toContain(`yarn set version ${yarnVersion}`);
+      });
+    });
+
+    describe('verification', () => {
+      it('should throw if mismatch persists after fix', async () => {
+        await writeJson(
+          {
+            packageManager: 'yarn@4.5.0',
+            engines: { node: `>=${nodeVersion}` },
+          },
+          hostGitPath('package.json'),
+        );
+        vi.spyOn(__, 'findMismatches').mockReturnValue({
+          mismatches: [
+            {
+              file: 'package.json',
+              field: 'packageManager',
+              actual: 'yarn@4.5.0',
+              expected: `yarn@${yarnVersion}`,
+            },
+          ],
+          files: {
+            'package.json': {
+              path: hostGitPath('package.json'),
+              content: { packageManager: 'yarn@4.5.0' },
+            },
+          },
+        });
+
+        let actual = null;
+        try {
+          await fix();
+        } catch (error) {
+          actual = error;
+        }
+
+        expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_VERSIONS');
       });
     });
   });

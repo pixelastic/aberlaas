@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { exists, firostError, read, readJson } from 'firost';
+import { exists, firostError, read, readJson, write, writeJson } from 'firost';
 import { hostGitPath } from 'aberlaas-helper';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 
@@ -10,7 +10,7 @@ export let __;
  * @returns {boolean} True when all versions match
  */
 export async function run() {
-  const mismatches = await __.findMismatches();
+  const { mismatches } = await __.findMismatches();
 
   if (_.isEmpty(mismatches)) {
     return true;
@@ -27,23 +27,64 @@ export async function run() {
 }
 
 /**
- * Fix version mismatches (no-op for now, delegates to run)
- * @returns {boolean} True when all versions match
+ * Fix version mismatches in project files, then verify
+ * @returns {boolean} True when all versions match after patching
  */
 export async function fix() {
+  const { mismatches, files } = await __.findMismatches();
+
+  if (_.isEmpty(mismatches)) {
+    return true;
+  }
+
+  const mismatchedFiles = _.map(mismatches, 'file');
+
+  // package.json
+  if (_.includes(mismatchedFiles, 'package.json')) {
+    const { path, content: packageJson } = files['package.json'];
+    _.each(mismatches, ({ file, field, expected }) => {
+      if (file !== 'package.json') {
+        return;
+      }
+      _.set(packageJson, field, expected);
+    });
+    await writeJson(packageJson, path);
+  }
+
+  // .nvmrc
+  if (_.includes(mismatchedFiles, '.nvmrc')) {
+    await write(nodeVersion, files['.nvmrc'].path);
+  }
+
+  // .circleci/config.yml
+  if (_.includes(mismatchedFiles, '.circleci/config.yml')) {
+    let { content: circleCiConfig } = files['.circleci/config.yml'];
+    circleCiConfig = circleCiConfig.replace(
+      /cimg\/node:\S+/g,
+      `cimg/node:${nodeVersion}`,
+    );
+    circleCiConfig = circleCiConfig.replace(
+      /yarn set version \S+/g,
+      `yarn set version ${yarnVersion}`,
+    );
+    await write(circleCiConfig, files['.circleci/config.yml'].path);
+  }
+
   return await run();
 }
 
 __ = {
   /**
-   * Collect all version mismatches
-   * @returns {object[]} Array of { file, field, actual, expected }
+   * Collect all version mismatches and loaded file contents
+   * @returns {object} { mismatches: object[], files: object }
    */
   async findMismatches() {
     const mismatches = [];
+    const files = {};
 
     const packageJsonPath = await hostGitPath('package.json');
     const packageJson = await readJson(packageJsonPath);
+    files['package.json'] = { path: packageJsonPath, content: packageJson };
     const expectedPackageManager = `yarn@${yarnVersion}`;
     const actualPackageManager = packageJson.packageManager;
 
@@ -71,6 +112,7 @@ __ = {
     // .nvmrc (skip if file does not exist)
     const nvmrcPath = await hostGitPath('.nvmrc');
     if (await exists(nvmrcPath)) {
+      files['.nvmrc'] = { path: nvmrcPath };
       const actualNvmrc = _.trim(await read(nvmrcPath));
       if (actualNvmrc !== nodeVersion) {
         mismatches.push({
@@ -85,6 +127,10 @@ __ = {
     const circleCiPath = await hostGitPath('.circleci/config.yml');
     if (await exists(circleCiPath)) {
       const circleCiContent = await read(circleCiPath);
+      files['.circleci/config.yml'] = {
+        path: circleCiPath,
+        content: circleCiContent,
+      };
 
       // cimg/node pattern
       const cimgMatch = circleCiContent.match(/cimg\/node:(\S+)/);
@@ -115,7 +161,7 @@ __ = {
       }
     }
 
-    return mismatches;
+    return { mismatches, files };
   },
 };
 
