@@ -48,7 +48,7 @@ export async function fix() {
       }
       _.set(packageJson, field, expected);
     });
-    await writeJson(packageJson, path);
+    await writeJson(packageJson, path, { sort: false });
   }
 
   // .nvmrc
