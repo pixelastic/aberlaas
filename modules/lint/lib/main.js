@@ -58,6 +58,7 @@ __ = {
     html: './html.js',
     json: './json.js',
     js: './js.js',
+    versions: './versions.js',
     yml: './yml.js',
   },
 

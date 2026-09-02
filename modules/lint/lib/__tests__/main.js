@@ -21,6 +21,7 @@ describe('lint/main', () => {
         html: { run: vi.fn(), fix: vi.fn() },
         json: { run: vi.fn(), fix: vi.fn() },
         js: { run: vi.fn(), fix: vi.fn() },
+        versions: { run: vi.fn(), fix: vi.fn() },
         yml: { run: vi.fn(), fix: vi.fn() },
       };
       vi.spyOn(__, 'getLinter').mockImplementation((linterName) => {
@@ -38,6 +39,7 @@ describe('lint/main', () => {
       expect(mockedLinters.html.run).toHaveBeenCalled();
       expect(mockedLinters.json.run).toHaveBeenCalled();
       expect(mockedLinters.js.run).toHaveBeenCalled();
+      expect(mockedLinters.versions.run).toHaveBeenCalled();
       expect(mockedLinters.yml.run).toHaveBeenCalled();
     });
     it('should run only selected linters if cliArgs passed', async () => {
