@@ -5,15 +5,15 @@ describe('release/trustedPublish', () => {
     vi.spyOn(__, 'getAllPublicPackages').mockReturnValue([
       {
         filepath: '/path/to/alpha/package.json',
-        content: { name: 'alpha' },
+        content: { name: 'alpha', version: '1.0.0' },
       },
       {
         filepath: '/path/to/beta/package.json',
-        content: { name: 'beta' },
+        content: { name: 'beta', version: '1.0.0' },
       },
       {
         filepath: '/path/to/gamma/package.json',
-        content: { name: 'gamma' },
+        content: { name: 'gamma', version: '1.0.0' },
       },
     ]);
     vi.spyOn(__, 'getOidcToken').mockReturnValue('oidc-token-abc');
@@ -24,11 +24,17 @@ describe('release/trustedPublish', () => {
     await trustedPublish('alpha,gamma');
 
     expect(__.pushToRegistry).toHaveBeenCalledWith(
-      { filepath: '/path/to/alpha/package.json', content: { name: 'alpha' } },
+      {
+        filepath: '/path/to/alpha/package.json',
+        content: { name: 'alpha', version: '1.0.0' },
+      },
       { env: { NPM_ID_TOKEN: 'oidc-token-abc' } },
     );
     expect(__.pushToRegistry).toHaveBeenCalledWith(
-      { filepath: '/path/to/gamma/package.json', content: { name: 'gamma' } },
+      {
+        filepath: '/path/to/gamma/package.json',
+        content: { name: 'gamma', version: '1.0.0' },
+      },
       { env: { NPM_ID_TOKEN: 'oidc-token-abc' } },
     );
     expect(__.pushToRegistry).not.toHaveBeenCalledWith(

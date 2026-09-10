@@ -22,6 +22,8 @@ export async function trustedPublish(packagesString) {
 
   await pMap(packages, async (packageData) => {
     await __.pushToRegistry(packageData, { env: { NPM_ID_TOKEN: oidcToken } });
+    const { name, version } = packageData.content;
+    console.info(`Published ${name}@${version}`);
   });
 }
 

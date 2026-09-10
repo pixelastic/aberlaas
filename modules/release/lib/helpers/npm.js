@@ -78,7 +78,11 @@ export async function registerTrustedPublisher({
   try {
     // npm doesn't have a --otp, but reads its values from ENV var named
     // npm_config_*
-    await __.run(command, { env: { npm_config_otp: otp } });
+    await __.run(command, {
+      env: { npm_config_otp: otp },
+      stdout: false,
+      stderr: false,
+    });
   } catch (error) {
     // npm registry returns 409 Conflict when a trusted publisher is already
     // configured for this package. We do not consider this an error and ignore

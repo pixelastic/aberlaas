@@ -129,7 +129,7 @@ describe('release/helpers/npm', () => {
           '--allow-publish',
           '--yes',
         ],
-        { env: { npm_config_otp: '654321' } },
+        { env: { npm_config_otp: '654321' }, stdout: false, stderr: false },
       );
     });
 
