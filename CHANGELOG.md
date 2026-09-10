@@ -1,3 +1,11 @@
+## v2.39.2
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.1...v2.39.2)
+
+### Bug Fixes
+
+- **release:** Suppress npm output and log published package versions ([c8c8a46](https://github.com/pixelastic/aberlaas/commit/c8c8a46))
+
 ## v2.39.1
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.0...v2.39.1)
