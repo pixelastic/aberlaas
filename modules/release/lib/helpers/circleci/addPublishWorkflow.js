@@ -129,7 +129,7 @@ __ = {
    *
    * ```yaml
    * trusted-publish:
-   *   when: << pipeline.parameters.trusted_publish >>
+   *   when: pipeline.parameters.trusted_publish
    *   jobs:
    *     - trusted-publish
    * ```
@@ -140,7 +140,7 @@ __ = {
     const workflows = doc.get('workflows');
 
     const workflowNode = doc.createNode({
-      when: '<< pipeline.parameters.trusted_publish >>',
+      when: 'pipeline.parameters.trusted_publish',
       jobs: ['trusted-publish'],
     });
 
@@ -152,7 +152,7 @@ __ = {
    *
    * ```yaml
    * commit:
-   *   when: not << pipeline.parameters.trusted_publish >>
+   *   when: not pipeline.parameters.trusted_publish
    *   jobs:
    *     - ci
    * ```
@@ -164,7 +164,7 @@ __ = {
 
     const whenPair = new Pair(
       new Scalar('when'),
-      new Scalar('not << pipeline.parameters.trusted_publish >>'),
+      new Scalar('not pipeline.parameters.trusted_publish'),
     );
     commitWorkflow.items.unshift(whenPair);
   },

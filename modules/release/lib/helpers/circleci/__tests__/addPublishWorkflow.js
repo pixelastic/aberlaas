@@ -102,7 +102,7 @@ describe('addPublishWorkflow', () => {
 
       expect(workflow).toHaveProperty(
         'when',
-        '<< pipeline.parameters.trusted_publish >>',
+        'pipeline.parameters.trusted_publish',
       );
       expect(workflow).toHaveProperty('jobs', ['trusted-publish']);
     });
@@ -113,7 +113,7 @@ describe('addPublishWorkflow', () => {
 
       expect(parsed).toHaveProperty(
         'workflows.commit.when',
-        'not << pipeline.parameters.trusted_publish >>',
+        'not pipeline.parameters.trusted_publish',
       );
     });
 
