@@ -1,3 +1,11 @@
+## v2.39.1
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.0...v2.39.1)
+
+### Bug Fixes
+
+- **release:** Remove `<< >>` in circle ci auto-fixed config ([f8e06b6](https://github.com/pixelastic/aberlaas/commit/f8e06b6))
+
 ## v2.39.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.38.2...v2.39.0)
