@@ -40,7 +40,7 @@
     "aberlaas-helper": "workspace:*",
     "aberlaas-versions": "workspace:*",
     "firost": "5.11.0",
-    "gilmore": "1.2.2",
+    "gilmore": "1.4.0",
     "golgoth": "4.0.0"
   },
   "scripts": {
