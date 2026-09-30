@@ -1,3 +1,11 @@
+## v2.39.3
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.2...v2.39.3)
+
+### Bug Fixes
+
+- **renovate:** Replace aberlaas preset with explicit GitHub source reference ([8f2a5cc](https://github.com/pixelastic/aberlaas/commit/8f2a5cc))
+
 ## v2.39.2
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.1...v2.39.2)
