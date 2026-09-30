@@ -147,5 +147,18 @@ describe('init/module', () => {
       expect(circleciConfig).toContain(`cimg/node:${nodeVersion}`);
       expect(circleciConfig).toContain(`yarn set version ${yarnVersion}`);
     });
+
+    it('should extend the GitHub renovate preset', async () => {
+      await run();
+
+      const renovateConfig = await readJson(
+        hostGitPath('.github/renovate.json'),
+      );
+
+      expect(renovateConfig).toHaveProperty('extends', [
+        'config:js-lib',
+        'github>pixelastic/renovate-config-aberlaas',
+      ]);
+    });
   });
 });
