@@ -21,7 +21,7 @@
   },
   "main": "./lib/main.js",
   "devDependencies": {
-    "gilmore": "1.2.2",
+    "gilmore": "1.4.0",
     "golgoth": "4.0.0",
     "micromatch": "4.0.8"
   },
