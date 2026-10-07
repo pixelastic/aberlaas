@@ -4,6 +4,7 @@ import {
   pollPipelineStatus,
   triggerPipeline,
 } from './helpers/circleci/index.js';
+import { waitForNpmAvailability } from './helpers/npm/index.js';
 import { withOtpRetry } from './helpers/otp.js';
 import { pushToRegistry } from './helpers/registry.js';
 import { ensureYarnNpmLogin } from './helpers/yarn.js';
@@ -45,6 +46,7 @@ export async function publishToNpm(releaseData) {
     const packageNames = _.map(trustedPublishPackages, 'content.name');
     const pipelineId = await __.triggerPipeline(packageNames);
     await __.pollPipelineStatus(pipelineId);
+    await __.waitForNpmAvailability(packageNames, newVersion);
   }
 }
 
@@ -53,6 +55,7 @@ __ = {
   pushToRegistry,
   triggerPipeline,
   pollPipelineStatus,
+  waitForNpmAvailability,
   withOtpRetry,
   spinner,
 };

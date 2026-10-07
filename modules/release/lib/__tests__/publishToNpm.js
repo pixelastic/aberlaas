@@ -42,6 +42,7 @@ describe('release/publishToNpm', () => {
     vi.spyOn(__, 'pushToRegistry').mockReturnValue();
     vi.spyOn(__, 'triggerPipeline').mockReturnValue('pipeline-uuid');
     vi.spyOn(__, 'pollPipelineStatus').mockReturnValue();
+    vi.spyOn(__, 'waitForNpmAvailability').mockReturnValue();
     vi.spyOn(__, 'withOtpRetry').mockImplementation(async (items, callback) => {
       await pMap(items, async (item) => {
         await callback(item, '123456');
@@ -108,6 +109,35 @@ describe('release/publishToNpm', () => {
         'package-d',
       ]);
       expect(__.pollPipelineStatus).toHaveBeenCalledWith('pipeline-uuid');
+    });
+
+    it('should wait for npm availability after the pipeline, for trusted-publish packages', async () => {
+      let pipelineDone = false;
+      __.pollPipelineStatus.mockImplementation(() => {
+        pipelineDone = true;
+      });
+      __.waitForNpmAvailability.mockImplementation(() => {
+        if (!pipelineDone) {
+          throw new Error('waitForNpmAvailability called before pipeline');
+        }
+      });
+
+      await publishToNpm(releaseData);
+
+      expect(__.waitForNpmAvailability).toHaveBeenCalledWith(
+        ['package-c', 'package-d'],
+        '2.0.0',
+      );
+    });
+
+    it('should not wait for npm availability when all packages are first-publish', async () => {
+      const onlyFirstPublish = {
+        ...releaseData,
+        allPackages: [firstPublishA, firstPublishB],
+      };
+      await publishToNpm(onlyFirstPublish);
+
+      expect(__.waitForNpmAvailability).not.toHaveBeenCalled();
     });
 
     it('should skip CI trigger when all packages are first-publish', async () => {
