@@ -165,12 +165,14 @@ describe('npm/waitForNpmAvailability', () => {
   });
 
   describe('progress', () => {
-    it('shows Check 1/20 on the first check', async () => {
+    it('shows check 1 on the first check', async () => {
       __.getPublishedVersions.mockReturnValue({ aberlaas: '2.0.0' });
 
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 
-      expect(tickTexts()[0]).toEqual('Check 1/20 — next check in 60s');
+      expect(tickTexts()[0]).toEqual(
+        'Checking availability on npm: #1 (next check in 60s)',
+      );
     });
 
     it('shows the check number increasing on each check', async () => {
@@ -182,9 +184,15 @@ describe('npm/waitForNpmAvailability', () => {
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 
       const texts = tickTexts();
-      expect(texts).toContain('Check 1/20 — next check in 60s');
-      expect(texts).toContain('Check 2/20 — next check in 60s');
-      expect(texts).toContain('Check 3/20 — next check in 60s');
+      expect(texts).toContain(
+        'Checking availability on npm: #1 (next check in 60s)',
+      );
+      expect(texts).toContain(
+        'Checking availability on npm: #2 (next check in 60s)',
+      );
+      expect(texts).toContain(
+        'Checking availability on npm: #3 (next check in 60s)',
+      );
     });
 
     it('counts the seconds down every second between two checks', async () => {
@@ -196,10 +204,22 @@ describe('npm/waitForNpmAvailability', () => {
 
       const texts = tickTexts();
       expect(texts).toHaveLength(61);
-      expect(texts).toHaveProperty('1', 'Check 1/20 — next check in 59s');
-      expect(texts).toHaveProperty('2', 'Check 1/20 — next check in 58s');
-      expect(texts).toHaveProperty('59', 'Check 1/20 — next check in 1s');
-      expect(texts).toHaveProperty('60', 'Check 2/20 — next check in 60s');
+      expect(texts).toHaveProperty(
+        '1',
+        'Checking availability on npm: #1 (next check in 59s)',
+      );
+      expect(texts).toHaveProperty(
+        '2',
+        'Checking availability on npm: #1 (next check in 58s)',
+      );
+      expect(texts).toHaveProperty(
+        '59',
+        'Checking availability on npm: #1 (next check in 1s)',
+      );
+      expect(texts).toHaveProperty(
+        '60',
+        'Checking availability on npm: #2 (next check in 60s)',
+      );
     });
 
     it('shows a success message with the elapsed time', async () => {

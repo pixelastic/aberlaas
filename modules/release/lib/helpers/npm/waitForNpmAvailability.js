@@ -114,7 +114,7 @@ __ = {
    * @returns {string} The spinner text
    */
   getProgressText(checkCount, seconds) {
-    return `Check ${checkCount}/${maxChecks} — next check in ${seconds}s`;
+    return `Checking availability on npm: #${checkCount} (next check in ${seconds}s)`;
   },
 
   /**
