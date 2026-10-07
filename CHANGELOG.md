@@ -1,3 +1,13 @@
+## v2.40.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.3...v2.40.0)
+
+### Features
+
+- **release:** Add helper to fetch published npm versions in one request ([db603cb](https://github.com/pixelastic/aberlaas/commit/db603cb))
+- **release:** Wait for npm availability after trusted publish ([206a66f](https://github.com/pixelastic/aberlaas/commit/206a66f))
+- **release:** Show live progress while waiting for npm availability ([305d24c](https://github.com/pixelastic/aberlaas/commit/305d24c))
+
 ## v2.39.3
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.2...v2.39.3)
