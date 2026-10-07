@@ -3,7 +3,7 @@ import { hostGitRoot } from 'aberlaas-helper';
 import { getGitDiff, parseCommits } from 'changelogen';
 import semver from 'semver';
 import { getLastReleasePoint } from './helpers/git.js';
-import { isFirstPublish } from './helpers/npm.js';
+import { isFirstPublish } from './helpers/npm/index.js';
 import { getAllPublicPackages } from './helpers/yarn.js';
 
 export let __;

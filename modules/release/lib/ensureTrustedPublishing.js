@@ -12,7 +12,7 @@ import {
   ensureNpmLogin,
   registerTrustedPublisher,
   removeLegacyNpmAuth,
-} from './helpers/npm.js';
+} from './helpers/npm/index.js';
 import { withOtpRetry } from './helpers/otp.js';
 
 export let __;

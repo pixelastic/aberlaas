@@ -1,6 +1,6 @@
 import { firostError } from 'firost';
 import { __, ensureTrustedPublishing } from '../ensureTrustedPublishing.js';
-import * as npmHelpers from '../helpers/npm.js';
+import * as npmHelpers from '../helpers/npm/index.js';
 
 describe('release/ensureTrustedPublishing', () => {
   const trustConfig = {

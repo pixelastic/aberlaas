@@ -14,7 +14,8 @@
   "files": [
     "lib/*.js",
     "lib/helpers/*.js",
-    "lib/helpers/circleci/*.js"
+    "lib/helpers/circleci/*.js",
+    "lib/helpers/npm/*.js"
   ],
   "exports": {
     ".": "./lib/main.js",
