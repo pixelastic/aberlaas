@@ -1,6 +1,7 @@
 import configDocs from './docs.js';
 import configJs from './js.js';
 import configJson from './json.js';
+import configMarkdown from './markdown.js';
 import configReact from './react.js';
 import configScripts from './scripts.js';
 import configToml from './toml.js';
@@ -13,6 +14,7 @@ export default [
   ...configReact,
   ...configVue,
   ...configJson,
+  ...configMarkdown,
   ...configToml,
   ...configScripts,
   ...configDocs,

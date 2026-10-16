@@ -1,0 +1,44 @@
+import pluginMarkdown from '@eslint/markdown';
+import eslintConfigPrettier from 'eslint-config-prettier';
+
+export default [
+  {
+    name: 'aberlaas/markdown',
+    files: ['**/*.md'],
+    plugins: {
+      markdown: pluginMarkdown,
+    },
+    language: 'markdown/gfm',
+    languageOptions: {
+      frontmatter: 'yaml',
+    },
+    rules: {
+      'markdown/fenced-code-language': ['error'],
+      'markdown/fenced-code-meta': ['off'],
+      'markdown/heading-increment': ['error'],
+      'markdown/no-bare-urls': ['off'],
+      'markdown/no-duplicate-definitions': ['error'],
+      'markdown/no-duplicate-headings': ['off'],
+      'markdown/no-empty-definitions': ['error'],
+      'markdown/no-empty-images': ['error'],
+      'markdown/no-empty-links': ['error'],
+      'markdown/no-html': ['off'],
+      'markdown/no-invalid-label-refs': ['error'],
+      'markdown/no-missing-atx-heading-space': ['error'],
+      'markdown/no-missing-label-refs': ['error'],
+      'markdown/no-missing-link-fragments': ['error'],
+      'markdown/no-multiple-h1': ['error'],
+      'markdown/no-reference-like-urls': ['error'],
+      'markdown/no-reversed-media-syntax': ['error'],
+      'markdown/no-space-in-emphasis': ['error'],
+      'markdown/no-unused-definitions': ['error'],
+      'markdown/require-alt-text': ['error'],
+      'markdown/table-column-count': ['error'],
+    },
+  },
+  {
+    ...eslintConfigPrettier,
+    name: 'aberlaas/markdownPrettier',
+    files: ['**/*.md'],
+  },
+];
