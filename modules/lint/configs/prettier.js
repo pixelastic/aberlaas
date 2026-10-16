@@ -12,4 +12,13 @@ export default {
   singleQuote: true,
   plugins: [tailwindcssPlugin],
   tailwindFunctions: ['clsx'],
+  overrides: [
+    {
+      files: '*.md',
+      options: {
+        embeddedLanguageFormatting: 'off',
+        proseWrap: 'always',
+      },
+    },
+  ],
 };

@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
-import { absolute, gitRoot, newFile, remove, write } from 'firost';
+import { absolute, gitRoot, newFile, read, remove, write } from 'firost';
 import { hostGitPath, mockHelperPaths } from 'aberlaas-helper';
-import { __, run } from '../markdown.js';
+import { __, fix, run } from '../markdown.js';
 
 describe('lint/markdown', () => {
   // IMPORTANT: This test MUST use a directory inside the repository (not /tmp system)
@@ -85,6 +85,128 @@ describe('lint/markdown', () => {
         'message',
         expect.stringContaining('bad.md'),
       );
+      expect(actual).toHaveProperty(
+        'message',
+        expect.stringContaining('markdown/heading-increment'),
+      );
+    });
+  });
+  describe('fix', () => {
+    it('should wrap long prose at 80 columns', async () => {
+      const filepath = hostGitPath('long.md');
+      const sentence = 'The quick brown fox jumps over the lazy dog. ';
+      await write(`# Title\n\n${sentence.repeat(5)}\n`, filepath);
+
+      await fix();
+
+      const actual = await read(filepath);
+      const longestLine = _.chain(actual)
+        .split('\n')
+        .map('length')
+        .max()
+        .value();
+      expect(longestLine).toBeLessThanOrEqual(80);
+      expect(_.replace(actual, /\s+/g, ' ')).toEqual(
+        _.trimEnd(`# Title ${sentence.repeat(5)}`),
+      );
+    });
+    it('should keep front matter, code fences, tables and inline code intact', async () => {
+      const filepath = hostGitPath('post.md');
+      const input = [
+        '---',
+        'title: Hello',
+        'tags:',
+        '  - a',
+        '  - b',
+        '---',
+        '',
+        'Some `inline code that is quite long and must never be wrapped even when it goes past the limit` text.',
+        '',
+        '```js',
+        'const veryLongLine = "this line inside a code fence is much longer than eighty columns and stays";',
+        '```',
+        '',
+        '| Name | Value |',
+        '| ---- | ----- |',
+        '| a    | 1     |',
+        '',
+      ].join('\n');
+      await write(input, filepath);
+
+      await fix();
+
+      const actual = await read(filepath);
+      expect(actual).toContain('---\ntitle: Hello\ntags:\n  - a\n  - b\n---\n');
+      expect(actual).toContain(
+        'const veryLongLine = "this line inside a code fence is much longer than eighty columns and stays";',
+      );
+      expect(actual).toContain(
+        '| Name | Value |\n| ---- | ----- |\n| a    | 1     |',
+      );
+      expect(actual).toContain(
+        '`inline code that is quite long and must never be wrapped even when it goes past the limit`',
+      );
+    });
+    it.each([
+      {
+        title: 'no-missing-atx-heading-space',
+        input: '# Title\n\n##Subtitle\n',
+        expected: '# Title\n\n## Subtitle',
+      },
+      {
+        title: 'no-reversed-media-syntax',
+        input: '# Title\n\n(Alt text)[image.png]\n',
+        expected: '# Title\n\n[Alt text](image.png)',
+      },
+      {
+        title: 'no-reference-like-urls',
+        input: '# Title\n\n[Link](foo)\n\n[foo]: https://example.com\n',
+        expected: '# Title\n\n[Link][foo]\n\n[foo]: https://example.com',
+      },
+      {
+        title: 'no-space-in-emphasis',
+        input: '# Title\n\nSome ** bold ** text.\n',
+        expected: '# Title\n\nSome **bold** text.',
+      },
+    ])('should fix $title', async ({ input, expected }) => {
+      const filepath = hostGitPath('fixable.md');
+      await write(input, filepath);
+
+      await fix();
+
+      const actual = await read(filepath);
+      expect(actual).toEqual(expected);
+    });
+    it('should leave the file unchanged on a second run', async () => {
+      const filepath = hostGitPath('twice.md');
+      await write(
+        '---\ntitle: Hello\n---\n\n##Subtitle\n\nSome ** bold ** text that is long enough to be wrapped by Prettier because it goes past the limit.\n\n```js\nconst a = 1;\n```\n\n| Name | Value |\n| ---- | ----- |\n| a    | 1     |\n',
+        filepath,
+      );
+
+      await fix();
+      const afterFirst = await read(filepath);
+      await fix();
+      const afterSecond = await read(filepath);
+
+      expect(afterSecond).toEqual(afterFirst);
+    });
+    it('should stop early if no file found', async () => {
+      const actual = await fix();
+
+      expect(actual).toBe(true);
+    });
+    it('should throw if still errors', async () => {
+      await write('# Title\n\n### Skipped level\n', hostGitPath('bad.md'));
+
+      let actual = null;
+      try {
+        await fix();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_MARKDOWN_FIX');
       expect(actual).toHaveProperty(
         'message',
         expect.stringContaining('markdown/heading-increment'),
