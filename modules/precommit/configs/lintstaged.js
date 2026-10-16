@@ -4,6 +4,7 @@ export const commands = {
   lintCircleci: 'yarn run lint --circleci',
   lintJson: 'yarn run lint:fix --json',
   lintJs: 'yarn run lint:fix --js',
+  lintMarkdown: 'yarn run lint:fix --markdown',
   testJs: 'yarn run test --fail-fast --related',
   compressPng: 'yarn run compress --png',
   readme: 'yarn run aberlaas readme --add-to-git',
@@ -24,5 +25,5 @@ export default {
   '**/*.png': [commands.compressPng],
 
   // Documentation
-  '**/*.md': [commands.readme],
+  '**/*.md': [commands.readme, commands.lintMarkdown],
 };

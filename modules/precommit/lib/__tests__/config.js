@@ -49,10 +49,10 @@ describe('precommit/lintstaged-config', () => {
     ['screenshot.png', [commands.compressPng]],
 
     // README
-    ['README.md', [commands.readme]],
-    ['LICENSE.md', [commands.readme]],
-    ['docs/method.md', [commands.readme]],
-    ['lib/README.md', [commands.readme]],
+    ['README.md', [commands.readme, commands.lintMarkdown]],
+    ['LICENSE.md', [commands.readme, commands.lintMarkdown]],
+    ['docs/method.md', [commands.readme, commands.lintMarkdown]],
+    ['lib/README.md', [commands.readme, commands.lintMarkdown]],
   ])('%s', (input, expected) => {
     const actual = getCommandsForFile(input);
 
