@@ -23,6 +23,7 @@ describe('release/updateChangelog', () => {
       vi.spyOn(__, 'generateChangelogFromGit');
       vi.spyOn(__, 'confirmOrEditChangelog');
       vi.spyOn(__, 'addToExistingChangelogFile');
+      vi.spyOn(__, 'fixChangelog');
     });
 
     it('should do nothing when changelog is false', async () => {
@@ -44,6 +45,8 @@ describe('release/updateChangelog', () => {
 
       __.generateChangelogFromGit.mockReturnValue('Generated changelog');
       __.confirmOrEditChangelog.mockReturnValue('Edited changelog');
+      __.addToExistingChangelogFile.mockReturnValue();
+      __.fixChangelog.mockReturnValue();
 
       await updateChangelog(releaseData);
 
@@ -54,6 +57,16 @@ describe('release/updateChangelog', () => {
       expect(__.addToExistingChangelogFile).toHaveBeenCalledWith(
         'Edited changelog',
       );
+      expect(__.fixChangelog).toHaveBeenCalled();
+      expect(
+        __.addToExistingChangelogFile.mock.invocationCallOrder[0],
+      ).toBeLessThan(__.fixChangelog.mock.invocationCallOrder[0]);
+    });
+
+    it('should not fix the changelog when changelog is false', async () => {
+      await updateChangelog({ changelog: false });
+
+      expect(__.fixChangelog).not.toHaveBeenCalled();
     });
   });
 
@@ -236,6 +249,37 @@ describe('release/updateChangelog', () => {
 
       const actual = await read(`${testDirectory}/CHANGELOG.md`);
       expect(actual).toEqual('New changelog\n\nExisting changelog');
+    });
+  });
+
+  describe('fixChangelog', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'lint').mockReturnValue(true);
+    });
+
+    it('should fix only the markdown changelog file', async () => {
+      await __.fixChangelog();
+
+      expect(__.lint).toHaveBeenCalledWith({
+        fix: true,
+        markdown: true,
+        _: [`${testDirectory}/CHANGELOG.md`],
+      });
+    });
+
+    it('should let lint errors propagate', async () => {
+      __.lint.mockImplementation(() => {
+        throw new Error('Lint failed');
+      });
+
+      let actual = null;
+      try {
+        await __.fixChangelog();
+      } catch (err) {
+        actual = err;
+      }
+
+      expect(actual).toHaveProperty('message', 'Lint failed');
     });
   });
 });

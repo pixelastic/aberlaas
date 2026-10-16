@@ -9,6 +9,7 @@ import {
   write,
 } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
+import { run as lint } from 'aberlaas-lint';
 import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen';
 import cliMarkdown from 'cli-markdown';
 import Gilmore from 'gilmore';
@@ -30,6 +31,7 @@ export async function updateChangelog(releaseData) {
   const approvedChangelog = await __.confirmOrEditChangelog(suggestedChangelog);
 
   await __.addToExistingChangelogFile(approvedChangelog);
+  await __.fixChangelog();
 }
 
 __ = {
@@ -157,6 +159,18 @@ __ = {
     await write(updatedChangelog, changelogPath);
   },
 
+  /**
+   * Lint and fix the CHANGELOG.md file, so a release never leaves an invalid
+   * one. Lint errors propagate and abort the release.
+   */
+  async fixChangelog() {
+    await __.lint({
+      fix: true,
+      markdown: true,
+      _: [hostGitPath('CHANGELOG.md')],
+    });
+  },
+
   consoleLog(input) {
     console.log(input);
   },
@@ -164,5 +178,6 @@ __ = {
   select,
   cliMarkdown,
   run,
+  lint,
   getLastReleasePoint,
 };
