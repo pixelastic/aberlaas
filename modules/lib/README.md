@@ -47,12 +47,14 @@ yarn run aberlaas setup
 
 ```
 
-**Note:** You'll only run `init` and `setup` once when bootstrapping a new project.
+**Note:** You'll only run `init` and `setup` once when bootstrapping a new
+project.
 
 ## Core Commands
 
 These are the commands you'll use daily during development. They're available as
-`aberlaas <command>` but typically accessed directly through `yarn run <command>`.
+`aberlaas <command>` but typically accessed directly through
+`yarn run <command>`.
 
 ### `yarn run test`
 
@@ -74,7 +76,7 @@ yarn run test --fail-fast
 
 ### `yarn run lint`
 
-Lints JavaScript, CSS, JSON, YAML, and CircleCI config files.
+Lints JavaScript, CSS, JSON, YAML, Markdown, and CircleCI config files.
 
 ```bash
 # Lint everything
@@ -83,7 +85,7 @@ yarn run lint
 # Auto-fix what's fixable
 yarn run lint --fix
 
-# Lint specific file types (also supports --css, --json, --yml, --circleci)
+# Lint specific file types (also supports --css, --json, --yml, --markdown, --circleci)
 yarn run lint --js
 ```
 
@@ -115,7 +117,8 @@ root and can be customized as needed.
 // lintstaged.config.js
 ```
 
-Each file imports default configuration from `aberlaas/configs/*`, but you can override any setting:
+Each file imports default configuration from `aberlaas/configs/*`, but you can
+override any setting:
 
 ```javascript
 // eslint.config.js - example of extending the config
@@ -132,7 +135,8 @@ export default [
 ];
 ```
 
-This approach gives you sensible defaults while maintaining full control when you need it.
+This approach gives you sensible defaults while maintaining full control when
+you need it.
 
 ## Automated Workflows
 
@@ -142,14 +146,17 @@ A `pre-commit` hook will run before each commit, preventing you from commiting
 broken files.
 
 On each commit, it:
+
 - Runs tests on changed files
 - Lints staged files
 - Compresses images
 - Regenerates README files
 
-Note: If the hook fail to trigger, register it again with `git config core.hooksPath scripts/hooks`
+Note: If the hook fail to trigger, register it again with
+`git config core.hooksPath scripts/hooks`
 
 The `precommit` command uses two other commands behind the scenes:
+
 - `yarn run aberlaas compress` - Compresses images
 - `yarn run aberlaas readme` - Generates README from templates
 

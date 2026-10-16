@@ -9,5 +9,7 @@
 
 ## Testing conventions
 
-- Use `mockHelperPaths(testDirectory)` from `aberlaas-helper` to mock all path helpers at once — never mock `hostGitRoot`/`hostGitPath`/`hostPackageRoot` individually
+- Use `mockHelperPaths(testDirectory)` from `aberlaas-helper` to mock all path
+  helpers at once — never mock `hostGitRoot`/`hostGitPath`/`hostPackageRoot`
+  individually
 - See `modules/helper/lib/test-helper.js` for available test helpers

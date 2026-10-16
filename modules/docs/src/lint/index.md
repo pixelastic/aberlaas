@@ -24,6 +24,7 @@ documentation:
 - [CSS](./css/)
 - [JSON](./json/)
 - [YAML](./yaml/)
+- [Markdown](./markdown/)
 - [CircleCI](./circleci/)
 - [Dockerfile](./dockerfile/)
 

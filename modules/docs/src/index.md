@@ -131,7 +131,7 @@ describe('moduleName', () => {
 `aberlaas` uses `lint-staged` to make sure all committed code
 follows your coding standard.
 
-All `css`, `js`, `json` and `yml` files will be checked for parsing errors
+All `css`, `js`, `json`, `md` and `yml` files will be checked for parsing errors
 (using `aberlaas lint` internally), and if errors are found it will attempt to
 automatically fix them. If errors persist, it will prevent the commit and let
 you know which file contains errors so you can fix them before committing again.
