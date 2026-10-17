@@ -1,3 +1,12 @@
+## v2.41.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.40.0...v2.41.0)
+
+### Features
+
+- **lint:** Add Markdown linting via @eslint/markdown
+  ([91e15b8](https://github.com/pixelastic/aberlaas/commit/91e15b8))
+
 ## v2.40.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.39.3...v2.40.0)
