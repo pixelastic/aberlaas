@@ -117,16 +117,16 @@ export const __ = {
   },
 
   /**
-   * Return a config object for a specific tool.
+   * Return the absolute path of the config file for a specific tool.
    * Will first check for the user supplied path to the config file, then
    * fallback to the default config file in the host, and finally fallback to
-   * the default base config in the aberlaas module.
+   * the path of the base config file in the aberlaas module.
    * @param {string} userConfigPath User specified config file, relative to the host root
    * @param {string} hostConfigPath Default host config path, relative to the host root
-   * @param {object} baseConfig Base aberlaas config, final fallback
-   * @returns {object} Config object
+   * @param {string} baseConfigPath Absolute path to the base aberlaas config file, final fallback
+   * @returns {string|null} Absolute path of the config file, or null if none found
    */
-  async getConfig(userConfigPath, hostConfigPath, baseConfig = {}) {
+  async getConfigPath(userConfigPath, hostConfigPath, baseConfigPath = null) {
     // Taking value from --config in CLI in priority
     if (userConfigPath) {
       const configPath = __.hostGitPath(userConfigPath);
@@ -137,15 +137,35 @@ export const __ = {
         );
       }
 
-      return await firostImport(configPath, { forceReload: true });
+      return configPath;
     }
 
     // Checking for custom config in the host
     if (hostConfigPath) {
       const hostConfigFullPath = __.hostGitPath(hostConfigPath);
       if (await exists(hostConfigFullPath)) {
-        return await firostImport(hostConfigFullPath, { forceReload: true });
+        return hostConfigFullPath;
       }
+    }
+
+    // Fallback on default config file in aberlaas
+    return baseConfigPath;
+  },
+
+  /**
+   * Return a config object for a specific tool.
+   * Will first check for the user supplied path to the config file, then
+   * fallback to the default config file in the host, and finally fallback to
+   * the default base config in the aberlaas module.
+   * @param {string} userConfigPath User specified config file, relative to the host root
+   * @param {string} hostConfigPath Default host config path, relative to the host root
+   * @param {object} baseConfig Base aberlaas config, final fallback
+   * @returns {object} Config object
+   */
+  async getConfig(userConfigPath, hostConfigPath, baseConfig = {}) {
+    const configPath = await __.getConfigPath(userConfigPath, hostConfigPath);
+    if (configPath) {
+      return await firostImport(configPath, { forceReload: true });
     }
 
     // Fallback on default config in aberlaas
@@ -195,5 +215,6 @@ export const findHostFiles = wrap(__, 'findHostFiles');
 export const hostGitRoot = wrap(__, 'hostGitRoot');
 export const hostGitPath = wrap(__, 'hostGitPath');
 export const getConfig = wrap(__, 'getConfig');
+export const getConfigPath = wrap(__, 'getConfigPath');
 export const yarnRun = wrap(__, 'yarnRun');
 export const run = wrap(__, 'run');

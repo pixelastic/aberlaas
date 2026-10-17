@@ -1,7 +1,9 @@
 import { newFile, remove, tmpDirectory, write, writeJson } from 'firost';
 import {
+  __,
   findHostFiles,
   getConfig,
+  getConfigPath,
   hostGitPath,
   hostPackagePath,
   mockHelperPaths,
@@ -174,7 +176,79 @@ describe('helper/main', () => {
     });
   });
 
+  describe('getConfigPath', () => {
+    beforeEach(async () => {
+      await write('', `${testDirectory}/tool.config.js`);
+      await write('', `${testDirectory}/configs/custom.config.js`);
+    });
+    afterEach(async () => {
+      await remove(testDirectory);
+    });
+    it.each([
+      {
+        title: 'Priority to user-provided',
+        input: ['configs/custom.config.js', 'tool.config.js'],
+        expected: `${testDirectory}/configs/custom.config.js`,
+      },
+      {
+        title: 'Works with absolute paths',
+        input: [`${testDirectory}/configs/custom.config.js`, 'tool.config.js'],
+        expected: `${testDirectory}/configs/custom.config.js`,
+      },
+      {
+        title: 'Fallback to host default if no user-provided',
+        input: [null, 'tool.config.js'],
+        expected: `${testDirectory}/tool.config.js`,
+      },
+      {
+        title: 'Null if none are passed',
+        input: [null, null],
+        expected: null,
+      },
+      {
+        title: 'Null if host file is missing',
+        input: [null, 'missing.config.js'],
+        expected: null,
+      },
+      {
+        title: 'Fallback to the base path if host file is missing',
+        input: [null, 'missing.config.js', '/aberlaas/base.config.js'],
+        expected: '/aberlaas/base.config.js',
+      },
+      {
+        title: 'Priority to host default over the base path',
+        input: [null, 'tool.config.js', '/aberlaas/base.config.js'],
+        expected: `${testDirectory}/tool.config.js`,
+      },
+    ])('$title', async ({ input, expected }) => {
+      const actual = await getConfigPath(...input);
+      expect(actual).toEqual(expected);
+    });
+    it('should throw an error if user config does not exist', async () => {
+      let actual = null;
+      try {
+        await getConfigPath('config/missing.config.js', 'tool.config.js');
+      } catch (err) {
+        actual = err;
+      }
+      expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_HELPER_GET_CONFIG_USER_PROVIDED_NOT_FOUND',
+      );
+    });
+  });
+
   describe('getConfig', () => {
+    it('should resolve the file with getConfigPath, called with the user and host paths', async () => {
+      vi.spyOn(__, 'getConfigPath').mockReturnValue(null);
+
+      await getConfig('user.config.js', 'host.config.js', { name: 'aberlaas' });
+
+      expect(__.getConfigPath).toHaveBeenCalledWith(
+        'user.config.js',
+        'host.config.js',
+      );
+    });
     describe('happy path', () => {
       beforeEach(async () => {
         // The package.json with type: module is required so I can import with

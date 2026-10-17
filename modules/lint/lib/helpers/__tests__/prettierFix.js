@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { read, remove, tmpDirectory, write } from 'firost';
+import { read, remove, tmpDirectory, write, writeJson } from 'firost';
 import { mockHelperPaths } from 'aberlaas-helper';
 import { prettierFix } from '../prettierFix.js';
 
@@ -82,6 +82,35 @@ describe('lint/prettierFix', () => {
     ])('should $title', async ({ filename, input, expected }) => {
       const filepath = `${testDirectory}/${filename}`;
       await write(input, filepath);
+
+      await prettierFix([filepath]);
+
+      const lines = _.split(await read(filepath), '\n');
+      const actual = _.chain(lines).map('length').max().value() <= 80;
+      expect(actual).toEqual(expected);
+    });
+    it.each([
+      {
+        title: 'apply a host override with a path relative to the config',
+        filename: 'docs/long.md',
+        expected: true,
+      },
+      {
+        title: 'not apply a host override to files outside its path',
+        filename: 'other/long.md',
+        expected: false,
+      },
+    ])('should $title', async ({ filename, expected }) => {
+      await writeJson({ type: 'module' }, `${testDirectory}/package.json`);
+      await write(
+        "export default { printWidth: 80, overrides: [{ files: 'docs/*.md', options: { proseWrap: 'always' } }] };",
+        `${testDirectory}/prettier.config.js`,
+      );
+      const filepath = `${testDirectory}/${filename}`;
+      await write(
+        `${'The quick brown fox jumps over the lazy dog. '.repeat(5)}\n`,
+        filepath,
+      );
 
       await prettierFix([filepath]);
 

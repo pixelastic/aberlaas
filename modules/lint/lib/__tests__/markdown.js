@@ -177,6 +177,23 @@ describe('lint/markdown', () => {
       const actual = await read(filepath);
       expect(actual).toEqual(expected);
     });
+    it('should rewrap the line after removing the spaces inside a bold', async () => {
+      // "** bold **" is not bold in CommonMark, ESLint removes the spaces to
+      // match what the author meant. That shortens the line, so Prettier must
+      // run again afterwards to rewrap it.
+      const filepath = hostGitPath('bold.md');
+      await write(
+        '# Title\n\nAaaaaaaaaa bbbbbbbbbb cccccccccc dddddddddd eeeeeeeeee ffffffffff ** gggggggg ** h iiiiiiiiii\n',
+        filepath,
+      );
+
+      await fix();
+
+      const actual = await read(filepath);
+      expect(actual).toEqual(
+        '# Title\n\nAaaaaaaaaa bbbbbbbbbb cccccccccc dddddddddd eeeeeeeeee ffffffffff **gggggggg** h\niiiiiiiiii',
+      );
+    });
     it('should leave the file unchanged on a second run', async () => {
       const filepath = hostGitPath('twice.md');
       await write(

@@ -254,21 +254,19 @@ describe('release/updateChangelog', () => {
 
   describe('fixChangelog', () => {
     beforeEach(() => {
-      vi.spyOn(__, 'lint').mockReturnValue(true);
+      vi.spyOn(__, 'fixMarkdown').mockReturnValue(true);
     });
 
     it('should fix only the markdown changelog file', async () => {
       await __.fixChangelog();
 
-      expect(__.lint).toHaveBeenCalledWith({
-        fix: true,
-        markdown: true,
-        _: [`${testDirectory}/CHANGELOG.md`],
-      });
+      expect(__.fixMarkdown).toHaveBeenCalledWith([
+        `${testDirectory}/CHANGELOG.md`,
+      ]);
     });
 
     it('should let lint errors propagate', async () => {
-      __.lint.mockImplementation(() => {
+      __.fixMarkdown.mockImplementation(() => {
         throw new Error('Lint failed');
       });
 

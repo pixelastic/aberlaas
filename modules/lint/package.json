@@ -24,7 +24,8 @@
     ".": "./lib/main.js",
     "./configs/eslint": "./configs/eslint/index.js",
     "./configs/prettier": "./configs/prettier.js",
-    "./configs/stylelint": "./configs/stylelint.js"
+    "./configs/stylelint": "./configs/stylelint.js",
+    "./markdown": "./lib/markdown.js"
   },
   "main": "./lib/main.js",
   "dependencies": {

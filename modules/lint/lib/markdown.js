@@ -34,10 +34,8 @@ export async function fix(userPatterns, userConfigFile) {
   const files = await __.getInputFiles(userPatterns);
 
   // Prettier fixes none of the autofixable ESLint rules, and ESLint fixes can
-  // leave the file badly formatted. So we run Prettier, then ESLint, then
-  // Prettier again.
+  // leave the file badly formatted. So we run ESLint, then Prettier.
   try {
-    await prettierFix(files);
     await eslintRun(files, userConfigFile, { fix: true });
     await prettierFix(files);
     return true;
