@@ -36,6 +36,7 @@ export default defineConfig({
       `${configDirectory}/setupFiles/dedent.js`,
       `${configDirectory}/setupFiles/describeName.js`,
       `${configDirectory}/setupFiles/focus.js`,
+      `${configDirectory}/setupFiles/gitEnv.js`,
       `${configDirectory}/setupFiles/matchers.js`,
       `${configDirectory}/setupFiles/mockStdin.js`,
       `${configDirectory}/setupFiles/skip.js`,
