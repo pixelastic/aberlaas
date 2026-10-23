@@ -15,19 +15,22 @@ describe('npm/waitForNpmAvailability', () => {
     vi.spyOn(__, 'spinner').mockReturnValue(mockProgress);
     vi.spyOn(__, 'now').mockImplementation(() => now);
     vi.spyOn(__, 'sleep').mockReturnValue();
-    vi.spyOn(__, 'getPublishedVersions').mockReturnValue({});
+    vi.spyOn(__, 'getAvailablePackages').mockReturnValue([]);
   });
 
   describe('when ready on the first check', () => {
     beforeEach(() => {
-      __.getPublishedVersions.mockReturnValue({ aberlaas: '2.0.0' });
+      __.getAvailablePackages.mockReturnValue(['aberlaas']);
     });
 
     it('resolves after the first check', async () => {
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 
-      expect(__.getPublishedVersions).toHaveBeenCalledTimes(1);
-      expect(__.getPublishedVersions).toHaveBeenCalledWith(['aberlaas']);
+      expect(__.getAvailablePackages).toHaveBeenCalledTimes(1);
+      expect(__.getAvailablePackages).toHaveBeenCalledWith(
+        ['aberlaas'],
+        '2.0.0',
+      );
     });
 
     it('does not sleep', async () => {
@@ -39,16 +42,16 @@ describe('npm/waitForNpmAvailability', () => {
 
   describe('when ready after several checks', () => {
     beforeEach(() => {
-      __.getPublishedVersions
-        .mockReturnValueOnce({ a: '1.0.0', b: '1.0.0', c: '1.0.0' })
-        .mockReturnValueOnce({ a: '2.0.0', b: '1.0.0', c: '1.0.0' })
-        .mockReturnValueOnce({ b: '2.0.0', c: '2.0.0' });
+      __.getAvailablePackages
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce(['a'])
+        .mockReturnValueOnce(['b', 'c']);
     });
 
     it('resolves after the third check', async () => {
       await waitForNpmAvailability(['a', 'b', 'c'], '2.0.0');
 
-      expect(__.getPublishedVersions).toHaveBeenCalledTimes(3);
+      expect(__.getAvailablePackages).toHaveBeenCalledTimes(3);
     });
 
     it('sleeps one minute between checks, one second at a time', async () => {
@@ -61,41 +64,27 @@ describe('npm/waitForNpmAvailability', () => {
     it('only queries the pending packages on later checks', async () => {
       await waitForNpmAvailability(['a', 'b', 'c'], '2.0.0');
 
-      expect(__.getPublishedVersions).toHaveBeenNthCalledWith(1, [
-        'a',
-        'b',
-        'c',
-      ]);
-      expect(__.getPublishedVersions).toHaveBeenNthCalledWith(2, [
-        'a',
-        'b',
-        'c',
-      ]);
-      expect(__.getPublishedVersions).toHaveBeenNthCalledWith(3, ['b', 'c']);
-    });
-  });
-
-  describe('older versions', () => {
-    it('does not treat an older version as ready', async () => {
-      __.getPublishedVersions.mockReturnValue({ aberlaas: '1.9.9' });
-
-      let actual = null;
-      try {
-        await waitForNpmAvailability(['aberlaas'], '2.0.0');
-      } catch (err) {
-        actual = err;
-      }
-
-      expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_RELEASE_NPM_AVAILABILITY_TIMEOUT',
+      expect(__.getAvailablePackages).toHaveBeenNthCalledWith(
+        1,
+        ['a', 'b', 'c'],
+        '2.0.0',
+      );
+      expect(__.getAvailablePackages).toHaveBeenNthCalledWith(
+        2,
+        ['a', 'b', 'c'],
+        '2.0.0',
+      );
+      expect(__.getAvailablePackages).toHaveBeenNthCalledWith(
+        3,
+        ['b', 'c'],
+        '2.0.0',
       );
     });
   });
 
   describe('timeout', () => {
     beforeEach(() => {
-      __.getPublishedVersions.mockReturnValue({ a: '2.0.0', b: null });
+      __.getAvailablePackages.mockReturnValue(['a']);
     });
 
     it('throws after 20 checks', async () => {
@@ -110,7 +99,7 @@ describe('npm/waitForNpmAvailability', () => {
         'code',
         'ABERLAAS_RELEASE_NPM_AVAILABILITY_TIMEOUT',
       );
-      expect(__.getPublishedVersions).toHaveBeenCalledTimes(20);
+      expect(__.getAvailablePackages).toHaveBeenCalledTimes(20);
     });
 
     it('states the timeout and lists the missing packages, not the ready ones', async () => {
@@ -128,22 +117,22 @@ describe('npm/waitForNpmAvailability', () => {
     });
   });
 
-  describe('Algolia failure', () => {
+  describe('Registry failure', () => {
     it('continues after a failed check and resolves on a later success', async () => {
-      __.getPublishedVersions
+      __.getAvailablePackages
         .mockImplementationOnce(() => {
-          throw new Error('Algolia down');
+          throw new Error('Registry down');
         })
-        .mockReturnValueOnce({ aberlaas: '2.0.0' });
+        .mockReturnValueOnce(['aberlaas']);
 
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 
-      expect(__.getPublishedVersions).toHaveBeenCalledTimes(2);
+      expect(__.getAvailablePackages).toHaveBeenCalledTimes(2);
     });
 
     it('mentions the last error when it times out', async () => {
-      __.getPublishedVersions.mockImplementation(() => {
-        throw new Error('Algolia down');
+      __.getAvailablePackages.mockImplementation(() => {
+        throw new Error('Registry down');
       });
 
       let actual = null;
@@ -159,14 +148,14 @@ describe('npm/waitForNpmAvailability', () => {
       );
       expect(actual).toHaveProperty(
         'message',
-        'Packages not available on npm after 20 minutes:\naberlaas@2.0.0\nLast error: Algolia down',
+        'Packages not available on npm after 20 minutes:\naberlaas@2.0.0\nLast error: Registry down',
       );
     });
   });
 
   describe('progress', () => {
     it('shows check 1 on the first check', async () => {
-      __.getPublishedVersions.mockReturnValue({ aberlaas: '2.0.0' });
+      __.getAvailablePackages.mockReturnValue(['aberlaas']);
 
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 
@@ -176,10 +165,10 @@ describe('npm/waitForNpmAvailability', () => {
     });
 
     it('shows the check number increasing on each check', async () => {
-      __.getPublishedVersions
-        .mockReturnValueOnce({})
-        .mockReturnValueOnce({})
-        .mockReturnValueOnce({ aberlaas: '2.0.0' });
+      __.getAvailablePackages
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce(['aberlaas']);
 
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 
@@ -196,9 +185,9 @@ describe('npm/waitForNpmAvailability', () => {
     });
 
     it('counts the seconds down every second between two checks', async () => {
-      __.getPublishedVersions
-        .mockReturnValueOnce({})
-        .mockReturnValueOnce({ aberlaas: '2.0.0' });
+      __.getAvailablePackages
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce(['aberlaas']);
 
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 
@@ -223,9 +212,9 @@ describe('npm/waitForNpmAvailability', () => {
     });
 
     it('shows a success message with the elapsed time', async () => {
-      __.getPublishedVersions
-        .mockReturnValueOnce({})
-        .mockReturnValueOnce({ aberlaas: '2.0.0' });
+      __.getAvailablePackages
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce(['aberlaas']);
       __.sleep.mockImplementation(() => {
         now += 1000;
       });
@@ -239,7 +228,7 @@ describe('npm/waitForNpmAvailability', () => {
     });
 
     it('marks the spinner as failed on timeout', async () => {
-      __.getPublishedVersions.mockReturnValue({});
+      __.getAvailablePackages.mockReturnValue([]);
 
       let actual = null;
       try {
@@ -257,9 +246,9 @@ describe('npm/waitForNpmAvailability', () => {
     });
 
     it('does not list package names in the spinner text', async () => {
-      __.getPublishedVersions
-        .mockReturnValueOnce({})
-        .mockReturnValueOnce({ aberlaas: '2.0.0' });
+      __.getAvailablePackages
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce(['aberlaas']);
 
       await waitForNpmAvailability(['aberlaas'], '2.0.0');
 

@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError, sleep, spinner } from 'firost';
-import { getPublishedVersions } from './getPublishedVersions.js';
+import { getAvailablePackages } from './getAvailablePackages.js';
 
 const checkIntervalSeconds = 60;
 const maxChecks = 20;
@@ -35,7 +35,7 @@ __ = {
    * @param {number} state.checkCount - Number of this check, starting at 1
    * @param {object} state.progress - Spinner instance
    * @param {number} state.startTime - Timestamp of the start of the wait, in ms
-   * @param {Error} [state.lastError] - Last error thrown while reading versions
+   * @param {Error} [state.lastError] - Last error thrown while checking the registry
    * @returns {Promise<void>}
    */
   async check({
@@ -48,16 +48,16 @@ __ = {
   }) {
     progress.tick(__.getProgressText(checkCount, checkIntervalSeconds));
 
-    let published = {};
+    let available = [];
     let error = lastError;
     try {
-      published = await __.getPublishedVersions(pending);
+      available = await __.getAvailablePackages(pending, version);
     } catch (err) {
       error = err;
     }
 
     const stillPending = _.reject(pending, (name) => {
-      return published[name] === version;
+      return _.includes(available, name);
     });
 
     if (_.isEmpty(stillPending)) {
@@ -133,7 +133,7 @@ __ = {
    * Build the message of the timeout error
    * @param {string[]} missing - Packages still missing at the end
    * @param {string} version - The released version
-   * @param {Error} [error] - Last error thrown while reading versions
+   * @param {Error} [error] - Last error thrown while checking the registry
    * @returns {string} The error message
    */
   getTimeoutMessage(missing, version, error) {
@@ -151,7 +151,7 @@ __ = {
 
   now: Date.now,
 
-  getPublishedVersions,
+  getAvailablePackages,
 
   sleep,
 
