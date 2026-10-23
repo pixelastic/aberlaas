@@ -1,3 +1,12 @@
+## v2.41.1
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.0...v2.41.1)
+
+### Bug Fixes
+
+- **test:** Clear git environment variables before each test file
+  ([1a90d50](https://github.com/pixelastic/aberlaas/commit/1a90d50))
+
 ## v2.41.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.40.0...v2.41.0)
