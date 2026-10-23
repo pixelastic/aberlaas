@@ -1,3 +1,12 @@
+## v2.41.2
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.1...v2.41.2)
+
+## Bug Fix
+
+**release** Check npm with a `HEAD` request to find as fast as possible if a
+package is released
+
 ## v2.41.1
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.0...v2.41.1)
