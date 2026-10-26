@@ -50,18 +50,18 @@ describe('setup/renovate', () => {
       },
     );
     it('rethrows other errors', async () => {
-      const error = Object.assign(new Error('Boom'), { status: 500 });
+      const thrownError = Object.assign(new Error('Boom'), { status: 500 });
       vi.spyOn(__, 'octokit').mockImplementation(() => {
-        throw error;
+        throw thrownError;
       });
 
       let actual = null;
       try {
         await __.isAlreadyEnabled();
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
-      expect(actual).toBe(error);
+      expect(actual).toBe(thrownError);
     });
   });
   describe('enable', () => {
@@ -86,18 +86,18 @@ describe('setup/renovate', () => {
       },
     );
     it('should rethrow other errors when adding the repo', async () => {
-      const error = Object.assign(new Error('Boom'), { status: 500 });
+      const thrownError = Object.assign(new Error('Boom'), { status: 500 });
       vi.spyOn(__, 'octokit').mockImplementation(() => {
-        throw error;
+        throw thrownError;
       });
 
       let actual = null;
       try {
         await enable();
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
-      expect(actual).toBe(error);
+      expect(actual).toBe(thrownError);
       expect(__.consoleError).not.toHaveBeenCalled();
     });
     it('should add the repo id to the app installation', async () => {

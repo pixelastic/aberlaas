@@ -26,9 +26,9 @@ export async function enable() {
       installation_id: __.renovateId,
       repository_id: repositoryId,
     });
-  } catch (err) {
-    if (!__.isNotInstalledError(err)) {
-      throw err;
+  } catch (error) {
+    if (!__.isNotInstalledError(error)) {
+      throw error;
     }
     __.consoleError('Renovate is not installed with this GitHub account');
     __.consoleInfo('  Please visit the installation page to install it first');
@@ -72,21 +72,21 @@ __ = {
       return installations.repositories.some(
         (item) => item.owner.login === username && item.name === repo,
       );
-    } catch (err) {
+    } catch (error) {
       // API call fails if Renovate app is not installed - treat as not enabled
-      if (__.isNotInstalledError(err)) {
+      if (__.isNotInstalledError(error)) {
         return false;
       }
-      throw err;
+      throw error;
     }
   },
   /**
    * Check if an API error means the Renovate app is not installed
-   * @param {Error} err Error thrown by the GitHub API
+   * @param {Error} error Error thrown by the GitHub API
    * @returns {boolean} True if the status is 403 or 404
    */
-  isNotInstalledError(err) {
-    return [403, 404].includes(err.status);
+  isNotInstalledError(error) {
+    return [403, 404].includes(error.status);
   },
   consoleSuccess,
   consoleInfo,
