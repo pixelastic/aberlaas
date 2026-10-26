@@ -22,20 +22,83 @@ describe('setup/renovate', () => {
       });
     });
   });
+  describe('isAlreadyEnabled', () => {
+    it.each([
+      {
+        title: 'repo is in the installation',
+        repositories: [{ owner: { login: 'pixelastic' }, name: 'aberlaas' }],
+        expected: true,
+      },
+      {
+        title: 'repo is not in the installation',
+        repositories: [{ owner: { login: 'pixelastic' }, name: 'other' }],
+        expected: false,
+      },
+    ])('returns $expected when $title', async ({ repositories, expected }) => {
+      __.octokit.mockReturnValue({ repositories });
+      const actual = await __.isAlreadyEnabled();
+      expect(actual).toBe(expected);
+    });
+    it.each([{ input: 403 }, { input: 404 }])(
+      'treats a $input as not enabled',
+      async ({ input }) => {
+        vi.spyOn(__, 'octokit').mockImplementation(() => {
+          throw Object.assign(new Error(), { status: input });
+        });
+        const actual = await __.isAlreadyEnabled();
+        expect(actual).toBe(false);
+      },
+    );
+    it('rethrows other errors', async () => {
+      const error = Object.assign(new Error('Boom'), { status: 500 });
+      vi.spyOn(__, 'octokit').mockImplementation(() => {
+        throw error;
+      });
+
+      let actual = null;
+      try {
+        await __.isAlreadyEnabled();
+      } catch (err) {
+        actual = err;
+      }
+      expect(actual).toBe(error);
+    });
+  });
   describe('enable', () => {
     beforeEach(async () => {
       vi.spyOn(__, 'consoleSuccess').mockReturnValue();
       vi.spyOn(__, 'consoleError').mockReturnValue();
       vi.spyOn(__, 'getRepositoryId').mockReturnValue();
+      vi.spyOn(__, 'isAlreadyEnabled').mockReturnValue(false);
     });
-    it('should stop if no adding the repo fails', async () => {
+    it.each([{ input: 403 }, { input: 404 }])(
+      'should print "not installed" and stop on a $input',
+      async ({ input }) => {
+        vi.spyOn(__, 'octokit').mockImplementation(() => {
+          throw Object.assign(new Error(), { status: input });
+        });
+
+        const actual = await enable();
+        expect(actual).toBe(false);
+        expect(__.consoleError).toHaveBeenCalledWith(
+          'Renovate is not installed with this GitHub account',
+        );
+      },
+    );
+    it('should rethrow other errors when adding the repo', async () => {
+      const error = Object.assign(new Error('Boom'), { status: 500 });
       vi.spyOn(__, 'octokit').mockImplementation(() => {
-        throw new Error();
+        throw error;
       });
 
-      const actual = await enable();
-      expect(actual).toBe(false);
-      expect(__.consoleError).toHaveBeenCalled();
+      let actual = null;
+      try {
+        await enable();
+      } catch (err) {
+        actual = err;
+      }
+      expect(actual).toBe(error);
+      expect(__.consoleError).not.toHaveBeenCalled();
     });
     it('should add the repo id to the app installation', async () => {
       vi.spyOn(__, 'getRepositoryId').mockReturnValue(42);
