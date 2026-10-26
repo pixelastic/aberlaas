@@ -28,14 +28,7 @@ describe('setup/renovate', () => {
       vi.spyOn(__, 'consoleError').mockReturnValue();
       vi.spyOn(__, 'getRepositoryId').mockReturnValue();
     });
-    it('should stop if no token available', async () => {
-      vi.spyOn(__, 'hasToken').mockReturnValue(false);
-      const actual = await enable();
-      expect(actual).toBe(false);
-      expect(__.consoleError).toHaveBeenCalled();
-    });
     it('should stop if no adding the repo fails', async () => {
-      vi.spyOn(__, 'hasToken').mockReturnValue(true);
       vi.spyOn(__, 'octokit').mockImplementation(() => {
         throw new Error();
       });
@@ -45,7 +38,6 @@ describe('setup/renovate', () => {
       expect(__.consoleError).toHaveBeenCalled();
     });
     it('should add the repo id to the app installation', async () => {
-      vi.spyOn(__, 'hasToken').mockReturnValue(true);
       vi.spyOn(__, 'getRepositoryId').mockReturnValue(42);
 
       const actual = await enable();

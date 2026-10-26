@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { run } from 'firost';
+import { firostError, run } from 'firost';
 import { Octokit } from '@octokit/rest';
 import { hostGitRoot } from 'aberlaas-helper';
 import Gilmore from 'gilmore';
@@ -7,11 +7,31 @@ import parseGithubUrl from 'parse-github-repo-url';
 
 export let __;
 /**
- * Check if a GitHub token is available
- * @returns {boolean} True if a token is defined
+ * Ensure ABERLAAS_GITHUB_TOKEN is set and accepted by GitHub
+ * @throws {Error} ABERLAAS_SETUP_NO_GITHUB_TOKEN if missing or empty
+ * @throws {Error} ABERLAAS_SETUP_GITHUB_TOKEN_INVALID if GitHub rejects it
  */
-export function hasToken() {
-  return !!__.token();
+export async function ensureGithubToken() {
+  // No token
+  if (!__.token()) {
+    throw firostError(
+      'ABERLAAS_SETUP_NO_GITHUB_TOKEN',
+      "ABERLAAS_GITHUB_TOKEN is not set. Create a Classic token with 'repo' scope at https://github.com/settings/tokens",
+    );
+  }
+
+  // Token expired or revoked
+  try {
+    await __.octokit('users.getAuthenticated');
+  } catch (error) {
+    if (error.status !== 401) {
+      throw error;
+    }
+    throw firostError(
+      'ABERLAAS_SETUP_GITHUB_TOKEN_INVALID',
+      "ABERLAAS_GITHUB_TOKEN is invalid. Create a Classic token with 'repo' scope at https://github.com/settings/tokens",
+    );
+  }
 }
 /**
  * Returns some data from the git config
@@ -91,5 +111,6 @@ __ = {
   newOctokit(...args) {
     return new Octokit(...args);
   },
+  octokit,
   run,
 };

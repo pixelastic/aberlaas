@@ -1,8 +1,77 @@
-import { __, getRepoData, octokit } from '../github.js';
+import { __, ensureGithubToken, getRepoData, octokit } from '../github.js';
 
 describe('setup/helpers/github', () => {
   beforeEach(async () => {
     __.clearCache();
+  });
+  describe('ensureGithubToken', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'token').mockReturnValue('TOKEN');
+      vi.spyOn(__, 'octokit').mockReturnValue({ login: 'user' });
+    });
+    it.each([
+      { title: 'missing', input: undefined },
+      { title: 'empty', input: '' },
+    ])('throws NO_GITHUB_TOKEN when the token is $title', async ({ input }) => {
+      vi.spyOn(__, 'token').mockReturnValue(input);
+
+      let actual = null;
+      try {
+        await ensureGithubToken();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_SETUP_NO_GITHUB_TOKEN');
+      expect(actual).toHaveProperty(
+        'message',
+        "ABERLAAS_GITHUB_TOKEN is not set. Create a Classic token with 'repo' scope at https://github.com/settings/tokens",
+      );
+      expect(__.octokit).not.toHaveBeenCalled();
+    });
+    it('throws GITHUB_TOKEN_INVALID on a 401', async () => {
+      vi.spyOn(__, 'octokit').mockImplementation(() => {
+        throw Object.assign(new Error('Bad credentials'), { status: 401 });
+      });
+
+      let actual = null;
+      try {
+        await ensureGithubToken();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty(
+        'code',
+        'ABERLAAS_SETUP_GITHUB_TOKEN_INVALID',
+      );
+      expect(actual).toHaveProperty(
+        'message',
+        "ABERLAAS_GITHUB_TOKEN is invalid. Create a Classic token with 'repo' scope at https://github.com/settings/tokens",
+      );
+    });
+    it('rethrows non-401 errors unchanged', async () => {
+      const networkError = Object.assign(new Error('Network down'), {
+        status: 500,
+      });
+      vi.spyOn(__, 'octokit').mockImplementation(() => {
+        throw networkError;
+      });
+
+      let actual = null;
+      try {
+        await ensureGithubToken();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toBe(networkError);
+    });
+    it('resolves when the token is valid', async () => {
+      await ensureGithubToken();
+
+      expect(__.octokit).toHaveBeenCalledWith('users.getAuthenticated');
+    });
   });
   describe('getRepoData', () => {
     const manifest = {

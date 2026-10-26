@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
-import { consoleError, consoleInfo, consoleSuccess } from 'firost';
-import { getRepoData, hasToken, octokit } from './helpers/github.js';
+import { consoleInfo, consoleSuccess } from 'firost';
+import { getRepoData, octokit } from './helpers/github.js';
 
 export let __;
 
@@ -21,31 +21,11 @@ export async function enable() {
   const { username, repo } = await __.getRepoData();
   const settingsUrl = `https://github.com/${username}/${repo}/settings`;
 
-  // Fail early if no token available
-  if (!__.hasToken()) {
-    __.consoleError(
-      'GitHub: ABERLAAS_GITHUB_TOKEN environment variable must be set',
-    );
-    __.consoleInfo("  Create a Classic token with 'repo' scope");
-    __.consoleInfo('  https://github.com/settings/tokens\n');
-    return false;
-  }
-
   // Check if already configured
-  try {
-    if (await __.isAlreadyConfigured()) {
-      __.consoleSuccess('GitHub: Already configured');
-      __.consoleInfo(`  ${settingsUrl}\n`);
-      return true;
-    }
-  } catch (error) {
-    if (error.status === 401) {
-      __.consoleError('GitHub: ABERLAAS_GITHUB_TOKEN is invalid');
-      __.consoleInfo("  Create a Classic token with 'repo' scope");
-      __.consoleInfo('  https://github.com/settings/tokens\n');
-      return false;
-    }
-    throw error;
+  if (await __.isAlreadyConfigured()) {
+    __.consoleSuccess('GitHub: Already configured');
+    __.consoleInfo(`  ${settingsUrl}\n`);
+    return true;
   }
 
   await __.octokit('repos.update', {
@@ -75,9 +55,7 @@ __ = {
   },
   consoleSuccess,
   consoleInfo,
-  consoleError,
   getRepoData,
-  hasToken,
   octokit,
 };
 

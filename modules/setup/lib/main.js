@@ -1,6 +1,7 @@
 import { _ } from 'golgoth';
 import { enable as enableCircleci } from './circleci.js';
 import { enable as enableGithub } from './github.js';
+import { ensureGithubToken } from './helpers/github.js';
 import { enable as enableRenovate } from './renovate.js';
 
 export let __;
@@ -22,6 +23,11 @@ export async function run(cliArgs = {}) {
     ...cliServices,
   };
 
+  // Both services need a valid token, fail before enabling anything
+  if (servicesToEnable.github || servicesToEnable.renovate) {
+    await __.ensureGithubToken();
+  }
+
   if (servicesToEnable.github) {
     await __.enableGithub();
   }
@@ -34,6 +40,7 @@ export async function run(cliArgs = {}) {
 }
 
 __ = {
+  ensureGithubToken,
   enableGithub,
   enableCircleci,
   enableRenovate,

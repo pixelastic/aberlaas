@@ -1,5 +1,5 @@
 import { consoleError, consoleInfo, consoleSuccess } from 'firost';
-import { getRepoData, hasToken, octokit } from './helpers/github.js';
+import { getRepoData, octokit } from './helpers/github.js';
 
 export let __;
 
@@ -12,16 +12,6 @@ export async function enable() {
   const { username, repo } = await __.getRepoData();
   const manualUrl = `https://github.com/settings/installations/${__.renovateId}`;
   const renovateDashboardUrl = `https://developer.mend.io/github/${username}/${repo}`;
-
-  // Fail early if no token available
-  if (!__.hasToken()) {
-    __.consoleError(
-      'Renovate: ABERLAAS_GITHUB_TOKEN environment variable must be set',
-    );
-    __.consoleInfo("  Create a Classic token with 'repo' scope");
-    __.consoleInfo('  https://github.com/settings/tokens\n');
-    return false;
-  }
 
   // Check if already enabled
   if (await __.isAlreadyEnabled()) {
@@ -88,7 +78,6 @@ __ = {
   consoleInfo,
   consoleError,
   getRepoData,
-  hasToken,
   octokit,
 };
 
