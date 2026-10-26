@@ -1,3 +1,12 @@
+## v2.41.3
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.2...v2.41.3)
+
+### Bug Fixes
+
+- **setup:** Only treat 403 and 404 as Renovate not installed
+  ([4207409](https://github.com/pixelastic/aberlaas/commit/4207409))
+
 ## v2.41.2
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.1...v2.41.2)
