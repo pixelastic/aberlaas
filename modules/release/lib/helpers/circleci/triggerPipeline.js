@@ -1,3 +1,4 @@
+import { firostError } from 'firost';
 import { callApi } from './callApi.js';
 import { getOrgAndRepo } from './getOrgAndRepo.js';
 
@@ -7,6 +8,7 @@ export let __;
  * Trigger a CircleCI trusted-publish pipeline
  * @param {string[]} packages - Package names to publish
  * @returns {string} Pipeline ID
+ * @throws {Error} When CircleCI does not return a pipeline ID
  */
 export async function triggerPipeline(packages) {
   const { org, repo } = await __.getOrgAndRepo();
@@ -26,6 +28,13 @@ export async function triggerPipeline(packages) {
       },
     }),
   });
+
+  if (!data.id) {
+    throw firostError(
+      'ABERLAAS_RELEASE_CIRCLECI_NO_PIPELINE_ID',
+      `CircleCI did not create a pipeline: ${JSON.stringify(data)}`,
+    );
+  }
 
   return data.id;
 }

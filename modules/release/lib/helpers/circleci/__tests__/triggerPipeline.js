@@ -33,4 +33,21 @@ describe('circleci/triggerPipeline', () => {
 
     expect(actual).toEqual('pipeline-uuid-123');
   });
+
+  it('should throw when the response has no pipeline ID', async () => {
+    vi.spyOn(__, 'callApi').mockReturnValue({ message: 'Something odd' });
+
+    let actual = null;
+    try {
+      await triggerPipeline(['package-a']);
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty(
+      'code',
+      'ABERLAAS_RELEASE_CIRCLECI_NO_PIPELINE_ID',
+    );
+    expect(actual.message).toContain('Something odd');
+  });
 });

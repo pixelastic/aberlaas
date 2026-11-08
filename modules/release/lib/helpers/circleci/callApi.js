@@ -1,3 +1,4 @@
+import { firostError } from 'firost';
 import { getEnvToken } from './getEnvToken.js';
 
 export let __;
@@ -7,6 +8,7 @@ export let __;
  * @param {string} path - Path after /api/v2/
  * @param {object} [options] - fetch options to merge (method, body, extra headers, etc.)
  * @returns {object} Parsed JSON response
+ * @throws {Error} When the API answers with a non-2xx status
  */
 export async function callApi(path, options = {}) {
   const token = __.getEnvToken();
@@ -16,7 +18,16 @@ export async function callApi(path, options = {}) {
     headers: { 'Circle-Token': token, ...extraHeaders },
     ...rest,
   });
-  return await response.json();
+  const body = await response.json();
+
+  if (!response.ok) {
+    throw firostError(
+      'ABERLAAS_RELEASE_CIRCLECI_API_ERROR',
+      `CircleCI API ${response.status} on ${path}: ${body?.message}`,
+    );
+  }
+
+  return body;
 }
 
 __ = {

@@ -4,6 +4,7 @@ describe('circleci/callApi', () => {
   beforeEach(() => {
     vi.spyOn(__, 'getEnvToken').mockReturnValue('test-token');
     vi.spyOn(__, 'fetch').mockReturnValue({
+      ok: true,
       json: () => ({ id: 'pipeline-123' }),
     });
   });
@@ -42,5 +43,27 @@ describe('circleci/callApi', () => {
         body,
       },
     );
+  });
+
+  it('should throw with the API message when the response is not ok', async () => {
+    vi.spyOn(__, 'fetch').mockReturnValue({
+      ok: false,
+      status: 404,
+      json: () => ({ message: 'Project not found' }),
+    });
+
+    let actual = null;
+    try {
+      await callApi('pipeline/undefined/workflow');
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty(
+      'code',
+      'ABERLAAS_RELEASE_CIRCLECI_API_ERROR',
+    );
+    expect(actual.message).toContain('404');
+    expect(actual.message).toContain('Project not found');
   });
 });
