@@ -1,3 +1,14 @@
+## v2.41.5
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.4...v2.41.5)
+
+### Bug Fixes
+
+- **release:** Retry CircleCI pipeline polling on 404
+  ([efa67be](https://github.com/pixelastic/aberlaas/commit/efa67be))
+- **release:** Time out when CircleCI workflow never appears
+  ([b9bfae0](https://github.com/pixelastic/aberlaas/commit/b9bfae0))
+
 ## v2.41.4
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.3...v2.41.4)
