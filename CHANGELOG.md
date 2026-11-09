@@ -1,3 +1,14 @@
+## v2.41.6
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.5...v2.41.6)
+
+### Bug Fixes
+
+- **lint:** Exclude .circleci/config.yml from default yml linter patterns
+  ([69243c4](https://github.com/pixelastic/aberlaas/commit/69243c4))
+- **release:** Handle missing or non-map workflows in hasPublishWorkflow
+  ([fba2a88](https://github.com/pixelastic/aberlaas/commit/fba2a88))
+
 ## v2.41.5
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.4...v2.41.5)
