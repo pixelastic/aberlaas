@@ -46,6 +46,24 @@ describe('hasPublishWorkflow', () => {
       input: minimalConfig,
       expected: false,
     },
+    {
+      title: 'should return false when workflows key is missing',
+      input: 'version: 2.1',
+      expected: false,
+    },
+    {
+      title: 'should return false when the config file is empty',
+      input: '',
+      expected: false,
+    },
+    {
+      title: 'should return false when workflows is not a map',
+      input: dedent`
+        version: 2.1
+        workflows: trusted-publish
+      `,
+      expected: false,
+    },
   ])('$title', async ({ input, expected }) => {
     await write(input, configPath);
 
