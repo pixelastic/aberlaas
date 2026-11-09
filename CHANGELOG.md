@@ -1,3 +1,12 @@
+## v2.41.4
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.3...v2.41.4)
+
+### Bug Fixes
+
+- **release:** Throw on CircleCI API errors instead of returning bad data
+  ([58279ab](https://github.com/pixelastic/aberlaas/commit/58279ab))
+
 ## v2.41.3
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.2...v2.41.3)
