@@ -58,8 +58,11 @@ __ = {
    * @returns {Array} Array of files
    */
   async getInputFiles(userPatterns) {
+    // The circleci linter owns .circleci/config.yml. It passes it explicitly, so
+    // we only exclude it from the default patterns to avoid parallel read/write
+    // races between the two linters
     const filePatterns = _.isEmpty(userPatterns)
-      ? ['./**/*.yml', './**/*.yaml']
+      ? ['./**/*.yml', './**/*.yaml', '!./.circleci/config.yml']
       : userPatterns;
     return await findHostFiles(filePatterns, ['.yml', '.yaml']);
   },

@@ -15,7 +15,11 @@ describe('lint/yml', () => {
     it.each([
       // Default find
       { filepath: '.yarnrc.yml', expected: true, userPatterns: null },
-      { filepath: '.circleci/config.yml', expected: true, userPatterns: null },
+      {
+        filepath: '.circleci/workflows/build.yml',
+        expected: true,
+        userPatterns: null,
+      },
       { filepath: 'data/something.yaml', expected: true, userPatterns: null },
       {
         filepath: 'src/config/data.yml',
@@ -25,6 +29,24 @@ describe('lint/yml', () => {
       // Default exclude
       { filepath: 'src/index.json', expected: false, userPatterns: null },
       { filepath: 'dist/script.yml', expected: false, userPatterns: null },
+      // Owned by the circleci linter
+      { filepath: '.circleci/config.yml', expected: false, userPatterns: null },
+      {
+        filepath: '.circleci/config.yml',
+        expected: false,
+        userPatterns: [],
+      },
+      // Explicit patterns pass through
+      {
+        filepath: '.circleci/config.yml',
+        expected: true,
+        userPatterns: ['.circleci/config.yml'],
+      },
+      {
+        filepath: '.circleci/config.yml',
+        expected: true,
+        userPatterns: ['./.circleci/**/*.yml'],
+      },
       // Focused folder
       {
         filepath: '.yarnrc.yml',
