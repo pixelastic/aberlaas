@@ -157,4 +157,47 @@ describe('circleci/pollPipelineStatus', () => {
       expect.stringContaining('running'),
     );
   });
+
+  it('should retry while the pipeline is not yet found (404)', async () => {
+    let pipelineCallCount = 0;
+    vi.spyOn(__, 'callApi').mockImplementation((path) => {
+      if (path.startsWith('pipeline/')) {
+        pipelineCallCount++;
+        if (pipelineCallCount === 1) {
+          const error = new Error('CircleCI API 404: Pipeline run not found.');
+          error.code = 'ABERLAAS_RELEASE_CIRCLECI_API_ERROR';
+          error.status = 404;
+          throw error;
+        }
+        return workflowResponse;
+      }
+      return {
+        items: [{ id: 'job-1', status: 'success', job_number: 7 }],
+      };
+    });
+
+    await pollPipelineStatus('pipeline-123');
+
+    expect(pipelineCallCount).toBe(2);
+    expect(__.sleep).toHaveBeenCalledWith(15000);
+    expect(mockProgress.success).toHaveBeenCalled();
+  });
+
+  it('should rethrow API errors other than 404', async () => {
+    vi.spyOn(__, 'callApi').mockImplementation(() => {
+      const error = new Error('CircleCI API 401: Unauthorized');
+      error.code = 'ABERLAAS_RELEASE_CIRCLECI_API_ERROR';
+      error.status = 401;
+      throw error;
+    });
+
+    let actual = null;
+    try {
+      await pollPipelineStatus('pipeline-123');
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('status', 401);
+  });
 });

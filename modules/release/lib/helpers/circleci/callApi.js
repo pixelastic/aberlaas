@@ -21,10 +21,12 @@ export async function callApi(path, options = {}) {
   const body = await response.json();
 
   if (!response.ok) {
-    throw firostError(
+    const error = firostError(
       'ABERLAAS_RELEASE_CIRCLECI_API_ERROR',
       `CircleCI API ${response.status} on ${path}: ${body?.message}`,
     );
+    error.status = response.status;
+    throw error;
   }
 
   return body;

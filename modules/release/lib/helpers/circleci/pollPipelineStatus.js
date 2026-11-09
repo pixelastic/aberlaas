@@ -45,7 +45,9 @@ __ = {
   async waitForWorkflow(pipelineId, progress) {
     progress.tick('Waiting for trusted-publish workflow...');
 
-    const workflowData = await __.callApi(`pipeline/${pipelineId}/workflow`);
+    // CircleCI creates pipelines asynchronously: right after the trigger, the
+    // pipeline can answer 404 for a few seconds. Treat it as "not ready yet"
+    const workflowData = await __.getPipelineWorkflows(pipelineId);
     const workflow = workflowData.items.find(
       (item) => item.name === 'trusted-publish',
     );
@@ -56,6 +58,23 @@ __ = {
 
     await __.sleep(pollInterval);
     return await __.waitForWorkflow(pipelineId, progress);
+  },
+
+  /**
+   * List the workflows of a pipeline, or an empty list if it is not found yet
+   * @param {string} pipelineId - CircleCI pipeline UUID
+   * @returns {Promise<object>} Workflow list, with an items array
+   * @throws {Error} When the API fails with anything other than a 404
+   */
+  async getPipelineWorkflows(pipelineId) {
+    try {
+      return await __.callApi(`pipeline/${pipelineId}/workflow`);
+    } catch (error) {
+      if (error.status !== 404) {
+        throw error;
+      }
+      return { items: [] };
+    }
   },
 
   /**

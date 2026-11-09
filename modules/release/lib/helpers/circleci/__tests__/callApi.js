@@ -63,6 +63,7 @@ describe('circleci/callApi', () => {
       'code',
       'ABERLAAS_RELEASE_CIRCLECI_API_ERROR',
     );
+    expect(actual).toHaveProperty('status', 404);
     expect(actual.message).toContain('404');
     expect(actual.message).toContain('Project not found');
   });
