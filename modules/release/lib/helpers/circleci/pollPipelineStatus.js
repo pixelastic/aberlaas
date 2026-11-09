@@ -2,6 +2,7 @@ import { consoleInfo, firostError, sleep, spinner } from 'firost';
 import { callApi } from './callApi.js';
 
 const pollInterval = 15 * 1000;
+const workflowTimeout = 5 * 60 * 1000;
 
 // CircleCI job statuses from OpenAPI spec: GET /api/v2/workflow/{id}/job
 // Success: success
@@ -40,9 +41,11 @@ __ = {
    * Wait until the trusted-publish workflow appears on the pipeline
    * @param {string} pipelineId - CircleCI pipeline UUID
    * @param {object} progress - Spinner instance
+   * @param {number} [attempt] - Number of polls already done
    * @returns {Promise<object>} The workflow object
+   * @throws {Error} When the workflow does not appear within the timeout
    */
-  async waitForWorkflow(pipelineId, progress) {
+  async waitForWorkflow(pipelineId, progress, attempt = 0) {
     progress.tick('Waiting for trusted-publish workflow...');
 
     // CircleCI creates pipelines asynchronously: right after the trigger, the
@@ -57,7 +60,16 @@ __ = {
     }
 
     await __.sleep(pollInterval);
-    return await __.waitForWorkflow(pipelineId, progress);
+
+    if ((attempt + 1) * pollInterval >= workflowTimeout) {
+      progress.failure('trusted-publish workflow not found');
+      throw firostError(
+        'ABERLAAS_RELEASE_CI_WORKFLOW_NOT_FOUND',
+        `No trusted-publish workflow appeared on CircleCI pipeline ${pipelineId} after ${workflowTimeout / 60000} minutes. The pipeline may not exist, or the config may have no trusted-publish workflow triggered by the trusted_publish parameter.`,
+      );
+    }
+
+    return await __.waitForWorkflow(pipelineId, progress, attempt + 1);
   },
 
   /**

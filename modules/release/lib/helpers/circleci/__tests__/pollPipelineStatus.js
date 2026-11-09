@@ -200,4 +200,24 @@ describe('circleci/pollPipelineStatus', () => {
 
     expect(actual).toHaveProperty('status', 401);
   });
+
+  it('should throw a clear error when the workflow never appears', async () => {
+    vi.spyOn(__, 'callApi').mockReturnValue({ items: [] });
+
+    let actual = null;
+    try {
+      await pollPipelineStatus('pipeline-123');
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty(
+      'code',
+      'ABERLAAS_RELEASE_CI_WORKFLOW_NOT_FOUND',
+    );
+    expect(actual.message).toContain('pipeline-123');
+    expect(actual.message).toContain('5 minutes');
+    expect(mockProgress.failure).toHaveBeenCalled();
+    expect(__.sleep).toHaveBeenCalledTimes(20);
+  });
 });
