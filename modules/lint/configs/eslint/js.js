@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import { nodeVersion } from 'aberlaas-versions';
 import pluginImport from 'eslint-plugin-import';
-import pluginJsdoc from 'eslint-plugin-jsdoc';
+import { configs as jsdocConfigs } from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
@@ -49,14 +49,14 @@ export default [
         },
       },
       import: pluginImport.flatConfigs.recommended.plugins.import,
-      jsdoc: pluginJsdoc.configs['flat/recommended'].plugins.jsdoc,
+      jsdoc: jsdocConfigs['flat/recommended'].plugins.jsdoc,
       n: pluginN.configs['flat/recommended'].plugins.n,
       prettier: pluginPrettierRecommended.plugins.prettier,
     },
     rules: {
       ...js.configs.recommended.rules,
       ...pluginImport.flatConfigs.recommended.rules,
-      ...pluginJsdoc.configs['flat/recommended'].plugins.rules,
+      ...jsdocConfigs['flat/recommended'].plugins.rules,
       ...pluginN.configs['flat/recommended'].plugins.rules,
       'dot-notation': ['error'],
       eqeqeq: ['error'],

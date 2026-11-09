@@ -106,7 +106,7 @@ describe('readme', () => {
         `${testDirectory}/.README.template.md`,
       );
 
-      let actual = null;
+      let actual;
       try {
         actual = await __.getTemplateData();
       } catch (err) {
@@ -129,7 +129,7 @@ describe('readme', () => {
         `${testDirectory}/.README.template.md`,
       );
 
-      let actual = null;
+      let actual;
       try {
         actual = await __.getTemplateData();
       } catch (err) {
