@@ -161,7 +161,7 @@ describe('lint/css', () => {
       expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_CSS');
       expect(actual).toHaveProperty(
         'message',
-        expect.stringMatching('Unexpected empty block'),
+        expect.stringMatching('Empty block'),
       );
     });
   });

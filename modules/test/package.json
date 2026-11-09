@@ -22,9 +22,9 @@
   "main": "./lib/main.js",
   "dependencies": {
     "aberlaas-helper": "workspace:*",
-    "dedent": "1.7.1",
+    "dedent": "1.7.2",
     "firost": "5.11.0",
-    "globals": "17.2.0",
+    "globals": "17.14.0",
     "golgoth": "4.0.0",
     "vitest": "4.0.18"
   },
