@@ -64,6 +64,21 @@ describe('lint/main', () => {
       expect(mockedLinters.css.run).not.toHaveBeenCalled();
       expect(mockedLinters.css.fix).toHaveBeenCalled();
     });
+    it('should fix versions only after all other linters are done', async () => {
+      const calls = [];
+      mockedLinters.yml.fix.mockImplementation(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+        calls.push('yml:end');
+      });
+      mockedLinters.versions.fix.mockImplementation(async () => {
+        calls.push('versions:start');
+      });
+      const input = { fix: true };
+
+      await run(input);
+
+      expect(calls).toEqual(['yml:end', 'versions:start']);
+    });
     it('should return true if all passes', async () => {
       const input = {};
 

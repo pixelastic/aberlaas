@@ -15,31 +15,23 @@ export async function run(cliArgs = {}) {
   const shouldFailFast = cliArgs['fail-fast'];
   const errors = [];
 
+  // --versions is a special case, as it can rewrite files other linters might
+  // also rewrite, thus creating conflicts. So we run it last.
+  const parallelTypes = _.without(typesToLint, 'versions');
+
+  // First, all linters in parallel
   await pMap(
-    typesToLint,
+    parallelTypes,
     async (type) => {
-      const methodName = cliArgs.fix ? 'fix' : 'run';
-      const linter = await __.getLinter(type);
-      const configFile = _.get(cliArgs, `config.${type}`);
-      const userPatterns = _.get(cliArgs, '_');
-
-      try {
-        await linter[methodName](userPatterns, configFile);
-      } catch (error) {
-        errors.push(error);
-
-        if (shouldFailFast) {
-          if (errors.length === 1) {
-            __.consoleError(error.message);
-          }
-          throw firostError('ABERLAAS_LINT_FAIL_FAST', 'Fail to lint files');
-        }
-
-        __.consoleError(error.message);
-      }
+      await __.lintType(type, cliArgs, errors);
     },
     { stopOnError: shouldFailFast },
   );
+
+  // Then, versions in sequence
+  if (_.includes(typesToLint, 'versions')) {
+    await __.lintType('versions', cliArgs, errors);
+  }
 
   if (!_.isEmpty(errors)) {
     throw firostError('ABERLAAS_LINT_FAIL', 'Fail to lint files');
@@ -75,6 +67,35 @@ __ = {
     }
 
     return await firostImport(linterPath);
+  },
+
+  /**
+   * Lint (or fix) all files of a given type. Errors are pushed to the errors
+   * array, and rethrown in fail-fast mode.
+   * @param {string} type Name of the linter
+   * @param {object} cliArgs CLI Argument object, as created by minimist
+   * @param {Array} errors Array collecting the errors of all linters
+   **/
+  async lintType(type, cliArgs, errors) {
+    const methodName = cliArgs.fix ? 'fix' : 'run';
+    const linter = await __.getLinter(type);
+    const configFile = _.get(cliArgs, `config.${type}`);
+    const userPatterns = _.get(cliArgs, '_');
+
+    try {
+      await linter[methodName](userPatterns, configFile);
+    } catch (error) {
+      errors.push(error);
+
+      if (cliArgs['fail-fast']) {
+        if (errors.length === 1) {
+          __.consoleError(error.message);
+        }
+        throw firostError('ABERLAAS_LINT_FAIL_FAST', 'Fail to lint files');
+      }
+
+      __.consoleError(error.message);
+    }
   },
 
   consoleError,
