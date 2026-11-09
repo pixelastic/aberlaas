@@ -1,6 +1,6 @@
 import pluginJson from '@eslint/json';
 import packageJson from 'eslint-plugin-package-json';
-import jsoncParser from 'jsonc-eslint-parser';
+import * as jsoncParser from 'jsonc-eslint-parser';
 
 export default [
   {
