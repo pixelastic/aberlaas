@@ -1,3 +1,17 @@
+## v2.42.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.6...v2.42.0)
+
+### Features
+
+- **lint:** Enforce file extensions in imports for all JS files
+  ([8dbd61f](https://github.com/pixelastic/aberlaas/commit/8dbd61f))
+
+### Bug Fixes
+
+- **lint:** Run versions linter after all other linters complete
+  ([781d9f7](https://github.com/pixelastic/aberlaas/commit/781d9f7))
+
 ## v2.41.6
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.41.5...v2.41.6)
