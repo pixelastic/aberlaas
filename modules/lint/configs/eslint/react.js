@@ -1,12 +1,7 @@
-import pluginReact from 'eslint-plugin-react';
-
 export default [
   {
     name: 'aberlaas/react',
     files: ['**/*.{jsx,tsx}'],
-    plugins: {
-      react: pluginReact,
-    },
     languageOptions: {
       parserOptions: {
         ecmaFeatures: {
@@ -15,8 +10,6 @@ export default [
       },
     },
     rules: {
-      'react/jsx-uses-react': ['error'],
-      'react/jsx-uses-vars': ['error'],
       'import-x/extensions': ['error', 'always', { ignorePackages: true }],
     },
   },

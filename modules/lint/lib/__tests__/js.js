@@ -278,4 +278,53 @@ const message = 'bad quotes';
       });
     });
   });
+  describe.slow('react', () => {
+    const buttonSource = 'export const Button = () => <button />;\n';
+    it('should not report a component only used in JSX', async () => {
+      await write(buttonSource, hostPackagePath('Button.jsx'));
+      await write(
+        "import { Button } from './Button.jsx';\n\nexport const App = () => <Button />;\n",
+        hostPackagePath('App.jsx'),
+      );
+
+      const actual = await run();
+
+      expect(actual).toBe(true);
+    });
+    it.each([
+      {
+        title: 'unused imported component',
+        source:
+          "import { Button } from './Button.jsx';\n\nexport const App = () => <div />;\n",
+        expected: 'no-unused-vars',
+      },
+      {
+        title: 'undefined component',
+        source: 'export const App = () => <Button />;\n',
+        expected: 'no-undef',
+      },
+      {
+        title: 'relative import without extension',
+        source:
+          "import { Button } from './Button';\n\nexport const App = () => <Button />;\n",
+        expected: 'import-x/extensions',
+      },
+    ])('should report $title', async ({ source, expected }) => {
+      await write(buttonSource, hostPackagePath('Button.jsx'));
+      await write(source, hostPackagePath('App.jsx'));
+
+      let actual = null;
+      try {
+        await run();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
+      expect(actual).toHaveProperty(
+        'message',
+        expect.stringContaining(expected),
+      );
+    });
+  });
 });
