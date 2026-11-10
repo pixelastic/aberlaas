@@ -63,10 +63,10 @@ export default [
       // Prefer it() over test()
       'vitest/consistent-test-it': ['warn', { fn: 'it' }],
       // In tests, we like to have the variable 'current' hold the object
-      // under test. The import/no-named-as-default-member would have warned
+      // under test. The import-x/no-named-as-default-member would have warned
       // us about using current.foo rather than foo directly, so we disable
       // it.
-      'import/no-named-as-default-member': ['off'],
+      'import-x/no-named-as-default-member': ['off'],
       // Disabling vitest/no-identical-title
       // It can make eslint crash when used with fit/xit/fdescribe/xdescribe
       // See: https://github.com/veritem/eslint-plugin-vitest/issues/310

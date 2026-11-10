@@ -17,7 +17,7 @@ export default [
     rules: {
       'react/jsx-uses-react': ['error'],
       'react/jsx-uses-vars': ['error'],
-      'import/extensions': ['error', 'always', { ignorePackages: true }],
+      'import-x/extensions': ['error', 'always', { ignorePackages: true }],
     },
   },
 ];

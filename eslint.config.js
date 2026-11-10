@@ -10,7 +10,7 @@ export default [
     files: ['**/modules/init/templates/**/*.js'],
     rules: {
       'n/no-extraneous-import': ['off'],
-      'import/no-unresolved': ['off'],
+      'import-x/no-unresolved': ['off'],
       'prettier/prettier': ['off'],
     },
   },

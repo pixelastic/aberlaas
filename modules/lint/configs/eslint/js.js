@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 import { nodeVersion } from 'aberlaas-versions';
-import pluginImport from 'eslint-plugin-import';
+import { createNodeResolver, importX } from 'eslint-plugin-import-x';
 import { configs as jsdocConfigs } from 'eslint-plugin-jsdoc';
 import pluginN from 'eslint-plugin-n';
 import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
@@ -48,14 +48,14 @@ export default [
           'test-file-naming': ruleTestFileNaming,
         },
       },
-      import: pluginImport.flatConfigs.recommended.plugins.import,
+      'import-x': importX.flatConfigs.recommended.plugins['import-x'],
       jsdoc: jsdocConfigs['flat/recommended'].plugins.jsdoc,
       n: pluginN.configs['flat/recommended'].plugins.n,
       prettier: pluginPrettierRecommended.plugins.prettier,
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...pluginImport.flatConfigs.recommended.rules,
+      ...importX.flatConfigs.recommended.rules,
       ...jsdocConfigs['flat/recommended'].plugins.rules,
       ...pluginN.configs['flat/recommended'].plugins.rules,
       'dot-notation': ['error'],
@@ -162,12 +162,12 @@ export default [
       'n/prefer-node-protocol': ['error'],
 
       // Import
-      'import/first': ['error'],
-      'import/no-cycle': ['error', { ignoreExternal: true, disableScc: true }],
+      'import-x/first': ['error'],
+      'import-x/no-cycle': ['error', { ignoreExternal: true }],
       // Put most common modules (firost, golgoth, etc) first
       // Then other third parties
       // Then internal files
-      'import/order': [
+      'import-x/order': [
         'error',
         {
           groups: [
@@ -198,8 +198,8 @@ export default [
           },
         },
       ],
-      'import/newline-after-import': ['error'],
-      'import/no-unresolved': ['error'],
+      'import-x/newline-after-import': ['error'],
+      'import-x/no-unresolved': ['error'],
 
       // JSDoc
       'jsdoc/check-param-names': ['warn'],
@@ -241,12 +241,11 @@ export default [
       'aberlaas/test-file-naming': ['error'],
     },
     settings: {
-      'import/resolver': {
-        exports: {},
-        node: {
+      'import-x/resolver-next': [
+        createNodeResolver({
           extensions: ['.js', '.cjs', '.mjs', '.d.ts', '.jsx', '.ts', '.tsx'],
-        },
-      },
+        }),
+      ],
     },
   },
 ];
