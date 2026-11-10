@@ -4661,7 +4661,7 @@ __metadata:
     eslint-plugin-package-json: "npm:1.14.0"
     eslint-plugin-prettier: "npm:5.5.7"
     eslint-plugin-toml: "npm:1.5.0"
-    eslint-plugin-vue: "npm:10.12.0"
+    eslint-plugin-vue: "npm:10.12.1"
     firost: "npm:5.11.0"
     globals: "npm:17.14.0"
     golgoth: "npm:4.0.0"
@@ -9071,14 +9071,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:10.12.0":
-  version: 10.12.0
-  resolution: "eslint-plugin-vue@npm:10.12.0"
+"eslint-plugin-vue@npm:10.12.1":
+  version: 10.12.1
+  resolution: "eslint-plugin-vue@npm:10.12.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.9.1"
     natural-compare: "npm:^1.4.0"
     nth-check: "npm:^2.1.1"
-    postcss-selector-parser: "npm:^7.1.4"
+    postcss-selector-parser: "npm:^7.1.7"
     semver: "npm:^7.8.5"
     xml-name-validator: "npm:^5.0.0"
   peerDependencies:
@@ -9091,7 +9091,7 @@ __metadata:
       optional: true
     "@typescript-eslint/parser":
       optional: true
-  checksum: 10c0/9886f2a038ccb0fad411188df64bd5b5fd86eb1aeea12ecf5819846592fc511d9d8718e1573eab42b2d9b211468a23941f176281f821fb8337bc6993a57d24fe
+  checksum: 10c0/3de524098d1d79f8d2aa64966d00e070a4576e60269b228c201e2178201b90ca6ab7cfe724c862dfcdc5829438e4823578d1f672403b4bc12b9655632a9950cb
   languageName: node
   linkType: hard
 
@@ -17387,7 +17387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^7.1.4, postcss-selector-parser@npm:^7.1.7":
+"postcss-selector-parser@npm:^7.1.7":
   version: 7.2.0
   resolution: "postcss-selector-parser@npm:7.2.0"
   dependencies:
