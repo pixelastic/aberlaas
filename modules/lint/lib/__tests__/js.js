@@ -146,44 +146,37 @@ describe('lint/js', () => {
       expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
       expect(actual).toHaveProperty('message');
     });
-    it('should report vitest rule violations in test files', async () => {
-      await write(
-        "import { it } from 'vitest';\n\nit('works', () => {});\n",
-        hostPackagePath('__tests__/foo.js'),
-      );
+    it.each([
+      {
+        title: 'vitest',
+        input: "import { it } from 'vitest';\n\nit('works', () => {});\n",
+        expected: 'vitest/no-importing-vitest-globals',
+      },
+      {
+        title: 'custom vitest',
+        input:
+          "it('works', () => {\n  const mock = vi.fn();\n  mock.mockResolvedValue(1);\n  expect(mock).toHaveBeenCalled();\n});\n",
+        expected: 'aberlaas-test/prefer-mock-return-value',
+      },
+    ])(
+      'should report $title rule violations in test files',
+      async ({ input, expected }) => {
+        await write(input, hostPackagePath('__tests__/foo.js'));
 
-      let actual = null;
-      try {
-        await run();
-      } catch (error) {
-        actual = error;
-      }
+        let actual = null;
+        try {
+          await run();
+        } catch (error) {
+          actual = error;
+        }
 
-      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
-      expect(actual).toHaveProperty(
-        'message',
-        expect.stringContaining('vitest/no-importing-vitest-globals'),
-      );
-    });
-    it('should report custom vitest rule violations in test files', async () => {
-      await write(
-        "it('works', () => {\n  const mock = vi.fn();\n  mock.mockResolvedValue(1);\n  expect(mock).toHaveBeenCalled();\n});\n",
-        hostPackagePath('__tests__/foo.js'),
-      );
-
-      let actual = null;
-      try {
-        await run();
-      } catch (error) {
-        actual = error;
-      }
-
-      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
-      expect(actual).toHaveProperty(
-        'message',
-        expect.stringContaining('aberlaas-test/prefer-mock-return-value'),
-      );
-    });
+        expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
+        expect(actual).toHaveProperty(
+          'message',
+          expect.stringContaining(expected),
+        );
+      },
+    );
     it('should pass on a valid test file', async () => {
       await write(
         "it('works', () => {\n  expect(true).toBe(true);\n});\n",
@@ -294,24 +287,24 @@ const message = 'bad quotes';
     it.each([
       {
         title: 'unused imported component',
-        source:
+        input:
           "import { Button } from './Button.jsx';\n\nexport const App = () => <div />;\n",
         expected: 'no-unused-vars',
       },
       {
         title: 'undefined component',
-        source: 'export const App = () => <Button />;\n',
+        input: 'export const App = () => <Button />;\n',
         expected: 'no-undef',
       },
       {
         title: 'relative import without extension',
-        source:
+        input:
           "import { Button } from './Button';\n\nexport const App = () => <Button />;\n",
         expected: 'import-x/extensions',
       },
-    ])('should report $title', async ({ source, expected }) => {
+    ])('should report $title', async ({ input, expected }) => {
       await write(buttonSource, hostPackagePath('Button.jsx'));
-      await write(source, hostPackagePath('App.jsx'));
+      await write(input, hostPackagePath('App.jsx'));
 
       let actual = null;
       try {
