@@ -9,8 +9,5 @@ export default [
         },
       },
     },
-    rules: {
-      'import-x/extensions': ['error', 'always', { ignorePackages: true }],
-    },
   },
 ];

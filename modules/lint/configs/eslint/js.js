@@ -162,6 +162,7 @@ export default [
       'n/prefer-node-protocol': ['error'],
 
       // Import
+      'import-x/extensions': ['error', 'always', { ignorePackages: true }],
       'import-x/first': ['error'],
       'import-x/no-cycle': ['error', { ignoreExternal: true }],
       // Put most common modules (firost, golgoth, etc) first

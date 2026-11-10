@@ -271,6 +271,66 @@ const message = 'bad quotes';
       });
     });
   });
+  describe.slow('extensions', () => {
+    beforeEach(async () => {
+      await write('export const helper = 1;\n', hostPackagePath('helper.js'));
+      await write(
+        'export const other = 1;\n',
+        hostPackagePath('helpers/index.js'),
+      );
+    });
+    it.each([
+      {
+        title: 'relative import without extension',
+        input: "import { helper } from './helper';\n\nexport default helper;\n",
+      },
+      {
+        title: 'directory import',
+        input: "import { other } from './helpers';\n\nexport default other;\n",
+      },
+    ])('should report $title', async ({ input }) => {
+      await write(input, hostPackagePath('main.js'));
+
+      let actual = null;
+      try {
+        await run();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
+      expect(actual).toHaveProperty(
+        'message',
+        expect.stringContaining('import-x/extensions'),
+      );
+    });
+    it.each([
+      {
+        title: 'relative import with extension',
+        input:
+          "import { helper } from './helper.js';\n\nexport default helper;\n",
+      },
+      {
+        title: 'index file import',
+        input:
+          "import { other } from './helpers/index.js';\n\nexport default other;\n",
+      },
+      {
+        title: 'package import',
+        input: "import { _ } from 'golgoth';\n\nexport default _;\n",
+      },
+      {
+        title: 'node builtin import',
+        input: "import path from 'node:path';\n\nexport default path;\n",
+      },
+    ])('should not report $title', async ({ input }) => {
+      await write(input, hostPackagePath('main.js'));
+
+      const actual = await run();
+
+      expect(actual).toBe(true);
+    });
+  });
   describe.slow('react', () => {
     const buttonSource = 'export const Button = () => <button />;\n';
     it('should not report a component only used in JSX', async () => {
