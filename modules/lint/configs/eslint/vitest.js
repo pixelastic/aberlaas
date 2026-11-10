@@ -1,5 +1,3 @@
-// @vitest/plugins requires @typescript-eslint/utils and typescripts as deps
-// See: https://github.com/vitest-dev/eslint-plugin-vitest/issues/543
 import pluginVitest from '@vitest/eslint-plugin';
 import ruleNoManualMockCleanup from './rules/test/no-manual-mock-cleanup.js';
 import rulePreferExpectToHaveProperty from './rules/test/prefer-expect-to-have-property.js';

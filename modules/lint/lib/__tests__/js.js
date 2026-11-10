@@ -146,6 +146,54 @@ describe('lint/js', () => {
       expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
       expect(actual).toHaveProperty('message');
     });
+    it('should report vitest rule violations in test files', async () => {
+      await write(
+        "import { it } from 'vitest';\n\nit('works', () => {});\n",
+        hostPackagePath('__tests__/foo.js'),
+      );
+
+      let actual = null;
+      try {
+        await run();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
+      expect(actual).toHaveProperty(
+        'message',
+        expect.stringContaining('vitest/no-importing-vitest-globals'),
+      );
+    });
+    it('should report custom vitest rule violations in test files', async () => {
+      await write(
+        "it('works', () => {\n  const mock = vi.fn();\n  mock.mockResolvedValue(1);\n  expect(mock).toHaveBeenCalled();\n});\n",
+        hostPackagePath('__tests__/foo.js'),
+      );
+
+      let actual = null;
+      try {
+        await run();
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'ABERLAAS_LINT_JS');
+      expect(actual).toHaveProperty(
+        'message',
+        expect.stringContaining('aberlaas-test/prefer-mock-return-value'),
+      );
+    });
+    it('should pass on a valid test file', async () => {
+      await write(
+        "it('works', () => {\n  expect(true).toBe(true);\n});\n",
+        hostPackagePath('__tests__/foo.js'),
+      );
+
+      const actual = await run();
+
+      expect(actual).toBe(true);
+    });
   });
   describe('fix', () => {
     it('should fix files', async () => {
