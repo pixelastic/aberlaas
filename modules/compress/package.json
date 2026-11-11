@@ -20,8 +20,8 @@
   "main": "./lib/main.js",
   "dependencies": {
     "aberlaas-helper": "workspace:*",
-    "firost": "5.11.0",
-    "golgoth": "4.0.0"
+    "firost": "5.11.2",
+    "golgoth": "4.1.1"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",
