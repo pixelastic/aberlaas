@@ -1,7 +1,7 @@
 import { _, pMap } from 'golgoth';
 import { absolute, firostError, read, write } from 'firost';
-import { getConfigPath } from 'aberlaas-helper';
-import { format as prettierFormat, resolveConfig } from 'prettier';
+import { getConfigPath, hostGitPath } from 'aberlaas-helper';
+import { getFileInfo, format as prettierFormat, resolveConfig } from 'prettier';
 import * as prettierTailwindPlugin from 'prettier-plugin-tailwindcss';
 
 /**
@@ -19,6 +19,12 @@ export async function prettierFix(inputFiles) {
   // Plugins
   const plugins = [prettierTailwindPlugin];
 
+  // Ignore files, resolved from the host root
+  const ignorePath = [
+    hostGitPath('.gitignore'),
+    hostGitPath('.prettierignore'),
+  ];
+
   const errors = [];
 
   // Read all files, run them through the formatter and save them back to disk
@@ -27,6 +33,12 @@ export async function prettierFix(inputFiles) {
     inputFiles,
     async (filepath) => {
       try {
+        // Skip files listed in an ignore file
+        const { ignored } = await getFileInfo(filepath, { ignorePath });
+        if (ignored) {
+          return;
+        }
+
         const content = await read(filepath);
         // Find the prettier options to apply
         const config = await resolveConfig(filepath, { config: configPath });

@@ -118,5 +118,82 @@ describe('lint/prettierFix', () => {
       const actual = _.chain(lines).map('length').max().value() <= 80;
       expect(actual).toEqual(expected);
     });
+
+    describe('ignore files', () => {
+      const unformatted = '{"foo":"bar",}';
+      const formatted = '{ "foo": "bar" }';
+
+      it.each([
+        {
+          title: 'leave a file listed in .prettierignore untouched',
+          ignoreFile: '.prettierignore',
+        },
+        {
+          title: 'leave a file listed in .gitignore untouched',
+          ignoreFile: '.gitignore',
+        },
+      ])('should $title', async ({ ignoreFile }) => {
+        const filepath = `${testDirectory}/ignored.json`;
+        await write('ignored.json\n', `${testDirectory}/${ignoreFile}`);
+        await write(unformatted, filepath);
+
+        await prettierFix([filepath]);
+
+        const actual = await read(filepath);
+        expect(actual).toBe(unformatted);
+      });
+
+      it('should format a file that no ignore file lists', async () => {
+        const filepath = `${testDirectory}/good.json`;
+        await write('other.json\n', `${testDirectory}/.prettierignore`);
+        await write('another.json\n', `${testDirectory}/.gitignore`);
+        await write(unformatted, filepath);
+
+        await prettierFix([filepath]);
+
+        const actual = await read(filepath);
+        expect(actual).toBe(formatted);
+      });
+
+      it('should format other files when some files are ignored', async () => {
+        const ignoredFile = `${testDirectory}/ignored.json`;
+        const goodFile = `${testDirectory}/good.json`;
+        await write('ignored.json\n', `${testDirectory}/.prettierignore`);
+        await write(unformatted, ignoredFile);
+        await write(unformatted, goodFile);
+
+        await prettierFix([ignoredFile, goodFile]);
+
+        const actualIgnored = await read(ignoredFile);
+        const actualGood = await read(goodFile);
+        expect(actualIgnored).toBe(unformatted);
+        expect(actualGood).toBe(formatted);
+      });
+
+      it('should not throw when neither ignore file exists', async () => {
+        const filepath = `${testDirectory}/good.json`;
+        await write(unformatted, filepath);
+
+        await prettierFix([filepath]);
+
+        const actual = await read(filepath);
+        expect(actual).toBe(formatted);
+      });
+
+      it('should not report an error for an ignored broken file', async () => {
+        const filepath = `${testDirectory}/broken.json`;
+        await write('broken.json\n', `${testDirectory}/.prettierignore`);
+        await write('{ invalid }', filepath);
+
+        let actual = null;
+        try {
+          await prettierFix([filepath]);
+        } catch (error) {
+          actual = error;
+        }
+
+        expect(actual).toBeNull();
+      });
+    });
   });
 });

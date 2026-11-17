@@ -2,13 +2,18 @@
 title: aberlaas lint
 ---
 
-Running `aberlaas lint` will lint all supported files in the repository. 
+Running `aberlaas lint` will lint all supported files in the repository.
 
 ## Fix
 
 Running `aberlaas lint --fix` (or the `yarn lint:fix` alias) will try to
 automatically fix linting issues. If some issues can't be automatically fixed,
 they will be displayed.
+
+Files formatted by Prettier (Markdown, JSON, YAML, CSS, HTML) are skipped by
+`--fix` when they are listed in `.prettierignore` or `.gitignore`. To exclude a
+file from fixing, add it to `.prettierignore`. To exclude it from linting, add
+it to your ESLint config.
 
 ## Pre-commit
 
@@ -27,5 +32,3 @@ documentation:
 - [Markdown](./markdown/)
 - [CircleCI](./circleci/)
 - [Dockerfile](./dockerfile/)
-
-
