@@ -1,0 +1,2 @@
+# Files listed here are skipped by `aberlaas lint --fix` (Prettier)
+# One pattern per line, using .gitignore syntax
