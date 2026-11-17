@@ -189,6 +189,7 @@ describe('init/libdocs', () => {
         '.editorconfig',
         '.github/renovate.json',
         '.gitignore',
+        '.prettierignore',
         '.README.template.md',
         '.yarnrc.yml',
         'docs/package.json',

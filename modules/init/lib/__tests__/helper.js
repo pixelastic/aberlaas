@@ -221,6 +221,7 @@ describe('init/helper', () => {
         ['Git ignore', '.gitignore'],
         ['LintStaged config', 'lintstaged.config.js'],
         ['Prettier config', 'prettier.config.js'],
+        ['Prettier ignore', '.prettierignore'],
         ['Renovate config', '.github/renovate.json'],
         ['Stylelint config', 'stylelint.config.js'],
         ['Vite config', 'vite.config.js'],

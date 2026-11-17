@@ -48,6 +48,7 @@ export const __ = {
 
     // Prettier
     await __.copyTemplateToHost('prettier.config.js');
+    await __.copyTemplateToHost('_prettierignore', '.prettierignore');
 
     // Stylelint
     await __.copyTemplateToHost('stylelint.config.js');

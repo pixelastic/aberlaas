@@ -112,6 +112,7 @@ describe('init/module', () => {
         '.editorconfig',
         '.github/renovate.json',
         '.gitignore',
+        '.prettierignore',
         '.README.template.md',
         '.yarnrc.yml',
         'eslint.config.js',
