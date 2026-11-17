@@ -1,3 +1,17 @@
+## v2.44.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.43.0...v2.44.0)
+
+### Features
+
+- **init:** Copy .prettierignore template to initialized projects
+  ([ded8d16](https://github.com/pixelastic/aberlaas/commit/ded8d16))
+
+### Bug Fixes
+
+- **lint:** Skip ignored files when fixing with prettier
+  ([b73bb58](https://github.com/pixelastic/aberlaas/commit/b73bb58))
+
 ## v2.43.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.42.0...v2.43.0)
