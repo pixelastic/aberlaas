@@ -1,3 +1,11 @@
+## v2.45.0
+
+[compare changes](https://github.com/pixelastic/aberlaas/compare/v2.44.0...v2.45.0)
+
+### Features
+
+- **eslint/markdown:** Update internal dependency to @eslint/markdown v9
+
 ## v2.44.0
 
 [compare changes](https://github.com/pixelastic/aberlaas/compare/v2.43.0...v2.44.0)
