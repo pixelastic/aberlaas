@@ -4940,9 +4940,9 @@ __metadata:
   dependencies:
     aberlaas-helper: "workspace:*"
     dedent: "npm:1.7.2"
-    firost: "npm:5.11.0"
+    firost: "npm:5.11.2"
     globals: "npm:17.14.0"
-    golgoth: "npm:4.0.0"
+    golgoth: "npm:4.1.1"
     vitest: "npm:4.0.18"
   languageName: unknown
   linkType: soft

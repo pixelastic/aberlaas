@@ -23,9 +23,9 @@
   "dependencies": {
     "aberlaas-helper": "workspace:*",
     "dedent": "1.7.2",
-    "firost": "5.11.0",
+    "firost": "5.11.2",
     "globals": "17.14.0",
-    "golgoth": "4.0.0",
+    "golgoth": "4.1.1",
     "vitest": "4.0.18"
   },
   "scripts": {
