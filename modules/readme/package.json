@@ -12,10 +12,12 @@
   "sideEffects": false,
   "license": "MIT",
   "files": [
-    "lib/*.js"
+    "lib/*.js",
+    "templates/**/*"
   ],
   "exports": {
-    ".": "./lib/main.js"
+    ".": "./lib/main.js",
+    "./getTemplatePath": "./lib/getTemplatePath.js"
   },
   "main": "./lib/main.js",
   "dependencies": {

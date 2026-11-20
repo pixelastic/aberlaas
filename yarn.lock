@@ -4827,6 +4827,7 @@ __metadata:
   resolution: "aberlaas-init@workspace:modules/init"
   dependencies:
     aberlaas-helper: "workspace:*"
+    aberlaas-readme: "workspace:*"
     aberlaas-versions: "workspace:*"
     firost: "npm:5.11.2"
     gilmore: "npm:1.4.3"

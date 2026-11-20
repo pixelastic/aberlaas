@@ -1,9 +1,10 @@
 import { _, pMap } from 'golgoth';
 import { consoleWarn, exists, firostError, read, write } from 'firost';
-import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
+import { getConfigPath, hostGitPath, hostGitRoot } from 'aberlaas-helper';
 import dedent from 'dedent';
 import frontMatter from 'front-matter';
 import Gilmore from 'gilmore';
+import { getTemplatePath } from './getTemplatePath.js';
 
 export let __;
 
@@ -18,7 +19,6 @@ const TEMPLATE_PATH = '.README.template.md';
  */
 export async function run(cliArgs = {}) {
   await __.warnIfDeprecatedTemplate();
-  await __.ensureTemplateExists();
 
   // Get all template data (inputs, outputs, body)
   const templateData = await __.getTemplateData();
@@ -54,26 +54,16 @@ __ = {
   },
 
   /**
-   * Ensures that the template file exists at the expected location.
-   */
-  async ensureTemplateExists() {
-    const templatePath = hostGitPath(TEMPLATE_PATH);
-    if (await exists(templatePath)) {
-      return;
-    }
-    throw firostError(
-      'ABERLAAS_README_MISSING_TEMPLATE',
-      `README template not found at ${TEMPLATE_PATH}`,
-    );
-  },
-
-  /**
    * Extracts and processes template data including inputs, outputs, and body content.
    * Uses the static TEMPLATE_PATH constant.
    * @returns {object} Object containing processed inputs array, outputs array, and template body content
    */
   async getTemplateData() {
-    const templatePath = hostGitPath(TEMPLATE_PATH);
+    const templatePath = await getConfigPath(
+      null,
+      TEMPLATE_PATH,
+      getTemplatePath(),
+    );
     const rawContent = await read(templatePath);
     const parsed = frontMatter(rawContent);
 

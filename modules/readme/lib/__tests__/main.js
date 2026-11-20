@@ -31,36 +31,17 @@ describe('readme', () => {
     });
   });
 
-  describe('ensureTemplateExists', () => {
-    it('should not throw if template exists', async () => {
-      await newFile(`${testDirectory}/.README.template.md`);
-
-      let actual = null;
-      try {
-        await __.ensureTemplateExists();
-      } catch (err) {
-        actual = err;
-      }
-
-      await expect(actual).toEqual(null);
-    });
-
-    it('should throw if template does not exist', async () => {
-      let actual = null;
-      try {
-        await __.ensureTemplateExists();
-      } catch (err) {
-        actual = err;
-      }
-
-      await expect(actual).toHaveProperty(
-        'code',
-        'ABERLAAS_README_MISSING_TEMPLATE',
-      );
-    });
-  });
-
   describe('getTemplateData', () => {
+    it('should fallback on the default template if the host has none', async () => {
+      await write('readme content', `${testDirectory}/README.md`);
+
+      const actual = await __.getTemplateData();
+
+      expect(actual).toHaveProperty('outputs', [
+        `${testDirectory}/lib/README.md`,
+      ]);
+    });
+
     it('should parse template and extract inputs, outputs, and body', async () => {
       await write('input content', `${testDirectory}/docs/intro.md`);
       await write(
@@ -338,7 +319,6 @@ describe('readme', () => {
     describe('--add-to-git', () => {
       beforeEach(async () => {
         vi.spyOn(__, 'warnIfDeprecatedTemplate').mockReturnValue();
-        vi.spyOn(__, 'ensureTemplateExists').mockReturnValue();
         vi.spyOn(__, 'getTemplateData').mockReturnValue();
         vi.spyOn(__, 'shouldContinue').mockReturnValue(true);
         vi.spyOn(__, 'generateAndWrite').mockReturnValue();

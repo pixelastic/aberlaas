@@ -14,6 +14,7 @@ import {
   write,
 } from 'firost';
 import { hostGitPath, hostGitRoot } from 'aberlaas-helper';
+import { getTemplatePath as getReadmeTemplatePath } from 'aberlaas-readme/getTemplatePath';
 import { nodeVersion, yarnVersion } from 'aberlaas-versions';
 import Gilmore from 'gilmore';
 
@@ -32,7 +33,7 @@ export const __ = {
     await remove(hostGitPath('.gitattributes'));
 
     // README template
-    await __.copyTemplateToHost('_README.template.md', '.README.template.md');
+    await __.copyTemplateToHost(getReadmeTemplatePath(), '.README.template.md');
 
     // Yarn
     await __.copyTemplateToHost('_yarnrc.yml', '.yarnrc.yml');
@@ -153,13 +154,15 @@ export const __ = {
   // === PRIVATE METHODS ===
   /**
    * Copy a config template to the host
-   * @param {string} source Path to source file, relative to ./templates folder
+   * @param {string} source Path to source file, relative to ./templates folder, or absolute
    * @param {string} userDestination Path to destination file, relative to the host. Defaults to source if not provided.
    * @returns {boolean} False if can't copy file, true otherwise
    */
   async copyTemplateToHost(source, userDestination) {
     const destination = userDestination || source;
-    const absoluteSource = absolute('../templates/', source);
+    const absoluteSource = path.isAbsolute(source)
+      ? source
+      : absolute('../templates/', source);
     const absoluteDestination = hostGitPath(destination);
 
     // Source file does not exist

@@ -38,6 +38,7 @@
   "main": "./lib/main.js",
   "dependencies": {
     "aberlaas-helper": "workspace:*",
+    "aberlaas-readme": "workspace:*",
     "aberlaas-versions": "workspace:*",
     "firost": "5.11.2",
     "gilmore": "1.4.3",
