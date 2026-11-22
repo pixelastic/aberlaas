@@ -23,7 +23,7 @@
   "dependencies": {
     "aberlaas-helper": "workspace:*",
     "dedent": "1.7.2",
-    "firost": "5.11.2",
+    "firost": "5.12.0",
     "front-matter": "4.0.2",
     "gilmore": "1.4.3",
     "golgoth": "4.1.1"

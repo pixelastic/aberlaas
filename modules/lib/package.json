@@ -62,7 +62,7 @@
     "aberlaas-setup": "workspace:*",
     "aberlaas-test": "workspace:*",
     "aberlaas-versions": "workspace:*",
-    "firost": "5.11.2",
+    "firost": "5.12.0",
     "golgoth": "4.1.1",
     "minimist": "1.2.8"
   },

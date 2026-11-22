@@ -19,7 +19,7 @@
   },
   "main": "./lib/main.js",
   "devDependencies": {
-    "firost": "5.11.2"
+    "firost": "5.12.0"
   },
   "scripts": {
     "build": "cd ../docs && yarn run build",
